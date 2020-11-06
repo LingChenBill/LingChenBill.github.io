@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>创建MVC的WebApp - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-04 21:41">
+                    June 4, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    6.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    115
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="创建MVC的WebApp"><a href="#创建MVC的WebApp" class="headerlink" title="创建MVC的WebApp"></a>创建MVC的WebApp</h2><h3 id="１、MVC新規"><a href="#１、MVC新規" class="headerlink" title="１、MVC新規"></a>１、MVC新規</h3><p><img src="net-mvc-webapp/1.png" srcset="/img/loading.gif" alt="mvc-create"></p>
+<p>OK ー＞　MVC　－＞　次へ、工程自動生成成功。<br>起動工程（F5），可能會報錯如下：</p>
+<div class="hljs"><pre><code class="hljs html">&#x27;/&#x27; アプリケーションでサーバー エラーが発生しました。
+
+ファイルまたはアセンブリ &#x27;Newtonsoft.Json&#x27;、またはその依存関係の 1 つが読み込めませんでした。見つかったアセンブリのマニフェスト定義はアセンブリ参照に一致しません。 (HRESULT からの例外:0x80131040) 
+ 説明: 現在の Web 要求を実行中に、ハンドルされていない例外が発生しました。エラーに関する詳細および例外の発生場所については、スタック トレースを参照してください。</code></pre></div>
+
+<p>解決案：<br>在NuGet包管理器中將Newtonsoft.Json升級即可</p>
+<p><img src="net-mvc-webapp/2.png" srcset="/img/loading.gif" alt="Nuget-management"></p>
+<p><img src="net-mvc-webapp/3.png" srcset="/img/loading.gif" alt="Newtonsoft.Json-update"></p>
+<p>再次起動工程，MVC正常運行。如下：<br><img src="net-mvc-webapp/4.png" srcset="/img/loading.gif" alt="MVC-init"></p>
+<h3 id="２、站點風格"><a href="#２、站點風格" class="headerlink" title="２、站點風格"></a>２、站點風格</h3><p>修改ContosoUniversity\ContosoUniversity\Views\Shared_Layout.cshtml文件如下：</p>
+<div class="hljs"><pre><code class="hljs php+HTML">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&#x2F;&gt;
+    &lt;meta charset&#x3D;&quot;utf-8&quot; &#x2F;&gt;
+    &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;
+    &lt;title&gt;@ViewBag.Title - Contoso University&lt;&#x2F;title&gt;
+    @Styles.Render(&quot;~&#x2F;Content&#x2F;css&quot;)
+    @Scripts.Render(&quot;~&#x2F;bundles&#x2F;modernizr&quot;)
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+    &lt;div class&#x3D;&quot;navbar navbar-inverse navbar-fixed-top&quot;&gt;
+        &lt;div class&#x3D;&quot;container&quot;&gt;
+            &lt;div class&#x3D;&quot;navbar-header&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;navbar-toggle&quot; data-toggle&#x3D;&quot;collapse&quot; data-target&#x3D;&quot;.navbar-collapse&quot;&gt;
+                    &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;
+                    &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;
+                    &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;
+                &lt;&#x2F;button&gt;
+                @Html.ActionLink(&quot;Contoso University&quot;, &quot;Index&quot;, &quot;Home&quot;, new &#123; area &#x3D; &quot;&quot; &#125;, new &#123; @class &#x3D; &quot;navbar-brand&quot; &#125;)
+            &lt;&#x2F;div&gt;
+            &lt;div class&#x3D;&quot;navbar-collapse collapse&quot;&gt;
+                &lt;ul class&#x3D;&quot;nav navbar-nav&quot;&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;Home&quot;, &quot;Index&quot;, &quot;Home&quot;)&lt;&#x2F;li&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;About&quot;, &quot;About&quot;, &quot;Home&quot;)&lt;&#x2F;li&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;Students&quot;, &quot;Index&quot;, &quot;Student&quot;)&lt;&#x2F;li&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;Courses&quot;, &quot;Index&quot;, &quot;Course&quot;)&lt;&#x2F;li&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;Instructors&quot;, &quot;Index&quot;, &quot;Instructor&quot;)&lt;&#x2F;li&gt;
+                    &lt;li&gt;@Html.ActionLink(&quot;Departments&quot;, &quot;Index&quot;, &quot;Department&quot;)&lt;&#x2F;li&gt;
+                &lt;&#x2F;ul&gt;
+            &lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;
+    &lt;&#x2F;div&gt;
+    &lt;div class&#x3D;&quot;container body-content&quot;&gt;
+        @RenderBody()
+        &lt;hr &#x2F;&gt;
+        &lt;footer&gt;
+            &lt;p&gt;&amp;copy; @DateTime.Now.Year - Contoso University&lt;&#x2F;p&gt;
+        &lt;&#x2F;footer&gt;
+    &lt;&#x2F;div&gt;
+
+    @Scripts.Render(&quot;~&#x2F;bundles&#x2F;jquery&quot;)
+    @Scripts.Render(&quot;~&#x2F;bundles&#x2F;bootstrap&quot;)
+    @RenderSection(&quot;scripts&quot;, required: false)
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre></div>
+
+<p>修改ContosoUniversity\ContosoUniversity\Views\Home\Index.cshtml</p>
+<div class="hljs"><pre><code class="hljs php+HTML">@&#123;
+    ViewBag.Title &#x3D; &quot;Home Page&quot;;
+&#125;
+
+&lt;div class&#x3D;&quot;jumbotron&quot;&gt;
+    &lt;h1&gt;Contoso University&lt;&#x2F;h1&gt;
+&lt;&#x2F;div&gt;
+
+&lt;div class&#x3D;&quot;row&quot;&gt;
+    &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+        &lt;h2&gt;Welcome to Contoso University&lt;&#x2F;h2&gt;
+        &lt;p&gt;
+            Contoso University is a sample application that
+            demonstrates how to use Entity Framework 6 in an
+            ASP.NET MVC 5 web application.
+        &lt;&#x2F;p&gt;
+    &lt;&#x2F;div&gt;
+    &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+        &lt;h2&gt;Build it from scratch&lt;&#x2F;h2&gt;
+        &lt;p&gt;
+            You can build the application by following the steps in the tutorial series on the ASP.NET site.
+        &lt;&#x2F;p&gt;
+        &lt;p&gt;&lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;http:&#x2F;&#x2F;www.asp.net&#x2F;mvc&#x2F;tutorials&#x2F;getting-started-withef-using-mvc&#x2F;&quot;&gt;See the tutorial &amp;raquo;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+    &lt;&#x2F;div&gt;
+    &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+        &lt;h2&gt;Download it&lt;&#x2F;h2&gt;
+        &lt;p&gt;You can download the completed project.&lt;&#x2F;p&gt;
+        &lt;p&gt;&lt;a class&#x3D;&quot;btn btn-default&quot; href&#x3D;&quot;https:&#x2F;&#x2F;webpifeed.blob.core.windows.net&#x2F;webpifeed&#x2F;Partners&#x2F;ASP.NET%20MVC%20Application%20Using%20Entity%20Framework%20Code%20First.zip&quot;&gt;Download &amp;raquo;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+    &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;</code></pre></div>
+
+<p>效果如下：<br><img src="net-mvc-webapp/5.png" srcset="/img/loading.gif" alt="contoso-nav"></p>
+<h3 id="３、安裝Entity-Framework-6"><a href="#３、安裝Entity-Framework-6" class="headerlink" title="３、安裝Entity Framework 6"></a>３、安裝Entity Framework 6</h3><p>ツール　－＞　NuGetパッケージマネージャー　－＞　パッケージマネージャーコンソール<br>‘Install-Package EntityFramework‘</p>
+<div class="hljs"><pre><code class="hljs bash">PM&gt; Install-Package EntityFramework
+
+<span class="hljs-string">&#x27;.NETFramework,Version=v4.6.1&#x27;</span> を対象とするプロジェクト <span class="hljs-string">&#x27;ContosoUniversity&#x27;</span> に関して、パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> の依存関係情報の収集を試行しています
+依存関係情報の収集に 34.99 ms かかりました
+DependencyBehavior <span class="hljs-string">&#x27;Lowest&#x27;</span> でパッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> の依存関係の解決を試行しています
+依存関係情報の解決に 0 ms かかりました
+パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> をインストールするアクションを解決しています
+パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> をインストールするアクションが解決されました
+<span class="hljs-string">&#x27;nuget.org&#x27;</span> からパッケージ <span class="hljs-string">&#x27;EntityFramework 6.4.4&#x27;</span> を取得しています。
+パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> をフォルダー <span class="hljs-string">&#x27;D:\research\test\ContosoUniversity\packages&#x27;</span> に追加しています
+パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> をフォルダー <span class="hljs-string">&#x27;D:\research\test\ContosoUniversity\packages&#x27;</span> に追加しました
+パッケージ <span class="hljs-string">&#x27;EntityFramework.6.4.4&#x27;</span> を <span class="hljs-string">&#x27;packages.config&#x27;</span> に追加しました
+スクリプト ファイル <span class="hljs-string">&#x27;D:\research\test\ContosoUniversity\packages\EntityFramework.6.4.4\tools\init.ps1&#x27;</span> を実行しています
+<span class="hljs-string">&#x27;EntityFramework 6.4.4&#x27;</span> が ContosoUniversity に正常にインストールされました
+NuGet の操作の実行に 2.02 sec かかりました
+経過した時間: 00:00:04.5800281</code></pre></div>
+
+<h3 id="４、建立數據模型"><a href="#４、建立數據模型" class="headerlink" title="４、建立數據模型"></a>４、建立數據模型</h3><p>Course &lt;-&gt; Enrollment &lt;-&gt; Student<br>Course to Enrollment       ＜ー＞    One-to-many<br>Student to Enrollment      ＜ー＞    One-to-many</p>
+<p>建立Model（Student.cs）<br><img src="net-mvc-webapp/6.png" srcset="/img/loading.gif" alt="Model-create">Students内容：</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.Collections.Generic;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Models</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Student</span>
+    &#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> ID &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Lastname &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> FirstMidName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> DateTime EnrollmentDate &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> ICollection&lt;Enrollment&gt; Enrollments &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>ID：主鍵<br>virtual：支持嬾加載（lazy loading）<br>ICollection  ： 列表集合（Student和Enrollment是一對多的關係）</p>
+<p>Enrollment内容：</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Models</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">enum</span> Grade
+    &#123;
+        A, B, C, D, F
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Enrollment</span>
+    &#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> EnrollmentID &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> CourseID &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> StudentID &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> Grade? Grade &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> Course Course &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> Student Student &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>EnrollmentID：主鍵<br>Grade：學分字段，枚舉型，可為空<br>StudentID：外鍵ID，關連Student<br>CourseID：外鍵ID，關連Course</p>
+<p>Course内容：</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Collections.Generic;
+<span class="hljs-keyword">using</span> System.ComponentModel.DataAnnotations.Schema;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Models</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Course</span>
+    &#123;
+        [<span class="hljs-meta">DatabaseGenerated(DatabaseGeneratedOption.None)</span>]
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> CourseID &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Title &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Credits &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> ICollection&lt;Enrollment&gt; Enrollments &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>DatabaseGenerated：自己生成主鍵<br>Enrollments：Course和Enrollment是一對多的關係</p>
+<h3 id="５、創建數據庫上下文"><a href="#５、創建數據庫上下文" class="headerlink" title="５、創建數據庫上下文"></a>５、創建數據庫上下文</h3><p>an entity set typically corresponds to a database table, and an entity corresponds to a row in the table.</p>
+<p>Solution Explorer　ー＞　Add　－＞　New Folder  ー＞    DAL (for Data Access Layer)<br>SchoolContext.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.Models;
+<span class="hljs-keyword">using</span> System.Data.Entity;
+<span class="hljs-keyword">using</span> System.Data.Entity.ModelConfiguration.Conventions;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.DAL</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SchoolContext</span> : <span class="hljs-title">DbContext</span>
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SchoolContext</span>(<span class="hljs-params"></span>) : <span class="hljs-title">base</span>(<span class="hljs-params"><span class="hljs-string">&quot;SchoolContext&quot;</span></span>)</span>
+<span class="hljs-function"></span>        &#123;
+        &#125;
+
+        <span class="hljs-keyword">public</span> DbSet&lt;Student&gt; Students &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> DbSet&lt;Enrollment&gt; Enrollments &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+        <span class="hljs-keyword">public</span> DbSet&lt;Course&gt; Courses &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnModelCreating</span>(<span class="hljs-params">DbModelBuilder modelBuilder</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            modelBuilder.Conventions.Remove&lt;PluralizingTableNameConvention&gt;();
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>modelBuilder.Conventions.Remove<PluralizingTableNameConvention>()：<br>聲明將數據表生成為單數形式：Student、Enrollment、Course 而不是Students、Enrollments、Courses</p>
+<p>數據庫啓動文件（初始化表）</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.Models;
+<span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.Collections.Generic;
+<span class="hljs-keyword">using</span> System.Data.Entity;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.DAL</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SchoolInitializer</span> : <span class="hljs-title">DropCreateDatabaseIfModelChanges</span>&lt;<span class="hljs-title">SchoolContext</span>&gt;
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Seed</span>(<span class="hljs-params">SchoolContext context</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">var</span> students = <span class="hljs-keyword">new</span> List&lt;Student&gt;
+            &#123;
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Carson&quot;</span>, LastName=<span class="hljs-string">&quot;Alexander&quot;</span>, EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2005-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Meredith&quot;</span>,LastName=<span class="hljs-string">&quot;Alonso&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2002-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Arturo&quot;</span>,LastName=<span class="hljs-string">&quot;Anand&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2003-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Gytis&quot;</span>,LastName=<span class="hljs-string">&quot;Barzdukas&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2002-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Yan&quot;</span>,LastName=<span class="hljs-string">&quot;Li&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2002-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Peggy&quot;</span>,LastName=<span class="hljs-string">&quot;Justice&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2001-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Laura&quot;</span>,LastName=<span class="hljs-string">&quot;Norman&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2003-09-01&quot;</span>)&#125;,
+                <span class="hljs-keyword">new</span> Student&#123;FirstMidName=<span class="hljs-string">&quot;Nino&quot;</span>,LastName=<span class="hljs-string">&quot;Olivetto&quot;</span>,EnrollmentDate=DateTime.Parse(<span class="hljs-string">&quot;2005-09-01&quot;</span>)&#125;
+            &#125;;
+
+            students.ForEach(s =&gt; context.Students.Add(s));
+            context.SaveChanges();
+
+            <span class="hljs-keyword">var</span> courses = <span class="hljs-keyword">new</span> List&lt;Course&gt;
+            &#123;
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">1050</span>,Title=<span class="hljs-string">&quot;Chemistry&quot;</span>,Credits=<span class="hljs-number">3</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">4022</span>,Title=<span class="hljs-string">&quot;Microeconomics&quot;</span>,Credits=<span class="hljs-number">3</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">4041</span>,Title=<span class="hljs-string">&quot;Macroeconomics&quot;</span>,Credits=<span class="hljs-number">3</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">1045</span>,Title=<span class="hljs-string">&quot;Calculus&quot;</span>,Credits=<span class="hljs-number">4</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">3141</span>,Title=<span class="hljs-string">&quot;Trigonometry&quot;</span>,Credits=<span class="hljs-number">4</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">2021</span>,Title=<span class="hljs-string">&quot;Composition&quot;</span>,Credits=<span class="hljs-number">3</span>,&#125;,
+                <span class="hljs-keyword">new</span> Course&#123;CourseID=<span class="hljs-number">2042</span>,Title=<span class="hljs-string">&quot;Literature&quot;</span>,Credits=<span class="hljs-number">4</span>,&#125;
+            &#125;;
+
+            courses.ForEach(c =&gt; context.Courses.Add(c));
+            context.SaveChanges();
+
+            <span class="hljs-keyword">var</span> enrollments = <span class="hljs-keyword">new</span> List&lt;Enrollment&gt;
+            &#123;
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">1</span>,CourseID=<span class="hljs-number">1050</span>,Grade=Grade.A&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">1</span>,CourseID=<span class="hljs-number">4022</span>,Grade=Grade.C&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">1</span>,CourseID=<span class="hljs-number">4041</span>,Grade=Grade.B&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">2</span>,CourseID=<span class="hljs-number">1045</span>,Grade=Grade.B&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">2</span>,CourseID=<span class="hljs-number">3141</span>,Grade=Grade.F&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">2</span>,CourseID=<span class="hljs-number">2021</span>,Grade=Grade.F&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">3</span>,CourseID=<span class="hljs-number">1050</span>&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">4</span>,CourseID=<span class="hljs-number">1050</span>,&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">4</span>,CourseID=<span class="hljs-number">4022</span>,Grade=Grade.F&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">5</span>,CourseID=<span class="hljs-number">4041</span>,Grade=Grade.C&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">6</span>,CourseID=<span class="hljs-number">1045</span>&#125;,
+                <span class="hljs-keyword">new</span> Enrollment&#123;StudentID=<span class="hljs-number">7</span>,CourseID=<span class="hljs-number">3141</span>,Grade=Grade.A&#125;
+            &#125;;
+
+            enrollments.ForEach(e =&gt; context.Enrollments.Add(e));
+            context.SaveChanges();
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>DropCreateDatabaseIfModelChanges：表示只有儅Model類發生變化（如增加字段），DB才會重新創建來相應改變</p>
+<p>web.config配置如下：</p>
+<div class="hljs"><pre><code class="hljs php+HTML">&lt;entityFramework&gt;
+  &lt;contexts&gt;
+    &lt;context type&#x3D;&quot;ContosoUniversity.DAL.SchoolContext, ContosoUniversity&quot;&gt;
+      &lt;databaseInitializer type&#x3D;&quot;ContosoUniversity.DAL.SchoolInitializer, ContosoUniversity&quot; &#x2F;&gt;
+    &lt;&#x2F;context&gt;
+  &lt;&#x2F;contexts&gt;
+  &lt;defaultConnectionFactory type&#x3D;&quot;System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework&quot;&gt;
+    &lt;parameters&gt;
+      &lt;parameter value&#x3D;&quot;v11.0&quot; &#x2F;&gt;
+    &lt;&#x2F;parameters&gt;
+  &lt;&#x2F;defaultConnectionFactory&gt;
+  &lt;providers&gt;
+    &lt;provider invariantName&#x3D;&quot;System.Data.SqlClient&quot; type&#x3D;&quot;System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer&quot; &#x2F;&gt;
+  &lt;&#x2F;providers&gt;
+&lt;&#x2F;entityFramework&gt;</code></pre></div>
+
+<h3 id="６、使用LocalDB"><a href="#６、使用LocalDB" class="headerlink" title="６、使用LocalDB"></a>６、使用LocalDB</h3><p>LocalDB是一種輕量級的SQL Server數據庫，適合開發環境使用。强烈不建議生產環境使用。默認與VS一同安裝好了<br>web.config配置如下：</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">connectionStrings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">add</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;SchoolContext&quot;</span> <span class="hljs-attr">connectionString</span>=<span class="hljs-string">&quot;Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=ContosoUniversity1;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\ContosoUniversity1.mdf&quot;</span> <span class="hljs-attr">providerName</span>=<span class="hljs-string">&quot;System.Data.SqlClient&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">connectionStrings</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">appSettings</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">add</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;webpages:Version&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;3.0.0.0&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">add</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;webpages:Enabled&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">add</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;ClientValidationEnabled&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">add</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;UnobtrusiveJavaScriptEnabled&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">appSettings</span>&gt;</span></code></pre></div>
+
+<h3 id="７、創建Controller和View"><a href="#７、創建Controller和View" class="headerlink" title="７、創建Controller和View"></a>７、創建Controller和View</h3><p><img src="net-mvc-webapp/7.png" srcset="/img/loading.gif" alt="controller-add"></p>
+<p><img src="net-mvc-webapp/8.png" srcset="/img/loading.gif" alt="controller-select"></p>
+<p>選擇項設置：</p>
+<p><img src="net-mvc-webapp/9.png" srcset="/img/loading.gif" alt="controller-model-relatived"></p>
+<p>生成StudentController和一些view文件：</p>
+<p><img src="net-mvc-webapp/10.png" srcset="/img/loading.gif" alt="controller-student"></p>
+<p>訪問Student頁面如下：</p>
+<p><img src="net-mvc-webapp/11.png" srcset="/img/loading.gif" alt="student-web"></p>
+<h3 id="８、定制基本的CRUD功能"><a href="#８、定制基本的CRUD功能" class="headerlink" title="８、定制基本的CRUD功能"></a>８、定制基本的CRUD功能</h3><p>修改學生的詳細頁面：</p>
+<div class="hljs"><pre><code class="hljs php+HTML">@model ContosoUniversity.Models.Student
+
+@&#123;
+    ViewBag.Title &#x3D; &quot;Details&quot;;
+&#125;
+
+&lt;h2&gt;Details&lt;&#x2F;h2&gt;
+
+&lt;div&gt;
+    &lt;h4&gt;Student&lt;&#x2F;h4&gt;
+    &lt;hr &#x2F;&gt;
+    &lt;dl class&#x3D;&quot;dl-horizontal&quot;&gt;
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.LastName)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.LastName)
+        &lt;&#x2F;dd&gt;
+
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.FirstMidName)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.FirstMidName)
+        &lt;&#x2F;dd&gt;
+
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.EnrollmentDate)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.EnrollmentDate)
+        &lt;&#x2F;dd&gt;
+
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.Enrollments)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            &lt;table class&#x3D;&quot;table&quot;&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;Course Title&lt;&#x2F;th&gt;
+                    &lt;th&gt;Grade&lt;&#x2F;th&gt;
+                &lt;&#x2F;tr&gt;
+                @foreach (var item in Model.Enrollments)
+                &#123;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            @Html.DisplayFor(modelItem &#x3D;&gt; item.Course.Title)
+                        &lt;&#x2F;td&gt;
+                        &lt;td&gt;
+                            @Html.DisplayFor(modelItem &#x3D;&gt; item.Grade)
+                        &lt;&#x2F;td&gt;
+                    &lt;&#x2F;tr&gt;
+                &#125;
+            &lt;&#x2F;table&gt;
+        &lt;&#x2F;dd&gt;
+    &lt;&#x2F;dl&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;
+    @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new &#123; id &#x3D; Model.ID &#125;) |
+    @Html.ActionLink(&quot;Back to List&quot;, &quot;Index&quot;)
+&lt;&#x2F;p&gt;</code></pre></div>
+
+<p>通過嬾加載的方式訪問了Student中的Enrollments信息。</p>
+<p><img src="net-mvc-webapp/12.png" srcset="/img/loading.gif" alt="enrollments-details"></p>
+<p>修改StudentController中的Create()方法</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-comment">// POST: Student/Create</span>
+      <span class="hljs-comment">// 過多ポスティング攻撃を防止するには、バインド先とする特定のプロパティを有効にしてください。</span>
+      <span class="hljs-comment">// 詳細については、https://go.microsoft.com/fwlink/?LinkId=317598 を参照してください。</span>
+      [<span class="hljs-meta">HttpPost</span>]
+      [<span class="hljs-meta">ValidateAntiForgeryToken</span>]
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Create</span>(<span class="hljs-params">[Bind(Include = <span class="hljs-string">&quot;LastName,FirstMidName,EnrollmentDate&quot;</span></span>)] Student student)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-keyword">try</span>
+          &#123;
+              <span class="hljs-keyword">if</span> (ModelState.IsValid)
+              &#123;
+                  db.Students.Add(student);
+                  db.SaveChanges();
+                  <span class="hljs-keyword">return</span> RedirectToAction(<span class="hljs-string">&quot;Index&quot;</span>);
+              &#125;
+          &#125;
+          catch (DataException <span class="hljs-comment">/* e */</span>)
+          &#123;
+              ModelState.AddModelError(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;Unable to save changes. Try again, and if the problem persists see your system administrator.&quot;</span>);
+          &#125;
+
+          <span class="hljs-keyword">return</span> View(student);
+      &#125;</code></pre></div>
+
+<p>去掉Bind-Include中的ID，加了Try-catch捕捉DataException</p>
+<p>修改編輯方法，防止黑客overposting。</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-comment">// GET: Student/Edit/5</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Edit</span>(<span class="hljs-params"><span class="hljs-built_in">int</span>? id</span>)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-keyword">if</span> (id == <span class="hljs-literal">null</span>)
+          &#123;
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HttpStatusCodeResult(HttpStatusCode.BadRequest);
+          &#125;
+          Student student = db.Students.Find(id);
+          <span class="hljs-keyword">if</span> (student == <span class="hljs-literal">null</span>)
+          &#123;
+              <span class="hljs-keyword">return</span> HttpNotFound();
+          &#125;
+          <span class="hljs-keyword">return</span> View(student);
+      &#125;
+
+[<span class="hljs-meta">HttpPost, ActionName(<span class="hljs-meta-string">&quot;Edit&quot;</span>)</span>]
+      [<span class="hljs-meta">ValidateAntiForgeryToken</span>]
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">EditPost</span>(<span class="hljs-params"><span class="hljs-built_in">int</span>? id</span>)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-keyword">if</span> (id == <span class="hljs-literal">null</span>)
+          &#123;
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HttpStatusCodeResult(HttpStatusCode.BadRequest);
+          &#125;
+
+          <span class="hljs-keyword">var</span> studentToUpdate = db.Students.Find(id);
+
+          <span class="hljs-comment">// whitelisted in the TryUpdateModel parameters</span>
+          <span class="hljs-keyword">if</span> (TryUpdateModel(studentToUpdate, <span class="hljs-string">&quot;&quot;</span>,
+                  <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[] &#123; <span class="hljs-string">&quot;LastName&quot;</span>, <span class="hljs-string">&quot;FirstMidName&quot;</span>, <span class="hljs-string">&quot;EnrollmentDate&quot;</span> &#125;))
+          &#123;
+              <span class="hljs-keyword">try</span>
+              &#123;
+                  db.SaveChanges();
+
+                  <span class="hljs-keyword">return</span> RedirectToAction(<span class="hljs-string">&quot;Index&quot;</span>);
+              &#125;
+              catch(DataException <span class="hljs-comment">/* e */</span>)
+              &#123;
+                  ModelState.AddModelError(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;Unable to save changes. Try again, and if the problem persists, see your system administrator.&quot;</span>);
+              &#125;
+          &#125;
+
+          <span class="hljs-keyword">return</span> View(studentToUpdate);
+      &#125;</code></pre></div>
+
+<p>ActionName(“Edit”)：指定編輯方法名（是Edit而不是EditPost）<br>TryUpdateModel：設置要更新操作的Bean屬性白名單（可接受數據）或者黑名單（不可接受數據）</p>
+<p>修改Delete方法：</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-comment">// GET: Student/Delete/5</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Delete</span>(<span class="hljs-params"><span class="hljs-built_in">int</span>? id, <span class="hljs-built_in">bool</span>? saveChangesError=<span class="hljs-literal">false</span></span>)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-keyword">if</span> (id == <span class="hljs-literal">null</span>)
+          &#123;
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HttpStatusCodeResult(HttpStatusCode.BadRequest);
+          &#125;
+
+          <span class="hljs-comment">// エラーメッセージを表示</span>
+          <span class="hljs-keyword">if</span> (saveChangesError.GetValueOrDefault())
+          &#123;
+              ViewBag.ErrorMessage = <span class="hljs-string">&quot;Delete failed. Try again, and if the problem persists see your system administrator.&quot;</span>;
+          &#125;
+
+
+          Student student = db.Students.Find(id);
+          <span class="hljs-keyword">if</span> (student == <span class="hljs-literal">null</span>)
+          &#123;
+              <span class="hljs-keyword">return</span> HttpNotFound();
+          &#125;
+
+          <span class="hljs-keyword">return</span> View(student);
+      &#125;
+
+      <span class="hljs-comment">// POST: Student/Delete/5</span>
+      [<span class="hljs-meta">HttpPost, ActionName(<span class="hljs-meta-string">&quot;Delete&quot;</span>)</span>]
+      [<span class="hljs-meta">ValidateAntiForgeryToken</span>]
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">DeleteConfirmed</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id</span>)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-keyword">try</span>
+          &#123;
+              <span class="hljs-comment">// 正常の場合：検索　ー＞　削除</span>
+              <span class="hljs-comment">//Student student = db.Students.Find(id);</span>
+              <span class="hljs-comment">//db.Students.Remove(student);</span>
+
+              <span class="hljs-comment">// Improving performance in a high-volume application is a priority</span>
+              Student studentToDelete = <span class="hljs-keyword">new</span> Student &#123; ID = id &#125;;
+              db.Entry(studentToDelete).State = EntityState.Deleted;
+
+              db.SaveChanges();
+          &#125;
+          catch(Exception <span class="hljs-comment">/* e */</span>)
+          &#123;
+              <span class="hljs-comment">// Log the error message.</span>
+              <span class="hljs-keyword">return</span> RedirectToAction(<span class="hljs-string">&quot;Delete&quot;</span>, <span class="hljs-keyword">new</span> &#123; id = id, saveChangesError = <span class="hljs-literal">true</span> &#125;);
+          &#125;
+
+          <span class="hljs-keyword">return</span> RedirectToAction(<span class="hljs-string">&quot;Index&quot;</span>);
+      &#125;</code></pre></div>
+
+<p>Delete.cshtml：</p>
+<div class="hljs"><pre><code class="hljs php+HTML">@model ContosoUniversity.Models.Student
+
+@&#123;
+    ViewBag.Title &#x3D; &quot;Delete&quot;;
+&#125;
+
+&lt;h2&gt;Delete&lt;&#x2F;h2&gt;
+@*メッセージ表示*@
+&lt;p class&#x3D;&quot;error&quot;&gt;@ViewBag.ErrorMessage&lt;&#x2F;p&gt;
+&lt;h3&gt;Are you sure you want to delete this?&lt;&#x2F;h3&gt;
+&lt;div&gt;
+    &lt;h4&gt;Student&lt;&#x2F;h4&gt;
+    &lt;hr &#x2F;&gt;
+    &lt;dl class&#x3D;&quot;dl-horizontal&quot;&gt;
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.LastName)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.LastName)
+        &lt;&#x2F;dd&gt;
+
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.FirstMidName)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.FirstMidName)
+        &lt;&#x2F;dd&gt;
+
+        &lt;dt&gt;
+            @Html.DisplayNameFor(model &#x3D;&gt; model.EnrollmentDate)
+        &lt;&#x2F;dt&gt;
+
+        &lt;dd&gt;
+            @Html.DisplayFor(model &#x3D;&gt; model.EnrollmentDate)
+        &lt;&#x2F;dd&gt;
+
+    &lt;&#x2F;dl&gt;
+
+    @using (Html.BeginForm()) &#123;
+        @Html.AntiForgeryToken()
+
+        &lt;div class&#x3D;&quot;form-actions no-color&quot;&gt;
+            &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;Delete&quot; class&#x3D;&quot;btn btn-default&quot; &#x2F;&gt; |
+            @Html.ActionLink(&quot;Back to List&quot;, &quot;Index&quot;)
+        &lt;&#x2F;div&gt;
+    &#125;
+&lt;&#x2F;div&gt;</code></pre></div>
+
+<h3 id="９、增加排序、過濾和分頁"><a href="#９、增加排序、過濾和分頁" class="headerlink" title="９、增加排序、過濾和分頁"></a>９、增加排序、過濾和分頁</h3><p>排序：修改列表Index（）方法，增加排序字段sortOrder</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-comment">// GET: Student</span>
+     <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> sortOrder</span>)</span>
+<span class="hljs-function"></span>     &#123;
+         <span class="hljs-comment">// Sort function added</span>
+         ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? <span class="hljs-string">&quot;name_desc&quot;</span> : <span class="hljs-string">&quot;&quot;</span>;
+         ViewBag.DateSortParm = sortOrder == <span class="hljs-string">&quot;Date&quot;</span> ? <span class="hljs-string">&quot;date_desc&quot;</span> : <span class="hljs-string">&quot;Date&quot;</span>;
+
+         <span class="hljs-keyword">var</span> students = <span class="hljs-keyword">from</span> s <span class="hljs-keyword">in</span> db.Students
+                        <span class="hljs-keyword">select</span> s;
+
+         <span class="hljs-keyword">switch</span> (sortOrder)
+         &#123;
+             <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;name_desc&quot;</span>:
+                 students = students.OrderByDescending(s =&gt; s.LastName);
+                 <span class="hljs-keyword">break</span>;
+             <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Date&quot;</span>:
+                 students = students.OrderBy(s =&gt; s.EnrollmentDate);
+                 <span class="hljs-keyword">break</span>;
+             <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;date_desc&quot;</span>:
+                 students = students.OrderByDescending(s =&gt; s.EnrollmentDate);
+                 <span class="hljs-keyword">break</span>;
+             <span class="hljs-literal">default</span>:
+                 students = students.OrderBy(s =&gt; s.LastName);
+                 <span class="hljs-keyword">break</span>;
+         &#125;
+
+         <span class="hljs-comment">// ToList()を実行すると、SQLを調べて、データを取り</span>
+         <span class="hljs-keyword">return</span> View(students.ToList());
+     &#125;</code></pre></div>
+
+<p>Index.cshtml：</p>
+<div class="hljs"><pre><code class="hljs html">@model IEnumerable<span class="hljs-tag">&lt;<span class="hljs-name">ContosoUniversity.Models.Student</span>&gt;</span>
+
+@&#123;
+    ViewBag.Title = &quot;Index&quot;;
+&#125;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Index<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+    @Html.ActionLink(&quot;Create New&quot;, &quot;Create&quot;)
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;table&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @*@Html.DisplayNameFor(model =&gt; model.LastName)*@
+            @Html.ActionLink(&quot;Last Name&quot;, &quot;Index&quot;, new &#123; sortOrder = ViewBag.NameSortParm &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @Html.DisplayNameFor(model =&gt; model.FirstMidName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @*@Html.DisplayNameFor(model =&gt; model.EnrollmentDate)*@
+            @Html.ActionLink(&quot;Enrollment Date&quot;, &quot;Index&quot;, new &#123; sortOrder = ViewBag.DateSortParm &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+@foreach (var item in Model) &#123;
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.LastName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.FirstMidName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.EnrollmentDate)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new &#123; id=item.ID &#125;) |
+            @Html.ActionLink(&quot;Details&quot;, &quot;Details&quot;, new &#123; id=item.ID &#125;) |
+            @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new &#123; id=item.ID &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+&#125;
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span></code></pre></div>
+
+<p>過濾（檢索）功能：<br>修改修改列表Index（）方法，增加檢索字段searchString</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-comment">// GET: Student</span>
+      <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> sortOrder, <span class="hljs-built_in">string</span> searchString</span>)</span>
+<span class="hljs-function"></span>      &#123;
+          <span class="hljs-comment">// Sort function added</span>
+          ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? <span class="hljs-string">&quot;name_desc&quot;</span> : <span class="hljs-string">&quot;&quot;</span>;
+          ViewBag.DateSortParm = sortOrder == <span class="hljs-string">&quot;Date&quot;</span> ? <span class="hljs-string">&quot;date_desc&quot;</span> : <span class="hljs-string">&quot;Date&quot;</span>;
+
+          <span class="hljs-keyword">var</span> students = <span class="hljs-keyword">from</span> s <span class="hljs-keyword">in</span> db.Students
+                         <span class="hljs-keyword">select</span> s;
+
+          <span class="hljs-comment">// 名フィールドを検索できる</span>
+          <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">string</span>.IsNullOrEmpty(searchString))
+          &#123;
+              students = students.Where(s =&gt; s.LastName.Contains(searchString)
+                          || s.FirstMidName.Contains(searchString));
+          &#125;
+
+          <span class="hljs-keyword">switch</span> (sortOrder)
+          &#123;
+              <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;name_desc&quot;</span>:
+                  students = students.OrderByDescending(s =&gt; s.LastName);
+                  <span class="hljs-keyword">break</span>;
+              <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Date&quot;</span>:
+                  students = students.OrderBy(s =&gt; s.EnrollmentDate);
+                  <span class="hljs-keyword">break</span>;
+              <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;date_desc&quot;</span>:
+                  students = students.OrderByDescending(s =&gt; s.EnrollmentDate);
+                  <span class="hljs-keyword">break</span>;
+              <span class="hljs-literal">default</span>:
+                  students = students.OrderBy(s =&gt; s.LastName);
+                  <span class="hljs-keyword">break</span>;
+          &#125;
+
+          <span class="hljs-keyword">return</span> View(students.ToList());
+      &#125;</code></pre></div>
+
+<p>Index.cshtml：</p>
+<div class="hljs"><pre><code class="hljs html">@model IEnumerable<span class="hljs-tag">&lt;<span class="hljs-name">ContosoUniversity.Models.Student</span>&gt;</span>
+
+@&#123;
+    ViewBag.Title = &quot;Index&quot;;
+&#125;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Index<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+    @Html.ActionLink(&quot;Create New&quot;, &quot;Create&quot;)
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+@*検索項設定*@
+@using (Html.BeginForm())
+&#123;
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        Find by name: @Html.TextBox(&quot;searchString&quot;)
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Search&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+&#125;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;table&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @*@Html.DisplayNameFor(model =&gt; model.LastName)*@
+            @Html.ActionLink(&quot;Last Name&quot;, &quot;Index&quot;, new &#123; sortOrder = ViewBag.NameSortParm &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @Html.DisplayNameFor(model =&gt; model.FirstMidName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>
+            @*@Html.DisplayNameFor(model =&gt; model.EnrollmentDate)*@
+            @Html.ActionLink(&quot;Enrollment Date&quot;, &quot;Index&quot;, new &#123; sortOrder = ViewBag.DateSortParm &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+@foreach (var item in Model) &#123;
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.LastName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.FirstMidName)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.DisplayFor(modelItem =&gt; item.EnrollmentDate)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+            @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new &#123; id=item.ID &#125;) |
+            @Html.ActionLink(&quot;Details&quot;, &quot;Details&quot;, new &#123; id=item.ID &#125;) |
+            @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new &#123; id=item.ID &#125;)
+        <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+&#125;
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span></code></pre></div>
+
+<p>排序效果：</p>
+<p><img src="net-mvc-webapp/13.png" srcset="/img/loading.gif" alt="list-search"></p>
+<p>分頁功能：</p>
+<p>增加分頁插件：Tools menu 　ー＞　NuGet Package Manager 　ー＞　Package Manager Console<br><code>Install-Package EntityFramework</code></p>
+<p>修改Index方法：</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> PagedList;
+
+		<span class="hljs-comment">// GET: Student</span>
+        <span class="hljs-comment">//public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> ViewResult <span class="hljs-title">Index</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> sortOrder, <span class="hljs-built_in">string</span> currentFilter, <span class="hljs-built_in">string</span> searchString, <span class="hljs-built_in">int</span>? page</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-comment">// Sort function added</span>
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? <span class="hljs-string">&quot;name_desc&quot;</span> : <span class="hljs-string">&quot;&quot;</span>;
+            ViewBag.DateSortParm = sortOrder == <span class="hljs-string">&quot;Date&quot;</span> ? <span class="hljs-string">&quot;date_desc&quot;</span> : <span class="hljs-string">&quot;Date&quot;</span>;
+
+            <span class="hljs-keyword">if</span> (searchString != <span class="hljs-literal">null</span>)
+            &#123;
+                page = <span class="hljs-number">1</span>;
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                searchString = currentFilter;
+            &#125;
+
+            ViewBag.CurrentFilter = searchString;
+
+            <span class="hljs-keyword">var</span> students = <span class="hljs-keyword">from</span> s <span class="hljs-keyword">in</span> db.Students
+                           <span class="hljs-keyword">select</span> s;
+
+            <span class="hljs-comment">// 名フィールドを検索できる</span>
+            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">string</span>.IsNullOrEmpty(searchString))
+            &#123;
+                students = students.Where(s =&gt; s.LastName.Contains(searchString)
+                            || s.FirstMidName.Contains(searchString));
+            &#125;
+
+            <span class="hljs-keyword">switch</span> (sortOrder)
+            &#123;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;name_desc&quot;</span>:
+                    students = students.OrderByDescending(s =&gt; s.LastName);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Date&quot;</span>:
+                    students = students.OrderBy(s =&gt; s.EnrollmentDate);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;date_desc&quot;</span>:
+                    students = students.OrderByDescending(s =&gt; s.EnrollmentDate);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-literal">default</span>:
+                    students = students.OrderBy(s =&gt; s.LastName);
+                    <span class="hljs-keyword">break</span>;
+            &#125;
+
+            <span class="hljs-comment">// Page function add</span>
+            <span class="hljs-built_in">int</span> pageSize = <span class="hljs-number">3</span>;
+            <span class="hljs-built_in">int</span> pageNumber = (page ?? <span class="hljs-number">1</span>);
+
+            <span class="hljs-comment">//return View(students.ToList());</span>
+            <span class="hljs-keyword">return</span> View(students.ToPagedList(pageNumber, pageSize));
+        &#125;</code></pre></div>
+
+<p>Index.cshtml：</p>
+<div class="hljs"><pre><code class="hljs php+HTML">@*@model IEnumerable&lt;ContosoUniversity.Models.Student&gt;*@
+@model PagedList.IPagedList&lt;ContosoUniversity.Models.Student&gt;
+@using PagedList.Mvc;
+&lt;link href&#x3D;&quot;~&#x2F;Content&#x2F;PagedList.css&quot; rel&#x3D;&quot;stylesheet&quot; type&#x3D;&quot;text&#x2F;css&quot; &#x2F;&gt;
+
+@&#123;
+    ViewBag.Title &#x3D; &quot;Students&quot;;
+&#125;
+
+&lt;h2&gt;Students&lt;&#x2F;h2&gt;
+
+&lt;p&gt;
+    @Html.ActionLink(&quot;Create New&quot;, &quot;Create&quot;)
+&lt;&#x2F;p&gt;
+
+@*検索項設定*@
+@using (Html.BeginForm(&quot;Index&quot;, &quot;Student&quot;, FormMethod.Get))
+&#123;
+    &lt;p&gt;
+        Find by name: @Html.TextBox(&quot;searchString&quot;, ViewBag.CurrentFilter as string)
+        &lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;Search&quot; &#x2F;&gt;
+    &lt;&#x2F;p&gt;
+&#125;
+
+&lt;table class&#x3D;&quot;table&quot;&gt;
+    &lt;tr&gt;
+        &lt;th&gt;
+            @*@Html.DisplayNameFor(model &#x3D;&gt; model.LastName)*@
+            @Html.ActionLink(&quot;Last Name&quot;, &quot;Index&quot;, new &#123; sortOrder &#x3D; ViewBag.NameSortParm, currentFilter &#x3D; ViewBag.CurrentFilter &#125;)
+        &lt;&#x2F;th&gt;
+        &lt;th&gt;
+            @*@Html.DisplayNameFor(model &#x3D;&gt; model.FirstMidName)*@
+            First Name
+        &lt;&#x2F;th&gt;
+        &lt;th&gt;
+            @*@Html.DisplayNameFor(model &#x3D;&gt; model.EnrollmentDate)*@
+            @Html.ActionLink(&quot;Enrollment Date&quot;, &quot;Index&quot;, new &#123; sortOrder &#x3D; ViewBag.DateSortParm, currentFilter &#x3D; ViewBag.CurrentFilter &#125;)
+        &lt;&#x2F;th&gt;
+        &lt;th&gt;&lt;&#x2F;th&gt;
+    &lt;&#x2F;tr&gt;
+
+@foreach (var item in Model) &#123;
+    &lt;tr&gt;
+        &lt;td&gt;
+            @Html.DisplayFor(modelItem &#x3D;&gt; item.LastName)
+        &lt;&#x2F;td&gt;
+        &lt;td&gt;
+            @Html.DisplayFor(modelItem &#x3D;&gt; item.FirstMidName)
+        &lt;&#x2F;td&gt;
+        &lt;td&gt;
+            @Html.DisplayFor(modelItem &#x3D;&gt; item.EnrollmentDate)
+        &lt;&#x2F;td&gt;
+        &lt;td&gt;
+            @Html.ActionLink(&quot;Edit&quot;, &quot;Edit&quot;, new &#123; id&#x3D;item.ID &#125;) |
+            @Html.ActionLink(&quot;Details&quot;, &quot;Details&quot;, new &#123; id&#x3D;item.ID &#125;) |
+            @Html.ActionLink(&quot;Delete&quot;, &quot;Delete&quot;, new &#123; id&#x3D;item.ID &#125;)
+        &lt;&#x2F;td&gt;
+    &lt;&#x2F;tr&gt;
+&#125;
+
+&lt;&#x2F;table&gt;
+&lt;br &#x2F;&gt;
+Page @(Model.PageCount &lt; Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page &#x3D;&gt; Url.Action(&quot;Index&quot;, new &#123; page, sortOrder &#x3D; ViewBag.CurrentSort, currentFilter &#x3D; ViewBag.CurrentFilter &#125;))</code></pre></div>
+
+<p>@model PagedList.IPagedList&lt;ContosoUniversity.Models.Student&gt;：本頁面渲染的是PagedList對象，而不是List對象<br>@using PagedList.Mvc：提供分頁按鈕<br>@Html.TextBox(“searchString”, ViewBag.CurrentFilter as string)：提供入力框默認值<br>@Html.ActionLink(“Last Name”, “Index”, new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })：帶檢索項排序<br>Page @(Model.PageCount &lt; Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount：當前頁 of 縂頁數。如：Page 0 of 0<br>PagedListPager：定制分頁按鈕和樣式</p>
+<p>效果如下：</p>
+<p><img src="net-mvc-webapp/14.png" srcset="/img/loading.gif" alt="page-list"></p>
+<h3 id="１０、統計數據展示"><a href="#１０、統計數據展示" class="headerlink" title="１０、統計數據展示"></a>１０、統計數據展示</h3><p>新建統計數據展示Bean：EnrollmentDateGroup</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.ComponentModel.DataAnnotations;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.ViewModels</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">EnrollmentDateGroup</span>
+    &#123;
+        [<span class="hljs-meta">DataType(DataType.Date)</span>]
+        <span class="hljs-keyword">public</span> DateTime? EnrollmentDate &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> StudentCount &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>HomeController.cs：About()方法修改</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.DAL;
+<span class="hljs-keyword">using</span> ContosoUniversity.ViewModels;
+<span class="hljs-keyword">using</span> System.Linq;
+<span class="hljs-keyword">using</span> System.Web.Mvc;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Controllers</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> : <span class="hljs-title">Controller</span>
+    &#123;
+        <span class="hljs-keyword">private</span> SchoolContext db = <span class="hljs-keyword">new</span> SchoolContext();
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">return</span> View();
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">About</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-comment">//ViewBag.Message = &quot;Your application description page.&quot;;</span>
+
+            IQueryable&lt;EnrollmentDateGroup&gt; data = <span class="hljs-keyword">from</span> student <span class="hljs-keyword">in</span> db.Students
+                                                   <span class="hljs-keyword">group</span> student <span class="hljs-keyword">by</span> student.EnrollmentDate <span class="hljs-keyword">into</span> dateGroup
+                                                   <span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-keyword">new</span> <span class="hljs-title">EnrollmentDateGroup</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>                                                   &#123;
+                                                       EnrollmentDate = dateGroup.Key,
+                                                       StudentCount = dateGroup.Count()
+                                                   &#125;;
+
+            <span class="hljs-keyword">return</span> View(data.ToList());
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> ActionResult <span class="hljs-title">Contact</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            ViewBag.Message = <span class="hljs-string">&quot;Your contact page.&quot;</span>;
+
+            <span class="hljs-keyword">return</span> View();
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Dispose</span>(<span class="hljs-params"><span class="hljs-built_in">bool</span> disposing</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            db.Dispose();
+            <span class="hljs-keyword">base</span>.Dispose(disposing);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>畫面展示（About.cshtml）</p>
+<div class="hljs"><pre><code class="hljs php+HTML">@model IEnumerable&lt;ContosoUniversity.ViewModels.EnrollmentDateGroup&gt;
+
+@&#123;
+    ViewBag.Title &#x3D; &quot;Student Body Statistics&quot;;
+&#125;
+&lt;h2&gt;Student Body Statistics&lt;&#x2F;h2&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;
+            Enrollment Date
+        &lt;&#x2F;th&gt;
+        &lt;th&gt;
+            Students
+        &lt;&#x2F;th&gt;
+    &lt;&#x2F;tr&gt;
+    @foreach (var item in Model)
+    &#123;
+        &lt;tr&gt;
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem &#x3D;&gt; item.EnrollmentDate)
+            &lt;&#x2F;td&gt;
+            &lt;td&gt;
+                @item.StudentCount
+            &lt;&#x2F;td&gt;
+        &lt;&#x2F;tr&gt;
+    &#125;
+&lt;&#x2F;table&gt;</code></pre></div>
+
+<p>畫面展示：</p>
+<p><img src="net-mvc-webapp/15.png" srcset="/img/loading.gif" alt="statistics-data"></p>
+<h3 id="１１、DB服務連接策略"><a href="#１１、DB服務連接策略" class="headerlink" title="１１、DB服務連接策略"></a>１１、DB服務連接策略</h3><p>儅DB在服務器上或者在微軟的云上時，DB操作時可能出錯，可以設置DB連接策略</p>
+<p>在DAL文件夾中創建SchoolConfiguration.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System.Data.Entity;
+<span class="hljs-keyword">using</span> System.Data.Entity.SqlServer;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.DAL</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SchoolConfiguration</span> : <span class="hljs-title">DbConfiguration</span>
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SchoolConfiguration</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-comment">// サービス実行策略</span>
+            SetExecutionStrategy(<span class="hljs-string">&quot;System.Data.SqlClient&quot;</span>, () =&gt; <span class="hljs-keyword">new</span> SqlAzureExecutionStrategy());
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>創建日志系統，新建Logging文件夾，接口：ILogger.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Logging</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">ILogger</span>
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan, <span class="hljs-built_in">string</span> properties</span>)</span>;
+
+        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>;
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>日志接口實現類：Logger.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.Diagnostics;
+<span class="hljs-keyword">using</span> System.Text;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.Logging</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Logger</span> : <span class="hljs-title">ILogger</span>
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceError(message);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceError(fmt, vars);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Error</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceError(FormatExceptionMessage(exception, fmt, vars));
+        &#125;
+
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceInformation(message);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceInformation(fmt, vars);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Information</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceInformation(FormatExceptionMessage(exception, fmt, vars));
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            TraceApi(componentName, method, timespan, <span class="hljs-string">&quot;&quot;</span>);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan, <span class="hljs-built_in">string</span> properties</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-built_in">string</span> message = String.Concat(<span class="hljs-string">&quot;Component: &quot;</span>, componentName, <span class="hljs-string">&quot;, Method: &quot;</span>, method, <span class="hljs-string">&quot;; Timespan: &quot;</span>, timespan.ToString(), <span class="hljs-string">&quot;; Properties: &quot;</span>, properties);
+
+            Trace.TraceInformation(message);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TraceApi</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> componentName, <span class="hljs-built_in">string</span> method, TimeSpan timespan, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            TraceApi(componentName, method, timespan, <span class="hljs-built_in">string</span>.Format(fmt, vars));
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> message</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceWarning(message);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceWarning(fmt, vars);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Warning</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-keyword">params</span> <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            Trace.TraceWarning(FormatExceptionMessage(exception, fmt, vars));
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> <span class="hljs-title">FormatExceptionMessage</span>(<span class="hljs-params">Exception exception, <span class="hljs-built_in">string</span> fmt, <span class="hljs-built_in">object</span>[] vars</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">var</span> sb = <span class="hljs-keyword">new</span> StringBuilder();
+            sb.Append(<span class="hljs-built_in">string</span>.Format(fmt, vars));
+            sb.Append(<span class="hljs-string">&quot; Exception: &quot;</span>);
+            sb.Append(exception.ToString());
+
+            <span class="hljs-keyword">return</span> sb.ToString();
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>DB操作日志打印攔截器：SchoolInterceptorLogging.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.Logging;
+<span class="hljs-keyword">using</span> System.Data.Common;
+<span class="hljs-keyword">using</span> System.Data.Entity.Infrastructure.Interception;
+<span class="hljs-keyword">using</span> System.Diagnostics;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.DAL</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SchoolInterceptorLogging</span> : <span class="hljs-title">DbCommandInterceptor</span>
+    &#123;
+        <span class="hljs-keyword">private</span> ILogger _logger = <span class="hljs-keyword">new</span> Logger();
+
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> Stopwatch _stopwatch = <span class="hljs-keyword">new</span> Stopwatch();
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ScalarExecuting</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;<span class="hljs-built_in">object</span>&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">base</span>.ScalarExecuting(command, interceptionContext);
+
+            _stopwatch.Restart();
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ScalarExecuted</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;<span class="hljs-built_in">object</span>&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            _stopwatch.Stop();
+
+            <span class="hljs-keyword">if</span> (interceptionContext.Exception != <span class="hljs-literal">null</span>)
+            &#123;
+                _logger.Error(interceptionContext.Exception, <span class="hljs-string">&quot;Error executing command: &#123;0&#125;&quot;</span>, command.CommandText);
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                _logger.TraceApi(<span class="hljs-string">&quot;SQL Database&quot;</span>, <span class="hljs-string">&quot;SchoolInterceptor.ScalarExecuted&quot;</span>, _stopwatch.Elapsed, <span class="hljs-string">&quot;Command: &#123;0&#125;: &quot;</span>, command.CommandText);
+            &#125;
+
+            <span class="hljs-keyword">base</span>.ScalarExecuted(command, interceptionContext);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">NonQueryExecuting</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;<span class="hljs-built_in">int</span>&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">base</span>.NonQueryExecuting(command, interceptionContext);
+            _stopwatch.Restart();
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">NonQueryExecuted</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;<span class="hljs-built_in">int</span>&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            _stopwatch.Stop();
+
+            <span class="hljs-keyword">if</span> (interceptionContext.Exception != <span class="hljs-literal">null</span>)
+            &#123;
+                _logger.Error(interceptionContext.Exception, <span class="hljs-string">&quot;Error executing command: &#123;0&#125;&quot;</span>, command.CommandText);
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                _logger.TraceApi(<span class="hljs-string">&quot;SQL Database&quot;</span>, <span class="hljs-string">&quot;SchoolInterceptor.NonQueryExecuted&quot;</span>, _stopwatch.Elapsed, <span class="hljs-string">&quot;Command: &#123;0&#125;: &quot;</span>, command.CommandText);
+            &#125;
+
+            <span class="hljs-keyword">base</span>.NonQueryExecuted(command, interceptionContext);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ReaderExecuting</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;DbDataReader&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">base</span>.ReaderExecuting(command, interceptionContext);
+            _stopwatch.Restart();
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ReaderExecuted</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;DbDataReader&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+
+            _stopwatch.Stop();
+
+            <span class="hljs-keyword">if</span> (interceptionContext.Exception != <span class="hljs-literal">null</span>)
+            &#123;
+                _logger.Error(interceptionContext.Exception, <span class="hljs-string">&quot;Error executing command: &#123;0&#125;&quot;</span>, command.CommandText);
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                _logger.TraceApi(<span class="hljs-string">&quot;SQL Database&quot;</span>, <span class="hljs-string">&quot;SchoolInterceptor.ReaderExecuted&quot;</span>, _stopwatch.Elapsed, <span class="hljs-string">&quot;Command: &#123;0&#125;: &quot;</span>, command.CommandText);
+            &#125;
+
+            <span class="hljs-keyword">base</span>.ReaderExecuted(command, interceptionContext);
+        &#125;
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>模擬DB操作發生異常攔截器：SchoolInterceptorTransientErrors.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.Logging;
+<span class="hljs-keyword">using</span> System;
+<span class="hljs-keyword">using</span> System.Data.Common;
+<span class="hljs-keyword">using</span> System.Data.Entity.Infrastructure.Interception;
+<span class="hljs-keyword">using</span> System.Data.SqlClient;
+<span class="hljs-keyword">using</span> System.Linq;
+<span class="hljs-keyword">using</span> System.Reflection;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity.DAL</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">SchoolInterceptorTransientErrors</span> : <span class="hljs-title">DbCommandInterceptor</span>
+    &#123;
+        <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> _counter = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">private</span> ILogger _logger = <span class="hljs-keyword">new</span> Logger();
+
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ReaderExecuting</span>(<span class="hljs-params">DbCommand command, DbCommandInterceptionContext&lt;DbDataReader&gt; interceptionContext</span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-built_in">bool</span> throwTransientErrors = <span class="hljs-literal">false</span>;
+
+            <span class="hljs-comment">// 仮想SQLの検索項目は”Throw”を含める、異常と発生</span>
+            <span class="hljs-keyword">if</span> (command.Parameters.Count &gt; <span class="hljs-number">0</span> &amp;&amp; command.Parameters[<span class="hljs-number">0</span>].Value.ToString() == <span class="hljs-string">&quot;%Throw%&quot;</span>)
+            &#123;
+                throwTransientErrors = <span class="hljs-literal">true</span>;
+                command.Parameters[<span class="hljs-number">0</span>].Value = <span class="hljs-string">&quot;%an%&quot;</span>;
+                command.Parameters[<span class="hljs-number">1</span>].Value = <span class="hljs-string">&quot;%an%&quot;</span>;
+
+            &#125;
+
+            <span class="hljs-comment">// 仮想異常エラーが発生</span>
+            <span class="hljs-keyword">if</span> (throwTransientErrors &amp;&amp; _counter &lt; <span class="hljs-number">4</span>)
+            &#123;
+                _logger.Information(<span class="hljs-string">&quot;Returning transient error for command: &#123;0&#125;&quot;</span>, command.CommandText);
+                _counter++;
+                interceptionContext.Exception = CreateDummySqlException();
+            &#125;
+
+            <span class="hljs-keyword">base</span>.ReaderExecuting(command, interceptionContext);
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-keyword">private</span> SqlException <span class="hljs-title">CreateDummySqlException</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            <span class="hljs-keyword">var</span> sqlErrorNumber = <span class="hljs-number">20</span>;
+            <span class="hljs-keyword">var</span> sqlErrorCtor = <span class="hljs-keyword">typeof</span>(SqlError).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).Where(c =&gt; c.GetParameters().Count() == <span class="hljs-number">7</span>).Single();
+            <span class="hljs-keyword">var</span> sqlError = sqlErrorCtor.Invoke(<span class="hljs-keyword">new</span> <span class="hljs-built_in">object</span>[] &#123; sqlErrorNumber, (<span class="hljs-built_in">byte</span>)<span class="hljs-number">0</span>, (<span class="hljs-built_in">byte</span>)<span class="hljs-number">0</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">1</span> &#125;);
+
+            <span class="hljs-keyword">var</span> errorCollection = Activator.CreateInstance(<span class="hljs-keyword">typeof</span>(SqlErrorCollection), <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">var</span> addMethod = <span class="hljs-keyword">typeof</span>(SqlErrorCollection).GetMethod(<span class="hljs-string">&quot;Add&quot;</span>, BindingFlags.Instance | BindingFlags.NonPublic);
+            addMethod.Invoke(errorCollection, <span class="hljs-keyword">new</span>[] &#123; sqlError &#125;);
+
+            <span class="hljs-keyword">var</span> sqlExceptionCtor = <span class="hljs-keyword">typeof</span>(SqlException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).Where(c =&gt; c.GetParameters().Count() == <span class="hljs-number">4</span>).Single();
+            <span class="hljs-keyword">var</span> sqlException = (SqlException)sqlExceptionCtor.Invoke(<span class="hljs-keyword">new</span> <span class="hljs-built_in">object</span>[] &#123; <span class="hljs-string">&quot;Dummy&quot;</span>, errorCollection, <span class="hljs-literal">null</span>, Guid.NewGuid() &#125;);
+
+            <span class="hljs-keyword">throw</span> sqlException;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>文件目錄結構：</p>
+<p><img src="net-mvc-webapp/16.png" srcset="/img/loading.gif" alt="db-error-structure"></p>
+<p>添加攔截器，Application_Start.cs</p>
+<div class="hljs"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> ContosoUniversity.DAL;
+<span class="hljs-keyword">using</span> System.Data.Entity.Infrastructure.Interception;
+<span class="hljs-keyword">using</span> System.Web.Mvc;
+<span class="hljs-keyword">using</span> System.Web.Optimization;
+<span class="hljs-keyword">using</span> System.Web.Routing;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">ContosoUniversity</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MvcApplication</span> : <span class="hljs-title">System.Web.HttpApplication</span>
+    &#123;
+        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Application_Start</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>        &#123;
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            <span class="hljs-comment">// 自分のInterceptorを追加</span>
+            DbInterception.Add(<span class="hljs-keyword">new</span> SchoolInterceptorTransientErrors());
+            DbInterception.Add(<span class="hljs-keyword">new</span> SchoolInterceptorLogging());
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>測試：</p>
+<p>在學生列表檢索框中輸入：Throw，檢索會報錯：CreateDummySqlException中的Dummy錯誤。程序會自動連接4次：SchoolConfiguration中的連接策略和SchoolInterceptorTransientErrors中的重新連接次數（throwTransientErrors標志位）決定的。最後一次會成功。顯示出檢索結果。</p>
+<p>ASP.Net.pdf（page——5332）</p>
+<p><strong><u>Ps: 本文仅为学习记录，仅为学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/webapp/">webapp</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mvc/">mvc</a>
+                    
+                      <a class="hover-with-bg" href="/tags/net/">net</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/22/docker-dockfile-nginx/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker之Dockfile的nginx构建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/02/python-mysql-csv/">
+                        <span class="hidden-mobile">利用Python读写CSV至Mysql</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "创建MVC的WebApp&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

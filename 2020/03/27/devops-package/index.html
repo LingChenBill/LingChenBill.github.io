@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>DevOps-学习之打包 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-27 11:15">
+                    March 27, 2020 am
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    20
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="DevOps-学习之打包部署"><a href="#DevOps-学习之打包部署" class="headerlink" title="DevOps-学习之打包部署"></a>DevOps-学习之打包部署</h2><p>Docker 的受欢迎程度急剧提升巧妙地映射了微服务的兴起—一种将软件分解为许多单独组件的软件工程方法。<br>Docker 的优势</p>
+<ul>
+<li><p>进程隔离<br>Docker 不仅允许完全进程隔离，还允许完全依赖性隔离，在同一个操作系统上并排运行多个容器是完全可能和常见的，每个容器都可有自己的冲突的依赖库和包。</p>
+</li>
+<li><p>运行管理</p>
+<p>通过 Docker，我们获得了一个统一的管理界面，允许我们启动，监控，集中日志，停止和重启许多不同类型的应用程序。这是一个巨大的胜利，并大大降低了运行生产系统的运维开销。</p>
+</li>
+</ul>
+<p>Lambda 时代</p>
+<p>开发人员，我只想编写代码并让其他人管运行的事，Docker，Kubernetes 和其他繁琐的东西都不是简单的东西——所以我真的需要学么？这就要具体问题具体分析了。</p>
+<p>对于那些只想让其他人帮忙运行其代码的人来说，AWS Lambda（以及其他类似的解决方案）就是答案：<br>AWS Lambda 允许你在不配置或管理服务器的情况下运行代码。只需为你消耗的计算时间付费——当代码未运行时不收取任何费用。<br>如果你听说过“serverless”，这就是它！不再需要运行的服务器或要管理的容器，只需编写代码，将其打包成 zip 文件，上传到亚马逊并让他们处理那些烦人的问题。<br>此外，由于 Lambda 是瞬时的，没有什么可以破解的，所以 Lambda 在设计上也是非常安全。</p>
+<p>这样看来像 Lambda 这类的 serverless 功能真的挺不错的，但是即使这样，也是有缺点的。<br>第一，就现阶段而言，<strong>Lambda 暂时不支持长时间的进程</strong>。<br>其次，<strong>Lambda 是功能即服务（Functions-as-a-Service）</strong>，这意味着你的应用必须完全分解为微服务的形式，并与其他复杂的 PaaS 服务（如 AWS Step Functions）协调。并非每个企业都处于或者能转变成这种水平的微服务架构。<br>第三，<strong>对 Lambda 进行故障排除是很困难的</strong>。作为云原生的应用，所有的 bug 修复都需要在亚马逊生态系统中修复，这通常挺烦人的且不直观。</p>
+<h3 id="部署代码"><a href="#部署代码" class="headerlink" title="部署代码"></a>部署代码</h3><p>没有说“如何轻松地部署代码”，因为代码从开发环境到正确部署仍然是一个充满了错误和失败的痛苦过程。</p>
+<p>原因很多，但在我看来，<strong>这主要归结为差异</strong>。具体而言，<strong>创建代码的环境与实际代码运行的环境之间存在差异。</strong><br>减少这些差异意味着你不仅可以在整体代码部署中实现最大的改进，还可以在代码部署后的运行时达到一定的优化。那么，我们如何减少或消除生产和非生产环境之间的差异呢？</p>
+<p>如果你使用<strong>基础设施即为代码</strong>的方式而不是手动配置，那么差异这事儿你已经搞定得七七八八了。如果不是，请不要绝望 —— 你并不孤单。花一个下午，找出你所碰到的所有差异（培训、文化、人员、流程等），并逐一消除它们。</p>
+<p>最重要的是，如果你仍在手动配置，那你可能很难去管理现代技术栈。因此你需要做的第一件事是确保涉及产品的所有内容都是由部署服务器构建的版本化软件包。假设上述事情你已经完成，我会告诉你<strong>部署代码的最佳方法是不部署代码。</strong></p>
+<p>你的生产环境服务器（代码运行的地方）与你的开发环境服务器（编写代码的地方）不同。这就难怪在部署后会立即出现大量问题。<br>因此，你需要尽一切可能确保构建产物（而不是一小段代码）一直处在运行环境当中。换句话说，<strong>将代码一次性部署到开发环境，克隆运行代码的整个机器环境，然后将其复制到需要的任何位置。</strong>这被称为“不可变部署”，是一个非常强大的模式，可以避免你数小时部署后的头痛。当然，如果你运行容器，同样的想法也是适用的：在任何地方部署相同的容器即可。<br>“但是我的生产环境和开发环境就是不同的！”你可能会说。数据库用户名密码，连接字符串，S3 存储桶位置等等，这些都是不同的。解决这个问题的方法是<u>使用 12 因子应用配置原则</u>。<strong>所有配置都需要外部化并作为环境变量传递到服务器。</strong></p>
+<p>如果我需要日志来解决问题呢？<strong>所以日志也应该外部化</strong>。理想情况下可以通过ElasticSearch / Logstash / Kibana（ELK）技术栈或商业软件（如 SumoLogic 或Datadog）将日志转储到其它地方。<br><strong>不要“修复”你的生产环境机器，而是修复你的开发环境并重新部署。</strong></p>
+<h3 id="代码部署机制"><a href="#代码部署机制" class="headerlink" title="代码部署机制"></a>代码部署机制</h3><p>这就是 Jenkins 的用武之地，Jenkins 是最受欢迎的开源部署自动化服务器之一。</p>
+<p>了解 Jenkins，特别是 Jenkinsfile 的结构，对就业前景会是一个巨大并且不容忽视的好处。当你学习 Jenkins 时，请确保你遵循较新的 Pipeline BlueOcean 技术路径，而不是更旧的“Jenkins jobs”。<br>参考阅读：<br><a target="_blank" rel="noopener" href="https://jenkins.io/doc/book/pipeline/jenkinsfile/">Jenkinsfile</a><br><a target="_blank" rel="noopener" href="https://jenkins.io/doc/book/blueocean/">Pipeline BlueOcean</a></p>
+<h3 id="一切都是代码"><a href="#一切都是代码" class="headerlink" title="一切都是代码"></a>一切都是代码</h3><p>应用程序如何被部署、监控、配置等等——说到底最终都化作为存储在代码仓库里被正确版本化的代码片段。<br>我们的目标是<strong>为核心开发人员（编写功能代码的软件工程师）创建一个真正无摩擦的环境。</strong><br>例如，我应该能够编写我自己的微服务、添加我认为必要的测试、添加监控即代码的配置、在一些“env.yaml” 文件中指定我的参数、将它们全部存储在一个代码仓库中；通过 CI/CD 流水线自动触发构建、测试、部署（金丝雀发布或蓝绿发布），并在完成后给我发送电子邮件。事实上，这是 DevOps 工程师核心使命的本质。</p>
+<h3 id="Jenkins-的替代品"><a href="#Jenkins-的替代品" class="headerlink" title="Jenkins 的替代品"></a>Jenkins 的替代品</h3><p>就像我之前说过的那样，Jenkins 已经被广大开发者使用很长一段时间了。现在还有其它的工具，在我看来更好，即使没有 Jenkins 那么为人所知。</p>
+<ul>
+<li>一个是 AWS 自己的 CodeDeploy 服务。它有局限性，但 CodeDeploy 背后的开发人员在过去一年做了很大的改进，如果你在用 AWS，建议你试一试。</li>
+<li>另一个是 GitLab CI。如果你的研发组织运行在 GitLab 上，你可以考虑使用，因为它与 GitLab 的其它部分良好地集成在一起。</li>
+<li>去年十月 GitHub 宣布了 Actions（目前仍处在公测中），用于 GitHub 用户的自动化工作流场景。</li>
+</ul>
+<p>我认为这里的工具并不是最重要的。重要的是要记住包括<u>代码部署流水线在内的所有内容都是版本化的软件部件，它首先得来自于开发环境，而不是生产环境。</u></p>
+<p>如果你从 Jenkins 开始学习持续集成，请尝试将其设置为容器模式。<br>这并不是一件非常困难的事情，反而会是一个很不错的学习机会，你可以找到弹性的、容器化的 Jenkins 机器节点来部署容器化的 Jenkins。</p>
+<p><u>ps: 该文摘取于知乎。仅供学习与参考！</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/devops/">devops</a>
+                    
+                      <a class="hover-with-bg" href="/tags/package/">package</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/27/jenkins-pipeline/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Jenkins-Pipeline学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/26/git-learning/">
+                        <span class="hidden-mobile">Git命令学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "DevOps-学习之打包&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

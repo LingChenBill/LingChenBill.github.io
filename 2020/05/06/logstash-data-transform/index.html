@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Logstash安装学习 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-05-06 19:18">
+                    May 6, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.9k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    33
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Logstash安装学习"><a href="#Logstash安装学习" class="headerlink" title="Logstash安装学习"></a>Logstash安装学习</h2><p>Logstash是Elasticsearch下的一款开源软件，它能够同时从多个来源采集数据、转换数据，然后将数据发送到Eleasticsearch中创建索引。 可以使用Logstash将MySQL中的数据采用到ES索引中。</p>
+<h3 id="安装Logstash"><a href="#安装Logstash" class="headerlink" title="安装Logstash"></a>安装Logstash</h3><p>软件下载: <code>https://www.elastic.co/cn/downloads/past-releases/logstash-6-2-1</code> (与本地的es版本要一致)</p>
+<p>解压logstash-6.2.1.zip包后，安装logstash-input-jdbc插件<br><code>./logstash-plugin install logstash-input-jdbc</code><br>说明：logstash-input-jdbc是ruby开发的，先下载ruby并安装<code>https://rubyinstaller.org/downloads/</code>，版本2.5即可</p>
+<div class="hljs"><pre><code class="hljs bash">$ ruby -v
+ruby 2.6.3p62 (2019-04-16 revision 67580) [universal.x86_64-darwin19]
+$ <span class="hljs-built_in">cd</span> /Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/bin
+$ ls
+benchmark.sh		ingest-convert.sh	logstash-keystore.bat	logstash.bat		ruby
+cpdump			logstash		logstash-plugin		logstash.lib.sh		setup.bat
+dependencies-report	logstash-keystore	logstash-plugin.bat	pqcheck			system-install
+
+$ ./logstash-plugin install logstash-input-jdbc
+Validating logstash-input-jdbc
+Installing logstash-input-jdbc
+Installation successful
+// 插件安装路径
+$ <span class="hljs-built_in">cd</span> /Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/vendor/bundle/jruby/2.3.0/gems</code></pre></div>
+
+<h3 id="创建模板文件"><a href="#创建模板文件" class="headerlink" title="创建模板文件"></a>创建模板文件</h3><p>Logstash的工作是从MySQL中读取数据，向ES中创建索引，这里需要提前创建mapping的模板文件以便logstash使用。<br>在logstach的config目录创建xc_course_template.json</p>
+<div class="hljs"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> /Users/zhuyangze/Documents/elasticsearch/jar/logstash-6.2.1/config/
+$ ls
+jvm.options		logstash.yml		mysql.conf		startup.options
+log4j2.properties	logstash_metadata	pipelines.yml		xc_course_template.json</code></pre></div>
+
+<p>xc_course_template.json模板文件</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;mappings&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;doc&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;properties&quot;</span>: &#123;
+                <span class="hljs-attr">&quot;charge&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;description&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;analyzer&quot;</span>: <span class="hljs-string">&quot;ik_max_word&quot;</span>,
+                    <span class="hljs-attr">&quot;search_analyzer&quot;</span>: <span class="hljs-string">&quot;ik_smart&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;end_time&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;date&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;expires&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;date&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;grade&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;id&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;mt&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;name&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;analyzer&quot;</span>: <span class="hljs-string">&quot;ik_max_word&quot;</span>,
+                    <span class="hljs-attr">&quot;search_analyzer&quot;</span>: <span class="hljs-string">&quot;ik_smart&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;pic&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;index&quot;</span>: <span class="hljs-literal">false</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;price&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;float&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;price_old&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;float&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;pub_time&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;date&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;qq&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;index&quot;</span>: <span class="hljs-literal">false</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;st&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;start_time&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;date&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;status&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;studymodel&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;teachmode&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;teachplan&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;analyzer&quot;</span>: <span class="hljs-string">&quot;ik_max_word&quot;</span>,
+                    <span class="hljs-attr">&quot;search_analyzer&quot;</span>: <span class="hljs-string">&quot;ik_smart&quot;</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;users&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;index&quot;</span>: <span class="hljs-literal">false</span>,
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;valid&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+                &#125;
+            &#125;
+        &#125;
+    &#125;,
+    <span class="hljs-attr">&quot;template&quot;</span>: <span class="hljs-string">&quot;xc_course&quot;</span>
+&#125;</code></pre></div>
+
+<h3 id="配置mysql-conf"><a href="#配置mysql-conf" class="headerlink" title="配置mysql.conf"></a>配置mysql.conf</h3><p>在logstash的config目录下配置mysql.conf文件供logstash使用，logstash会根据mysql.conf文件的配置的地址从MySQL中读取数据向ES中写入索引。</p>
+<p>mysql.conf</p>
+<div class="hljs"><pre><code class="hljs json">input &#123;
+  stdin &#123;
+  &#125;
+  jdbc &#123;
+  # jdbc_connection_string =&gt; &quot;jdbc:mysql://localhost:3306/xc_course?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true&amp;serverTimezone=UTC&quot;
+  jdbc_connection_string =&gt; &quot;jdbc:mysql://192.xxx.xxx.xxx:3306/xc_course?characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC&quot;
+  # the user we wish to excute our statement as
+  jdbc_user =&gt; &quot;root&quot;
+  jdbc_password =&gt; user_pwd
+  # the path to our downloaded jdbc driver
+  jdbc_driver_library =&gt; &quot;/Users/user_name/Documents/jar/mysql-connector-java-5.1.46.jar&quot;
+  # the name of the driver class for mysql
+  jdbc_driver_class =&gt; &quot;com.mysql.jdbc.Driver&quot;
+  jdbc_paging_enabled =&gt; &quot;true&quot;
+  jdbc_page_size =&gt; &quot;50000&quot;
+  #要执行的sql文件
+  #statement_filepath =&gt; &quot;/conf/course.sql&quot;
+  statement =&gt; &quot;select * from course_pub where timestamp &gt; date_add(:sql_last_value,INTERVAL 8 HOUR)&quot;
+  #定时配置
+  schedule =&gt; &quot;* * * * *&quot;
+  record_last_run =&gt; true
+  last_run_metadata_path =&gt; &quot;/Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/config/logstash_metadata&quot;
+  &#125;
+&#125;
+
+
+output &#123;
+  elasticsearch &#123;
+  #ES的ip地址和端口
+  hosts =&gt; &quot;192.xxx.xxx.xxx:9200&quot;
+  #hosts =&gt; [&quot;localhost:9200&quot;,&quot;localhost:9202&quot;,&quot;localhost:9203&quot;]
+  #ES索引库名称
+  index =&gt; &quot;xc_course&quot;
+  document_id =&gt; &quot;%&#123;id&#125;&quot;
+  document_type =&gt; &quot;doc&quot;
+  template =&gt;&quot;/Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/config/xc_course_template.json&quot;
+  template_name =&gt;&quot;xc_course&quot;
+  template_overwrite =&gt;&quot;true&quot;
+  &#125;
+  stdout &#123;
+ #日志输出
+  codec =&gt; json_lines
+  &#125;
+&#125;</code></pre></div>
+
+<p>ES采用UTC 时区，比北京时间早8小时，所以ES读取数据时让最后更新时间加8小时<br>where timestamp &gt; date_add(:sql_last_value,INTERVAL 8 HOUR)<br>logstash每个执行完成会在/Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/config/logstash_metadata记录执行时间下次以此 时间为基准进行增量同步数据到索引库。</p>
+<h3 id="启动Logstash"><a href="#启动Logstash" class="headerlink" title="启动Logstash"></a>启动Logstash</h3><p><code>./logstash -f ../config/mysql.conf</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ <span class="hljs-built_in">cd</span> /Users/user_name/Documents/elasticsearch/jar/logstash-6.2.1/bin
+$ ./logstash -f ../config/mysql.conf
+...
+[INFO ][logstash.inputs.jdbc     ] (0.003997s) SELECT count(*) AS `count` FROM (select * from course_pub <span class="hljs-built_in">where</span> timestamp &gt; date_add(<span class="hljs-string">&#x27;2020-05-06 05:59:00&#x27;</span>,INTERVAL 8 HOUR)) AS `t1` LIMIT 1
+[INFO ][logstash.inputs.jdbc     ] (0.009669s) SELECT * FROM (select * from course_pub <span class="hljs-built_in">where</span> timestamp &gt; date_add(<span class="hljs-string">&#x27;2020-05-06 05:59:00&#x27;</span>,INTERVAL 8 HOUR)) AS `t1` LIMIT 50000 OFFSET 0
+&#123;<span class="hljs-string">&quot;end_time&quot;</span>:null,<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Bootstrap开发框架测试&quot;</span>,<span class="hljs-string">&quot;pic&quot;</span>:<span class="hljs-string">&quot;group1/M00/00/00/rBEJ_l6fDIuATXcwAANTmWtxdDs870.png&quot;</span>,<span class="hljs-string">&quot;qq&quot;</span>:<span class="hljs-string">&quot;4455432&quot;</span>,<span class="hljs-string">&quot;expires&quot;</span>:null,<span class="hljs-string">&quot;start_time&quot;</span>:null,<span class="hljs-string">&quot;teachmode&quot;</span>:null,<span class="hljs-string">&quot;teachplan&quot;</span>:<span class="hljs-string">&quot;&#123;\&quot;children\&quot;:[&#123;\&quot;children\&quot;:[&#123;\&quot;id\&quot;:\&quot;3\&quot;,\&quot;pname\&quot;:\&quot;计算机硬件\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;4\&quot;,\&quot;pname\&quot;:\&quot;计算机软件\&quot;&#125;],\&quot;id\&quot;:\&quot;2\&quot;,\&quot;pname\&quot;:\&quot;计算机原理\&quot;&#125;,&#123;\&quot;children\&quot;:[&#123;\&quot;id\&quot;:\&quot;ff808081717e005701717e19b5120002\&quot;,\&quot;pname\&quot;:\&quot;Python学习课堂一\&quot;&#125;],\&quot;id\&quot;:\&quot;ff808081717e005701717e0821660001\&quot;,\&quot;pname\&quot;:\&quot;Python学习\&quot;&#125;,&#123;\&quot;children\&quot;:[&#123;\&quot;id\&quot;:\&quot;6\&quot;,\&quot;pname\&quot;:\&quot;java语法介绍\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;7\&quot;,\&quot;pname\&quot;:\&quot;Hello World\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;ff808081717e005701717e063c170000\&quot;,\&quot;pname\&quot;:\&quot;java高级编程\&quot;&#125;],\&quot;id\&quot;:\&quot;5\&quot;,\&quot;pname\&quot;:\&quot;计算机编程入门\&quot;&#125;,&#123;\&quot;children\&quot;:[&#123;\&quot;id\&quot;:\&quot;402885816347f814016348d68bad0000\&quot;,\&quot;pname\&quot;:\&quot;数据库基础知识\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;402885816347f814016348d6c5920001\&quot;,\&quot;pname\&quot;:\&quot;SQL查询\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;402885816347f814016348d7153c0002\&quot;,\&quot;pname\&quot;:\&quot;SQL优化\&quot;&#125;],\&quot;id\&quot;:\&quot;4028e581617ce7b601617ce801790000\&quot;,\&quot;pname\&quot;:\&quot;数据库编程\&quot;&#125;,&#123;\&quot;children\&quot;:[&#123;\&quot;id\&quot;:\&quot;4028e581617d02e101617d070ed90000\&quot;,\&quot;pname\&quot;:\&quot;操作系统类型介绍\&quot;&#125;,&#123;\&quot;id\&quot;:\&quot;4028e58161bbcd350161bbcefe3d0001\&quot;,\&quot;pname\&quot;:\&quot;操作系统原理\&quot;&#125;],\&quot;id\&quot;:\&quot;8\&quot;,\&quot;pname\&quot;:\&quot;操作系统原理\&quot;&#125;],\&quot;id\&quot;:\&quot;1\&quot;,\&quot;pname\&quot;:\&quot;Bootstrap开发框架\&quot;&#125;&quot;</span>,<span class="hljs-string">&quot;st&quot;</span>:<span class="hljs-string">&quot;1-1-1&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;4028e581617f945f01617f9dabc40000&quot;</span>,<span class="hljs-string">&quot;@version&quot;</span>:<span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;charge&quot;</span>:<span class="hljs-string">&quot;203002&quot;</span>,<span class="hljs-string">&quot;studymodel&quot;</span>:<span class="hljs-string">&quot;201001&quot;</span>,<span class="hljs-string">&quot;price&quot;</span>:0.009999999776482582,<span class="hljs-string">&quot;@timestamp&quot;</span>:<span class="hljs-string">&quot;2020-05-06T06:00:00.561Z&quot;</span>,<span class="hljs-string">&quot;mt&quot;</span>:<span class="hljs-string">&quot;1-1&quot;</span>,<span class="hljs-string">&quot;grade&quot;</span>:<span class="hljs-string">&quot;200002&quot;</span>,<span class="hljs-string">&quot;timestamp&quot;</span>:<span class="hljs-string">&quot;2020-05-06T09:10:45.000Z&quot;</span>,<span class="hljs-string">&quot;valid&quot;</span>:<span class="hljs-string">&quot;204001&quot;</span>,<span class="hljs-string">&quot;pub_time&quot;</span>:<span class="hljs-string">&quot;2020-05-05 17:08:44&quot;</span>,<span class="hljs-string">&quot;users&quot;</span>:<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-string">&quot;price_old&quot;</span>:null,<span class="hljs-string">&quot;description&quot;</span>:<span class="hljs-string">&quot;Bootstrap是由Twitter推出的一个前台页面开发框架，在行业之中使用较为广泛。此开发框架包含了大量的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的精美界面效果。&quot;</span>&#125;</code></pre></div>
+
+<p>问题：</p>
+<p>服务端的mysql拒绝连接</p>
+<div class="hljs"><pre><code class="hljs bash">[ERROR][logstash.inputs.jdbc] Unable to connect to database. Tried 1 <span class="hljs-built_in">times</span> &#123;:error_message=&gt;<span class="hljs-string">&quot;Java::JavaSql::SQLException: Access denied for user &#x27;root&#x27;@&#x27;192.xxx.xxx.xxx&#x27; (using password: YES)&quot;</span>&#125;
+
+ERROR 1064 (42000): You have an error <span class="hljs-keyword">in</span> your SQL syntax; check the manual that corresponds to your MySQL server version <span class="hljs-keyword">for</span> the right syntax to use near <span class="hljs-string">&#x27;identified by &#x27;</span>user_pwd<span class="hljs-string">&#x27; with grant option&#x27;</span> at line 1
+
+// 解决方法（mysql远程登录问题）
+// Mysql 8.0以前的版本：
+GRANT ALL PRIVILEGES ON *.* TO `root`@`%` IDENTIFIED BY `user_pwd` WITH GRANT OPTION;
+
+// Mysql 8.0以后的版本：
+CREATE USER <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> IDENTIFIED BY <span class="hljs-string">&#x27;user_pwd&#x27;</span>; 
+GRANT ALL ON *.* TO <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span>; 
+ALTER USER <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> IDENTIFIED WITH mysql_native_password BY <span class="hljs-string">&#x27;user_pwd&#x27;</span>;
+FLUSH PRIVILEGES;</code></pre></div>
+
+<h3 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h3><p>访问<code>http://localhost:9100/</code><br><img src="logstash-data-transform/1.png" srcset="/img/loading.gif" alt="logstash-data"></p>
+<p><strong><u>ps:本文为学习笔记，仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/elasticsearch/">elasticsearch</a>
+                    
+                      <a class="hover-with-bg" href="/tags/logstash/">logstash</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/14/python-header-first/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python Head-First学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/01/elasticsearch-cluster-node/">
+                        <span class="hidden-mobile">Elasticsearch集群搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Logstash安装学习&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

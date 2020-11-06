@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Git命令学习 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-26 22:54">
+                    March 26, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    4.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    46
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h2 id="Git命令学习"><a href="#Git命令学习" class="headerlink" title="Git命令学习"></a>Git命令学习</h2><h3 id="Git-Commit"><a href="#Git-Commit" class="headerlink" title="Git Commit"></a>Git Commit</h3><p>Git 希望提交记录尽可能地轻量，因此在你每次进行提交时，它并不会盲目地复制整个目录。条件允许的情况下，它会将当前版本与仓库中的上一个版本进行对比，并把所有的差异打包到一起作为一个提交记录。<br>Git 还保存了提交的历史记录。这也是为什么大多数提交记录的上面都有父节点的原因 —— 我们会在图示中用箭头来表示这种关系。对于项目组的成员来说，维护提交历史对大家都有好处。<br>你可以把提交记录看作是项目的快照。提交记录非常轻量，可以快速地在这些提交记录之间切换！</p>
+<p><code>git commit</code></p>
+<h3 id="Git-Branch"><a href="#Git-Branch" class="headerlink" title="Git Branch"></a>Git Branch</h3><p>Git 的分支也非常轻量。它们只是简单地指向某个提交纪录。<br><u>早建分支！多用分支！</u><br>这是因为即使创建再多分的支也不会造成储存或内存上的开销，并且按逻辑分解工作到不同的分支要比维护那些特别臃肿的分支简单多了。<br>在将分支和提交记录结合起来后，我们会看到两者如何协作。现在只要记住使用分支其实就相当于在说：“我想基于这个提交以及它所有的父提交进行新的工作。”</p>
+<p>创建一个到名为 <code>newImage</code> 的分支</p>
+<div class="hljs"><pre><code class="hljs bash">$ git branch newImage
+$ git commit</code></pre></div>
+
+<p>切换到新的分支上，这样修改就可以保存到新的分支里了</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout newImage
+$ git commit</code></pre></div>
+
+<p>如果你想创建一个新的分支同时切换到新创建的分支的话，可以通过 <code>git checkout -b &lt;your-branch-name&gt;</code> 来实现。</p>
+<h3 id="分支与合并"><a href="#分支与合并" class="headerlink" title="分支与合并"></a>分支与合并</h3><p>如何将两个分支合并到一起。就是说我们新建一个分支，在其上开发某个新功能，开发完成后再合并回主线。<br>第一种方法 —— <code>git merge</code>。在 Git 中合并两个分支时会产生一个特殊的提交记录，它有两个父节点。翻译成自然语言相当于：“我要把这两个父节点本身及它们所有的祖先都包含进来。”</p>
+<p>操作：</p>
+<ul>
+<li>创建新分支 <code>bugFix</code></li>
+<li>用 <code>git checkout bugFix</code> 命令切换到该分支</li>
+<li>提交一次</li>
+<li>用 <code>git checkout master</code> 切换回 <code>master</code></li>
+<li>再提交一次</li>
+<li>用 <code>git merge</code> 把 <code>bugFix</code> 合并到 <code>master</code></li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">$ git branch bugFix
+$ git checkout bugFix
+$ git commit
+$ git checkout master
+$ git commit
+$ git merge bugFix</code></pre></div>
+
+<h3 id="Git-Rebase"><a href="#Git-Rebase" class="headerlink" title="Git Rebase"></a>Git Rebase</h3><p>第二种合并分支的方法是 <code>git rebase</code>。Rebase 实际上就是取出一系列的提交记录，“复制”它们，然后在另外一个地方逐个的放下去。<br>Rebase 的优势就是可以创造更线性的提交历史，这听上去有些难以理解。如果只允许使用 Rebase 的话，代码库的提交历史将会变得异常清晰。</p>
+<p>操作：</p>
+<ul>
+<li>新建并切换到 <code>bugFix</code> 分支</li>
+<li>提交一次</li>
+<li>切换回 master 分支再提交一次</li>
+<li>再次切换到 bugFix 分支，rebase 到 master 上</li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout -b bugFix
+$ git commit
+$ git checkout master
+$ git commit
+$ git checkout bugFix
+$ git rebase master</code></pre></div>
+
+<h3 id="在提交树上移动"><a href="#在提交树上移动" class="headerlink" title="在提交树上移动"></a>在提交树上移动</h3><p>首先看一下 “HEAD”。 <strong>HEAD 是一个对当前检出记录的符号引用</strong> —— 也就是指向你正在其基础上进行工作的提交记录。HEAD 总是指向当前分支上最近一次提交记录。大多数修改提交树的 Git 命令都是从改变 HEAD 的指向开始的。<br>HEAD 通常情况下是指向分支名的（如 bugFix）。在你提交时，改变了 bugFix 的状态，这一变化通过 HEAD 变得可见。</p>
+<p>分离的 HEAD 就是让其指向了某个具体的提交记录而不是分支名。</p>
+<p>从 <code>bugFix</code> 分支中分离出 HEAD 并让其指向一个提交记录。通过哈希值指定提交记录。每个提交记录的哈希值显示在代表提交记录的圆圈中。</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout C4
+// C4提交树上的节点</code></pre></div>
+
+<p><img src="git-learning/1.png" srcset="/img/loading.gif" alt="git-head"></p>
+<h3 id="相对引用"><a href="#相对引用" class="headerlink" title="相对引用"></a>相对引用</h3><p>通过指定提交记录哈希值的方式在 Git 中移动不太方便。在实际应用时，并没有像本程序中这么漂亮的可视化提交树供你参考，所以你就不得不用 <code>git log</code> 来查查看提交记录的哈希值。<br>并且哈希值在真实的 Git 世界中也会更长（基于 SHA-1，共 40 位）。例如前一关的介绍中的提交记录的哈希值可能是 <code>fed2da64c0efc5293610bdd892f82a58e8cbc5d8</code>。<br>比较令人欣慰的是，Git 对哈希的处理很智能。<strong>你只需要提供能够唯一标识提交记录的前几个字符即可</strong>。因此我可以仅输入<code>fed2</code> 而不是上面的一长串字符。</p>
+<p>相对引用非常给力，这里我介绍两个简单的用法：</p>
+<ul>
+<li>使用 <code>^</code> 向上移动 1 个提交记录</li>
+<li>使用 <code>~</code> 向上移动多个提交记录，如 <code>~3</code></li>
+</ul>
+<p>操作符 (^)，把这个符号加在引用名称的后面，表示让 Git 寻找指定提交记录的父提交。<br>所以 <code>master^</code> 相当于“<code>master</code> 的父节点”。<code>master^^</code> 是 <code>master</code> 的第二个父节点。</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout bugFix^</code></pre></div>
+
+<p><img src="git-learning/2.png" srcset="/img/loading.gif" alt="checkout-^"></p>
+<h3 id="“-”操作符"><a href="#“-”操作符" class="headerlink" title="“~”操作符"></a>“~”操作符</h3><p>想在提交树中向上移动很多步的话，又引入了操作符 <code>~</code>。该操作符后面可以跟一个数字（可选，不跟数字时与 <code>^</code> 相同，向上移动一次），指定向上移动多少次。</p>
+<p><strong>使用相对引用最多的就是移动分支</strong>。可以直接使用 <code>-f</code> 选项让分支指向另一个提交。例如:</p>
+<div class="hljs"><pre><code class="hljs crmsh">git branch -f <span class="hljs-keyword">master</span> <span class="hljs-title">HEAD</span>~<span class="hljs-number">3</span></code></pre></div>
+
+<p>上面的命令会将 master 分支强制指向 HEAD 的第 3 级父提交。</p>
+<p>操作源显示：</p>
+<p><img src="git-learning/3.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<p>显示目标：</p>
+<p><img src="git-learning/4.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<div class="hljs"><pre><code class="hljs bash">$ git branch -f master C6
+$ git branch -f bugFix C0
+$ git checkout master~3</code></pre></div>
+
+<h3 id="撤销变更"><a href="#撤销变更" class="headerlink" title="撤销变更"></a>撤销变更</h3><p>在 Git 里撤销变更的方法很多。和提交一样，撤销变更由底层部分（暂存区的独立文件或者片段）和上层部分（变更到底是通过哪种方式被撤销的）组成。我们这个应用主要关注的是后者。</p>
+<p>主要有两种方法用来撤销变更 —— 一是 <code>git reset</code>，还有就是 <code>git revert</code>。接下来咱们逐个进行讲解。</p>
+<p><code>git reset</code> 通过把分支记录回退几个提交记录来实现撤销改动。你可以将这想象成“改写历史”。<code>git reset</code> 向上移动分支，原来指向的提交记录就跟从来没有提交过一样。</p>
+<p><code>git reset HEAD~1</code></p>
+<p>虽然在你的本地分支中使用 <code>git reset</code> 很方便，但是这种“改写历史”的方法对大家一起<strong>使用的远程分支是无效的</strong>哦！</p>
+<p><code>git revert HEAD</code>（推荐方式）<br>在我们要撤销的提交记录后面居然多了一个新提交。revert 之后就可以把你的更改推送到远程仓库与别人分享啦。</p>
+<div class="hljs"><pre><code class="hljs bash">$ git reset HEAD~1
+$ git checkout pushed
+$ git revert HEAD</code></pre></div>
+
+<h3 id="整理提交记录"><a href="#整理提交记录" class="headerlink" title="整理提交记录"></a>整理提交记录</h3><p>到现在我们已经学习了 Git 的基础知识 —— 提交、分支以及在提交树上移动。 这些概念涵盖了 Git 90% 的功能，同样也足够满足开发者的日常需求。</p>
+<p>然而, <u>剩余的 10% 在处理复杂的工作流时(或者当你陷入困惑时）可能就显得尤为重要了</u>。接下来要讨论的这个话题是“整理提交记录” —— 开发人员有时会说“我想要把这个提交放到这里, 那个提交放到刚才那个提交的后面”, 而接下来就讲的就是它的实现方式，非常清晰、灵活，还很生动。</p>
+<p>本系列的第一个命令是 <code>git cherry-pick</code>, 命令形式为:</p>
+<p><code>git cherry-pick &lt;提交号&gt;...</code></p>
+<p>如果你想将一些提交复制到当前所在的位置（<code>HEAD</code>）下面的话， Cherry-pick 是最直接的方式了。</p>
+<p>如：我们想将 <code>side</code> 分支上的工作C2，C4复制到 <code>master</code> 分支。</p>
+<p><code>git cherry-pick C2 C4</code></p>
+<h3 id="交互式的-rebase"><a href="#交互式的-rebase" class="headerlink" title="交互式的 rebase"></a>交互式的 rebase</h3><p>当你知道你所需要的提交记录（<strong>并且</strong>还知道这些提交记录的哈希值）时, 用 cherry-pick 再好不过了 —— 没有比这更简单的方式了。<br>但是如果你不清楚你想要的提交记录的哈希值呢? 幸好 Git 帮你想到了这一点, 我们可以利用交互式的 rebase —— 如果你想从一系列的提交记录中找到想要的记录, 这就是最好的方法了。</p>
+<p><u>交互式 rebase 指的是使用带参数 <code>--interactive</code> 的 rebase 命令, 简写为 <code>-i</code></u><br>如果你在命令后增加了这个选项, Git 会打开一个 UI 界面并列出将要被复制到目标分支的备选提交记录，它还会显示每个提交记录的哈希值和提交说明，提交说明有助于你理解这个提交进行了哪些更改。<br>在实际使用时，所谓的 UI 窗口一般会在文本编辑器 —— 如 Vim —— 中打开一个文件。<br>当 rebase UI界面打开时, 你能做3件事: </p>
+<ul>
+<li>调整提交记录的顺序（通过鼠标拖放来完成）</li>
+<li>删除你不想要的提交（通过切换 <code>pick</code> 的状态来完成，关闭就意味着你不想要这个提交记录）</li>
+<li>合并提交。简而言之，它允许你把多个提交记录合并成一个。</li>
+</ul>
+<p><code>git rebase -i HEAD~4</code></p>
+<h3 id="本地栈式提交"><a href="#本地栈式提交" class="headerlink" title="本地栈式提交"></a>本地栈式提交</h3><p>来看一个在开发中经常会遇到的情况：我正在解决某个特别棘手的 Bug，为了便于调试而在代码中添加了一些调试命令并向控制台打印了一些信息。<br>这些调试和打印语句都在它们各自的提交记录里。最后我终于找到了造成这个 Bug 的根本原因，解决掉以后觉得沾沾自喜！</p>
+<p>最后就差把 <code>bugFix</code> 分支里的工作合并回 <code>master</code> 分支了。你可以选择通过 fast-forward 快速合并到 <code>master</code> 分支上，但这样的话 <code>master</code> 分支就会包含我这些调试语句了。你肯定不想这样，应该还有更好的方式。</p>
+<p>实际我们只要让 Git 复制解决问题的那一个提交记录就可以了。跟之前我们在“整理提交记录”中学到的一样，我们可以使用来达到目的。</p>
+<ul>
+<li><code>git rebase -i</code></li>
+<li><code>git cherry-pick</code></li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout master
+$ git cherry-pick C4
+// 或者
+$ git rebase -i HEAD~3
+$ git branch -f master C4<span class="hljs-string">&#x27;</span></code></pre></div>
+
+<h3 id="提交的技巧-1"><a href="#提交的技巧-1" class="headerlink" title="提交的技巧 #1"></a>提交的技巧 #1</h3><p>这种情况也是很常见的：你之前在 <code>newImage</code> 分支上进行了一次提交，然后又基于它创建了 <code>caption</code> 分支，然后又提交了一次。<br>此时你想对的某个以前的提交记录进行一些小小的调整。比如设计师想修改一下 <code>newImage</code> 中图片的分辨率，尽管那个提交记录并不是最新的了。</p>
+<p>我们可以通过下面的方法来克服困难：</p>
+<ul>
+<li>先用 <code>git rebase -i</code> 将提交重新排序，然后把我们想要修改的提交记录挪到最前</li>
+<li>然后用 <code>commit --amend</code> 来进行一些小修改</li>
+<li>接着再用 <code>git rebase -i</code> 来将他们调回原来的顺序</li>
+<li>最后我们把 master 移到修改的最前端（用你自己喜欢的方法），就大功告成啦！</li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">$ git rebase -i HEAD~2
+$ git commit --amend
+$ git rebase -i HEAD~2
+$ git branch -f master C3<span class="hljs-string">&#x27;&#x27;</span></code></pre></div>
+
+<h3 id="提交的技巧-2"><a href="#提交的技巧-2" class="headerlink" title="提交的技巧 #2"></a>提交的技巧 #2</h3><p>正如你在上一关所见到的，我们可以使用 <code>rebase -i</code> 对提交记录进行重新排序。只要把我们想要的提交记录挪到最前端，我们就可以很轻松的用 <code>--amend</code> 修改它，然后把它们重新排成我们想要的顺序。<br>但这样做就唯一的问题就是要进行两次排序，而这有可能造成由 rebase 而导致的冲突。下面还是看看 <code>git cherry-pick</code>是怎么做的吧。</p>
+<p>要在心里<strong>牢记 cherry-pick 可以将提交树上任何地方的提交记录取过来追加到 HEAD 上</strong>（只要不是 HEAD 上游的提交就没问题）。</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout master
+$ git cherry-pick C2
+$ git commit --amend
+$ git cherry-pick C3</code></pre></div>
+
+<h3 id="Git-Tags"><a href="#Git-Tags" class="headerlink" title="Git Tags"></a>Git Tags</h3><p>相信通过前面课程的学习你已经发现了：分支很容易被人为移动，并且当有新的提交时，它也会移动。分支很容易被改变，大部分分支还只是临时的，并且还一直在变。<br>你可能会问了：有没有什么可以<em>永远</em>指向某个提交记录的标识呢，比如软件发布新的大版本，或者是修正一些重要的 Bug 或是增加了某些新特性，有没有比分支更好的可以永远指向这些提交的方法呢？</p>
+<p>Git 的 tag 就是干这个用的啊，它们可以（在某种程度上 —— 因为标签可以被删除后重新在另外一个位置创建同名的标签）永久地将某个特定的提交命名为里程碑，然后就可以像分支一样引用了。<br>更难得的是，它们并不会随着新的提交而移动。你也不能检出到某个标签上面进行修改提交，它就像是提交树上的一个锚点，标识了某个特定的位置。</p>
+<p>咱们先建立一个标签，指向提交记录 <code>C1</code>，表示这是我们 1.0 版本。</p>
+<p><code>git tag v1 C1</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ git tag v0 C1
+$ git tag v1 C2
+$ git checkout C2</code></pre></div>
+
+<h3 id="Git-Describe"><a href="#Git-Describe" class="headerlink" title="Git Describe"></a>Git Describe</h3><p>由于标签在代码库中起着“锚点”的作用，Git 还为此专门设计了一个命令用来<strong>描述</strong>离你最近的锚点（也就是标签），它就是 <code>git describe</code>！<br>Git Describe 能帮你在提交历史中移动了多次以后找到方向；<br>当你用 <code>git bisect</code>（一个查找产生 Bug 的提交记录的指令）找到某个提交记录时，或者是当你坐在你那刚刚度假回来的同事的电脑前时， 可能会用到这个命令。</p>
+<p><code>git describe</code> 的语法是：</p>
+<div class="hljs"><pre><code class="hljs bash">$ git describe &lt;ref&gt;</code></pre></div>
+
+<p>`<ref>可以是任何能被 Git 识别成提交记录的引用，如果你没有指定的话，Git 会以你目前所检出的位置（HEAD）。</p>
+<p>它输出的结果是这样的：</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">tag</span>&gt;</span>_<span class="hljs-tag">&lt;<span class="hljs-name">numCommits</span>&gt;</span>_g<span class="hljs-tag">&lt;<span class="hljs-name">hash</span>&gt;</span></code></pre></div>
+
+<p><code>tag</code> 表示的是离 <code>ref</code> 最近的标签， <code>numCommits</code> 是表示这个 <code>ref</code> 与 <code>tag</code> 相差有多少个提交记录， <code>hash</code> 表示的是你所给定的 <code>ref</code> 所表示的提交记录哈希值的前几位。</p>
+<p>当 <code>ref</code> 提交记录上有某个标签时，则只输出标签名称</p>
+<h3 id="多分支-rebase"><a href="#多分支-rebase" class="headerlink" title="多分支 rebase"></a>多分支 rebase</h3><p>我们准备了很多分支！咱们把这些分支 rebase 到 master 上吧。<br>他们希望得到有序的提交历史，也就是我们最终的结果应该是 <code>C6&#39;</code> 在 <code>C7&#39;</code> 上面， <code>C5&#39;</code> 在 <code>C6&#39;</code> 上面，依此类推。<br>即使你搞砸了也没关系，用 <code>reset</code> 命令就可以重新开始了。记得看看我们提供的答案，看你能否使用更少的命令来完成任务！</p>
+<div class="hljs"><pre><code class="hljs bash">$ git rebase side another
+$ git rebase bugFix another
+$ git rebase master another
+$ git branch -f master another</code></pre></div>
+
+<h3 id="选择父提交记录"><a href="#选择父提交记录" class="headerlink" title="选择父提交记录"></a>选择父提交记录</h3><p>操作符 <code>^</code> 与 <code>~</code> 符一样，后面也可以跟一个数字。</p>
+<p>但是该操作符后面的数字与 <code>~</code> 后面的不同，并不是用来指定向上返回几代，而是指定合并提交记录的某个父提交。还记得前面提到过的一个合并提交有两个父提交吧，所以遇到这样的节点时该选择哪条路径就不是很清晰了。</p>
+<p><strong>Git 默认选择合并提交的“第一个”父提交，在操作符 <code>^</code> 后跟一个数字可以改变这一默认行为。</strong></p>
+<p><code>git checkout master^</code></p>
+<p><code>git checkout master^2</code>（回到了另外一个父提交上）</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout HEAD~
+$ git checkout HEAD^2
+$ git checkout HEAD~2
+// 等价于
+$ git checkout HEAD~^2~2
+// 这些操作符还支持链式操作
+
+$ git branch bugWork HEAD~^2~</code></pre></div>
+
+<h3 id="纠缠不清的分支"><a href="#纠缠不清的分支" class="headerlink" title="纠缠不清的分支"></a>纠缠不清的分支</h3><p>现在我们的 <code>master</code> 分支是比 <code>one</code>、<code>two</code> 和 <code>three</code> 要多几个提交。出于某种原因，我们需要把 <code>master</code> 分支上最近的几次提交做不同的调整后，分别添加到各个的分支上。</p>
+<p><code>one</code> 需要重新排序并删除 <code>C5</code>，<code>two</code> 仅需要重排排序，而 <code>three</code> 只需要提交一次。<br>慢慢来，你会找到答案的 —— 记得通关之后用 <code>show solution</code> 看看我们的答案哦。</p>
+<div class="hljs"><pre><code class="hljs bash">$ git checkout one
+$ git cherry-pick C4 C3 C2
+$ git checkout two
+$ git cherry-pick C5 C4 C3 C2
+$ git branch -f three C2</code></pre></div>
+
+<p><img src="git-learning/5.png" srcset="/img/loading.gif" alt="git-branch"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/git/">git</a>
+                    
+                      <a class="hover-with-bg" href="/tags/command/">command</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/27/devops-package/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DevOps-学习之打包</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/26/devops-start/">
+                        <span class="hidden-mobile">DevOps学习路线导向</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Git命令学习&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

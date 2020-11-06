@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>FastDFS安装设定 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-19 10:23">
+                    April 19, 2020 am
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.3k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    33
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="FastDFS安装设定"><a href="#FastDFS安装设定" class="headerlink" title="FastDFS安装设定"></a>FastDFS安装设定</h2><h3 id="FastDFS定义"><a href="#FastDFS定义" class="headerlink" title="FastDFS定义"></a>FastDFS定义</h3><p>FastDFS是用c语言编写的一款开源的分布式文件系统，它是由淘宝资深架构师余庆编写并开源。<br>FastDFS专为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用FastDFS很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。</p>
+<p>为什么要使用FastDFS呢?</p>
+<p>上边介绍的NFS、GFS都是通用的分布式文件系统，通用的分布式文件系统的优点的是开发体验好，但是系统复杂性高、性能一般，而专用的分布式文件系统虽然开发体验性差，但是<u>系统复杂性低并且性能高</u>。<strong>fastDFS非常适合存储图片</strong>等那些小文件，fastDFS不对文件进行分块，所以它就没有分块合并的开销，fastDFS网络通信采用socket，通信速度很快。</p>
+<p><strong>FastDFS架构包括Tracker server和Storageserver。</strong>客户端请求Tracker server进行文件上传、下载，通过Tracker server调度最终由Storage server完成文件上传和下载。</p>
+<p><img src="fastDFS-install-settings/1.png" srcset="/img/loading.gif" alt="FastDFS架构"></p>
+<p>Tracker</p>
+<p><strong>Tracker Server作用是负载均衡和调度</strong>，通过Tracker server在文件上传时可以根据一些策略找到Storage server提供文件上传服务。可以将tracker称为<u>追踪服务器或调度服务器</u>。<br> FastDFS集群中的Tracker server可以有多台，Tracker server之间是相互平等关系同时提供服务，Tracker server不存在单点故障。客户端请求Tracker server采用<strong>轮询方式</strong>，如果请求的tracker无法提供服务则换另一个tracker。</p>
+<p>Storage</p>
+<p>Storage Server作用是文件存储，客户端上传的文件最终存储在Storage服务器上，Storage server没有实现自己的文件系统而是使用操作系统的文件系统来管理文件。可以将<strong>storage称为存储服务器</strong>。</p>
+<p><strong>Storage集群采用了分组存储方式</strong>。storage集群由一个或多个组构成，集群存储总容量为集群中所有组的存储容量之和。一个组由一台或多台存储服务器组成，组内的<strong>Storage server之间是平等关系</strong>，不同组的Storage server 之间不会相互通信，同组内的Storage server之间会相互连接进行文件同步，从而保证同组内每个storage上的文件完全一致的。一个组的存储容量为该组内的存储服务器容量最小的那个，由此可见<strong>组内存储服务器的软硬件配置最好是一致的</strong>。</p>
+<p>采用分组存储方式的好处是灵活、可控性较强。比如上传文件时，可以由客户端直接指定上传到的组也可以由 tracker进行调度选择。一个分组的存储服务器访问压力较大时，可以在该组增加存储服务器来扩充服务能力(<strong>纵向扩容</strong>)。当系统容量不足时，可以增加组来扩充存储容量(<strong>横向扩容</strong>)。</p>
+<h3 id="FastDFS安装"><a href="#FastDFS安装" class="headerlink" title="FastDFS安装"></a>FastDFS安装</h3><p>安装环境：CentOS 8</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># lsb_release -a</span>
+// 这个命令适用于所有的linux，包括Redhat、SuSE、Debian等发行版。
+LSB Version:    :core-4.1-amd64:core-4.1-noarch
+Distributor ID: CentOS
+Description:    CentOS Linux release 8.1.1911 (Core) 
+Release:        8.1.1911
+Codename:       Core
+<span class="hljs-comment"># cat /proc/version</span>
+Linux version 4.18.0-147.5.1.el8_1.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 8.3.1 20190507 (Red Hat 8.3.1-4) (GCC)) <span class="hljs-comment">#1 SMP Wed Feb 5 02:00:39 UTC 2020</span>
+<span class="hljs-comment"># uname -r</span>
+4.18.0-147.5.1.el8_1.x86_64
+<span class="hljs-comment"># uname -a</span>
+Linux iZ2ze4ty14huv07q6z3yapZ 4.18.0-147.5.1.el8_1.x86_64 <span class="hljs-comment">#1 SMP Wed Feb 5 02:00:39 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux</span></code></pre></div>
+
+<h4 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># sudo yum install gcc-c++</span>
+<span class="hljs-comment"># sudo yum -y install libevent</span></code></pre></div>
+
+<h4 id="安装libfastcommon基础库"><a href="#安装libfastcommon基础库" class="headerlink" title="安装libfastcommon基础库"></a>安装libfastcommon基础库</h4><div class="hljs"><pre><code class="hljs bash">// 将libfastcommonV1.0.7.tar.gz解压，安装至/usr/<span class="hljs-built_in">local</span>文件夹里
+<span class="hljs-comment"># cp libfastcommonV1.0.7.tar.gz /usr/local/</span>
+<span class="hljs-comment"># cd /usr/local/</span>
+<span class="hljs-comment"># tar -zxvf libfastcommonV1.0.7.tar.gz</span>
+<span class="hljs-comment"># cd libfastcommon-1.0.7</span>
+<span class="hljs-comment"># ./make.sh</span>
+<span class="hljs-comment"># ./make.sh install</span>
+<span class="hljs-comment"># ll /usr/local/libfastcommon-1.0.7/</span>
+总用量 24
+-rw-rw-r-- 1 root root 2170 9月  16 2014 HISTORY
+-rw-rw-r-- 1 root root  582 9月  16 2014 INSTALL
+-rw-rw-r-- 1 root root 1341 9月  16 2014 libfastcommon.spec
+-rwxrwxr-x 1 root root 2151 9月  16 2014 make.sh
+-rw-rw-r-- 1 root root  617 9月  16 2014 README
+drwxrwxr-x 2 root root 4096 4月  17 14:25 src
+
+// libfastcommon 安装好后会自动将库文件拷贝至/usr/lib64 下，由于FastDFS 程序引用 usr/lib 目录所以需要将/usr/lib64 下的库文件拷贝至/usr/lib 下。
+<span class="hljs-comment"># cp /usr/lib64/libfastcommon.so /usr/lib/</span>
+<span class="hljs-comment"># ll /usr/lib/libfastcommon.so</span>
+-rwxr-xr-x 1 root root 340392 4月  17 14:29 /usr/lib/libfastcommon.so</code></pre></div>
+
+<h4 id="安装tracker编译安装"><a href="#安装tracker编译安装" class="headerlink" title="安装tracker编译安装"></a>安装tracker编译安装</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cp FastDFS_v5.05.tar.gz /usr/local/</span>
+<span class="hljs-comment"># cd /usr/local/</span>
+<span class="hljs-comment"># tar -zxvf FastDFS_v5.05.tar.gz</span>
+<span class="hljs-comment"># cd FastDFS</span>
+<span class="hljs-comment"># ./make.sh</span>
+<span class="hljs-comment"># ./make.sh install</span>
+
+// 安装成功将安装目录下的 conf 下的文件拷贝到/etc/fdfs/下。
+<span class="hljs-comment"># cd /usr/local/FastDFS/conf</span>
+<span class="hljs-comment"># cp *.conf /etc/fdfs/</span>
+<span class="hljs-comment"># cp *.types /etc/fdfs/</span>
+
+// 配置
+<span class="hljs-comment"># cd /etc/fdfs/</span>
+<span class="hljs-comment"># vim tracker.conf</span>
+// 修改配置项
+base_path=/home/root/fastdfs
+// 阿里云ECS中的服务器实例，不要使用80端口，已被阿里云自己占用
+http.server_port=90
+
+// 启动
+/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf restart</code></pre></div>
+
+<h4 id="Storage安装"><a href="#Storage安装" class="headerlink" title="Storage安装"></a>Storage安装</h4><p>在另外的服务器实例上安装storage, 依赖库和基础库如上一致，本处在同一台ECS上安装</p>
+<div class="hljs"><pre><code class="hljs bash">// 配置storage
+<span class="hljs-comment"># cd /etc/fdfs/</span>
+<span class="hljs-comment"># vim storage.conf</span>
+// 修改配置
+group_name=group1
+base_path=/home/root/fastdfs/store/base
+
+store_path0=/home/root/fastdfs/store/fdfs_storage
+// 若有多个挂载磁盘则定义多个store_path
+store_path1=...
+store_path2=...
+
+// 配置tracker服务器IP(此处IP是阿里云ECS的公网IP)
+tracker_server=1xx.xxx.xxx.xxx:22122
+// 如果有多个则配置多个tracker
+tracker_server=1xx.xxx.xxx.xx2:22122
+
+// 配置 http 端口
+http.server_port=90
+
+// 启动
+/usr/bin/fdfs_storaged /etc/fdfs/storage.conf restart</code></pre></div>
+
+<h4 id="上传图片测试"><a href="#上传图片测试" class="headerlink" title="上传图片测试"></a>上传图片测试</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cd /etc/fdfs/</span>
+<span class="hljs-comment"># vim client.conf</span>
+
+// 配置
+base_path=/home/root/fastdfs/client
+tracker_server=1xx.xxx.xxx.xxx:22122
+// 如果有多个则配置多个tracker
+tracker_server=1xx.xxx.xxx.xx2:22122
+
+// 测试文件上传logo.png
+<span class="hljs-comment"># ll /root/soft/logo.png </span>
+-rw-r--r-- 1 root root 6849 4月  19 11:28 /root/soft/logo.png
+
+<span class="hljs-comment"># /usr/bin/fdfs_test /etc/fdfs/client.conf upload /root/soft/logo.png </span>
+This is FastDFS client <span class="hljs-built_in">test</span> program v5.05
+
+Copyright (C) 2008, Happy Fish / YuQing
+
+FastDFS may be copied only under the terms of the GNU General
+Public License V3, <span class="hljs-built_in">which</span> may be found <span class="hljs-keyword">in</span> the FastDFS <span class="hljs-built_in">source</span> kit.
+Please visit the FastDFS Home Page http://www.csource.org/ 
+<span class="hljs-keyword">for</span> more detail.
+
+[2020-04-19 11:32:50] DEBUG - base_path=/home/root/fastdfs/client, connect_timeout=30, network_timeout=60, tracker_server_count=1, anti_steal_token=0, anti_steal_secret_key length=0, use_connection_pool=0, g_connection_pool_max_idle_time=3600s, use_storage_id=0, storage server id count: 0
+
+tracker_query_storage_store_list_without_group: 
+        server 1. group_name=, ip_addr=1xx.xxx.xxx.xxx, port=23000
+
+group_name=group1, ip_addr=1xx.xxx.xxx.xxx, port=23000
+storage_upload_by_filename
+group_name=group1, remote_filename=M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071.png
+<span class="hljs-built_in">source</span> ip address: 1xx.xxx.xxx.xxx
+file timestamp=2020-04-19 11:32:50
+file size=6849
+file crc32=1292373860
+example file url: http://1xx.xxx.xxx.xxx/group1/M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071.png
+storage_upload_slave_by_filename
+group_name=group1, remote_filename=M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png
+<span class="hljs-built_in">source</span> ip address: 1xx.xxx.xxx.xxx
+file timestamp=2020-04-19 11:32:50
+file size=6849
+file crc32=1292373860
+example file url: http://1xx.xxx.xxx.xxx/group1/M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png
+
+// 对应Storage服务器上的文件
+<span class="hljs-built_in">cd</span> /home/root/fastdfs/store/fdfs_storage/data
+<span class="hljs-comment"># ll 00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png</span>
+-rw-r--r-- 1 root root 6849 4月  19 11:32 00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png</code></pre></div>
+
+<h3 id="FastDFS和nginx整合"><a href="#FastDFS和nginx整合" class="headerlink" title="FastDFS和nginx整合"></a>FastDFS和nginx整合</h3><h4 id="安装FastDFS-nginx-module"><a href="#安装FastDFS-nginx-module" class="headerlink" title="安装FastDFS-nginx-module"></a>安装FastDFS-nginx-module</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cp fastdfs-nginx-module_v1.16.tar.gz /usr/local/</span>
+<span class="hljs-comment"># cd /usr/local/</span>
+<span class="hljs-comment"># tar -zxvf fastdfs-nginx-module_v1.16.tar.gz</span>
+<span class="hljs-comment"># cd /usr/local/fastdfs-nginx-module/src</span>
+<span class="hljs-comment"># vim config</span>
+// 修改配置（修改 config 文件将/usr/<span class="hljs-built_in">local</span>/路径改为/usr/）
+ngx_addon_name=ngx_http_fastdfs_module
+HTTP_MODULES=<span class="hljs-string">&quot;<span class="hljs-variable">$HTTP_MODULES</span> ngx_http_fastdfs_module&quot;</span>
+NGX_ADDON_SRCS=<span class="hljs-string">&quot;<span class="hljs-variable">$NGX_ADDON_SRCS</span> <span class="hljs-variable">$ngx_addon_dir</span>/ngx_http_fastdfs_module.c&quot;</span>
+CORE_INCS=<span class="hljs-string">&quot;<span class="hljs-variable">$CORE_INCS</span> /usr/include/fastdfs /usr/include/fastcommon/&quot;</span>
+CORE_LIBS=<span class="hljs-string">&quot;<span class="hljs-variable">$CORE_LIBS</span> -L/usr/lib -lfastcommon -lfdfsclient&quot;</span>
+CFLAGS=<span class="hljs-string">&quot;<span class="hljs-variable">$CFLAGS</span> -D_FILE_OFFSET_BITS=64 -DFDFS_OUTPUT_CHUNK_SIZE=&#x27;256*1024&#x27; -DFDFS_MOD_CONF_FILENAME=&#x27;\&quot;/etc/fdfs/mod_fastdfs.conf\&quot;&#x27;&quot;</span>
+
+// 将 FastDFS-nginx-module/src 下的 mod_FastDFS.conf 拷贝至/etc/fdfs/下
+<span class="hljs-comment"># cp mod_fastdfs.conf /etc/fdfs/</span>
+<span class="hljs-comment"># vim /etc/fdfs/mod_fastdfs.conf</span>
+base_path=/home/root/fastdfs
+tracker_server=1xx.xxx.xxx.xxx:22122
+// url中包含 group 名称
+url_have_group_name = <span class="hljs-literal">true</span>
+// 指定文件存储路径
+store_path0=/home/root/fastdfs/store/fdfs_storage
+
+// 将 libfdfsclient.so 拷贝至/usr/lib 下
+cp /usr/lib64/libfdfsclient.so /usr/lib/
+ll /usr/lib/libfdfsclient.so
+-rwxr-xr-x 1 root root 376392 4月  17 15:55 /usr/lib/libfdfsclient.so
+
+// 创建 nginx/client 目录
+<span class="hljs-comment"># mkdir -p /var/temp/nginx/client</span></code></pre></div>
+
+<h4 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cd /usr/local/</span>
+// centos8与nginx的版本有关，不然安装不成功
+<span class="hljs-comment"># tar -zxvf nginx-1.17.6.tar.gz</span>
+// 安装依赖
+<span class="hljs-comment"># sudo yum -y install pcre-devel openssl openssl-devel</span>
+<span class="hljs-comment"># cd nginx-1.17.6/</span>
+// 安装fastdfs-nginx-module
+./configure \
+--prefix=/usr/<span class="hljs-built_in">local</span>/nginx \
+--pid-path=/var/run/nginx/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--error-log-path=/var/<span class="hljs-built_in">log</span>/nginx/error.log \
+--http-log-path=/var/<span class="hljs-built_in">log</span>/nginx/access.log \
+--with-http_gzip_static_module \
+--http-client-body-temp-path=/var/temp/nginx/client \
+--http-proxy-temp-path=/var/temp/nginx/proxy \
+--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
+--http-scgi-temp-path=/var/temp/nginx/scgi \
+--add-module=/usr/<span class="hljs-built_in">local</span>/fastdfs-nginx-module/src
+
+<span class="hljs-comment"># make</span>
+<span class="hljs-comment"># make install</span></code></pre></div>
+
+<p>配置nginx</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cd /usr/local/nginx/conf/</span>
+<span class="hljs-comment"># vim nginx.conf</span>
+server &#123;
+        listen       8100;
+        server_name  1xx.xxx.xxx.xxx;
+
+        <span class="hljs-comment">#charset koi8-r;</span>
+
+        <span class="hljs-comment">#access_log  logs/host.access.log  main;</span>
+
+        location / &#123;
+            root   html;
+            index  index.html index.htm;
+        &#125;
+
+       location /group1/M00/ &#123;
+            root /home/root/fastdfs/store/fdfs_storage/data;
+            ngx_fastdfs_module;
+       &#125;
+...</code></pre></div>
+
+<p>启动nginx</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># cd /usr/local/nginx</span>
+<span class="hljs-comment"># ./sbin/nginx -c /usr/local/nginx/conf/nginx.conf</span>
+<span class="hljs-comment"># ps -ef | grep nginx</span>
+root     16230  6486  0 12:18 pts/0    00:00:00 grep --color=auto nginx
+root     16806     1  0 4月17 ?       00:00:00 nginx: master process ./sbin/nginx -c /usr/<span class="hljs-built_in">local</span>/nginx/conf/nginx.conf
+nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
+
+// 校验，重启
+<span class="hljs-comment"># nginx -t</span>
+<span class="hljs-comment"># nginx -s reload</span></code></pre></div>
+
+<p>上述图片测试的图片可以在浏览器上直接访问</p>
+<p><code>http://1xx.xxx.xxx.xxx:8100/group1/M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png</code></p>
+<p>注意，阿里云ECS安全组的配置也要设置好，才能正常访问或图片上传</p>
+<p><img src="fastDFS-install-settings/2.png" srcset="/img/loading.gif" alt="阿里云ECS安全组的配置"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/nginx/">nginx</a>
+                    
+                      <a class="hover-with-bg" href="/tags/fastdfs/">fastdfs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/aliyu/">aliyu</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/20/eureka-settings-first/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Eureka-settings学习一</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/15/mybatis-pagehelper-setting/">
+                        <span class="hidden-mobile">Mybatis-PageHelper设定</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "FastDFS安装设定&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

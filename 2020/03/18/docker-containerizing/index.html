@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker应用的容器化 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-18 22:38">
+                    March 18, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    32
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker应用的容器化"><a href="#Docker应用的容器化" class="headerlink" title="Docker应用的容器化"></a>Docker应用的容器化</h2><p>Docker的核心思想就是如何将应用整合到容器中，并且能在容器中实际运行。<br>将应用整合到容器中并且运行起来的这个过程，称为“容器化”（Containerizing），有时也叫作“Docker化”（Dockerizing）。</p>
+<p>容器是为应用而生！容器能够简化应用的构建、部署和运行过程。</p>
+<ul>
+<li>编写应用代码</li>
+<li>创建一个Dockerfile，其中包括当前应用的描述、依赖以及该如何运行这个应用</li>
+<li>对该Dockerfile执行docker image build命令</li>
+<li>等待Docker将应用程序构建到Docker镜像中</li>
+</ul>
+<p>一旦应用容器化完成（打包成一个Docker镜像），就能以镜像的方式交付并以容器的方式运行了。</p>
+<h3 id="单体应用容器化"><a href="#单体应用容器化" class="headerlink" title="单体应用容器化"></a>单体应用容器化</h3><ol>
+<li>获取应用代码</li>
+<li>分析Dockerfile</li>
+<li>构建应用镜像</li>
+<li>运行该应用</li>
+<li>测试应用</li>
+<li>容器应用化细节</li>
+<li>生产环境中的多阶段构建</li>
+<li>最佳实践</li>
+</ol>
+<p>Dockfile——这个文件包含了对当前应用的描述，并且能指导Docker完成镜像的构建。<br>构建上下文——在Docker当中，包含应用文件的目录通常称为构建上下文（Build Context）。通常将Dockerfile放到构建上下文的根目录下。</p>
+<div class="hljs"><pre><code class="hljs dockerfile">$ cat Dockerfile
+<span class="hljs-comment"># Test web-app to use with Pluralsight courses and Docker Deep Dive book</span>
+<span class="hljs-comment"># Linux x64</span>
+<span class="hljs-keyword">FROM</span> alpine
+
+<span class="hljs-keyword">LABEL</span><span class="bash"> maintainer=<span class="hljs-string">&quot;nigelpoulton@hotmail.com&quot;</span></span>
+
+<span class="hljs-comment"># Install Node and NPM</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> apk add --update nodejs nodejs-npm</span>
+
+<span class="hljs-comment"># Copy app to /src</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> . /src</span>
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /src</span>
+
+<span class="hljs-comment"># Install dependencies</span>
+<span class="hljs-keyword">RUN</span><span class="bash">  npm install</span>
+
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8080</span>
+
+<span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;node&quot;</span>, <span class="hljs-string">&quot;./app.js&quot;</span>]</span></code></pre></div>
+
+<p>FROM指令指定的镜像，会作为当前镜像的一个基础镜像层，当前应用的剩余内容会作为新增镜像层添加到基础镜像层之上。<br>LABEL标签方式指定了当前镜像的维护者。<br>RUN指令会在FROM指定的alpine基础镜像之上，新建一个镜像层来存储这些安装内容。<br>COPY . /src指令将应用相关文件从构建上下文复制到了当前镜像中，并且新建一个镜像层来存储。<br>WORKDIR指令为Dockerfile中尚未执行的指令设置工作目录。<br>RUN指令会安装依赖，在设置的工作目录中执行，在镜像中新建镜像层来保存相应的依赖文件。<br>EXPOSE指令来完成相应端口的设置。<br>ENTRYPOINT指令来指定当前镜像的入口程序。</p>
+<h3 id="容器化当前应用"><a href="#容器化当前应用" class="headerlink" title="容器化当前应用"></a>容器化当前应用</h3><div class="hljs"><pre><code class="hljs bash">$ docker image build -t web:latest .
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM alpine
+ ---&gt; e7d92cdc71fe
+Step 2/8 : LABEL maintainer=<span class="hljs-string">&quot;nigelpoulton@hotmail.com&quot;</span>
+ ---&gt; Running <span class="hljs-keyword">in</span> f0429b44c728
+Removing intermediate container f0429b44c728
+ ---&gt; 480c0e286f41
+Step 3/8 : RUN apk add --update nodejs nodejs-npm
+ ---&gt; Running <span class="hljs-keyword">in</span> 2ea8291a9c93
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/community/x86_64/APKINDEX.tar.gz
+(1/8) Installing ca-certificates (20191127-r1)
+(2/8) Installing c-ares (1.15.0-r0)
+(3/8) Installing libgcc (9.2.0-r3)
+(4/8) Installing nghttp2-libs (1.40.0-r0)
+(5/8) Installing libstdc++ (9.2.0-r3)
+(6/8) Installing libuv (1.34.0-r0)
+(7/8) Installing nodejs (12.15.0-r1)
+(8/8) Installing npm (12.15.0-r1)
+Executing busybox-1.31.1-r9.trigger
+Executing ca-certificates-20191127-r1.trigger
+OK: 64 MiB <span class="hljs-keyword">in</span> 22 packages
+Removing intermediate container 2ea8291a9c93
+ ---&gt; fa0d1c42c45d
+Step 4/8 : COPY . /src
+ ---&gt; 3b1b01e51d16
+Step 5/8 : WORKDIR /src
+ ---&gt; Running <span class="hljs-keyword">in</span> 6c3d53d9f756
+Removing intermediate container 6c3d53d9f756
+ ---&gt; ad8ccb0f4716
+Step 6/8 : RUN  npm install
+ ---&gt; Running <span class="hljs-keyword">in</span> 46d8a8488130
+npm WARN deprecated json3@3.3.2: Please use the native JSON object instead of JSON 3
+npm WARN deprecated core-js@2.6.11: core-js@&lt;3 is no longer maintained and not recommended <span class="hljs-keyword">for</span> usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.
+
+&gt; core-js@2.6.11 postinstall /src/node_modules/core-js
+&gt; node -e <span class="hljs-string">&quot;try&#123;require(&#x27;./postinstall&#x27;)&#125;catch(e)&#123;&#125;&quot;</span>
+
+Thank you <span class="hljs-keyword">for</span> using core-js ( https://github.com/zloirock/core-js ) <span class="hljs-keyword">for</span> polyfilling JavaScript standard library!
+
+The project needs your <span class="hljs-built_in">help</span>! Please consider supporting of core-js on Open Collective or Patreon: 
+&gt; https://opencollective.com/core-js 
+&gt; https://www.patreon.com/zloirock 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking <span class="hljs-keyword">for</span> a good job -)
+
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 163 packages from 460 contributors and audited 262 packages <span class="hljs-keyword">in</span> 18.93s
+
+4 packages are looking <span class="hljs-keyword">for</span> funding
+  run `npm fund` <span class="hljs-keyword">for</span> details
+
+found 5 vulnerabilities (2 low, 2 moderate, 1 critical)
+  run `npm audit fix` to fix them, or `npm audit` <span class="hljs-keyword">for</span> details
+Removing intermediate container 46d8a8488130
+ ---&gt; fbd86f0eea99
+Step 7/8 : EXPOSE 8080
+ ---&gt; Running <span class="hljs-keyword">in</span> ea7262f068c0
+Removing intermediate container ea7262f068c0
+ ---&gt; 0f4af4a14d13
+Step 8/8 : ENTRYPOINT [<span class="hljs-string">&quot;node&quot;</span>, <span class="hljs-string">&quot;./app.js&quot;</span>]
+ ---&gt; Running <span class="hljs-keyword">in</span> 15e56cd7d5ed
+Removing intermediate container 15e56cd7d5ed
+ ---&gt; 8a31255e74a1
+Successfully built 8a31255e74a1
+Successfully tagged web:latest
+
+$ docker image ls
+REPOSITORY                                             TAG                 IMAGE ID            CREATED              SIZE
+web                                                    latest              8a31255e74a1        About a minute ago   76.2MB
+
+$ docker image inspect web:latest
+// 确认刚刚构建的镜像配置是否正确，列出Dockerfile中设置的所有配置项。</code></pre></div>
+
+<h3 id="推送镜像到仓库"><a href="#推送镜像到仓库" class="headerlink" title="推送镜像到仓库"></a>推送镜像到仓库</h3><p>登录到Docker Hub</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don<span class="hljs-string">&#x27;t have a Docker ID, head over to https://hub.docker.com to create one.</span>
+<span class="hljs-string">Username: yourname</span>
+<span class="hljs-string">Password: </span>
+<span class="hljs-string">Error saving credentials: error storing credentials - err: exec: &quot;docker-credential-osxkeychain&quot;: executable file not found in $PATH, out: ``</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">// rm ~/.docker/config.json.</span>
+<span class="hljs-string">// 可以解决上述错误</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">localhost:psweb zhuyangze$ docker login</span>
+<span class="hljs-string">Login with your Docker ID to push and pull images from Docker Hub. If you don&#x27;</span>t have a Docker ID, head over to https://hub.docker.com to create one.
+Username: yourname
+Password: 
+WARNING! Your password will be stored unencrypted <span class="hljs-keyword">in</span> /Users/xxxx/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/<span class="hljs-comment">#credentials-store</span>
+
+Login Succeeded</code></pre></div>
+
+<p>推送Docker镜像之前，不需要为镜像打标签，Docker在镜像推送过程中需要如下信息：</p>
+<ul>
+<li>Registry（镜像仓库服务），默认值：docker.io</li>
+<li>Repository（镜像仓库），无默认值</li>
+<li>Tag（镜像标签），默认值：latest</li>
+</ul>
+<h4 id="为镜像打标签"><a href="#为镜像打标签" class="headerlink" title="为镜像打标签"></a>为镜像打标签</h4><p><code>docker image tag &lt;current-tag&gt; &lt;new-tag&gt;</code><br>为指定的镜像添加一个额外的标签，并且不需要覆盖已经存在的标签。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image tag web:latest mrlingchen/web:latest
+localhost:psweb xxxx$ docker image ls
+REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
+web                                                    latest              8a31255e74a1        32 minutes ago      76.2MB
+mrlingchen/web                                         latest              8a31255e74a1        32 minutes ago      76.2MB</code></pre></div>
+
+<p>推送镜像到Docker Hub</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image push mrlingchen/web:latest
+The push refers to repository [docker.io/mrlingchen/web]
+3c826da67148: Pushed 
+517a19fd4267: Pushed 
+433c1223c0c0: Pushed 
+5216338b40a7: Mounted from library/alpine 
+latest: digest: sha256:3b623c4fc25f83b0e96d863c7d60064e19727e4aa557d220263126f65ad668da size: 1159</code></pre></div>
+
+<p>Dockerfile文件中指令是<strong>不区分大小写</strong>的，但是通常都是采用大写的方式。这样的Dockerfile的可读性会高一些。<br>Docker image build命令会按行来解析Dockerfile中的指令并顺序执行。<br>关于如何区分命令是否会新建镜像层，一个基本的原则是，如果指令的作用是向镜像中增添新的文件或者程序，那么这条指令就会新建镜像层；如果只是告诉Docker如何完成构建或者如何运行应用程序，那么就只会增加镜像的元数据。</p>
+<h3 id="查看构建镜像过程"><a href="#查看构建镜像过程" class="headerlink" title="查看构建镜像过程"></a>查看构建镜像过程</h3><p><code>docker image history</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image <span class="hljs-built_in">history</span> web:latest
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+8a31255e74a1        24 hours ago        /bin/sh -c <span class="hljs-comment">#(nop)  ENTRYPOINT [&quot;node&quot; &quot;./app…   0B                  </span>
+0f4af4a14d13        24 hours ago        /bin/sh -c <span class="hljs-comment">#(nop)  EXPOSE 8080                  0B                  </span>
+fbd86f0eea99        24 hours ago        /bin/sh -c npm install                          20.7MB              
+ad8ccb0f4716        24 hours ago        /bin/sh -c <span class="hljs-comment">#(nop) WORKDIR /src                  0B                  </span>
+3b1b01e51d16        24 hours ago        /bin/sh -c <span class="hljs-comment">#(nop) COPY dir:a1bb21301f1b629e0…   2.29kB              </span>
+fa0d1c42c45d        24 hours ago        /bin/sh -c apk add --update nodejs nodejs-npm   49.9MB              
+480c0e286f41        24 hours ago        /bin/sh -c <span class="hljs-comment">#(nop)  LABEL maintainer=nigelpou…   0B                  </span>
+e7d92cdc71fe        2 months ago        /bin/sh -c <span class="hljs-comment">#(nop)  CMD [&quot;/bin/sh&quot;]              0B                  </span>
+&lt;missing&gt;           2 months ago        /bin/sh -c <span class="hljs-comment">#(nop) ADD file:e69d441d729412d24…   5.59MB</span>
+
+// size不为0的行，指令会新建镜像层，size为0的行只是在镜像中新增了元数据信息</code></pre></div>
+
+<p><code>docker image inspect</code>命令也会确认出新建的镜像层</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image inspect web:latest
+
+...
+<span class="hljs-string">&quot;RootFS&quot;</span>: &#123;
+            <span class="hljs-string">&quot;Type&quot;</span>: <span class="hljs-string">&quot;layers&quot;</span>,
+            <span class="hljs-string">&quot;Layers&quot;</span>: [
+                <span class="hljs-string">&quot;sha256:5216338b40a7b96416b8b9858974bbe4acc3096ee60acbc4dfb1ee02aecceb10&quot;</span>,
+                <span class="hljs-string">&quot;sha256:433c1223c0c01ced5f0e3e6af341d360c54c98d368210c2cee38da91b42a3dda&quot;</span>,
+                <span class="hljs-string">&quot;sha256:517a19fd426774ed21a6b147880cf80fdc215d2e18f4af16687a7b9bf65e0b89&quot;</span>,
+                <span class="hljs-string">&quot;sha256:3c826da671482f888974a97a0176c3dc7ea3c88b4651c278f40f73c9419001b6&quot;</span>
+            ]
+        &#125;,
+...</code></pre></div>
+
+<h3 id="生产环境中的多阶段构建"><a href="#生产环境中的多阶段构建" class="headerlink" title="生产环境中的多阶段构建"></a>生产环境中的多阶段构建</h3><p>对于Docker镜像来说，过大的体积并不好。<br>越大则越慢，这就意味着更难使用，而且可能更加脆弱，更容易遭受攻击。<br>Docker镜像应该尽量小。对于生产环境镜像来说，目标是将其缩小到仅包含运行应用所必需的内容即可。</p>
+<p>建造者模式（Builder Pattern）</p>
+<p>开发者通常不会在构建完成后进行清理。<br>建造者模式需要至少两个Dockerfile，一个用于开发环境，一个用于生产环境。<br><strong>多阶段构建（Multi-Stage Build）</strong>是一种更好的方式！<br>多阶段构建能够在不增加复杂性的情况下优化构建过程。</p>
+<div class="hljs"><pre><code class="hljs bash">$ cat Dockerfile
+
+<span class="hljs-comment"># 阶段一</span>
+FROM node:latest AS storefront
+WORKDIR /usr/src/atsea/app/react-app
+COPY react-app .
+RUN npm install
+RUN npm run build
+
+<span class="hljs-comment"># 阶段二</span>
+FROM maven:latest AS appserver
+WORKDIR /usr/src/atsea
+COPY pom.xml .
+RUN mvn -B -f pom.xml -s /usr/share/maven/ref/settings-docker.xml dependency:resolve
+COPY . .
+RUN mvn -B -s /usr/share/maven/ref/settings-docker.xml package -DskipTests
+
+<span class="hljs-comment"># 阶段三</span>
+FROM java:8-jdk-alpine
+RUN adduser -Dh /home/gordon gordon
+WORKDIR /static
+COPY --from=storefront /usr/src/atsea/app/react-app/build/ .
+WORKDIR /app
+COPY --from=appserver /usr/src/atsea/target/AtSea-0.0.1-SNAPSHOT.jar .
+ENTRYPOINT [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app/AtSea-0.0.1-SNAPSHOT.jar&quot;</span>]
+CMD [<span class="hljs-string">&quot;--spring.profiles.active=postgres&quot;</span>]</code></pre></div>
+
+<p>构建命令</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image build -t multi:stage .</code></pre></div>
+
+<p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/containerizing/">containerizing</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/19/docker-compose/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker Compose部署应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/17/docker-container/">
+                        <span class="hidden-mobile">Docker容器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker应用的容器化&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

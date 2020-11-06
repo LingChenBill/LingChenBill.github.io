@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Python Head-First学习 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-05-14 20:54">
+                    May 14, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    6.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    116
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Python-Head-First学习"><a href="#Python-Head-First学习" class="headerlink" title="Python Head-First学习"></a>Python Head-First学习</h2><h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>列表读取</p>
+<div class="hljs"><pre><code class="hljs python">cast = [<span class="hljs-string">&quot;Cleese&quot;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>]
+print(cast)
+print(<span class="hljs-built_in">len</span>(cast))
+print(cast[<span class="hljs-number">1</span>])
+<span class="hljs-comment"># 末尾添加元素</span>
+cast.append(<span class="hljs-string">&quot;Gilliam&quot;</span>)
+<span class="hljs-comment"># 输出</span>
+[<span class="hljs-string">&#x27;Cleese&#x27;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>]
+<span class="hljs-number">4</span>
+Palin
+[<span class="hljs-string">&#x27;Cleese&#x27;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>, <span class="hljs-string">&#x27;Gilliam&#x27;</span>]</code></pre></div>
+
+<p>添加列表</p>
+<div class="hljs"><pre><code class="hljs python">cast = [<span class="hljs-string">&quot;Cleese&quot;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>]
+cast.extend([<span class="hljs-string">&quot;Gilliam&quot;</span>, <span class="hljs-string">&quot;Chapman&quot;</span>])
+print(cast)
+<span class="hljs-comment"># 输出</span>
+[<span class="hljs-string">&#x27;Cleese&#x27;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>, <span class="hljs-string">&#x27;Gilliam&#x27;</span>, <span class="hljs-string">&#x27;Chapman&#x27;</span>]
+<span class="hljs-comment"># cast.insert(0, &quot;Chapman&quot;)</span></code></pre></div>
+
+<p>删除</p>
+<div class="hljs"><pre><code class="hljs python">cast = [<span class="hljs-string">&#x27;Cleese&#x27;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>, <span class="hljs-string">&#x27;Gilliam&#x27;</span>]
+<span class="hljs-comment"># 删除末尾数据</span>
+cast.pop()
+<span class="hljs-comment"># cast.remove(&quot;Chapman&quot;)</span>
+print(cast)
+// 输出
+[<span class="hljs-string">&#x27;Cleese&#x27;</span>, <span class="hljs-string">&#x27;Palin&#x27;</span>, <span class="hljs-string">&#x27;Jones&#x27;</span>, <span class="hljs-string">&#x27;Idle&#x27;</span>]</code></pre></div>
+
+<h3 id="列表迭代"><a href="#列表迭代" class="headerlink" title="列表迭代"></a>列表迭代</h3><div class="hljs"><pre><code class="hljs python">movies = [<span class="hljs-string">&quot;The Holy Grail&quot;</span>, <span class="hljs-number">1975</span>, <span class="hljs-string">&quot;Terry Jones &amp; Terry Gilliam&quot;</span>, <span class="hljs-number">91</span>,
+          [<span class="hljs-string">&quot;Graham Chapman&quot;</span>,
+           [<span class="hljs-string">&quot;Michael Palin&quot;</span>, <span class="hljs-string">&quot;John Cleese&quot;</span>, <span class="hljs-string">&quot;Terry Gilliam&quot;</span>, <span class="hljs-string">&quot;Eric Idle&quot;</span>, <span class="hljs-string">&quot;Terry Jones&quot;</span>]]]
+print(movies)
+print(movies[<span class="hljs-number">4</span>][<span class="hljs-number">1</span>][<span class="hljs-number">3</span>])
+
+print(<span class="hljs-string">&quot;遍历内嵌列表：&quot;</span>)
+<span class="hljs-keyword">for</span> each_item <span class="hljs-keyword">in</span> movies:
+    print(each_item)
+<span class="hljs-comment"># 输出</span>
+[<span class="hljs-string">&#x27;The Holy Grail&#x27;</span>, <span class="hljs-number">1975</span>, <span class="hljs-string">&#x27;Terry Jones &amp; Terry Gilliam&#x27;</span>, <span class="hljs-number">91</span>, [<span class="hljs-string">&#x27;Graham Chapman&#x27;</span>, [<span class="hljs-string">&#x27;Michael Palin&#x27;</span>, <span class="hljs-string">&#x27;John Cleese&#x27;</span>, <span class="hljs-string">&#x27;Terry Gilliam&#x27;</span>, <span class="hljs-string">&#x27;Eric Idle&#x27;</span>, <span class="hljs-string">&#x27;Terry Jones&#x27;</span>]]]
+Eric Idle
+遍历内嵌列表：
+The Holy Grail
+<span class="hljs-number">1975</span>
+Terry Jones &amp; Terry Gilliam
+<span class="hljs-number">91</span>
+[<span class="hljs-string">&#x27;Graham Chapman&#x27;</span>, [<span class="hljs-string">&#x27;Michael Palin&#x27;</span>, <span class="hljs-string">&#x27;John Cleese&#x27;</span>, <span class="hljs-string">&#x27;Terry Gilliam&#x27;</span>, <span class="hljs-string">&#x27;Eric Idle&#x27;</span>, <span class="hljs-string">&#x27;Terry Jones&#x27;</span>]]</code></pre></div>
+
+<p>文件读取</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 通过自定义模块lc_nester来输出列表到指定文件</span>
+<span class="hljs-keyword">import</span> lc_nester
+
+man = []
+other = []
+
+<span class="hljs-keyword">try</span>:
+    data = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sketch.txt&#x27;</span>)
+    <span class="hljs-comment"># 使用with语句来处理文件</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sketch.txt&#x27;</span>) <span class="hljs-keyword">as</span> data:
+        <span class="hljs-keyword">for</span> each_line <span class="hljs-keyword">in</span> data:
+            <span class="hljs-keyword">try</span>:
+                (role, line_spoken) = each_line.split(<span class="hljs-string">&#x27;:&#x27;</span>, <span class="hljs-number">1</span>)
+                <span class="hljs-comment"># 删除行中不需要的空白符</span>
+                line_spoken = line_spoken.strip()
+                <span class="hljs-keyword">if</span> role == <span class="hljs-string">&#x27;Man&#x27;</span>:
+                    man.append(line_spoken)
+                <span class="hljs-keyword">elif</span> role == <span class="hljs-string">&#x27;Other Man&#x27;</span>:
+                    other.append(line_spoken)
+            <span class="hljs-keyword">except</span> ValueError:
+                <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+    print(<span class="hljs-string">&quot;The datafile is missing: &quot;</span>, <span class="hljs-built_in">str</span>(err))
+
+print(<span class="hljs-string">&#x27;Man: &#x27;</span>, man)
+print(<span class="hljs-string">&#x27;Other Man: &#x27;</span>, other)
+
+<span class="hljs-comment"># 写入文件</span>
+<span class="hljs-keyword">try</span>:
+
+    <span class="hljs-comment"># 并行处理，使用，号隔开</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;man_data_nester.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> man_file, <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;other_data_nester.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> other_file:
+        <span class="hljs-comment"># print(man, file=man_file)</span>
+        <span class="hljs-comment"># print(other, file=other_file)</span>
+        lc_nester.print_lol(man, out=man_file)
+        lc_nester.print_lol(other, out=other_file)
+
+
+<span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+    print(<span class="hljs-string">&#x27;File Error: &#x27;</span>, <span class="hljs-built_in">str</span>(err))</code></pre></div>
+
+<h3 id="自定义模块"><a href="#自定义模块" class="headerlink" title="自定义模块"></a>自定义模块</h3><p>在同一个目录下先准备好模块文件lc_nester.py</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 将列表输出到文件或者到屏幕</span>
+<span class="hljs-keyword">import</span> sys
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_lol</span>(<span class="hljs-params">the_list, indent=<span class="hljs-literal">False</span>, level=<span class="hljs-number">0</span>, out=sys.stdout</span>):</span>
+    <span class="hljs-keyword">for</span> each_item <span class="hljs-keyword">in</span> the_list:
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(each_item, <span class="hljs-built_in">list</span>):
+            print_lol(each_item, indent, level + <span class="hljs-number">1</span>, out)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">if</span> indent:
+                <span class="hljs-keyword">for</span> tab_stop <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level):
+                    print(<span class="hljs-string">&quot;\t&quot;</span>, end=<span class="hljs-string">&#x27;&#x27;</span>, file=out)
+            print(each_item, file=out)</code></pre></div>
+
+<h4 id="打包和安装自定义模块"><a href="#打包和安装自定义模块" class="headerlink" title="打包和安装自定义模块"></a>打包和安装自定义模块</h4><p><code>python3 setup.py sdist</code><br><code>python3 setup.py install</code></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 打包</span>
+$ python3 setup.py sdist
+running sdist
+running check
+warning: sdist: manifest template <span class="hljs-string">&#x27;MANIFEST.in&#x27;</span> does <span class="hljs-keyword">not</span> exist (using default file <span class="hljs-built_in">list</span>)
+
+warning: sdist: standard file <span class="hljs-keyword">not</span> found: should have one of README, README.txt
+
+writing manifest file <span class="hljs-string">&#x27;MANIFEST&#x27;</span>
+creating lc_nester<span class="hljs-number">-1.3</span><span class="hljs-number">.0</span>
+making hard links <span class="hljs-keyword">in</span> lc_nester<span class="hljs-number">-1.3</span><span class="hljs-number">.0</span>...
+hard linking lc_nester.py -&gt; lc_nester-1.3.0
+hard linking setup.py -&gt; lc_nester-1.3.0
+Creating tar archive
+removing <span class="hljs-string">&#x27;lc_nester-1.3.0&#x27;</span> (<span class="hljs-keyword">and</span> everything under it)
+<span class="hljs-comment"># 安装</span>
+$ python3 setup.py install
+running install
+running build
+running build_py
+running install_lib
+running install_egg_info
+Removing /Users/user_name/PycharmPro/aconda/lib/python3<span class="hljs-number">.6</span>/site-packages/lc_nester<span class="hljs-number">-1.3</span><span class="hljs-number">.0</span>-py3<span class="hljs-number">.6</span>.egg-info
+Writing /Users/user_name/PycharmPro/aconda/lib/python3<span class="hljs-number">.6</span>/site-packages/lc_nester<span class="hljs-number">-1.3</span><span class="hljs-number">.0</span>-py3<span class="hljs-number">.6</span>.egg-info</code></pre></div>
+
+<h4 id="引用自定义模块"><a href="#引用自定义模块" class="headerlink" title="引用自定义模块"></a>引用自定义模块</h4><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 通过自定义模块lc_nester来输出列表到指定文件</span>
+<span class="hljs-keyword">import</span> lc_nester
+
+man = []
+other = []
+
+<span class="hljs-keyword">try</span>:
+    data = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sketch.txt&#x27;</span>)
+    <span class="hljs-comment"># 使用with语句来处理文件</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sketch.txt&#x27;</span>) <span class="hljs-keyword">as</span> data:
+        <span class="hljs-keyword">for</span> each_line <span class="hljs-keyword">in</span> data:
+            <span class="hljs-keyword">try</span>:
+                (role, line_spoken) = each_line.split(<span class="hljs-string">&#x27;:&#x27;</span>, <span class="hljs-number">1</span>)
+                <span class="hljs-comment"># 删除行中不需要的空白符</span>
+                line_spoken = line_spoken.strip()
+                <span class="hljs-keyword">if</span> role == <span class="hljs-string">&#x27;Man&#x27;</span>:
+                    man.append(line_spoken)
+                <span class="hljs-keyword">elif</span> role == <span class="hljs-string">&#x27;Other Man&#x27;</span>:
+                    other.append(line_spoken)
+            <span class="hljs-keyword">except</span> ValueError:
+                <span class="hljs-keyword">pass</span>
+<span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+    print(<span class="hljs-string">&quot;The datafile is missing: &quot;</span>, <span class="hljs-built_in">str</span>(err))
+
+print(<span class="hljs-string">&#x27;Man: &#x27;</span>, man)
+print(<span class="hljs-string">&#x27;Other Man: &#x27;</span>, other)
+
+<span class="hljs-comment"># 写入文件</span>
+<span class="hljs-keyword">try</span>:
+
+    <span class="hljs-comment"># 并行处理，使用，号隔开</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;man_data_nester.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> man_file, <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;other_data_nester.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> other_file:
+        <span class="hljs-comment"># print(man, file=man_file)</span>
+        <span class="hljs-comment"># print(other, file=other_file)</span>
+        lc_nester.print_lol(man, out=man_file)
+        lc_nester.print_lol(other, out=other_file)
+<span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+    print(<span class="hljs-string">&#x27;File Error: &#x27;</span>, <span class="hljs-built_in">str</span>(err))
+<span class="hljs-comment"># 输出</span>
+Man:  [<span class="hljs-string">&#x27;Is this the right room for an argument?&#x27;</span>, <span class="hljs-string">&quot;No you haven&#x27;t!&quot;</span>, <span class="hljs-string">&#x27;When?&#x27;</span>, <span class="hljs-string">&quot;No you didn&#x27;t!&quot;</span>, <span class="hljs-string">&quot;You didn&#x27;t!&quot;</span>, <span class="hljs-string">&#x27;You did not!&#x27;</span>, <span class="hljs-string">&#x27;Ah! (taking out his wallet and paying) Just the five minutes.&#x27;</span>, <span class="hljs-string">&#x27;You most certainly did not!&#x27;</span>, <span class="hljs-string">&quot;Oh no you didn&#x27;t!&quot;</span>, <span class="hljs-string">&quot;Oh no you didn&#x27;t!&quot;</span>, <span class="hljs-string">&quot;Oh look, this isn&#x27;t an argument!&quot;</span>, <span class="hljs-string">&quot;No it isn&#x27;t!&quot;</span>, <span class="hljs-string">&quot;It&#x27;s just contradiction!&quot;</span>, <span class="hljs-string">&#x27;It IS!&#x27;</span>, <span class="hljs-string">&#x27;You just contradicted me!&#x27;</span>, <span class="hljs-string">&#x27;You DID!&#x27;</span>, <span class="hljs-string">&#x27;You did just then!&#x27;</span>, <span class="hljs-string">&#x27;(exasperated) Oh, this is futile!!&#x27;</span>, <span class="hljs-string">&#x27;Yes it is!&#x27;</span>]
+Other Man:  [<span class="hljs-string">&quot;I&#x27;ve told you once.&quot;</span>, <span class="hljs-string">&#x27;Yes I have.&#x27;</span>, <span class="hljs-string">&#x27;Just now.&#x27;</span>, <span class="hljs-string">&#x27;Yes I did!&#x27;</span>, <span class="hljs-string">&quot;I&#x27;m telling you, I did!&quot;</span>, <span class="hljs-string">&quot;Oh I&#x27;m sorry, is this a five minute argument, or the full half hour?&quot;</span>, <span class="hljs-string">&#x27;Just the five minutes. Thank you.&#x27;</span>, <span class="hljs-string">&#x27;Anyway, I did.&#x27;</span>, <span class="hljs-string">&quot;Now let&#x27;s get one thing quite clear: I most definitely told you!&quot;</span>, <span class="hljs-string">&#x27;Oh yes I did!&#x27;</span>, <span class="hljs-string">&#x27;Oh yes I did!&#x27;</span>, <span class="hljs-string">&#x27;Yes it is!&#x27;</span>, <span class="hljs-string">&quot;No it isn&#x27;t!&quot;</span>, <span class="hljs-string">&#x27;It is NOT!&#x27;</span>, <span class="hljs-string">&quot;No I didn&#x27;t!&quot;</span>, <span class="hljs-string">&#x27;No no no!&#x27;</span>, <span class="hljs-string">&#x27;Nonsense!&#x27;</span>, <span class="hljs-string">&quot;No it isn&#x27;t!&quot;</span>]</code></pre></div>
+
+<h3 id="推导列表"><a href="#推导列表" class="headerlink" title="推导列表"></a>推导列表</h3><p>列表推导可以最大限度的简化代码，从右向左看，便于理解。如：<br><code>sorted(set([float(sanitize(t)) for t in james]), reverse=True)[0:3]</code></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 读取4个数据文件至列表，并在屏幕上打印</span>
+
+<span class="hljs-comment"># 列表</span>
+james = []
+julie = []
+mikey = []
+sarah = []
+
+
+<span class="hljs-comment"># 读取文件数据</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_coach_data</span>(<span class="hljs-params">file_name</span>):</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> f:
+            data = f.readline()
+        <span class="hljs-keyword">return</span> data.strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+        print(<span class="hljs-string">&#x27;File IO error: &#x27;</span>, <span class="hljs-built_in">str</span>(err))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+<span class="hljs-comment"># 清洗时间数据</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize</span>(<span class="hljs-params">time_string</span>):</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;-&#x27;</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;:&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;:&#x27;</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> time_string
+    (mins, secs) = time_string.split(splitter)
+
+    <span class="hljs-keyword">return</span> mins + <span class="hljs-string">&#x27;.&#x27;</span> + secs
+
+
+james = get_coach_data(<span class="hljs-string">&#x27;james.txt&#x27;</span>)
+julie = get_coach_data(<span class="hljs-string">&#x27;julie.txt&#x27;</span>)
+mikey = get_coach_data(<span class="hljs-string">&#x27;mikey.txt&#x27;</span>)
+sarah = get_coach_data(<span class="hljs-string">&#x27;sarah.txt&#x27;</span>)
+
+print(<span class="hljs-string">&#x27;james: &#x27;</span>, james)
+print(<span class="hljs-string">&#x27;james set: &#x27;</span>, <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([<span class="hljs-built_in">float</span>(sanitize(t)) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> james]), reverse=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>])
+
+print(<span class="hljs-string">&#x27;julie: &#x27;</span>, julie)
+print(<span class="hljs-string">&#x27;julie set: &#x27;</span>, <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([<span class="hljs-built_in">float</span>(sanitize(t)) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> julie]), reverse=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>])
+print(<span class="hljs-string">&#x27;mikey: &#x27;</span>, mikey)
+print(<span class="hljs-string">&#x27;mikey set: &#x27;</span>, <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([<span class="hljs-built_in">float</span>(sanitize(t)) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> mikey]), reverse=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>])
+print(<span class="hljs-string">&#x27;sarah: &#x27;</span>, sarah)
+print(<span class="hljs-string">&#x27;sarah set: &#x27;</span>, <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([<span class="hljs-built_in">float</span>(sanitize(t)) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> sarah]), reverse=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>])
+<span class="hljs-comment"># 输出</span>
+james:  [<span class="hljs-string">&#x27;2-34&#x27;</span>, <span class="hljs-string">&#x27;3:21&#x27;</span>, <span class="hljs-string">&#x27;2.34&#x27;</span>, <span class="hljs-string">&#x27;2.45&#x27;</span>, <span class="hljs-string">&#x27;3.01&#x27;</span>, <span class="hljs-string">&#x27;2:01&#x27;</span>, <span class="hljs-string">&#x27;2:01&#x27;</span>, <span class="hljs-string">&#x27;3:10&#x27;</span>, <span class="hljs-string">&#x27;2-22&#x27;</span>]
+james <span class="hljs-built_in">set</span>:  [<span class="hljs-number">3.21</span>, <span class="hljs-number">3.1</span>, <span class="hljs-number">3.01</span>]
+julie:  [<span class="hljs-string">&#x27;2.59&#x27;</span>, <span class="hljs-string">&#x27;2.11&#x27;</span>, <span class="hljs-string">&#x27;2:11&#x27;</span>, <span class="hljs-string">&#x27;2:23&#x27;</span>, <span class="hljs-string">&#x27;3-10&#x27;</span>, <span class="hljs-string">&#x27;2-23&#x27;</span>, <span class="hljs-string">&#x27;3:10&#x27;</span>, <span class="hljs-string">&#x27;3.21&#x27;</span>, <span class="hljs-string">&#x27;3-21&#x27;</span>]
+julie <span class="hljs-built_in">set</span>:  [<span class="hljs-number">3.21</span>, <span class="hljs-number">3.1</span>, <span class="hljs-number">2.59</span>]
+mikey:  [<span class="hljs-string">&#x27;2:22&#x27;</span>, <span class="hljs-string">&#x27;3.01&#x27;</span>, <span class="hljs-string">&#x27;3:01&#x27;</span>, <span class="hljs-string">&#x27;3.02&#x27;</span>, <span class="hljs-string">&#x27;3:02&#x27;</span>, <span class="hljs-string">&#x27;3.02&#x27;</span>, <span class="hljs-string">&#x27;3:22&#x27;</span>, <span class="hljs-string">&#x27;2.49&#x27;</span>, <span class="hljs-string">&#x27;2:38&#x27;</span>]
+mikey <span class="hljs-built_in">set</span>:  [<span class="hljs-number">3.22</span>, <span class="hljs-number">3.02</span>, <span class="hljs-number">3.01</span>]
+sarah:  [<span class="hljs-string">&#x27;2:58&#x27;</span>, <span class="hljs-string">&#x27;2.58&#x27;</span>, <span class="hljs-string">&#x27;2:39&#x27;</span>, <span class="hljs-string">&#x27;2-25&#x27;</span>, <span class="hljs-string">&#x27;2-55&#x27;</span>, <span class="hljs-string">&#x27;2:54&#x27;</span>, <span class="hljs-string">&#x27;2.18&#x27;</span>, <span class="hljs-string">&#x27;2:55&#x27;</span>, <span class="hljs-string">&#x27;2:55&#x27;</span>]</code></pre></div>
+
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><p>字典是一个内置的数据结构（内置于Python中），允许将数据与键而不是数字关联。这样可以使内存中的数据与实际数据的结构保持一致。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 读取4个数据文件至列表，排序后，放至字典数据结构中, 将处理细节放至函数中</span>
+
+<span class="hljs-comment"># 字典</span>
+james = &#123;&#125;
+julie = &#123;&#125;
+mikey = &#123;&#125;
+sarah = &#123;&#125;
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_coach_data</span>(<span class="hljs-params">file_name</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    读取文件数据，返回一个字典结构</span>
+<span class="hljs-string">    :param file_name:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> f:
+            data = f.readline()
+        file_list = data.strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+
+        <span class="hljs-comment"># data_dic = dict()</span>
+        <span class="hljs-comment"># data_dic[&#x27;name&#x27;] = file_list.pop(0)</span>
+        <span class="hljs-comment"># data_dic[&#x27;birthday&#x27;] = file_list.pop(0)</span>
+        <span class="hljs-comment"># # data_dic[&#x27;time&#x27;] = file_list</span>
+        <span class="hljs-comment"># data_dic[&#x27;time&#x27;] = str(sorted(set([sanitize(t) for t in file_list]))[0:3])</span>
+        <span class="hljs-comment"># return data_dic</span>
+        <span class="hljs-keyword">return</span> &#123;
+            <span class="hljs-string">&#x27;name&#x27;</span>: file_list.pop(<span class="hljs-number">0</span>),
+            <span class="hljs-string">&#x27;birthday&#x27;</span>: file_list.pop(<span class="hljs-number">0</span>),
+            <span class="hljs-string">&#x27;time&#x27;</span>: <span class="hljs-built_in">str</span>(<span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([sanitize(t) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> file_list]))[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>])
+        &#125;
+    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+        print(<span class="hljs-string">&#x27;File IO error: &#x27;</span>, <span class="hljs-built_in">str</span>(err))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+<span class="hljs-comment"># 清洗时间数据</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize</span>(<span class="hljs-params">time_string</span>):</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;-&#x27;</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;:&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;:&#x27;</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> time_string
+    (mins, secs) = time_string.split(splitter)
+
+    <span class="hljs-keyword">return</span> mins + <span class="hljs-string">&#x27;.&#x27;</span> + secs
+
+
+james = get_coach_data(<span class="hljs-string">&#x27;james2.txt&#x27;</span>)
+print(<span class="hljs-string">&#x27;james: &#x27;</span>, james)
+print(james[<span class="hljs-string">&#x27;name&#x27;</span>] + <span class="hljs-string">&quot;&#x27;s faster times are: &quot;</span> + james[<span class="hljs-string">&#x27;time&#x27;</span>])
+
+julie = get_coach_data(<span class="hljs-string">&#x27;julie2.txt&#x27;</span>)
+print(<span class="hljs-string">&#x27;julie: &#x27;</span>, julie)
+print(julie[<span class="hljs-string">&#x27;name&#x27;</span>] + <span class="hljs-string">&quot;&#x27;s faster times are: &quot;</span> + julie[<span class="hljs-string">&#x27;time&#x27;</span>])
+
+mikey = get_coach_data(<span class="hljs-string">&#x27;mikey2.txt&#x27;</span>)
+print(<span class="hljs-string">&#x27;mikey: &#x27;</span>, mikey)
+print(mikey[<span class="hljs-string">&#x27;name&#x27;</span>] + <span class="hljs-string">&quot;&#x27;s faster times are: &quot;</span> + mikey[<span class="hljs-string">&#x27;time&#x27;</span>])
+
+sarah = get_coach_data(<span class="hljs-string">&#x27;sarah2.txt&#x27;</span>)
+print(<span class="hljs-string">&#x27;sarah: &#x27;</span>, sarah)
+print(sarah[<span class="hljs-string">&#x27;name&#x27;</span>] + <span class="hljs-string">&quot;&#x27;s faster times are: &quot;</span> + sarah[<span class="hljs-string">&#x27;time&#x27;</span>])
+<span class="hljs-comment"># 输出</span>
+james:  &#123;<span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;James Lee&#x27;</span>, <span class="hljs-string">&#x27;birthday&#x27;</span>: <span class="hljs-string">&#x27;2002-3-14&#x27;</span>, <span class="hljs-string">&#x27;time&#x27;</span>: <span class="hljs-string">&quot;[&#x27;2.01&#x27;, &#x27;2.16&#x27;, &#x27;2.22&#x27;]&quot;</span>&#125;
+James Lee<span class="hljs-string">&#x27;s faster times are: [&#x27;</span><span class="hljs-number">2.01</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.16</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">julie:  &#123;&#x27;</span>name<span class="hljs-string">&#x27;: &#x27;</span>Julie Jones<span class="hljs-string">&#x27;, &#x27;</span>birthday<span class="hljs-string">&#x27;: &#x27;</span><span class="hljs-number">2002</span><span class="hljs-number">-8</span><span class="hljs-number">-17</span><span class="hljs-string">&#x27;, &#x27;</span>time<span class="hljs-string">&#x27;: &quot;[&#x27;</span><span class="hljs-number">2.11</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.23</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.59</span><span class="hljs-string">&#x27;]&quot;&#125;</span>
+<span class="hljs-string">Julie Jones&#x27;</span>s faster times are: [<span class="hljs-string">&#x27;2.11&#x27;</span>, <span class="hljs-string">&#x27;2.23&#x27;</span>, <span class="hljs-string">&#x27;2.59&#x27;</span>]
+mikey:  &#123;<span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-string">&#x27;birthday&#x27;</span>: <span class="hljs-string">&#x27;2002-2-24&#x27;</span>, <span class="hljs-string">&#x27;time&#x27;</span>: <span class="hljs-string">&quot;[&#x27;2.22&#x27;, &#x27;2.31&#x27;, &#x27;2.38&#x27;]&quot;</span>&#125;
+Mikey McManus<span class="hljs-string">&#x27;s faster times are: [&#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.31</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.38</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">sarah:  &#123;&#x27;</span>name<span class="hljs-string">&#x27;: &#x27;</span>Sarah Sweeney<span class="hljs-string">&#x27;, &#x27;</span>birthday<span class="hljs-string">&#x27;: &#x27;</span><span class="hljs-number">2002</span><span class="hljs-number">-6</span><span class="hljs-number">-17</span><span class="hljs-string">&#x27;, &#x27;</span>time<span class="hljs-string">&#x27;: &quot;[&#x27;</span><span class="hljs-number">2.18</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.21</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;]&quot;&#125;</span>
+<span class="hljs-string">Sarah Sweeney&#x27;</span>s faster times are: [<span class="hljs-string">&#x27;2.18&#x27;</span>, <span class="hljs-string">&#x27;2.21&#x27;</span>, <span class="hljs-string">&#x27;2.22&#x27;</span>]</code></pre></div>
+
+<h3 id="对象类"><a href="#对象类" class="headerlink" title="对象类"></a>对象类</h3><p>Python遵循标准的面向对象编程模型，提供了一种方法允许将代码及其处理的数据定义为一个类。<br>就可以用它来创建（或实例化）数据对象，它会继承类的特性。</p>
+<ul>
+<li>类的方法：对象代码</li>
+<li>类的属性：数据</li>
+<li>实例：实例化的数据对象</li>
+</ul>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 定义一个运动数据类</span>
+<span class="hljs-comment"># 类的属性最好保存原始数据，需要计算得出的数据最好通过方法来实现，保持灵活与扩展</span>
+<span class="hljs-comment"># 通常把代码与数据封装到一个定制类中。方便维护</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Athlete</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    选手类，包含姓名，年龄，运动时间</span>
+<span class="hljs-string">    类的好处，更多功能 = 更多方法，如top3()</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, a_name, a_dob=<span class="hljs-literal">None</span>, a_times=[]</span>):</span>
+        self.name = a_name
+        self.dob = a_dob
+        self.times = a_times
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">top3</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">        取出最快的三个时间</span>
+<span class="hljs-string">        格式化，去重，排序，转换成字符串</span>
+<span class="hljs-string">        :return: 返回最好是一个原始列表，你不知道调用者怎么处理这个列表，不要假设是字符串</span>
+<span class="hljs-string">        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># return str(sorted(set([sanitize(t) for t in self.times]))[0:3])</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([sanitize(t) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> self.times]))[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_time</span>(<span class="hljs-params">self, a_time</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">        将一个额外的计时值追加到选手的计时数据</span>
+<span class="hljs-string">        :param a_time:</span>
+<span class="hljs-string">        :return:</span>
+<span class="hljs-string">        &quot;&quot;&quot;</span>
+        self.times.append(a_time)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_times</span>(<span class="hljs-params">self, a_times</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">        会用一个或多个计时值（提供为一个列表），来扩展一个选手的计时数据</span>
+<span class="hljs-string">        运用extend方法</span>
+<span class="hljs-string">        :param a_times:</span>
+<span class="hljs-string">        :return:</span>
+<span class="hljs-string">        &quot;&quot;&quot;</span>
+        self.times.extend(a_times)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize</span>(<span class="hljs-params">time_string</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    清洗时间数据</span>
+<span class="hljs-string">    :param time_string:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;-&#x27;</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;:&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;:&#x27;</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> time_string
+    (mins, secs) = time_string.split(splitter)
+
+    <span class="hljs-keyword">return</span> mins + <span class="hljs-string">&#x27;.&#x27;</span> + secs
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_coach_data</span>(<span class="hljs-params">file_name</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    读取文本数据</span>
+<span class="hljs-string">    :param file_name:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> f:
+            data = f.readline()
+        <span class="hljs-comment"># 去空白符，切割</span>
+        templ = data.strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+
+        <span class="hljs-keyword">return</span> Athlete(templ.pop(<span class="hljs-number">0</span>), templ.pop(<span class="hljs-number">0</span>), templ)
+        <span class="hljs-comment"># templ_name = templ.pop(0)</span>
+        <span class="hljs-comment"># templ_dob = templ.pop(0)</span>
+        <span class="hljs-comment"># templ_times = templ</span>
+        <span class="hljs-comment"># print(&quot;templ&#x27;s times: &quot;, templ)</span>
+        <span class="hljs-comment"># return Athlete(templ_name, templ_dob, templ_times)</span>
+    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+        print(<span class="hljs-string">&#x27;File error: &#x27;</span> + <span class="hljs-built_in">str</span>(err))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+<span class="hljs-comment"># 获取数据</span>
+james = get_coach_data(<span class="hljs-string">&#x27;james2.txt&#x27;</span>)
+julie = get_coach_data(<span class="hljs-string">&#x27;julie2.txt&#x27;</span>)
+mikey = get_coach_data(<span class="hljs-string">&#x27;mikey2.txt&#x27;</span>)
+sarah = get_coach_data(<span class="hljs-string">&#x27;sarah2.txt&#x27;</span>)
+
+print(james.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(james.top3()))
+print(julie.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(julie.top3()))
+print(mikey.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(mikey.top3()))
+print(sarah.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(sarah.top3()))
+
+<span class="hljs-comment"># 输出</span>
+James Lee<span class="hljs-string">&#x27;s fastest times are: [&#x27;</span><span class="hljs-number">2.01</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.16</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">Julie Jones&#x27;</span>s fastest times are: [<span class="hljs-string">&#x27;2.11&#x27;</span>, <span class="hljs-string">&#x27;2.23&#x27;</span>, <span class="hljs-string">&#x27;2.59&#x27;</span>]
+Mikey McManus<span class="hljs-string">&#x27;s fastest times are: [&#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.31</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.38</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">Sarah Sweeney&#x27;</span>s fastest times are: [<span class="hljs-string">&#x27;2.18&#x27;</span>, <span class="hljs-string">&#x27;2.21&#x27;</span>, <span class="hljs-string">&#x27;2.22&#x27;</span>]</code></pre></div>
+
+<h3 id="对象类继承内置对象"><a href="#对象类继承内置对象" class="headerlink" title="对象类继承内置对象"></a>对象类继承内置对象</h3><p>Python的class还允许通过继承现有的其他类来创建一个类，可包括用list，set和dict提供的Python内置数据结构类。通过继承来创建的这些类为子类。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Mark: 利用继承重写coach Athlete类，继承列表</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AthleteList</span>(<span class="hljs-params"><span class="hljs-built_in">list</span></span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    初始化选手信息，继承list</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, a_name, a_dob=<span class="hljs-literal">None</span>, a_times=[]</span>):</span>
+        <span class="hljs-built_in">list</span>.__init__([])
+        self.name = a_name
+        self.dob = a_dob
+        <span class="hljs-comment"># 利用列表</span>
+        self.extend(a_times)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">top3</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">        获取最快的3个运动时间</span>
+<span class="hljs-string">        :return:</span>
+<span class="hljs-string">        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># 数据本身是计时数据，不再需要times属性</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>([sanitize(t) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> self]))[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize</span>(<span class="hljs-params">time_string</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    清洗时间数据</span>
+<span class="hljs-string">    :param time_string:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;-&#x27;</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;:&#x27;</span> <span class="hljs-keyword">in</span> time_string:
+        splitter = <span class="hljs-string">&#x27;:&#x27;</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> time_string
+    (mins, secs) = time_string.split(splitter)
+
+    <span class="hljs-keyword">return</span> mins + <span class="hljs-string">&#x27;.&#x27;</span> + secs
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_coach_data</span>(<span class="hljs-params">file_name</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    获取选手运动数据</span>
+<span class="hljs-string">    :param file_name:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name) <span class="hljs-keyword">as</span> f:
+            data = f.readline()
+        templ = data.strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+        <span class="hljs-keyword">return</span> AthleteList(templ.pop(<span class="hljs-number">0</span>), templ.pop(<span class="hljs-number">0</span>), templ)
+    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> err:
+        print(<span class="hljs-string">&quot;File error: &quot;</span> + <span class="hljs-built_in">str</span>(err))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+
+james = get_coach_data(<span class="hljs-string">&quot;james2.txt&quot;</span>)
+julie = get_coach_data(<span class="hljs-string">&quot;julie2.txt&quot;</span>)
+mikey = get_coach_data(<span class="hljs-string">&quot;mikey2.txt&quot;</span>)
+sarah = get_coach_data(<span class="hljs-string">&quot;sarah2.txt&quot;</span>)
+
+print(james.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(james.top3()))
+print(julie.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(julie.top3()))
+print(mikey.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(mikey.top3()))
+print(sarah.name + <span class="hljs-string">&quot;&#x27;s fastest times are: &quot;</span> + <span class="hljs-built_in">str</span>(sarah.top3()))
+
+<span class="hljs-comment"># 输出</span>
+James Lee<span class="hljs-string">&#x27;s fastest times are: [&#x27;</span><span class="hljs-number">2.01</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.16</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">Julie Jones&#x27;</span>s fastest times are: [<span class="hljs-string">&#x27;2.11&#x27;</span>, <span class="hljs-string">&#x27;2.23&#x27;</span>, <span class="hljs-string">&#x27;2.59&#x27;</span>]
+Mikey McManus<span class="hljs-string">&#x27;s fastest times are: [&#x27;</span><span class="hljs-number">2.22</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.31</span><span class="hljs-string">&#x27;, &#x27;</span><span class="hljs-number">2.38</span><span class="hljs-string">&#x27;]</span>
+<span class="hljs-string">Sarah Sweeney&#x27;</span>s fastest times are: [<span class="hljs-string">&#x27;2.18&#x27;</span>, <span class="hljs-string">&#x27;2.21&#x27;</span>, <span class="hljs-string">&#x27;2.22&#x27;</span>]</code></pre></div>
+
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> sqlite3
+
+db_name = <span class="hljs-string">&#x27;coachdata.sqlite&#x27;</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_names_from_store</span>():</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    从sqlite数据库的athletes表中获取姓名信息</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    connection = sqlite3.connect(db_name)
+    cursor = connection.cursor()
+    <span class="hljs-comment"># 抽取数据</span>
+    results = cursor.execute(<span class="hljs-string">&quot;&quot;&quot;SELECT name FROM athletes&quot;&quot;&quot;</span>)
+    response = [row[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> results.fetchall()]
+    connection.close()
+
+    <span class="hljs-keyword">return</span> response
+
+
+result_name = get_names_from_store()
+print(result_name)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_names_id_from_store</span>():</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    从sqlite数据库的athletes表中获取姓名和ID信息</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    connection = sqlite3.connect(db_name)
+    cursor = connection.cursor()
+    results = cursor.execute(<span class="hljs-string">&quot;&quot;&quot;SELECT name, id FROM athletes&quot;&quot;&quot;</span>)
+    response = results.fetchall()
+    connection.close()
+
+    <span class="hljs-keyword">return</span> response
+
+
+result_name = get_names_id_from_store()
+print(result_name)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_athlete_from_id</span>(<span class="hljs-params">athlete_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    获取与指定id相关的计时数据</span>
+<span class="hljs-string">    :param athlete_id:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    connection = sqlite3.connect(db_name)
+    cursor = connection.cursor()
+
+    results = cursor.execute(<span class="hljs-string">&quot;&quot;&quot;SELECT name, dob FROM athletes WHERE id=?&quot;&quot;&quot;</span>, (athlete_id,))
+
+    (name, dob) = results.fetchone()
+
+    results = cursor.execute(<span class="hljs-string">&quot;&quot;&quot;SELECT value FROM timing_data WHERE athlete_id=?&quot;&quot;&quot;</span>, (athlete_id,))
+
+    data = [row[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> results.fetchall()]
+
+    connection.close()
+
+    response = &#123;
+        <span class="hljs-string">&#x27;name&#x27;</span>: name,
+        <span class="hljs-string">&#x27;dob&#x27;</span>: dob,
+        <span class="hljs-string">&#x27;data&#x27;</span>: data,
+        <span class="hljs-string">&#x27;top3&#x27;</span>: data[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]
+    &#125;
+
+    <span class="hljs-keyword">return</span> response
+
+
+result_timing = get_athlete_from_id(<span class="hljs-number">2</span>)
+print(result_timing)
+
+<span class="hljs-comment"># 输出</span>
+[<span class="hljs-string">&#x27;James Lee&#x27;</span>, <span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-string">&#x27;Sarah Sweeney&#x27;</span>, <span class="hljs-string">&#x27;Julie Jones&#x27;</span>, <span class="hljs-string">&#x27;James Lee&#x27;</span>, <span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-string">&#x27;Sarah Sweeney&#x27;</span>, <span class="hljs-string">&#x27;Julie Jones&#x27;</span>]
+[(<span class="hljs-string">&#x27;James Lee&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;Sarah Sweeney&#x27;</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;Julie Jones&#x27;</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">&#x27;James Lee&#x27;</span>, <span class="hljs-number">5</span>), (<span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-number">6</span>), (<span class="hljs-string">&#x27;Sarah Sweeney&#x27;</span>, <span class="hljs-number">7</span>), (<span class="hljs-string">&#x27;Julie Jones&#x27;</span>, <span class="hljs-number">8</span>)]
+&#123;<span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;Mikey McManus&#x27;</span>, <span class="hljs-string">&#x27;dob&#x27;</span>: <span class="hljs-string">&#x27;2002-2-24&#x27;</span>, <span class="hljs-string">&#x27;data&#x27;</span>: [<span class="hljs-string">&#x27;2.22&#x27;</span>, <span class="hljs-string">&#x27;2.31&#x27;</span>, <span class="hljs-string">&#x27;2.38&#x27;</span>, <span class="hljs-string">&#x27;2.40&#x27;</span>, <span class="hljs-string">&#x27;2.49&#x27;</span>, <span class="hljs-string">&#x27;3.01&#x27;</span>, <span class="hljs-string">&#x27;3.02&#x27;</span>, <span class="hljs-string">&#x27;3.22&#x27;</span>], <span class="hljs-string">&#x27;top3&#x27;</span>: [<span class="hljs-string">&#x27;2.22&#x27;</span>, <span class="hljs-string">&#x27;2.31&#x27;</span>, <span class="hljs-string">&#x27;2.38&#x27;</span>]&#125;</code></pre></div>
+
+<h3 id="处理复杂数据"><a href="#处理复杂数据" class="headerlink" title="处理复杂数据"></a>处理复杂数据</h3><p>从input读入数据，匹配最近的运动时间数据。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 数据：PaceData.csv</span>
+V02,<span class="hljs-number">84.8</span>,<span class="hljs-number">82.9</span>,<span class="hljs-number">81.1</span>,<span class="hljs-number">79.3</span>,<span class="hljs-number">77.5</span>,<span class="hljs-number">75.8</span>,<span class="hljs-number">74.2</span>,<span class="hljs-number">72.5</span>,<span class="hljs-number">70.9</span>,<span class="hljs-number">69.4</span>,<span class="hljs-number">67.9</span>,<span class="hljs-number">66.4</span>,<span class="hljs-number">64.9</span>,<span class="hljs-number">63.5</span>,<span class="hljs-number">62.1</span>,<span class="hljs-number">60.7</span>,<span class="hljs-number">59.4</span>,<span class="hljs-number">58.1</span>,<span class="hljs-number">56.8</span>,<span class="hljs-number">55.5</span>,<span class="hljs-number">54.3</span>,<span class="hljs-number">53.1</span>,<span class="hljs-number">52</span>,<span class="hljs-number">50.8</span>,<span class="hljs-number">49.7</span>,<span class="hljs-number">48.6</span>,<span class="hljs-number">47.5</span>,<span class="hljs-number">46.5</span>,<span class="hljs-number">45.5</span>,<span class="hljs-number">44.5</span>,<span class="hljs-number">43.5</span>,<span class="hljs-number">42.5</span>,<span class="hljs-number">41.6</span>,<span class="hljs-number">40.7</span>,<span class="hljs-number">39.8</span>,<span class="hljs-number">38.9</span>,<span class="hljs-number">38</span>,<span class="hljs-number">37.2</span>,<span class="hljs-number">36.4</span>,<span class="hljs-number">35.6</span>,<span class="hljs-number">34.8</span>,<span class="hljs-number">34</span>,<span class="hljs-number">33.3</span>,<span class="hljs-number">32.6</span>,<span class="hljs-number">31.8</span>,<span class="hljs-number">31.1</span>,<span class="hljs-number">30.5</span>,<span class="hljs-number">29.8</span>,<span class="hljs-number">29.1</span>,<span class="hljs-number">28.5</span>
+<span class="hljs-number">2</span>mi,<span class="hljs-number">8</span>:<span class="hljs-number">00</span>,<span class="hljs-number">8</span>:<span class="hljs-number">10</span>,<span class="hljs-number">8</span>:<span class="hljs-number">21</span>,<span class="hljs-number">8</span>:<span class="hljs-number">33</span>,<span class="hljs-number">8</span>:<span class="hljs-number">44</span>,<span class="hljs-number">8</span>:<span class="hljs-number">56</span>,<span class="hljs-number">9</span>:<span class="hljs-number">08</span>,<span class="hljs-number">9</span>:<span class="hljs-number">20</span>,<span class="hljs-number">9</span>:<span class="hljs-number">33</span>,<span class="hljs-number">9</span>:<span class="hljs-number">46</span>,<span class="hljs-number">9</span>:<span class="hljs-number">59</span>,<span class="hljs-number">10</span>:<span class="hljs-number">13</span>,<span class="hljs-number">10</span>:<span class="hljs-number">26</span>,<span class="hljs-number">10</span>:<span class="hljs-number">41</span>,<span class="hljs-number">10</span>:<span class="hljs-number">55</span>,<span class="hljs-number">11</span>:<span class="hljs-number">10</span>,<span class="hljs-number">11</span>:<span class="hljs-number">25</span>,<span class="hljs-number">11</span>:<span class="hljs-number">40</span>,<span class="hljs-number">11</span>:<span class="hljs-number">56</span>,<span class="hljs-number">12</span>:<span class="hljs-number">12</span>,<span class="hljs-number">12</span>:<span class="hljs-number">29</span>,<span class="hljs-number">12</span>:<span class="hljs-number">45</span>,<span class="hljs-number">13</span>:<span class="hljs-number">03</span>,<span class="hljs-number">13</span>:<span class="hljs-number">20</span>,<span class="hljs-number">13</span>:<span class="hljs-number">38</span>,<span class="hljs-number">13</span>:<span class="hljs-number">57</span>,<span class="hljs-number">14</span>:<span class="hljs-number">16</span>,<span class="hljs-number">14</span>:<span class="hljs-number">35</span>,<span class="hljs-number">14</span>:<span class="hljs-number">54</span>,<span class="hljs-number">15</span>:<span class="hljs-number">15</span>,<span class="hljs-number">15</span>:<span class="hljs-number">35</span>,<span class="hljs-number">15</span>:<span class="hljs-number">56</span>,<span class="hljs-number">16</span>:<span class="hljs-number">18</span>,<span class="hljs-number">16</span>:<span class="hljs-number">40</span>,<span class="hljs-number">17</span>:<span class="hljs-number">02</span>,<span class="hljs-number">17</span>:<span class="hljs-number">25</span>,<span class="hljs-number">17</span>:<span class="hljs-number">49</span>,<span class="hljs-number">18</span>:<span class="hljs-number">13</span>,<span class="hljs-number">18</span>:<span class="hljs-number">38</span>,<span class="hljs-number">19</span>:<span class="hljs-number">03</span>,<span class="hljs-number">19</span>:<span class="hljs-number">28</span>,<span class="hljs-number">19</span>:<span class="hljs-number">55</span>,<span class="hljs-number">20</span>:<span class="hljs-number">22</span>,<span class="hljs-number">20</span>:<span class="hljs-number">49</span>,<span class="hljs-number">21</span>:<span class="hljs-number">17</span>,<span class="hljs-number">21</span>:<span class="hljs-number">46</span>,<span class="hljs-number">22</span>:<span class="hljs-number">15</span>,<span class="hljs-number">22</span>:<span class="hljs-number">45</span>,<span class="hljs-number">23</span>:<span class="hljs-number">16</span>,<span class="hljs-number">23</span>:<span class="hljs-number">48</span>
+<span class="hljs-number">5</span>k,<span class="hljs-number">12</span>:<span class="hljs-number">49</span>,<span class="hljs-number">13</span>:<span class="hljs-number">06</span>,<span class="hljs-number">13</span>:<span class="hljs-number">24</span>,<span class="hljs-number">13</span>:<span class="hljs-number">42</span>,<span class="hljs-number">14</span>:<span class="hljs-number">00</span>,<span class="hljs-number">14</span>:<span class="hljs-number">19</span>,<span class="hljs-number">14</span>:<span class="hljs-number">38</span>,<span class="hljs-number">14</span>:<span class="hljs-number">58</span>,<span class="hljs-number">15</span>:<span class="hljs-number">18</span>,<span class="hljs-number">15</span>:<span class="hljs-number">39</span>,<span class="hljs-number">16</span>:<span class="hljs-number">00</span>,<span class="hljs-number">16</span>:<span class="hljs-number">22</span>,<span class="hljs-number">16</span>:<span class="hljs-number">44</span>,<span class="hljs-number">17</span>:<span class="hljs-number">06</span>,<span class="hljs-number">17</span>:<span class="hljs-number">30</span>,<span class="hljs-number">17</span>:<span class="hljs-number">53</span>,<span class="hljs-number">18</span>:<span class="hljs-number">17</span>,<span class="hljs-number">18</span>:<span class="hljs-number">42</span>,<span class="hljs-number">19</span>:<span class="hljs-number">07</span>,<span class="hljs-number">19</span>:<span class="hljs-number">33</span>,<span class="hljs-number">20</span>:<span class="hljs-number">00</span>,<span class="hljs-number">20</span>:<span class="hljs-number">27</span>,<span class="hljs-number">20</span>:<span class="hljs-number">54</span>,<span class="hljs-number">21</span>:<span class="hljs-number">22</span>,<span class="hljs-number">21</span>:<span class="hljs-number">51</span>,<span class="hljs-number">22</span>:<span class="hljs-number">21</span>,<span class="hljs-number">22</span>:<span class="hljs-number">51</span>,<span class="hljs-number">23</span>:<span class="hljs-number">22</span>,<span class="hljs-number">23</span>:<span class="hljs-number">53</span>,<span class="hljs-number">24</span>:<span class="hljs-number">26</span>,<span class="hljs-number">24</span>:<span class="hljs-number">59</span>,<span class="hljs-number">25</span>:<span class="hljs-number">32</span>,<span class="hljs-number">26</span>:<span class="hljs-number">07</span>,<span class="hljs-number">26</span>:<span class="hljs-number">42</span>,<span class="hljs-number">27</span>:<span class="hljs-number">18</span>,<span class="hljs-number">27</span>:<span class="hljs-number">55</span>,<span class="hljs-number">28</span>:<span class="hljs-number">33</span>,<span class="hljs-number">29</span>:<span class="hljs-number">11</span>,<span class="hljs-number">29</span>:<span class="hljs-number">51</span>,<span class="hljs-number">30</span>:<span class="hljs-number">31</span>,<span class="hljs-number">31</span>:<span class="hljs-number">12</span>,<span class="hljs-number">31</span>:<span class="hljs-number">54</span>,<span class="hljs-number">32</span>:<span class="hljs-number">37</span>,<span class="hljs-number">33</span>:<span class="hljs-number">22</span>,<span class="hljs-number">34</span>:<span class="hljs-number">07</span>,<span class="hljs-number">34</span>:<span class="hljs-number">53</span>,<span class="hljs-number">35</span>:<span class="hljs-number">40</span>,<span class="hljs-number">36</span>:<span class="hljs-number">28</span>,<span class="hljs-number">37</span>:<span class="hljs-number">17</span>,<span class="hljs-number">38</span>:<span class="hljs-number">07</span>
+<span class="hljs-number">5</span>mi,<span class="hljs-number">21</span>:<span class="hljs-number">19</span>,<span class="hljs-number">21</span>:<span class="hljs-number">48</span>,<span class="hljs-number">22</span>:<span class="hljs-number">17</span>,<span class="hljs-number">22</span>:<span class="hljs-number">47</span>,<span class="hljs-number">23</span>:<span class="hljs-number">18</span>,<span class="hljs-number">23</span>:<span class="hljs-number">50</span>,<span class="hljs-number">24</span>:<span class="hljs-number">22</span>,<span class="hljs-number">24</span>:<span class="hljs-number">55</span>,<span class="hljs-number">25</span>:<span class="hljs-number">28</span>,<span class="hljs-number">26</span>:<span class="hljs-number">03</span>,<span class="hljs-number">26</span>:<span class="hljs-number">38</span>,<span class="hljs-number">27</span>:<span class="hljs-number">14</span>,<span class="hljs-number">27</span>:<span class="hljs-number">51</span>,<span class="hljs-number">28</span>:<span class="hljs-number">28</span>,<span class="hljs-number">29</span>:<span class="hljs-number">07</span>,<span class="hljs-number">29</span>:<span class="hljs-number">46</span>,<span class="hljs-number">30</span>:<span class="hljs-number">26</span>,<span class="hljs-number">31</span>:<span class="hljs-number">07</span>,<span class="hljs-number">31</span>:<span class="hljs-number">49</span>,<span class="hljs-number">32</span>:<span class="hljs-number">32</span>,<span class="hljs-number">33</span>:<span class="hljs-number">16</span>,<span class="hljs-number">34</span>:<span class="hljs-number">01</span>,<span class="hljs-number">34</span>:<span class="hljs-number">47</span>,<span class="hljs-number">35</span>:<span class="hljs-number">34</span>,<span class="hljs-number">36</span>:<span class="hljs-number">22</span>,<span class="hljs-number">37</span>:<span class="hljs-number">11</span>,<span class="hljs-number">38</span>:<span class="hljs-number">01</span>,<span class="hljs-number">38</span>:<span class="hljs-number">53</span>,<span class="hljs-number">39</span>:<span class="hljs-number">45</span>,<span class="hljs-number">40</span>:<span class="hljs-number">39</span>,<span class="hljs-number">41</span>:<span class="hljs-number">34</span>,<span class="hljs-number">42</span>:<span class="hljs-number">30</span>,<span class="hljs-number">43</span>:<span class="hljs-number">27</span>,<span class="hljs-number">44</span>:<span class="hljs-number">26</span>,<span class="hljs-number">45</span>:<span class="hljs-number">26</span>,<span class="hljs-number">46</span>:<span class="hljs-number">27</span>,<span class="hljs-number">47</span>:<span class="hljs-number">30</span>,<span class="hljs-number">48</span>:<span class="hljs-number">34</span>,<span class="hljs-number">49</span>:<span class="hljs-number">40</span>,<span class="hljs-number">50</span>:<span class="hljs-number">47</span>,<span class="hljs-number">51</span>:<span class="hljs-number">55</span>,<span class="hljs-number">53</span>:<span class="hljs-number">05</span>,<span class="hljs-number">54</span>:<span class="hljs-number">17</span>,<span class="hljs-number">55</span>:<span class="hljs-number">30</span>,<span class="hljs-number">56</span>:<span class="hljs-number">45</span>,<span class="hljs-number">58</span>:<span class="hljs-number">02</span>,<span class="hljs-number">59</span>:<span class="hljs-number">20</span>,<span class="hljs-number">1</span>:<span class="hljs-number">00</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">02</span>:<span class="hljs-number">02</span>,<span class="hljs-number">1</span>:<span class="hljs-number">03</span>:<span class="hljs-number">26</span>
+<span class="hljs-number">10</span>k,<span class="hljs-number">26</span>:<span class="hljs-number">54</span>,<span class="hljs-number">27</span>:<span class="hljs-number">30</span>,<span class="hljs-number">28</span>:<span class="hljs-number">08</span>,<span class="hljs-number">28</span>:<span class="hljs-number">45</span>,<span class="hljs-number">29</span>:<span class="hljs-number">24</span>,<span class="hljs-number">30</span>:<span class="hljs-number">04</span>,<span class="hljs-number">30</span>:<span class="hljs-number">45</span>,<span class="hljs-number">31</span>:<span class="hljs-number">26</span>,<span class="hljs-number">32</span>:<span class="hljs-number">09</span>,<span class="hljs-number">32</span>:<span class="hljs-number">52</span>,<span class="hljs-number">33</span>:<span class="hljs-number">36</span>,<span class="hljs-number">34</span>:<span class="hljs-number">22</span>,<span class="hljs-number">35</span>:<span class="hljs-number">08</span>,<span class="hljs-number">35</span>:<span class="hljs-number">56</span>,<span class="hljs-number">36</span>:<span class="hljs-number">44</span>,<span class="hljs-number">37</span>:<span class="hljs-number">34</span>,<span class="hljs-number">38</span>:<span class="hljs-number">24</span>,<span class="hljs-number">39</span>:<span class="hljs-number">16</span>,<span class="hljs-number">40</span>:<span class="hljs-number">09</span>,<span class="hljs-number">41</span>:<span class="hljs-number">04</span>,<span class="hljs-number">41</span>:<span class="hljs-number">59</span>,<span class="hljs-number">42</span>:<span class="hljs-number">56</span>,<span class="hljs-number">43</span>:<span class="hljs-number">54</span>,<span class="hljs-number">44</span>:<span class="hljs-number">53</span>,<span class="hljs-number">45</span>:<span class="hljs-number">54</span>,<span class="hljs-number">46</span>:<span class="hljs-number">55</span>,<span class="hljs-number">47</span>:<span class="hljs-number">59</span>,<span class="hljs-number">49</span>:<span class="hljs-number">04</span>,<span class="hljs-number">50</span>:<span class="hljs-number">10</span>,<span class="hljs-number">51</span>:<span class="hljs-number">18</span>,<span class="hljs-number">52</span>:<span class="hljs-number">27</span>,<span class="hljs-number">53</span>:<span class="hljs-number">38</span>,<span class="hljs-number">54</span>:<span class="hljs-number">50</span>,<span class="hljs-number">56</span>:<span class="hljs-number">04</span>,<span class="hljs-number">57</span>:<span class="hljs-number">20</span>,<span class="hljs-number">58</span>:<span class="hljs-number">37</span>,<span class="hljs-number">59</span>:<span class="hljs-number">56</span>,<span class="hljs-number">1</span>:<span class="hljs-number">01</span>:<span class="hljs-number">17</span>,<span class="hljs-number">1</span>:<span class="hljs-number">02</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">04</span>:<span class="hljs-number">05</span>,<span class="hljs-number">1</span>:<span class="hljs-number">05</span>:<span class="hljs-number">31</span>,<span class="hljs-number">1</span>:<span class="hljs-number">07</span>:<span class="hljs-number">00</span>,<span class="hljs-number">1</span>:<span class="hljs-number">08</span>:<span class="hljs-number">30</span>,<span class="hljs-number">1</span>:<span class="hljs-number">10</span>:<span class="hljs-number">03</span>,<span class="hljs-number">1</span>:<span class="hljs-number">11</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">13</span>:<span class="hljs-number">14</span>,<span class="hljs-number">1</span>:<span class="hljs-number">14</span>:<span class="hljs-number">53</span>,<span class="hljs-number">1</span>:<span class="hljs-number">16</span>:<span class="hljs-number">34</span>,<span class="hljs-number">1</span>:<span class="hljs-number">18</span>:<span class="hljs-number">17</span>,<span class="hljs-number">1</span>:<span class="hljs-number">20</span>:<span class="hljs-number">03</span>
+<span class="hljs-number">15</span>k,<span class="hljs-number">41</span>:<span class="hljs-number">31</span>,<span class="hljs-number">42</span>:<span class="hljs-number">27</span>,<span class="hljs-number">43</span>:<span class="hljs-number">24</span>,<span class="hljs-number">44</span>:<span class="hljs-number">23</span>,<span class="hljs-number">45</span>:<span class="hljs-number">23</span>,<span class="hljs-number">46</span>:<span class="hljs-number">24</span>,<span class="hljs-number">47</span>:<span class="hljs-number">27</span>,<span class="hljs-number">48</span>:<span class="hljs-number">31</span>,<span class="hljs-number">49</span>:<span class="hljs-number">36</span>,<span class="hljs-number">50</span>:<span class="hljs-number">43</span>,<span class="hljs-number">51</span>:<span class="hljs-number">52</span>,<span class="hljs-number">53</span>:<span class="hljs-number">02</span>,<span class="hljs-number">54</span>:<span class="hljs-number">14</span>,<span class="hljs-number">55</span>:<span class="hljs-number">27</span>,<span class="hljs-number">56</span>:<span class="hljs-number">42</span>,<span class="hljs-number">57</span>:<span class="hljs-number">58</span>,<span class="hljs-number">59</span>:<span class="hljs-number">16</span>,<span class="hljs-number">1</span>:<span class="hljs-number">00</span>:<span class="hljs-number">36</span>,<span class="hljs-number">1</span>:<span class="hljs-number">01</span>:<span class="hljs-number">58</span>,<span class="hljs-number">1</span>:<span class="hljs-number">03</span>:<span class="hljs-number">22</span>,<span class="hljs-number">1</span>:<span class="hljs-number">04</span>:<span class="hljs-number">48</span>,<span class="hljs-number">1</span>:<span class="hljs-number">06</span>:<span class="hljs-number">15</span>,<span class="hljs-number">1</span>:<span class="hljs-number">07</span>:<span class="hljs-number">44</span>,<span class="hljs-number">1</span>:<span class="hljs-number">09</span>:<span class="hljs-number">16</span>,<span class="hljs-number">1</span>:<span class="hljs-number">10</span>:<span class="hljs-number">49</span>,<span class="hljs-number">1</span>:<span class="hljs-number">12</span>:<span class="hljs-number">25</span>,<span class="hljs-number">1</span>:<span class="hljs-number">14</span>:<span class="hljs-number">03</span>,<span class="hljs-number">1</span>:<span class="hljs-number">15</span>:<span class="hljs-number">43</span>,<span class="hljs-number">1</span>:<span class="hljs-number">17</span>:<span class="hljs-number">25</span>,<span class="hljs-number">1</span>:<span class="hljs-number">19</span>:<span class="hljs-number">10</span>,<span class="hljs-number">1</span>:<span class="hljs-number">20</span>:<span class="hljs-number">56</span>,<span class="hljs-number">1</span>:<span class="hljs-number">22</span>:<span class="hljs-number">46</span>,<span class="hljs-number">1</span>:<span class="hljs-number">24</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">26</span>:<span class="hljs-number">32</span>,<span class="hljs-number">1</span>:<span class="hljs-number">28</span>:<span class="hljs-number">29</span>,<span class="hljs-number">1</span>:<span class="hljs-number">30</span>:<span class="hljs-number">28</span>,<span class="hljs-number">1</span>:<span class="hljs-number">32</span>:<span class="hljs-number">30</span>,<span class="hljs-number">1</span>:<span class="hljs-number">34</span>:<span class="hljs-number">35</span>,<span class="hljs-number">1</span>:<span class="hljs-number">36</span>:<span class="hljs-number">43</span>,<span class="hljs-number">1</span>:<span class="hljs-number">38</span>:<span class="hljs-number">53</span>,<span class="hljs-number">1</span>:<span class="hljs-number">41</span>:<span class="hljs-number">07</span>,<span class="hljs-number">1</span>:<span class="hljs-number">43</span>:<span class="hljs-number">23</span>,<span class="hljs-number">1</span>:<span class="hljs-number">45</span>:<span class="hljs-number">43</span>,<span class="hljs-number">1</span>:<span class="hljs-number">48</span>:<span class="hljs-number">06</span>,<span class="hljs-number">1</span>:<span class="hljs-number">50</span>:<span class="hljs-number">32</span>,<span class="hljs-number">1</span>:<span class="hljs-number">53</span>:<span class="hljs-number">01</span>,<span class="hljs-number">1</span>:<span class="hljs-number">55</span>:<span class="hljs-number">33</span>,<span class="hljs-number">1</span>:<span class="hljs-number">58</span>:<span class="hljs-number">09</span>,<span class="hljs-number">2</span>:<span class="hljs-number">00</span>:<span class="hljs-number">49</span>,<span class="hljs-number">2</span>:<span class="hljs-number">03</span>:<span class="hljs-number">32</span>
+<span class="hljs-number">10</span>mi,<span class="hljs-number">44</span>:<span class="hljs-number">46</span>,<span class="hljs-number">45</span>:<span class="hljs-number">46</span>,<span class="hljs-number">46</span>:<span class="hljs-number">48</span>,<span class="hljs-number">47</span>:<span class="hljs-number">51</span>,<span class="hljs-number">48</span>:<span class="hljs-number">56</span>,<span class="hljs-number">50</span>:<span class="hljs-number">02</span>,<span class="hljs-number">51</span>:<span class="hljs-number">09</span>,<span class="hljs-number">52</span>:<span class="hljs-number">18</span>,<span class="hljs-number">53</span>:<span class="hljs-number">29</span>,<span class="hljs-number">54</span>:<span class="hljs-number">41</span>,<span class="hljs-number">55</span>:<span class="hljs-number">55</span>,<span class="hljs-number">57</span>:<span class="hljs-number">11</span>,<span class="hljs-number">58</span>:<span class="hljs-number">28</span>,<span class="hljs-number">59</span>:<span class="hljs-number">47</span>,<span class="hljs-number">1</span>:<span class="hljs-number">01</span>:<span class="hljs-number">07</span>,<span class="hljs-number">1</span>:<span class="hljs-number">02</span>:<span class="hljs-number">30</span>,<span class="hljs-number">1</span>:<span class="hljs-number">03</span>:<span class="hljs-number">54</span>,<span class="hljs-number">1</span>:<span class="hljs-number">05</span>:<span class="hljs-number">21</span>,<span class="hljs-number">1</span>:<span class="hljs-number">06</span>:<span class="hljs-number">49</span>,<span class="hljs-number">1</span>:<span class="hljs-number">08</span>:<span class="hljs-number">19</span>,<span class="hljs-number">1</span>:<span class="hljs-number">09</span>:<span class="hljs-number">51</span>,<span class="hljs-number">1</span>:<span class="hljs-number">11</span>:<span class="hljs-number">26</span>,<span class="hljs-number">1</span>:<span class="hljs-number">13</span>:<span class="hljs-number">02</span>,<span class="hljs-number">1</span>:<span class="hljs-number">14</span>:<span class="hljs-number">41</span>,<span class="hljs-number">1</span>:<span class="hljs-number">16</span>:<span class="hljs-number">22</span>,<span class="hljs-number">1</span>:<span class="hljs-number">18</span>:<span class="hljs-number">05</span>,<span class="hljs-number">1</span>:<span class="hljs-number">19</span>:<span class="hljs-number">50</span>,<span class="hljs-number">1</span>:<span class="hljs-number">21</span>:<span class="hljs-number">38</span>,<span class="hljs-number">1</span>:<span class="hljs-number">23</span>:<span class="hljs-number">28</span>,<span class="hljs-number">1</span>:<span class="hljs-number">25</span>:<span class="hljs-number">21</span>,<span class="hljs-number">1</span>:<span class="hljs-number">27</span>:<span class="hljs-number">16</span>,<span class="hljs-number">1</span>:<span class="hljs-number">29</span>:<span class="hljs-number">14</span>,<span class="hljs-number">1</span>:<span class="hljs-number">31</span>:<span class="hljs-number">14</span>,<span class="hljs-number">1</span>:<span class="hljs-number">33</span>:<span class="hljs-number">17</span>,<span class="hljs-number">1</span>:<span class="hljs-number">35</span>:<span class="hljs-number">23</span>,<span class="hljs-number">1</span>:<span class="hljs-number">37</span>:<span class="hljs-number">32</span>,<span class="hljs-number">1</span>:<span class="hljs-number">39</span>:<span class="hljs-number">44</span>,<span class="hljs-number">1</span>:<span class="hljs-number">41</span>:<span class="hljs-number">59</span>,<span class="hljs-number">1</span>:<span class="hljs-number">44</span>:<span class="hljs-number">16</span>,<span class="hljs-number">1</span>:<span class="hljs-number">46</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">49</span>:<span class="hljs-number">01</span>,<span class="hljs-number">1</span>:<span class="hljs-number">51</span>:<span class="hljs-number">28</span>,<span class="hljs-number">1</span>:<span class="hljs-number">53</span>:<span class="hljs-number">59</span>,<span class="hljs-number">1</span>:<span class="hljs-number">56</span>:<span class="hljs-number">32</span>,<span class="hljs-number">1</span>:<span class="hljs-number">59</span>:<span class="hljs-number">10</span>,<span class="hljs-number">2</span>:<span class="hljs-number">01</span>:<span class="hljs-number">51</span>,<span class="hljs-number">2</span>:<span class="hljs-number">04</span>:<span class="hljs-number">35</span>,<span class="hljs-number">2</span>:<span class="hljs-number">07</span>:<span class="hljs-number">23</span>,<span class="hljs-number">2</span>:<span class="hljs-number">10</span>:<span class="hljs-number">15</span>,<span class="hljs-number">2</span>:<span class="hljs-number">13</span>:<span class="hljs-number">11</span>
+<span class="hljs-number">20</span>k,<span class="hljs-number">56</span>:<span class="hljs-number">29</span>,<span class="hljs-number">57</span>:<span class="hljs-number">45</span>,<span class="hljs-number">59</span>:<span class="hljs-number">03</span>,<span class="hljs-number">1</span>:<span class="hljs-number">00</span>:<span class="hljs-number">23</span>,<span class="hljs-number">1</span>:<span class="hljs-number">01</span>:<span class="hljs-number">45</span>,<span class="hljs-number">1</span>:<span class="hljs-number">03</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">04</span>:<span class="hljs-number">33</span>,<span class="hljs-number">1</span>:<span class="hljs-number">06</span>:<span class="hljs-number">00</span>,<span class="hljs-number">1</span>:<span class="hljs-number">07</span>:<span class="hljs-number">29</span>,<span class="hljs-number">1</span>:<span class="hljs-number">09</span>:<span class="hljs-number">01</span>,<span class="hljs-number">1</span>:<span class="hljs-number">10</span>:<span class="hljs-number">34</span>,<span class="hljs-number">1</span>:<span class="hljs-number">12</span>:<span class="hljs-number">09</span>,<span class="hljs-number">1</span>:<span class="hljs-number">13</span>:<span class="hljs-number">46</span>,<span class="hljs-number">1</span>:<span class="hljs-number">15</span>:<span class="hljs-number">26</span>,<span class="hljs-number">1</span>:<span class="hljs-number">17</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">18</span>:<span class="hljs-number">52</span>,<span class="hljs-number">1</span>:<span class="hljs-number">20</span>:<span class="hljs-number">39</span>,<span class="hljs-number">1</span>:<span class="hljs-number">22</span>:<span class="hljs-number">27</span>,<span class="hljs-number">1</span>:<span class="hljs-number">24</span>:<span class="hljs-number">19</span>,<span class="hljs-number">1</span>:<span class="hljs-number">26</span>:<span class="hljs-number">13</span>,<span class="hljs-number">1</span>:<span class="hljs-number">28</span>:<span class="hljs-number">09</span>,<span class="hljs-number">1</span>:<span class="hljs-number">30</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">32</span>:<span class="hljs-number">10</span>,<span class="hljs-number">1</span>:<span class="hljs-number">34</span>:<span class="hljs-number">14</span>,<span class="hljs-number">1</span>:<span class="hljs-number">36</span>:<span class="hljs-number">21</span>,<span class="hljs-number">1</span>:<span class="hljs-number">38</span>:<span class="hljs-number">31</span>,<span class="hljs-number">1</span>:<span class="hljs-number">40</span>:<span class="hljs-number">44</span>,<span class="hljs-number">1</span>:<span class="hljs-number">43</span>:<span class="hljs-number">00</span>,<span class="hljs-number">1</span>:<span class="hljs-number">45</span>:<span class="hljs-number">20</span>,<span class="hljs-number">1</span>:<span class="hljs-number">47</span>:<span class="hljs-number">42</span>,<span class="hljs-number">1</span>:<span class="hljs-number">50</span>:<span class="hljs-number">07</span>,<span class="hljs-number">1</span>:<span class="hljs-number">52</span>:<span class="hljs-number">36</span>,<span class="hljs-number">1</span>:<span class="hljs-number">55</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">57</span>:<span class="hljs-number">43</span>,<span class="hljs-number">2</span>:<span class="hljs-number">00</span>:<span class="hljs-number">22</span>,<span class="hljs-number">2</span>:<span class="hljs-number">03</span>:<span class="hljs-number">05</span>,<span class="hljs-number">2</span>:<span class="hljs-number">05</span>:<span class="hljs-number">51</span>,<span class="hljs-number">2</span>:<span class="hljs-number">08</span>:<span class="hljs-number">41</span>,<span class="hljs-number">2</span>:<span class="hljs-number">11</span>:<span class="hljs-number">35</span>,<span class="hljs-number">2</span>:<span class="hljs-number">14</span>:<span class="hljs-number">32</span>,<span class="hljs-number">2</span>:<span class="hljs-number">17</span>:<span class="hljs-number">34</span>,<span class="hljs-number">2</span>:<span class="hljs-number">20</span>:<span class="hljs-number">40</span>,<span class="hljs-number">2</span>:<span class="hljs-number">23</span>:<span class="hljs-number">49</span>,<span class="hljs-number">2</span>:<span class="hljs-number">27</span>:<span class="hljs-number">04</span>,<span class="hljs-number">2</span>:<span class="hljs-number">30</span>:<span class="hljs-number">22</span>,<span class="hljs-number">2</span>:<span class="hljs-number">33</span>:<span class="hljs-number">45</span>,<span class="hljs-number">2</span>:<span class="hljs-number">37</span>:<span class="hljs-number">13</span>,<span class="hljs-number">2</span>:<span class="hljs-number">40</span>:<span class="hljs-number">45</span>,<span class="hljs-number">2</span>:<span class="hljs-number">44</span>:<span class="hljs-number">22</span>,<span class="hljs-number">2</span>:<span class="hljs-number">48</span>:<span class="hljs-number">04</span>
+<span class="hljs-number">13.1</span>mi,<span class="hljs-number">59</span>:<span class="hljs-number">49</span>,<span class="hljs-number">1</span>:<span class="hljs-number">01</span>:<span class="hljs-number">09</span>,<span class="hljs-number">1</span>:<span class="hljs-number">02</span>:<span class="hljs-number">32</span>,<span class="hljs-number">1</span>:<span class="hljs-number">03</span>:<span class="hljs-number">56</span>,<span class="hljs-number">1</span>:<span class="hljs-number">05</span>:<span class="hljs-number">23</span>,<span class="hljs-number">1</span>:<span class="hljs-number">06</span>:<span class="hljs-number">51</span>,<span class="hljs-number">1</span>:<span class="hljs-number">08</span>:<span class="hljs-number">21</span>,<span class="hljs-number">1</span>:<span class="hljs-number">09</span>:<span class="hljs-number">53</span>,<span class="hljs-number">1</span>:<span class="hljs-number">11</span>:<span class="hljs-number">28</span>,<span class="hljs-number">1</span>:<span class="hljs-number">13</span>:<span class="hljs-number">04</span>,<span class="hljs-number">1</span>:<span class="hljs-number">14</span>:<span class="hljs-number">43</span>,<span class="hljs-number">1</span>:<span class="hljs-number">16</span>:<span class="hljs-number">24</span>,<span class="hljs-number">1</span>:<span class="hljs-number">18</span>:<span class="hljs-number">07</span>,<span class="hljs-number">1</span>:<span class="hljs-number">19</span>:<span class="hljs-number">52</span>,<span class="hljs-number">1</span>:<span class="hljs-number">21</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">23</span>:<span class="hljs-number">30</span>,<span class="hljs-number">1</span>:<span class="hljs-number">25</span>:<span class="hljs-number">23</span>,<span class="hljs-number">1</span>:<span class="hljs-number">27</span>:<span class="hljs-number">19</span>,<span class="hljs-number">1</span>:<span class="hljs-number">29</span>:<span class="hljs-number">16</span>,<span class="hljs-number">1</span>:<span class="hljs-number">31</span>:<span class="hljs-number">17</span>,<span class="hljs-number">1</span>:<span class="hljs-number">33</span>:<span class="hljs-number">20</span>,<span class="hljs-number">1</span>:<span class="hljs-number">35</span>:<span class="hljs-number">26</span>,<span class="hljs-number">1</span>:<span class="hljs-number">37</span>:<span class="hljs-number">35</span>,<span class="hljs-number">1</span>:<span class="hljs-number">39</span>:<span class="hljs-number">47</span>,<span class="hljs-number">1</span>:<span class="hljs-number">42</span>:<span class="hljs-number">02</span>,<span class="hljs-number">1</span>:<span class="hljs-number">44</span>:<span class="hljs-number">19</span>,<span class="hljs-number">1</span>:<span class="hljs-number">46</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">49</span>:<span class="hljs-number">04</span>,<span class="hljs-number">1</span>:<span class="hljs-number">51</span>:<span class="hljs-number">31</span>,<span class="hljs-number">1</span>:<span class="hljs-number">54</span>:<span class="hljs-number">02</span>,<span class="hljs-number">1</span>:<span class="hljs-number">56</span>:<span class="hljs-number">36</span>,<span class="hljs-number">1</span>:<span class="hljs-number">59</span>:<span class="hljs-number">13</span>,<span class="hljs-number">2</span>:<span class="hljs-number">01</span>:<span class="hljs-number">54</span>,<span class="hljs-number">2</span>:<span class="hljs-number">04</span>:<span class="hljs-number">39</span>,<span class="hljs-number">2</span>:<span class="hljs-number">07</span>:<span class="hljs-number">27</span>,<span class="hljs-number">2</span>:<span class="hljs-number">10</span>:<span class="hljs-number">19</span>,<span class="hljs-number">2</span>:<span class="hljs-number">13</span>:<span class="hljs-number">15</span>,<span class="hljs-number">2</span>:<span class="hljs-number">16</span>:<span class="hljs-number">15</span>,<span class="hljs-number">2</span>:<span class="hljs-number">19</span>:<span class="hljs-number">19</span>,<span class="hljs-number">2</span>:<span class="hljs-number">22</span>:<span class="hljs-number">27</span>,<span class="hljs-number">2</span>:<span class="hljs-number">25</span>:<span class="hljs-number">39</span>,<span class="hljs-number">2</span>:<span class="hljs-number">28</span>:<span class="hljs-number">56</span>,<span class="hljs-number">2</span>:<span class="hljs-number">32</span>:<span class="hljs-number">17</span>,<span class="hljs-number">2</span>:<span class="hljs-number">35</span>:<span class="hljs-number">43</span>,<span class="hljs-number">2</span>:<span class="hljs-number">39</span>:<span class="hljs-number">13</span>,<span class="hljs-number">2</span>:<span class="hljs-number">42</span>:<span class="hljs-number">48</span>,<span class="hljs-number">2</span>:<span class="hljs-number">46</span>:<span class="hljs-number">28</span>,<span class="hljs-number">2</span>:<span class="hljs-number">50</span>:<span class="hljs-number">12</span>,<span class="hljs-number">2</span>:<span class="hljs-number">54</span>:<span class="hljs-number">02</span>,<span class="hljs-number">2</span>:<span class="hljs-number">57</span>:<span class="hljs-number">57</span>
+<span class="hljs-number">25</span>k,<span class="hljs-number">1</span>:<span class="hljs-number">11</span>:<span class="hljs-number">43</span>,<span class="hljs-number">1</span>:<span class="hljs-number">13</span>:<span class="hljs-number">20</span>,<span class="hljs-number">1</span>:<span class="hljs-number">14</span>:<span class="hljs-number">59</span>,<span class="hljs-number">1</span>:<span class="hljs-number">16</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">18</span>:<span class="hljs-number">24</span>,<span class="hljs-number">1</span>:<span class="hljs-number">20</span>:<span class="hljs-number">10</span>,<span class="hljs-number">1</span>:<span class="hljs-number">21</span>:<span class="hljs-number">58</span>,<span class="hljs-number">1</span>:<span class="hljs-number">23</span>:<span class="hljs-number">49</span>,<span class="hljs-number">1</span>:<span class="hljs-number">25</span>:<span class="hljs-number">49</span>,<span class="hljs-number">1</span>:<span class="hljs-number">27</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">29</span>:<span class="hljs-number">36</span>,<span class="hljs-number">1</span>:<span class="hljs-number">31</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">33</span>:<span class="hljs-number">40</span>,<span class="hljs-number">1</span>:<span class="hljs-number">35</span>:<span class="hljs-number">47</span>,<span class="hljs-number">1</span>:<span class="hljs-number">37</span>:<span class="hljs-number">56</span>,<span class="hljs-number">1</span>:<span class="hljs-number">40</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">42</span>:<span class="hljs-number">24</span>,<span class="hljs-number">1</span>:<span class="hljs-number">44</span>:<span class="hljs-number">42</span>,<span class="hljs-number">1</span>:<span class="hljs-number">47</span>:<span class="hljs-number">03</span>,<span class="hljs-number">1</span>:<span class="hljs-number">49</span>:<span class="hljs-number">28</span>,<span class="hljs-number">1</span>:<span class="hljs-number">51</span>:<span class="hljs-number">55</span>,<span class="hljs-number">1</span>:<span class="hljs-number">54</span>:<span class="hljs-number">27</span>,<span class="hljs-number">1</span>:<span class="hljs-number">57</span>:<span class="hljs-number">01</span>,<span class="hljs-number">1</span>:<span class="hljs-number">59</span>:<span class="hljs-number">39</span>,<span class="hljs-number">2</span>:<span class="hljs-number">02</span>:<span class="hljs-number">21</span>,<span class="hljs-number">2</span>:<span class="hljs-number">05</span>:<span class="hljs-number">06</span>,<span class="hljs-number">2</span>:<span class="hljs-number">07</span>:<span class="hljs-number">55</span>,<span class="hljs-number">2</span>:<span class="hljs-number">10</span>:<span class="hljs-number">47</span>,<span class="hljs-number">2</span>:<span class="hljs-number">13</span>:<span class="hljs-number">44</span>,<span class="hljs-number">2</span>:<span class="hljs-number">16</span>:<span class="hljs-number">44</span>,<span class="hljs-number">2</span>:<span class="hljs-number">19</span>:<span class="hljs-number">49</span>,<span class="hljs-number">2</span>:<span class="hljs-number">22</span>:<span class="hljs-number">58</span>,<span class="hljs-number">2</span>:<span class="hljs-number">26</span>:<span class="hljs-number">11</span>,<span class="hljs-number">2</span>:<span class="hljs-number">29</span>:<span class="hljs-number">28</span>,<span class="hljs-number">2</span>:<span class="hljs-number">32</span>:<span class="hljs-number">50</span>,<span class="hljs-number">2</span>:<span class="hljs-number">36</span>:<span class="hljs-number">16</span>,<span class="hljs-number">2</span>:<span class="hljs-number">39</span>:<span class="hljs-number">47</span>,<span class="hljs-number">2</span>:<span class="hljs-number">43</span>:<span class="hljs-number">23</span>,<span class="hljs-number">2</span>:<span class="hljs-number">47</span>:<span class="hljs-number">04</span>,<span class="hljs-number">2</span>:<span class="hljs-number">50</span>:<span class="hljs-number">49</span>,<span class="hljs-number">2</span>:<span class="hljs-number">54</span>:<span class="hljs-number">40</span>,<span class="hljs-number">2</span>:<span class="hljs-number">58</span>:<span class="hljs-number">36</span>,<span class="hljs-number">3</span>:<span class="hljs-number">02</span>:<span class="hljs-number">37</span>,<span class="hljs-number">3</span>:<span class="hljs-number">06</span>:<span class="hljs-number">43</span>,<span class="hljs-number">3</span>:<span class="hljs-number">10</span>:<span class="hljs-number">55</span>,<span class="hljs-number">3</span>:<span class="hljs-number">15</span>:<span class="hljs-number">13</span>,<span class="hljs-number">3</span>:<span class="hljs-number">19</span>:<span class="hljs-number">37</span>,<span class="hljs-number">3</span>:<span class="hljs-number">24</span>:<span class="hljs-number">06</span>,<span class="hljs-number">3</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span>,<span class="hljs-number">3</span>:<span class="hljs-number">33</span>:<span class="hljs-number">23</span>
+<span class="hljs-number">30</span>k,<span class="hljs-number">1</span>:<span class="hljs-number">27</span>:<span class="hljs-number">10</span>,<span class="hljs-number">1</span>:<span class="hljs-number">19</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">31</span>:<span class="hljs-number">08</span>,<span class="hljs-number">1</span>:<span class="hljs-number">33</span>:<span class="hljs-number">11</span>,<span class="hljs-number">1</span>:<span class="hljs-number">35</span>:<span class="hljs-number">17</span>,<span class="hljs-number">1</span>:<span class="hljs-number">37</span>:<span class="hljs-number">26</span>,<span class="hljs-number">1</span>:<span class="hljs-number">39</span>:<span class="hljs-number">37</span>,<span class="hljs-number">1</span>:<span class="hljs-number">41</span>:<span class="hljs-number">52</span>,<span class="hljs-number">1</span>:<span class="hljs-number">44</span>:<span class="hljs-number">09</span>,<span class="hljs-number">1</span>:<span class="hljs-number">46</span>:<span class="hljs-number">30</span>,<span class="hljs-number">1</span>:<span class="hljs-number">48</span>:<span class="hljs-number">54</span>,<span class="hljs-number">1</span>:<span class="hljs-number">51</span>:<span class="hljs-number">21</span>,<span class="hljs-number">1</span>:<span class="hljs-number">53</span>:<span class="hljs-number">51</span>,<span class="hljs-number">1</span>:<span class="hljs-number">56</span>:<span class="hljs-number">25</span>,<span class="hljs-number">1</span>:<span class="hljs-number">59</span>:<span class="hljs-number">02</span>,<span class="hljs-number">2</span>:<span class="hljs-number">01</span>:<span class="hljs-number">43</span>,<span class="hljs-number">2</span>:<span class="hljs-number">04</span>:<span class="hljs-number">27</span>,<span class="hljs-number">2</span>:<span class="hljs-number">07</span>:<span class="hljs-number">15</span>,<span class="hljs-number">2</span>:<span class="hljs-number">10</span>:<span class="hljs-number">07</span>,<span class="hljs-number">2</span>:<span class="hljs-number">13</span>:<span class="hljs-number">03</span>,<span class="hljs-number">2</span>:<span class="hljs-number">16</span>:<span class="hljs-number">02</span>,<span class="hljs-number">2</span>:<span class="hljs-number">19</span>:<span class="hljs-number">06</span>,<span class="hljs-number">2</span>:<span class="hljs-number">22</span>:<span class="hljs-number">14</span>,<span class="hljs-number">2</span>:<span class="hljs-number">25</span>:<span class="hljs-number">26</span>,<span class="hljs-number">2</span>:<span class="hljs-number">28</span>:<span class="hljs-number">42</span>,<span class="hljs-number">2</span>:<span class="hljs-number">32</span>:<span class="hljs-number">03</span>,<span class="hljs-number">2</span>:<span class="hljs-number">35</span>:<span class="hljs-number">28</span>,<span class="hljs-number">2</span>:<span class="hljs-number">38</span>:<span class="hljs-number">58</span>,<span class="hljs-number">2</span>:<span class="hljs-number">42</span>:<span class="hljs-number">33</span>,<span class="hljs-number">2</span>:<span class="hljs-number">46</span>:<span class="hljs-number">12</span>,<span class="hljs-number">2</span>:<span class="hljs-number">49</span>:<span class="hljs-number">56</span>,<span class="hljs-number">2</span>:<span class="hljs-number">53</span>:<span class="hljs-number">46</span>,<span class="hljs-number">2</span>:<span class="hljs-number">57</span>:<span class="hljs-number">40</span>,<span class="hljs-number">3</span>:<span class="hljs-number">01</span>:<span class="hljs-number">40</span>,<span class="hljs-number">3</span>:<span class="hljs-number">05</span>:<span class="hljs-number">45</span>,<span class="hljs-number">3</span>:<span class="hljs-number">09</span>:<span class="hljs-number">56</span>,<span class="hljs-number">3</span>:<span class="hljs-number">14</span>:<span class="hljs-number">13</span>,<span class="hljs-number">3</span>:<span class="hljs-number">18</span>:<span class="hljs-number">35</span>,<span class="hljs-number">3</span>:<span class="hljs-number">23</span>:<span class="hljs-number">03</span>,<span class="hljs-number">3</span>:<span class="hljs-number">27</span>:<span class="hljs-number">37</span>,<span class="hljs-number">3</span>:<span class="hljs-number">32</span>:<span class="hljs-number">17</span>,<span class="hljs-number">3</span>:<span class="hljs-number">37</span>:<span class="hljs-number">04</span>,<span class="hljs-number">3</span>:<span class="hljs-number">41</span>:<span class="hljs-number">57</span>,<span class="hljs-number">3</span>:<span class="hljs-number">46</span>:<span class="hljs-number">57</span>,<span class="hljs-number">3</span>:<span class="hljs-number">52</span>:<span class="hljs-number">03</span>,<span class="hljs-number">3</span>:<span class="hljs-number">57</span>:<span class="hljs-number">16</span>,<span class="hljs-number">4</span>:<span class="hljs-number">02</span>:<span class="hljs-number">37</span>,<span class="hljs-number">4</span>:<span class="hljs-number">08</span>:<span class="hljs-number">04</span>,<span class="hljs-number">4</span>:<span class="hljs-number">13</span>:<span class="hljs-number">39</span>,<span class="hljs-number">4</span>:<span class="hljs-number">19</span>:<span class="hljs-number">22</span>
+Marathon,<span class="hljs-number">2</span>:<span class="hljs-number">05</span>:<span class="hljs-number">34</span>,<span class="hljs-number">2</span>:<span class="hljs-number">08</span>:<span class="hljs-number">24</span>,<span class="hljs-number">2</span>:<span class="hljs-number">11</span>:<span class="hljs-number">17</span>,<span class="hljs-number">2</span>:<span class="hljs-number">14</span>:<span class="hljs-number">15</span>,<span class="hljs-number">2</span>:<span class="hljs-number">17</span>:<span class="hljs-number">16</span>,<span class="hljs-number">2</span>:<span class="hljs-number">20</span>:<span class="hljs-number">21</span>,<span class="hljs-number">2</span>:<span class="hljs-number">23</span>:<span class="hljs-number">31</span>,<span class="hljs-number">2</span>:<span class="hljs-number">26</span>:<span class="hljs-number">44</span>,<span class="hljs-number">2</span>:<span class="hljs-number">30</span>:<span class="hljs-number">02</span>,<span class="hljs-number">2</span>:<span class="hljs-number">33</span>:<span class="hljs-number">25</span>,<span class="hljs-number">2</span>:<span class="hljs-number">36</span>:<span class="hljs-number">52</span>,<span class="hljs-number">2</span>:<span class="hljs-number">40</span>:<span class="hljs-number">24</span>,<span class="hljs-number">2</span>:<span class="hljs-number">44</span>:<span class="hljs-number">00</span>,<span class="hljs-number">2</span>:<span class="hljs-number">47</span>:<span class="hljs-number">42</span>,<span class="hljs-number">2</span>:<span class="hljs-number">51</span>:<span class="hljs-number">28</span>,<span class="hljs-number">2</span>:<span class="hljs-number">55</span>:<span class="hljs-number">20</span>,<span class="hljs-number">2</span>:<span class="hljs-number">59</span>:<span class="hljs-number">16</span>,<span class="hljs-number">3</span>:<span class="hljs-number">03</span>:<span class="hljs-number">18</span>,<span class="hljs-number">3</span>:<span class="hljs-number">07</span>:<span class="hljs-number">26</span>,<span class="hljs-number">3</span>:<span class="hljs-number">11</span>:<span class="hljs-number">39</span>,<span class="hljs-number">3</span>:<span class="hljs-number">15</span>:<span class="hljs-number">58</span>,<span class="hljs-number">3</span>:<span class="hljs-number">20</span>:<span class="hljs-number">22</span>,<span class="hljs-number">3</span>:<span class="hljs-number">24</span>:<span class="hljs-number">53</span>,<span class="hljs-number">3</span>:<span class="hljs-number">29</span>:<span class="hljs-number">29</span>,<span class="hljs-number">3</span>:<span class="hljs-number">34</span>:<span class="hljs-number">12</span>,<span class="hljs-number">3</span>:<span class="hljs-number">39</span>:<span class="hljs-number">01</span>,<span class="hljs-number">3</span>:<span class="hljs-number">43</span>:<span class="hljs-number">57</span>,<span class="hljs-number">3</span>:<span class="hljs-number">48</span>:<span class="hljs-number">59</span>,<span class="hljs-number">3</span>:<span class="hljs-number">54</span>:<span class="hljs-number">09</span>,<span class="hljs-number">3</span>:<span class="hljs-number">59</span>:<span class="hljs-number">25</span>,<span class="hljs-number">4</span>:<span class="hljs-number">04</span>:<span class="hljs-number">48</span>,<span class="hljs-number">4</span>:<span class="hljs-number">10</span>:<span class="hljs-number">18</span>,<span class="hljs-number">4</span>:<span class="hljs-number">15</span>:<span class="hljs-number">56</span>,<span class="hljs-number">4</span>:<span class="hljs-number">21</span>:<span class="hljs-number">42</span>,<span class="hljs-number">4</span>:<span class="hljs-number">27</span>:<span class="hljs-number">35</span>,<span class="hljs-number">4</span>:<span class="hljs-number">33</span>:<span class="hljs-number">36</span>,<span class="hljs-number">4</span>:<span class="hljs-number">39</span>:<span class="hljs-number">46</span>,<span class="hljs-number">4</span>:<span class="hljs-number">46</span>:<span class="hljs-number">04</span>,<span class="hljs-number">4</span>:<span class="hljs-number">52</span>:<span class="hljs-number">30</span>,<span class="hljs-number">4</span>:<span class="hljs-number">59</span>:<span class="hljs-number">05</span>,<span class="hljs-number">5</span>:<span class="hljs-number">05</span>:<span class="hljs-number">48</span>,<span class="hljs-number">5</span>:<span class="hljs-number">12</span>:<span class="hljs-number">41</span>,<span class="hljs-number">5</span>:<span class="hljs-number">19</span>:<span class="hljs-number">43</span>,<span class="hljs-number">5</span>:<span class="hljs-number">26</span>:<span class="hljs-number">55</span>,<span class="hljs-number">5</span>:<span class="hljs-number">34</span>:<span class="hljs-number">16</span>,<span class="hljs-number">5</span>:<span class="hljs-number">41</span>:<span class="hljs-number">48</span>,<span class="hljs-number">5</span>:<span class="hljs-number">49</span>:<span class="hljs-number">29</span>,<span class="hljs-number">5</span>:<span class="hljs-number">57</span>:<span class="hljs-number">21</span>,<span class="hljs-number">6</span>:<span class="hljs-number">05</span>:<span class="hljs-number">23</span>,<span class="hljs-number">6</span>:<span class="hljs-number">13</span>:<span class="hljs-number">37</span>
+
+<span class="hljs-comment"># Mark: 从input读入数据，匹配最近的数据</span>
+<span class="hljs-keyword">from</span> find_it <span class="hljs-keyword">import</span> find_closest
+<span class="hljs-keyword">from</span> tm2secs2tm <span class="hljs-keyword">import</span> time2secs, secs2time, format_time
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_nearest_time</span>(<span class="hljs-params">look_for, target_data</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    查找的时间以及所搜索的时间列表，这个函数将把找到的最接近的时间作为一个字符串返回</span>
+<span class="hljs-string">    :param look_for:</span>
+<span class="hljs-string">    :param target_data:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># 将要查找的时间字符串转换为等价的秒数值</span>
+    what = time2secs(look_for)
+    print(what)
+    <span class="hljs-comment"># 将时间字符串行转换为秒数</span>
+    where = [time2secs(t) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> target_data]
+    print(where)
+    <span class="hljs-comment"># 查找最近的匹配的时间</span>
+    res = find_closest(what, where)
+    <span class="hljs-comment"># 返回时间字符串</span>
+    <span class="hljs-keyword">return</span> secs2time(res)
+
+
+row_data = &#123;&#125;
+
+<span class="hljs-comment"># 处理数据文件</span>
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;data/PaceData.csv&#x27;</span>) <span class="hljs-keyword">as</span> paces:
+    <span class="hljs-comment"># 标题行处理，去空白符，分割成列表</span>
+    column_headings = paces.readline().strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+    <span class="hljs-comment"># 去除第一列</span>
+    column_headings.pop(<span class="hljs-number">0</span>)
+
+    <span class="hljs-keyword">for</span> each_line <span class="hljs-keyword">in</span> paces:
+        row = each_line.strip().split(<span class="hljs-string">&#x27;,&#x27;</span>)
+        row_label = row.pop(<span class="hljs-number">0</span>)
+        <span class="hljs-comment"># 将时间放至对应的标签列表中</span>
+        <span class="hljs-comment"># row_data[row_label] = row</span>
+
+        inner_dict = &#123;&#125;
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(column_headings)):
+            <span class="hljs-comment"># 键：时间，值：列标题；快速地确定与某个时间关联的列</span>
+            inner_dict[format_time(row[i])] = column_headings[i]
+
+        row_data[row_label] = inner_dict
+
+<span class="hljs-comment"># print(row_data)</span>
+
+<span class="hljs-comment"># input()函数</span>
+<span class="hljs-comment"># help(input)</span>
+distance_run = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the distance attempted: &#x27;</span>)
+recorded_time = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the recorded time: &#x27;</span>)
+predicted_distance = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter the distance you want a prediction for: &#x27;</span>)
+
+<span class="hljs-comment"># 报KeyError错误，因为row_data没有对应的key与value</span>
+<span class="hljs-comment"># print(row_data[distance_run][recorded_time])</span>
+
+closest_time = find_nearest_time(format_time(recorded_time), row_data[distance_run])
+print(<span class="hljs-string">&#x27;closest_time: &#x27;</span>, closest_time)
+closest_time_heading = row_data[distance_run][closest_time]
+print(<span class="hljs-string">&#x27;closest_time_heading: &#x27;</span>, closest_time_heading)
+
+prediction = [k <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> row_data[predicted_distance].keys()
+              <span class="hljs-keyword">if</span> row_data[predicted_distance][k] == closest_time_heading]
+
+print(<span class="hljs-string">&#x27;The predicted time running &#x27;</span> + predicted_distance + <span class="hljs-string">&#x27; is: &#x27;</span> + prediction[<span class="hljs-number">0</span>] + <span class="hljs-string">&#x27;.&#x27;</span>)
+
+<span class="hljs-comment"># 输出</span>
+Enter the distance attempted: <span class="hljs-number">20</span>k
+Enter the recorded time: <span class="hljs-number">59</span>:<span class="hljs-number">06</span>
+Enter the distance you want a prediction <span class="hljs-keyword">for</span>: <span class="hljs-number">30</span>k
+<span class="hljs-number">3546</span>
+[<span class="hljs-number">3389</span>, <span class="hljs-number">3465</span>, <span class="hljs-number">3543</span>, <span class="hljs-number">3623</span>, <span class="hljs-number">3705</span>, <span class="hljs-number">3788</span>, <span class="hljs-number">3873</span>, <span class="hljs-number">3960</span>, <span class="hljs-number">4049</span>, <span class="hljs-number">4141</span>, <span class="hljs-number">4234</span>, <span class="hljs-number">4329</span>, <span class="hljs-number">4426</span>, <span class="hljs-number">4526</span>, <span class="hljs-number">4628</span>, <span class="hljs-number">4732</span>, <span class="hljs-number">4839</span>, <span class="hljs-number">4947</span>, <span class="hljs-number">5059</span>, <span class="hljs-number">5173</span>, <span class="hljs-number">5289</span>, <span class="hljs-number">5408</span>, <span class="hljs-number">5530</span>, <span class="hljs-number">5654</span>, <span class="hljs-number">5781</span>, <span class="hljs-number">5911</span>, <span class="hljs-number">6044</span>, <span class="hljs-number">6180</span>, <span class="hljs-number">6320</span>, <span class="hljs-number">6462</span>, <span class="hljs-number">6607</span>, <span class="hljs-number">6756</span>, <span class="hljs-number">6908</span>, <span class="hljs-number">7063</span>, <span class="hljs-number">7222</span>, <span class="hljs-number">7385</span>, <span class="hljs-number">7551</span>, <span class="hljs-number">7721</span>, <span class="hljs-number">7895</span>, <span class="hljs-number">8072</span>, <span class="hljs-number">8254</span>, <span class="hljs-number">8440</span>, <span class="hljs-number">8629</span>, <span class="hljs-number">8824</span>, <span class="hljs-number">9022</span>, <span class="hljs-number">9225</span>, <span class="hljs-number">9433</span>, <span class="hljs-number">9645</span>, <span class="hljs-number">9862</span>, <span class="hljs-number">10084</span>]
+closest_time:  <span class="hljs-number">00</span>:<span class="hljs-number">59</span>:<span class="hljs-number">03</span>
+closest_time_heading:  <span class="hljs-number">81.1</span>
+The predicted time running <span class="hljs-number">30</span>k <span class="hljs-keyword">is</span>: <span class="hljs-number">01</span>:<span class="hljs-number">31</span>:<span class="hljs-number">08.</span></code></pre></div>
+
+<h3 id="工具箱"><a href="#工具箱" class="headerlink" title="工具箱"></a>工具箱</h3><h4 id="查看函数功能"><a href="#查看函数功能" class="headerlink" title="查看函数功能"></a>查看函数功能</h4><p><code>dir(__builtins__)</code>， 可以看到Python提供的内置方法列表。所有的小写单词都是BIF（内置方法）<br><code>help(某个BIF函数)</code>，查看某个内置BIF函数的功能</p>
+<div class="hljs"><pre><code class="hljs python">print(<span class="hljs-built_in">dir</span>(__builtins__))
+
+<span class="hljs-comment"># 查看print 内置函数</span>
+<span class="hljs-built_in">help</span>(<span class="hljs-built_in">print</span>)
+
+<span class="hljs-comment"># 输出</span>
+[<span class="hljs-string">&#x27;ArithmeticError&#x27;</span>, <span class="hljs-string">&#x27;AssertionError&#x27;</span>, <span class="hljs-string">&#x27;AttributeError&#x27;</span>, <span class="hljs-string">&#x27;BaseException&#x27;</span>, <span class="hljs-string">&#x27;BlockingIOError&#x27;</span>, <span class="hljs-string">&#x27;BrokenPipeError&#x27;</span>, <span class="hljs-string">&#x27;BufferError&#x27;</span>, <span class="hljs-string">&#x27;BytesWarning&#x27;</span>, <span class="hljs-string">&#x27;ChildProcessError&#x27;</span>, <span class="hljs-string">&#x27;ConnectionAbortedError&#x27;</span>, <span class="hljs-string">&#x27;ConnectionError&#x27;</span>, <span class="hljs-string">&#x27;ConnectionRefusedError&#x27;</span>, <span class="hljs-string">&#x27;ConnectionResetError&#x27;</span>, <span class="hljs-string">&#x27;DeprecationWarning&#x27;</span>, <span class="hljs-string">&#x27;EOFError&#x27;</span>, <span class="hljs-string">&#x27;Ellipsis&#x27;</span>, <span class="hljs-string">&#x27;EnvironmentError&#x27;</span>, <span class="hljs-string">&#x27;Exception&#x27;</span>, <span class="hljs-string">&#x27;False&#x27;</span>, <span class="hljs-string">&#x27;FileExistsError&#x27;</span>, <span class="hljs-string">&#x27;FileNotFoundError&#x27;</span>, <span class="hljs-string">&#x27;FloatingPointError&#x27;</span>, <span class="hljs-string">&#x27;FutureWarning&#x27;</span>, <span class="hljs-string">&#x27;GeneratorExit&#x27;</span>, <span class="hljs-string">&#x27;IOError&#x27;</span>, <span class="hljs-string">&#x27;ImportError&#x27;</span>, <span class="hljs-string">&#x27;ImportWarning&#x27;</span>, <span class="hljs-string">&#x27;IndentationError&#x27;</span>, <span class="hljs-string">&#x27;IndexError&#x27;</span>, <span class="hljs-string">&#x27;InterruptedError&#x27;</span>, <span class="hljs-string">&#x27;IsADirectoryError&#x27;</span>, <span class="hljs-string">&#x27;KeyError&#x27;</span>, <span class="hljs-string">&#x27;KeyboardInterrupt&#x27;</span>, <span class="hljs-string">&#x27;LookupError&#x27;</span>, <span class="hljs-string">&#x27;MemoryError&#x27;</span>, <span class="hljs-string">&#x27;ModuleNotFoundError&#x27;</span>, <span class="hljs-string">&#x27;NameError&#x27;</span>, <span class="hljs-string">&#x27;None&#x27;</span>, <span class="hljs-string">&#x27;NotADirectoryError&#x27;</span>, <span class="hljs-string">&#x27;NotImplemented&#x27;</span>, <span class="hljs-string">&#x27;NotImplementedError&#x27;</span>, <span class="hljs-string">&#x27;OSError&#x27;</span>, <span class="hljs-string">&#x27;OverflowError&#x27;</span>, <span class="hljs-string">&#x27;PendingDeprecationWarning&#x27;</span>, <span class="hljs-string">&#x27;PermissionError&#x27;</span>, <span class="hljs-string">&#x27;ProcessLookupError&#x27;</span>, <span class="hljs-string">&#x27;RecursionError&#x27;</span>, <span class="hljs-string">&#x27;ReferenceError&#x27;</span>, <span class="hljs-string">&#x27;ResourceWarning&#x27;</span>, <span class="hljs-string">&#x27;RuntimeError&#x27;</span>, <span class="hljs-string">&#x27;RuntimeWarning&#x27;</span>, <span class="hljs-string">&#x27;StopAsyncIteration&#x27;</span>, <span class="hljs-string">&#x27;StopIteration&#x27;</span>, <span class="hljs-string">&#x27;SyntaxError&#x27;</span>, <span class="hljs-string">&#x27;SyntaxWarning&#x27;</span>, <span class="hljs-string">&#x27;SystemError&#x27;</span>, <span class="hljs-string">&#x27;SystemExit&#x27;</span>, <span class="hljs-string">&#x27;TabError&#x27;</span>, <span class="hljs-string">&#x27;TimeoutError&#x27;</span>, <span class="hljs-string">&#x27;True&#x27;</span>, <span class="hljs-string">&#x27;TypeError&#x27;</span>, <span class="hljs-string">&#x27;UnboundLocalError&#x27;</span>, <span class="hljs-string">&#x27;UnicodeDecodeError&#x27;</span>, <span class="hljs-string">&#x27;UnicodeEncodeError&#x27;</span>, <span class="hljs-string">&#x27;UnicodeError&#x27;</span>, <span class="hljs-string">&#x27;UnicodeTranslateError&#x27;</span>, <span class="hljs-string">&#x27;UnicodeWarning&#x27;</span>, <span class="hljs-string">&#x27;UserWarning&#x27;</span>, <span class="hljs-string">&#x27;ValueError&#x27;</span>, <span class="hljs-string">&#x27;Warning&#x27;</span>, <span class="hljs-string">&#x27;ZeroDivisionError&#x27;</span>, <span class="hljs-string">&#x27;__build_class__&#x27;</span>, <span class="hljs-string">&#x27;__debug__&#x27;</span>, <span class="hljs-string">&#x27;__doc__&#x27;</span>, <span class="hljs-string">&#x27;__import__&#x27;</span>, <span class="hljs-string">&#x27;__loader__&#x27;</span>, <span class="hljs-string">&#x27;__name__&#x27;</span>, <span class="hljs-string">&#x27;__package__&#x27;</span>, <span class="hljs-string">&#x27;__spec__&#x27;</span>, <span class="hljs-string">&#x27;abs&#x27;</span>, <span class="hljs-string">&#x27;all&#x27;</span>, <span class="hljs-string">&#x27;any&#x27;</span>, <span class="hljs-string">&#x27;ascii&#x27;</span>, <span class="hljs-string">&#x27;bin&#x27;</span>, <span class="hljs-string">&#x27;bool&#x27;</span>, <span class="hljs-string">&#x27;bytearray&#x27;</span>, <span class="hljs-string">&#x27;bytes&#x27;</span>, <span class="hljs-string">&#x27;callable&#x27;</span>, <span class="hljs-string">&#x27;chr&#x27;</span>, <span class="hljs-string">&#x27;classmethod&#x27;</span>, <span class="hljs-string">&#x27;compile&#x27;</span>, <span class="hljs-string">&#x27;complex&#x27;</span>, <span class="hljs-string">&#x27;copyright&#x27;</span>, <span class="hljs-string">&#x27;credits&#x27;</span>, <span class="hljs-string">&#x27;delattr&#x27;</span>, <span class="hljs-string">&#x27;dict&#x27;</span>, <span class="hljs-string">&#x27;dir&#x27;</span>, <span class="hljs-string">&#x27;divmod&#x27;</span>, <span class="hljs-string">&#x27;enumerate&#x27;</span>, <span class="hljs-string">&#x27;eval&#x27;</span>, <span class="hljs-string">&#x27;exec&#x27;</span>, <span class="hljs-string">&#x27;exit&#x27;</span>, <span class="hljs-string">&#x27;filter&#x27;</span>, <span class="hljs-string">&#x27;float&#x27;</span>, <span class="hljs-string">&#x27;format&#x27;</span>, <span class="hljs-string">&#x27;frozenset&#x27;</span>, <span class="hljs-string">&#x27;getattr&#x27;</span>, <span class="hljs-string">&#x27;globals&#x27;</span>, <span class="hljs-string">&#x27;hasattr&#x27;</span>, <span class="hljs-string">&#x27;hash&#x27;</span>, <span class="hljs-string">&#x27;help&#x27;</span>, <span class="hljs-string">&#x27;hex&#x27;</span>, <span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;input&#x27;</span>, <span class="hljs-string">&#x27;int&#x27;</span>, <span class="hljs-string">&#x27;isinstance&#x27;</span>, <span class="hljs-string">&#x27;issubclass&#x27;</span>, <span class="hljs-string">&#x27;iter&#x27;</span>, <span class="hljs-string">&#x27;len&#x27;</span>, <span class="hljs-string">&#x27;license&#x27;</span>, <span class="hljs-string">&#x27;list&#x27;</span>, <span class="hljs-string">&#x27;locals&#x27;</span>, <span class="hljs-string">&#x27;map&#x27;</span>, <span class="hljs-string">&#x27;max&#x27;</span>, <span class="hljs-string">&#x27;memoryview&#x27;</span>, <span class="hljs-string">&#x27;min&#x27;</span>, <span class="hljs-string">&#x27;next&#x27;</span>, <span class="hljs-string">&#x27;object&#x27;</span>, <span class="hljs-string">&#x27;oct&#x27;</span>, <span class="hljs-string">&#x27;open&#x27;</span>, <span class="hljs-string">&#x27;ord&#x27;</span>, <span class="hljs-string">&#x27;pow&#x27;</span>, <span class="hljs-string">&#x27;print&#x27;</span>, <span class="hljs-string">&#x27;property&#x27;</span>, <span class="hljs-string">&#x27;quit&#x27;</span>, <span class="hljs-string">&#x27;range&#x27;</span>, <span class="hljs-string">&#x27;repr&#x27;</span>, <span class="hljs-string">&#x27;reversed&#x27;</span>, <span class="hljs-string">&#x27;round&#x27;</span>, <span class="hljs-string">&#x27;set&#x27;</span>, <span class="hljs-string">&#x27;setattr&#x27;</span>, <span class="hljs-string">&#x27;slice&#x27;</span>, <span class="hljs-string">&#x27;sorted&#x27;</span>, <span class="hljs-string">&#x27;staticmethod&#x27;</span>, <span class="hljs-string">&#x27;str&#x27;</span>, <span class="hljs-string">&#x27;sum&#x27;</span>, <span class="hljs-string">&#x27;super&#x27;</span>, <span class="hljs-string">&#x27;tuple&#x27;</span>, <span class="hljs-string">&#x27;type&#x27;</span>, <span class="hljs-string">&#x27;vars&#x27;</span>, <span class="hljs-string">&#x27;zip&#x27;</span>]
+Help on built-<span class="hljs-keyword">in</span> function <span class="hljs-built_in">print</span> <span class="hljs-keyword">in</span> module builtins:
+
+print(...)
+    print(value, ..., sep=<span class="hljs-string">&#x27; &#x27;</span>, end=<span class="hljs-string">&#x27;\n&#x27;</span>, file=sys.stdout, flush=<span class="hljs-literal">False</span>)
+    
+    Prints the values to a stream, <span class="hljs-keyword">or</span> to sys.stdout by default.
+    Optional keyword arguments:
+    file:  a file-like <span class="hljs-built_in">object</span> (stream); defaults to the current sys.stdout.
+    sep:   string inserted between values, default a space.
+    end:   string appended after the last value, default a newline.
+    flush: whether to forcibly flush the stream.</code></pre></div>
+
+<h4 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h4><p>Python中的各个模块提供了自己的命名空间，使用module.function()形式调用模块的函数时，要用命名空间名限定函数。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> athletemodel
+<span class="hljs-keyword">import</span> glob
+
+data_files = glob.glob(<span class="hljs-string">&quot;data/*.txt&quot;</span>)
+athletes = athletemodel.put_to_store(data_files)</code></pre></div>
+
+<p><strong><u>ps: 本文仅为《Head First Python》一书学习笔记，仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/30/flink-dataStream-api-java/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Flink学习-DataStream API</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/06/logstash-data-transform/">
+                        <span class="hidden-mobile">Logstash安装学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Python Head-First学习&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

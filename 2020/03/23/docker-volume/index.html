@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker卷与持久化数据 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-23 19:33">
+                    March 23, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    23
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker卷与持久化数据"><a href="#Docker卷与持久化数据" class="headerlink" title="Docker卷与持久化数据"></a>Docker卷与持久化数据</h2><p>数据主要分为两类，持久化的与非持久化的。<br>每个Docker容器都有自己的非持久化存储。非持久化存储自动创建，从属于容器，生命周期与容器相同。这意味着删除容器也会删除全部非持久化数据。<br>如果希望自己的容器数据保留下来（持久化），则需要将数据存储在卷上。卷和容器是解耦的，从而可以独立地创建并管理卷。</p>
+<h3 id="容器与非持久数据"><a href="#容器与非持久数据" class="headerlink" title="容器与非持久数据"></a>容器与非持久数据</h3><p>毫无疑问，容器擅长无状态和非持久事务。<br>非持久化存储属于容器的一部分，并且与容器的生命周期一致—容器创建时会创建非持久化存储，同时该存储也会随着容器的删除而删除。</p>
+<h3 id="容器与持久化数据"><a href="#容器与持久化数据" class="headerlink" title="容器与持久化数据"></a>容器与持久化数据</h3><p>在容器中持久化数据的方式推荐采用卷。<br>总体来说，用户创建卷，然后创建容器，接着将卷挂载到容器上。卷会挂载到容器文件系统的某个目录之下，任何写到该目录下的内容都会写到卷中。即使容器被删除，卷与其上面的数据仍然存在。</p>
+<p>创建和管理容器卷</p>
+<p><code>docker volume create myvol</code></p>
+<p>默认情况下，Docker创建新卷时采用内置的local驱动。本地卷只能被所在节点的容器使用。使用-d 参数可以指定不同的驱动。<br>第三方驱动可以通过插件方式接入。</p>
+<ul>
+<li>块存储。如Amazon EBS</li>
+<li>文件存储。如Azure文件存储</li>
+<li>对象存储。如Amazon S3</li>
+</ul>
+<p><img src="docker-volume/1.png" srcset="/img/loading.gif" alt="docker-third-vol"></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker volume create myvol
+myvol
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker volume ls
+DRIVER              VOLUME NAME
+<span class="hljs-built_in">local</span>               myvol
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker volume inspect myvol
+[
+    &#123;
+        <span class="hljs-string">&quot;CreatedAt&quot;</span>: <span class="hljs-string">&quot;2020-03-23T12:28:43Z&quot;</span>,
+        <span class="hljs-string">&quot;Driver&quot;</span>: <span class="hljs-string">&quot;local&quot;</span>,
+        <span class="hljs-string">&quot;Labels&quot;</span>: &#123;&#125;,
+        <span class="hljs-string">&quot;Mountpoint&quot;</span>: <span class="hljs-string">&quot;/var/lib/docker/volumes/myvol/_data&quot;</span>,
+        <span class="hljs-string">&quot;Name&quot;</span>: <span class="hljs-string">&quot;myvol&quot;</span>,
+        <span class="hljs-string">&quot;Options&quot;</span>: &#123;&#125;,
+        <span class="hljs-string">&quot;Scope&quot;</span>: <span class="hljs-string">&quot;local&quot;</span>
+    &#125;
+]</code></pre></div>
+
+<p>Driver和Scope都是local。这意味着卷使用默认local驱动创建，只能用于当前的Docker主机上的容器。</p>
+<p>删除卷</p>
+<p><code>docker volume prune</code></p>
+<p>会删除未装入到某个容器或者服务的所有卷。<strong>谨慎使用！</strong></p>
+<p><code>docker volume rm myvol</code></p>
+<p>删除指定卷</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker volume prune
+WARNING! This will remove all <span class="hljs-built_in">local</span> volumes not used by at least one container.
+Are you sure you want to <span class="hljs-built_in">continue</span>? [y/N] y
+Deleted Volumes:
+myvol
+
+Total reclaimed space: 0B</code></pre></div>
+
+<h3 id="卷在容器和服务中的使用"><a href="#卷在容器和服务中的使用" class="headerlink" title="卷在容器和服务中的使用"></a>卷在容器和服务中的使用</h3><p>创建一个新的独立容器，并挂载一个名为bizvol的卷</p>
+<p><code>--mount source=bizvol,target=/vol</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container run -dit --name voltainer \
+&gt; --mount <span class="hljs-built_in">source</span>=bizvol,target=/vol \
+&gt; alpine
+Unable to find image <span class="hljs-string">&#x27;alpine:latest&#x27;</span> locally
+latest: Pulling from library/alpine
+c9b1b535fdd9: Pull complete 
+Digest: sha256:ab00606a42621fb68f2ed6ad3c88be54397f981a7b70a79db3d1172b11c4367d
+Status: Downloaded newer image <span class="hljs-keyword">for</span> alpine:latest
+c4caa49ae1d0a5151483ebb67efcec5961efb7d0d4ee5741edd2786c5e9404a0
+
+// 查看卷
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker volume ls
+DRIVER              VOLUME NAME
+<span class="hljs-built_in">local</span>               bizvol</code></pre></div>
+
+<p>如果指定了已经存在的卷，Docker会使用该卷。<br>如果指定的卷不存在，Docker会创建一个卷。</p>
+<p>尽管容器和卷各自拥有独立的生命周期，Docker也不允许删除正在被容器使用的卷。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker volume rm bizvol
+Error response from daemon: remove bizvol: volume is <span class="hljs-keyword">in</span> use - [c4caa49ae1d0a5151483ebb67efcec5961efb7d0d4ee5741edd2786c5e9404a0]</code></pre></div>
+
+<p>在卷中输入数据</p>
+<div class="hljs"><pre><code class="hljs bash">// 进入容器终端sh
+$ docker container <span class="hljs-built_in">exec</span> -it voltainer sh
+/ <span class="hljs-comment"># ls -l /vol</span>
+total 0
+
+// 写入数据
+/ <span class="hljs-comment"># echo &quot;I promise to write a review of the book on Amazon&quot; &gt; /vol/file1</span>
+/ <span class="hljs-comment"># ls -l /vol</span>
+total 4
+-rw-r--r--    1 root     root            50 Mar 23 12:47 file1
+
+// 查看写入数据
+/ <span class="hljs-comment"># cat /vol/file1 </span>
+I promise to write a review of the book on Amazon
+
+// 退出sh
+/ <span class="hljs-comment"># exit</span>
+
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+c4caa49ae1d0        alpine              <span class="hljs-string">&quot;/bin/sh&quot;</span>           7 minutes ago       Up 7 minutes                            voltainer
+
+// 删除容器
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker container rm voltainer -f
+voltainer
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                    PORTS               NAMES
+257e76160609        nginx:latest        <span class="hljs-string">&quot;nginx -g &#x27;daemon of…&quot;</span>   29 hours ago        Exited (0) 29 hours ago                       svc1.1.yefksat7bl2lyu4sttzefhkkp
+2ce656f3d29a        nginx:latest        <span class="hljs-string">&quot;nginx -g &#x27;daemon of…&quot;</span>   29 hours ago        Exited (0) 29 hours ago                       svc1.3.m48n3y1xhqtczy6p69lmlzr45
+
+// 查看容器
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+// 查看卷
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker volume ls
+DRIVER              VOLUME NAME
+<span class="hljs-built_in">local</span>               bizvol
+
+// 卷中数据还在。
+$ ls -l /var/lib/docker/volumes/bizvol/_data/
+ls: 无法访问/var/lib/docker/volumes/bizvol/_data/: Permission denied
+[ec2-user@ip-172-xxx-xxx-221 ~]$ sudo ls -l /var/lib/docker/volumes/bizvol/_data/
+总用量 4
+-rw-r--r-- 1 root root 50 3月  23 12:47 file1
+[ec2-user@ip-172-xxx-xxx-221 ~]$ sudo cat /var/lib/docker/volumes/bizvol/_data/file1
+I promise to write a review of the book on Amazon</code></pre></div>
+
+<p>卷和数据还在！</p>
+<p>将卷挂载到一个新的服务或者容器上</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker swarm join \
+&gt; --token SWMTKN-1-1fmkohiw5wn4eleb0frcuv4guzdwbqpmvco7vc0hvfvyz1a1fi-7do8xf8my3cjejp10dohwm9t8 172.xxx.xxx.90:2377 \
+&gt; --advertise-addr 172.xxx.xxx.221:2377 \
+&gt; --listen-addr 172.xxx.xxx.221:2377
+Error response from daemon: This node is already part of a swarm. Use <span class="hljs-string">&quot;docker swarm leave&quot;</span> to leave this swarm and join another one.
+
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker swarm leave
+Node left the swarm.
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker swarm join \
+&gt; --token SWMTKN-1-1fmkohiw5wn4eleb0frcuv4guzdwbqpmvco7vc0hvfvyz1a1fi-7do8xf8my3cjejp10dohwm9t8 172.xxx.xxx.90:2377 \
+&gt; --advertise-addr 172.xxx.xxx.221:2377 \
+&gt; --listen-addr 172.xxx.xxx.221:2377
+This node joined a swarm as a worker.
+
+// 在管理节点上运行
+[ec2-user@ip-172-xxx-xxx-90 ~]$ docker node ls
+ID                            HOSTNAME                                           STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+w75fjsgwvw74bsux8q7dqgeg4     ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Ready               Active                                  18.09.9-ce
+fcjl1u2ogpw3yxsg0l47i7pbf     ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Ready               Active                                  18.09.9-ce
+z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                    Ready               Active              Leader              18.09.9-ce
+
+// 将存在的卷挂载到新的服务上。
+$ docker service create \
+&gt; --name hellcat \
+&gt; --mount <span class="hljs-built_in">source</span>=bizvol,target=/vol \
+&gt; alpine sleep 1d
+wqr1c980gcj8o4qlqj54wgjvx
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================&gt;] 
+verify: Service converged 
+[ec2-user@ip-172-xxx-xxx-90 ~]$ docker service ps hellcat
+ID                  NAME                IMAGE               NODE                                               DESIRED STATE       CURRENT STATE            ERROR               PORTS
+r1r74l0wlbip        hellcat.1           alpine:latest       ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Running             Running 27 seconds ago 
+
+// 在工作节点上
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+cc93b21f2137        alpine:latest       <span class="hljs-string">&quot;sleep 1d&quot;</span>          2 minutes ago       Up 2 minutes                            hellcat.1.r1r74l0wlbipdiawwia9cze0d
+// 容器的名称包括了service-name,replica-number以及replica-ID,采用句号分隔。
+
+// 貌似工作节点上，不能共享file2，疑问！（以下是在管理节点运行的。）
+$ docker container <span class="hljs-built_in">exec</span> -it 70ad18d7e686 sh
+/ <span class="hljs-comment"># cat /vol/file2</span>
+line 2, I promise to write a review of the book on Amazon</code></pre></div>
+
+<p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/volume/">volume</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/24/docker-stack/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker-Stack部署应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/22/docker-over-network/">
+                        <span class="hidden-mobile">Docker覆盖网络</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker卷与持久化数据&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

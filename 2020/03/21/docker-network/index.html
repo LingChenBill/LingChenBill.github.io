@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker网络 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-21 14:37">
+                    March 21, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    39
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker网络"><a href="#Docker网络" class="headerlink" title="Docker网络"></a>Docker网络</h2><p>网络负责连接一切—无网络，无APP。<br>Docker在容器内部运行应用，这些应用之间的交互依赖于大量不同的网络，这意味着Docker需要强大的网络功能。<br>Docker网络架构源自一种叫作容器网络模型（CNM，Container Network Model）的方案，该方案是开源的并且支持插接式连接。Libnetwork是Docker对CNM的一种实现，提供了Docker核心网络架构的全部功能。</p>
+<h3 id="Docker网络架构"><a href="#Docker网络架构" class="headerlink" title="Docker网络架构"></a>Docker网络架构</h3><ul>
+<li>CNM</li>
+<li>Libnetwork</li>
+<li>驱动</li>
+</ul>
+<p><img src="docker-network/1.png" srcset="/img/loading.gif" alt="网络架构"></p>
+<p>CNM定义了三个基本要素：沙盒（Sandbox）、终端（Endpoint）和网络（Network）。</p>
+<p><img src="docker-network/2.png" srcset="/img/loading.gif" alt="CNM"></p>
+<p>Docker环境中最小的调度单位就是容器。CNM组件—沙盒被放置在容器内部，为容器提供网络连接。</p>
+<p><img src="docker-network/3.png" srcset="/img/loading.gif" alt="CNM与容器"></p>
+<p>Libnetwork实现了CNM中定义的全部3个组件。此外它还实现了本地化服务发现（Service Discovery）、基于Ingress的容器负载均衡，以及网络控制层和管理层功能。<br>Libnetwork实现了控制层和管理层功能。<br>驱动就负责实现数据层。<br><img src="docker-network/4.png" srcset="/img/loading.gif" alt="控制层管理层和数据层关系"></p>
+<h3 id="单机桥接网络"><a href="#单机桥接网络" class="headerlink" title="单机桥接网络"></a>单机桥接网络</h3><p>单机意味着该网络只能在单个Docker主机上运行，并且只能与所在Docker主机上的容器进行连接。<br>桥接意味着这是802.1.d桥接的一种实现（二层交换机）。</p>
+<p>每个Docker主机都有一个默认的单机桥接网络，Linux上网络名称为bridge，在Windows上叫作nat。</p>
+<h4 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h4><p><code>docker network ls</code></p>
+<p><code>docker network inspect bridge</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+fe38b7b60ea2        bridge              bridge              <span class="hljs-built_in">local</span>
+
+$ docker network inspect bridge
+[
+    &#123;
+        <span class="hljs-string">&quot;Name&quot;</span>: <span class="hljs-string">&quot;bridge&quot;</span>,
+        <span class="hljs-string">&quot;Id&quot;</span>: <span class="hljs-string">&quot;fe38b7b60ea278e4e7bb38c67e97c462cf8a7b885206a14f280d03a1ecfb88ca&quot;</span>,
+        <span class="hljs-string">&quot;Created&quot;</span>: <span class="hljs-string">&quot;2020-03-21T07:40:05.276022898Z&quot;</span>,
+        <span class="hljs-string">&quot;Scope&quot;</span>: <span class="hljs-string">&quot;local&quot;</span>,
+        <span class="hljs-string">&quot;Driver&quot;</span>: <span class="hljs-string">&quot;bridge&quot;</span>,
+        <span class="hljs-string">&quot;EnableIPv6&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">&quot;IPAM&quot;</span>: &#123;
+            <span class="hljs-string">&quot;Driver&quot;</span>: <span class="hljs-string">&quot;default&quot;</span>,
+            <span class="hljs-string">&quot;Options&quot;</span>: null,
+            <span class="hljs-string">&quot;Config&quot;</span>: [
+                &#123;
+                    <span class="hljs-string">&quot;Subnet&quot;</span>: <span class="hljs-string">&quot;172.17.0.0/16&quot;</span>,
+                    <span class="hljs-string">&quot;Gateway&quot;</span>: <span class="hljs-string">&quot;172.17.0.1&quot;</span>
+                &#125;
+            ]
+        &#125;,
+        <span class="hljs-string">&quot;Internal&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">&quot;Attachable&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">&quot;Ingress&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">&quot;ConfigFrom&quot;</span>: &#123;
+            <span class="hljs-string">&quot;Network&quot;</span>: <span class="hljs-string">&quot;&quot;</span>
+        &#125;,
+        <span class="hljs-string">&quot;ConfigOnly&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-string">&quot;Containers&quot;</span>: &#123;&#125;,
+        <span class="hljs-string">&quot;Options&quot;</span>: &#123;
+            <span class="hljs-string">&quot;com.docker.network.bridge.default_bridge&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
+            <span class="hljs-string">&quot;com.docker.network.bridge.enable_icc&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
+            <span class="hljs-string">&quot;com.docker.network.bridge.enable_ip_masquerade&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
+            <span class="hljs-string">&quot;com.docker.network.bridge.host_binding_ipv4&quot;</span>: <span class="hljs-string">&quot;0.0.0.0&quot;</span>,
+            <span class="hljs-string">&quot;com.docker.network.bridge.name&quot;</span>: <span class="hljs-string">&quot;docker0&quot;</span>,
+            <span class="hljs-string">&quot;com.docker.network.driver.mtu&quot;</span>: <span class="hljs-string">&quot;1500&quot;</span>
+        &#125;,
+        <span class="hljs-string">&quot;Labels&quot;</span>: &#123;&#125;
+    &#125;
+]
+
+$ docker network inspect bridge | grep bridge.name
+            <span class="hljs-string">&quot;com.docker.network.bridge.name&quot;</span>: <span class="hljs-string">&quot;docker0&quot;</span>,</code></pre></div>
+
+<p>使用Linux brctl工具查看系统中的Linux网桥</p>
+<p><code>yum install brctl</code></p>
+<p><code>brctl show</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ brctl show
+bridge name     bridge id               STP enabled     interfaces
+docker0         8000.0242582cc9e7       no              
+docker_gwbridge         8000.0242c19ade9e       no</code></pre></div>
+
+<p>创建新的单机桥接网络</p>
+<p><code>docker network create -d bridge localnet</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker network create -d bridge localnet
+de235266375f7398571c288d30c1afd71a17fd47a028316562b59a812af56f5f
+
+$ brctl show
+bridge name     bridge id               STP enabled     interfaces
+br-de235266375f         8000.0242357cce23       no              
+docker0         8000.0242582cc9e7       no              
+docker_gwbridge         8000.0242c19ade9e       no</code></pre></div>
+
+<p>创建一个新的容器，接入到新建桥接网络localnet当中。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container run -d --name c1 \
+&gt; --network localnet \
+&gt; alpine sleep 1d
+
+Unable to find image <span class="hljs-string">&#x27;alpine:latest&#x27;</span> locally
+latest: Pulling from library/alpine
+c9b1b535fdd9: Pull complete 
+Digest: sha256:ab00606a42621fb68f2ed6ad3c88be54397f981a7b70a79db3d1172b11c4367d
+Status: Downloaded newer image <span class="hljs-keyword">for</span> alpine:latest
+742cb2a3281868c156c24e656c98ebdb63b4739726cc5ba6a3e9546ef77e8cff
+
+$ docker network inspect localnet --format <span class="hljs-string">&#x27;&#123;&#123;json .Containers&#125;&#125;&#x27;</span>
+&#123;
+    <span class="hljs-string">&quot;742cb2a3281868c156c24e656c98ebdb63b4739726cc5ba6a3e9546ef77e8cff&quot;</span>: &#123;
+        <span class="hljs-string">&quot;Name&quot;</span>: <span class="hljs-string">&quot;c1&quot;</span>,
+        <span class="hljs-string">&quot;EndpointID&quot;</span>: <span class="hljs-string">&quot;afadd344ec0e3cd98aa1a14b4c86c784d9f7a793992f5ca63edcbb6dff31b55c&quot;</span>,
+        <span class="hljs-string">&quot;MacAddress&quot;</span>: <span class="hljs-string">&quot;02:42:ac:13:00:02&quot;</span>,
+        <span class="hljs-string">&quot;IPv4Address&quot;</span>: <span class="hljs-string">&quot;172.19.0.2/16&quot;</span>,
+        <span class="hljs-string">&quot;IPv6Address&quot;</span>: <span class="hljs-string">&quot;&quot;</span>
+    &#125;
+&#125;
+
+$ brctl show
+bridge name     bridge id               STP enabled     interfaces
+br-de235266375f         8000.0242357cce23       no              vethd4c4e03
+docker0         8000.0242582cc9e7       no              
+docker_gwbridge         8000.0242c19ade9e       no  
+
+// c1的网络接口连接到了br-de235266375f网桥。</code></pre></div>
+
+<p>创建一个c2的容器，并接入到“c1”所在的localnet网络中</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container run -it --name c2 \
+&gt; --network localnet \
+&gt; alpine sh
+/ <span class="hljs-comment"># ping c1</span>
+PING c1 (172.19.0.2): 56 data bytes
+64 bytes from 172.19.0.2: seq=0 ttl=255 time=0.069 ms
+64 bytes from 172.19.0.2: seq=1 ttl=255 time=0.073 ms
+64 bytes from 172.19.0.2: seq=2 ttl=255 time=0.066 ms
+64 bytes from 172.19.0.2: seq=3 ttl=255 time=0.064 ms
+64 bytes from 172.19.0.2: seq=4 ttl=255 time=0.059 ms
+64 bytes from 172.19.0.2: seq=5 ttl=255 time=0.070 ms
+64 bytes from 172.19.0.2: seq=6 ttl=255 time=0.109 ms
+64 bytes from 172.19.0.2: seq=7 ttl=255 time=0.073 ms
+64 bytes from 172.19.0.2: seq=8 ttl=255 time=0.068 ms
+64 bytes from 172.19.0.2: seq=9 ttl=255 time=0.060 ms
+^C
+--- c1 ping statistics ---
+10 packets transmitted, 10 packets received, 0% packet loss
+round-trip min/avg/max = 0.059/0.071/0.109 ms
+/ <span class="hljs-comment"># </span></code></pre></div>
+
+<p>桥接网络中容器只能与位于相同网络中的容器进行通信。但是可以使用端口映射（Port Mapping）来绕开这个限制。</p>
+<p>运行一个新的Web服务容器，并将容器80端口映射到Docker主机的5000端口。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container run -d --name web \
+&gt; --network localnet \
+&gt; --publish 5000:80 \
+&gt; nginx
+
+Unable to find image <span class="hljs-string">&#x27;nginx:latest&#x27;</span> locally
+latest: Pulling from library/nginx
+68ced04f60ab: Pull complete 
+28252775b295: Pull complete 
+a616aa3b0bf2: Pull complete 
+Digest: sha256:2539d4344dd18e1df02be842ffc435f8e1f699cfc55516e2cf2cb16b7a9aea0b
+Status: Downloaded newer image <span class="hljs-keyword">for</span> nginx:latest
+ecb9ef0734b5c6887efb311744134cf26d6c806db14f65603d0186735de16603
+
+$ docker port web
+80/tcp -&gt; 0.0.0.0:5000
+
+// 容器80端口已经映射到Docker主机所有接口上的5000端口。</code></pre></div>
+
+<p>此时通过访问<code>http://18.xxx.xxx.xxx:5000/</code>就可以访问容器中的nginx。</p>
+<h3 id="多机覆盖网络"><a href="#多机覆盖网络" class="headerlink" title="多机覆盖网络"></a>多机覆盖网络</h3><p>覆盖网络适用于多机环境。它允许单个网络包含多个主机，这样不同主机上的容器间就可以在链路层实现通信。<br>覆盖网络是理想的容器间通信方式，支持完全容器化的应用，并且具备良好的伸缩性。</p>
+<p>能够将容器化应用连接到外部系统以及物理网络的能力是非常必要的。常见的例子是部分容器化的应用—应用中已容器化的部分需要与那些运行在物理网络和VLAN上的未容器化部分进行通信。</p>
+<p>Docker内置的Macvlan驱动就是为此场景而生的。<br>Macvlan的优点是性能优异，无须端口映射或者额外桥接。<br>Macvlan的缺点是需要将主机网卡（NIC）设置为<strong>混杂模式</strong>（Promiscuous Mode）。这在大部分公有云平台上是不允许的</p>
+<h4 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h4><p>查看单独的容器日志</p>
+<p><code>docker container logs xxx</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container logs web
+221.xxx-xxx.75 - - [21/Mar/2020:08:42:49 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 200 612 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+2020/03/21 08:42:50 [error] 6<span class="hljs-comment">#6: *1 open() &quot;/usr/share/nginx/html/favicon.ico&quot; failed (2: No such file or directory), client: 221.223.232.75, server: localhost, request: &quot;GET /favicon.ico HTTP/1.1&quot;, host: &quot;18.182.11.164:5000&quot;, referrer: &quot;http://18.182.11.164:5000/&quot;</span>
+221.xxx-xxx.75 - - [21/Mar/2020:08:42:50 +0000] <span class="hljs-string">&quot;GET /favicon.ico HTTP/1.1&quot;</span> 404 555 <span class="hljs-string">&quot;http://18.182.11.164:5000/&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+221.xxx-xxx.75 - - [21/Mar/2020:09:01:33 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+221.xxx-xxx.75 - - [21/Mar/2020:09:01:34 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+221.xxx-xxx.75 - - [21/Mar/2020:09:01:35 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span></code></pre></div>
+
+<p>查看Swarm服务日志</p>
+<p><code>docker service logs xxx</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker service logs svc1
+svc1.1.005grokadf97@ip-172-xxx-xxx-221.ap-northeast-1.compute.internal    | 10.255.0.2 - - [21/Mar/2020:10:03:23 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+svc1.2.bva4j461fn8f@ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    | 10.255.0.3 - - [21/Mar/2020:09:53:26 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+svc1.4.xla77t1eo0ts@ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    | 10.255.0.2 - - [21/Mar/2020:09:53:19 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+svc1.4.xla77t1eo0ts@ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    | 10.255.0.5 - - [21/Mar/2020:09:53:22 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span>
+</code></pre></div>
+
+<h3 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h3><p>服务发现（Service Discovery）允许容器和Swarm服务通过名称互相定位。唯一的要求就是需要处于同一个网络当中。</p>
+<p><img src="docker-network/5.png" srcset="/img/loading.gif" alt="服务发现"></p>
+<p>每个启动时使用了–name参数的Swarm服务或者独立的容器，都会将自己的名称和IP地址注册到Docker DNS服务。这意味着容器和服务副本可以通过Docker DNS服务互相发现。<br>服务发现是受网络限制的。这意味着名称解析只对位于<strong>同一网络中</strong>的容器和服务生效。如果两个容器在不同的网络，那么就不能互相解析。</p>
+<h4 id="Ingress网络"><a href="#Ingress网络" class="headerlink" title="Ingress网络"></a>Ingress网络</h4><p>Swarm支持两种服务发布模式，两种模式均保证服务从集群外可访问。</p>
+<ul>
+<li>Ingress模式（默认）</li>
+<li>Host模式</li>
+</ul>
+<p>通过Ingress模式发布的服务，可以保证从Swarm集群内任一节点（即使没有运行服务的副本）都能访问该服务；以Host模式发布的服务只能通过运行服务副本的节点来访问。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+dcb8438283df        bridge              bridge              <span class="hljs-built_in">local</span>
+4dfe607b699b        host                host                <span class="hljs-built_in">local</span>
+dve1uqi3prlu        ingress             overlay             swarm
+y0w8j0n8xair        uber-net            overlay             swarm
+
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker service create -d --name svc1 --network uber-net --publish published=5000,target=80 nginx
+qw5n3db4t6b4e7u5toz9yn4hc
+[ec2-user@ip-172-xxx-xxx-221 ~]$ docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+qw5n3db4t6b4        svc1                replicated          1/1                 nginx:latest        *:5000-&gt;80/tcp
+
+$ docker node ls
+ID                            HOSTNAME                                           STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+ee70iiqr4suz0iry3uvtu2fvl *   ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Ready               Active              Leader              18.09.9-ce
+fcjl1u2ogpw3yxsg0l47i7pbf     ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Ready               Active                                  18.09.9-ce
+z9dr0oc0z0oj3wuw38m8ylwqg     ip-172-xxx-xxx-90                                    Ready               Active              Reachable           18.09.9-ce</code></pre></div>
+
+<p>从三个节点都可访问：<code>http://52.xxx.xxx.124:5000/</code></p>
+<p><img src="docker-network/6.png" srcset="/img/loading.gif" alt="Ingress模式"></p>
+<p>如果存在多个运行中的副本，流量会平均到每个副本之上。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker service create -d --name svc1 --network uber-net \
+&gt; --replicas 5 \
+&gt; --publish published=5000,target=80 nginx
+k07efmmmggiz1buu1vod1xe9p</code></pre></div>
+
+<p><img src="docker-network/7.png" srcset="/img/loading.gif" alt="ingress-replicas"></p>
+<p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/network/">network</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/22/docker-over-network/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker覆盖网络</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/20/docker-swarm/">
+                        <span class="hidden-mobile">Docker Swarm</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

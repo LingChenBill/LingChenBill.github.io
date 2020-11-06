@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker之mysql安装 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-07-03 20:06">
+                    July 3, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    27
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker之mysql安装"><a href="#Docker之mysql安装" class="headerlink" title="Docker之mysql安装"></a>Docker之mysql安装</h2><h3 id="Dockerfile下载"><a href="#Dockerfile下载" class="headerlink" title="Dockerfile下载"></a>Dockerfile下载</h3><p>将github中的mysql的Dockerfile下载下来，地址如下：</p>
+<p><code>https://github.com/DockerPool/mysql.git</code></p>
+<div class="hljs"><pre><code class="hljs bash">mysql_sshd % ls
+Dockerfile		LICENSE			README.md		create_db.sh		import_sql.sh		my.cnf			mysqld_charset.cnf	run.sh
+zhuyangze@localhost mysql_sshd % cat Dockerfile 
+<span class="hljs-comment">#本文参考了「tutum」的 Dockerfile</span>
+FROM sshd
+MAINTAINER Waitfish &lt;dwj_zz@163.com&gt;
+<span class="hljs-comment">#安装软件 </span>
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update &amp;&amp; \
+  apt-get -yq install mysql-server-5.6 pwgen &amp;&amp; \
+  rm -rf /var/lib/apt/lists/*
+
+<span class="hljs-comment"># 删除预安装的数据库文件</span>
+RUN rm -rf /var/lib/mysql/*
+
+<span class="hljs-comment"># 添加文件夹下的 MYSQL 配置文件</span>
+ADD my.cnf /etc/mysql/conf.d/my.cnf
+ADD mysqld_charset.cnf /etc/mysql/conf.d/mysqld_charset.cnf
+
+<span class="hljs-comment"># 添加 MYSQL 的脚本</span>
+ADD import_sql.sh /import_sql.sh
+ADD run.sh /run.sh
+RUN chmod 755 /*.sh
+
+<span class="hljs-comment"># 设置环境变量，用户名以及秘密</span>
+ENV MYSQL_USER admin
+ENV MYSQL_PASS **Random**
+
+<span class="hljs-comment"># 设置主从复制模式下的环境变量</span>
+ENV REPLICATION_MASTER **False**
+ENV REPLICATION_SLAVE **False**
+ENV REPLICATION_USER replica
+ENV REPLICATION_PASS replica
+
+<span class="hljs-comment"># 设置可以允许挂载的卷，可以用来备份数据库和配置文件</span>
+VOLUME  [<span class="hljs-string">&quot;/etc/mysql&quot;</span>, <span class="hljs-string">&quot;/var/lib/mysql&quot;</span>]
+
+<span class="hljs-comment"># 设置可以映射的端口，如果是从我们的 sshd 镜像继承的话，默认还会开启 22 端口</span>
+EXPOSE 3306
+CMD [<span class="hljs-string">&quot;/run.sh&quot;</span>]</code></pre></div>
+
+<h3 id="Mysql镜像安装"><a href="#Mysql镜像安装" class="headerlink" title="Mysql镜像安装"></a>Mysql镜像安装</h3><p>参考本地的Docker images镜像名称，修改如下：</p>
+<div class="hljs"><pre><code class="hljs bash">% docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+sshd                dockerfile          5a0d9e4740fa        8 days ago          249MB
+sshd                ubuntu              6943898c8bac        9 days ago          235MB
+zhuyangze@localhost mysql_sshd % vim Dockerfile</code></pre></div>
+
+<p>Dockerfile的继承镜像如下：sshd   -&gt; shd:dockerfile</p>
+<div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-comment">#本文参考了「tutum」的 Dockerfile</span>
+<span class="hljs-keyword">FROM</span> sshd:dockerfile
+<span class="hljs-keyword">MAINTAINER</span> <span class="hljs-keyword">from</span> www.lc-ling.com by lingchen (lingchen1316@<span class="hljs-number">163</span>.com)
+<span class="hljs-comment">#安装软件 </span>
+<span class="hljs-keyword">ENV</span> DEBIAN_FRONTEND noninteractive
+<span class="hljs-keyword">RUN</span><span class="bash"> apt-get update &amp;&amp; \</span>
+<span class="bash">  apt-get -yq install mysql-server-5.6 pwgen &amp;&amp; \</span>
+<span class="bash">  rm -rf /var/lib/apt/lists/*</span>
+
+<span class="hljs-comment"># 删除预安装的数据库文件</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> rm -rf /var/lib/mysql/*</span>
+
+<span class="hljs-comment"># 添加文件夹下的 MYSQL 配置文件</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> my.cnf /etc/mysql/conf.d/my.cnf</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> mysqld_charset.cnf /etc/mysql/conf.d/mysqld_charset.cnf</span>
+
+<span class="hljs-comment"># 添加 MYSQL 的脚本</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> import_sql.sh /import_sql.sh</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> run.sh /run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod 755 /*.sh</span>
+
+<span class="hljs-comment"># 设置环境变量，用户名以及秘密</span>
+<span class="hljs-keyword">ENV</span> MYSQL_USER admin
+<span class="hljs-keyword">ENV</span> MYSQL_PASS **Random**
+
+<span class="hljs-comment"># 设置主从复制模式下的环境变量</span>
+<span class="hljs-keyword">ENV</span> REPLICATION_MASTER **False**
+<span class="hljs-keyword">ENV</span> REPLICATION_SLAVE **False**
+<span class="hljs-keyword">ENV</span> REPLICATION_USER replica
+<span class="hljs-keyword">ENV</span> REPLICATION_PASS replica
+
+<span class="hljs-comment"># 设置可以允许挂载的卷，可以用来备份数据库和配置文件</span>
+<span class="hljs-keyword">VOLUME</span><span class="bash">  [<span class="hljs-string">&quot;/etc/mysql&quot;</span>, <span class="hljs-string">&quot;/var/lib/mysql&quot;</span>]</span>
+
+<span class="hljs-comment"># 设置可以映射的端口，如果是从我们的 sshd 镜像继承的话，默认还会开启 22 端口</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3306</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/run.sh&quot;</span>]</span></code></pre></div>
+
+<p>构建镜像：<code>% docker build -t mysql:latest .</code></p>
+<div class="hljs"><pre><code class="hljs bash">% docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+mysql               latest              a668adc70858        42 seconds ago      534MB
+sshd                dockerfile          5a0d9e4740fa        8 days ago          249MB</code></pre></div>
+
+<h3 id="Mysql镜像启动"><a href="#Mysql镜像启动" class="headerlink" title="Mysql镜像启动"></a>Mysql镜像启动</h3><div class="hljs"><pre><code class="hljs bash">% docker run -d -P mysql
+137c211eadcdcd710833895786d15090af3a25eb2eddae3601fbe7c033691823
+zhuyangze@localhost mysql_sshd % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+137c211eadcd        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           5 seconds ago       Up 4 seconds        0.0.0.0:32769-&gt;22/tcp, 0.0.0.0:32768-&gt;3306/tcp   nervous_northcutt</code></pre></div>
+
+<h4 id="通过ssh连接mysql容器"><a href="#通过ssh连接mysql容器" class="headerlink" title="通过ssh连接mysql容器"></a>通过ssh连接mysql容器</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 查看本机ip</span>
+% ifconfig
+% ssh root@192.168.0.107 -p 32769
+The authenticity of host <span class="hljs-string">&#x27;[192.168.0.107]:32769 ([192.168.0.107]:32769)&#x27;</span> can<span class="hljs-string">&#x27;t be established.</span>
+<span class="hljs-string">ECDSA key fingerprint is SHA256:byz56n6ggX89uz39PZnFnS40Vkn4Ry5omVoAqi4UNZI.</span>
+<span class="hljs-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span>
+<span class="hljs-string">Warning: Permanently added &#x27;</span>[192.168.0.107]:32769<span class="hljs-string">&#x27; (ECDSA) to the list of known hosts.</span>
+<span class="hljs-string">Welcome to Ubuntu 14.04 LTS (GNU/Linux 4.4.0-170-generic x86_64)</span>
+<span class="hljs-string"></span>
+<span class="hljs-string"> * Documentation:  https://help.ubuntu.com/</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">The programs included with the Ubuntu system are free software;</span>
+<span class="hljs-string">the exact distribution terms for each program are described in the</span>
+<span class="hljs-string">individual files in /usr/share/doc/*/copyright.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span>
+<span class="hljs-string">applicable law.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">root@137c211eadcd:~# ps -ef | grep mysql</span>
+<span class="hljs-string">root         1     0  0 12:05 ?        00:00:00 /bin/sh /usr/bin/mysqld_safe</span>
+<span class="hljs-string">mysql     1958     1  0 12:05 ?        00:00:03 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306</span>
+<span class="hljs-string">root      2003  1991  0 12:30 pts/0    00:00:00 grep --color=auto mysql</span>
+<span class="hljs-string">root@137c211eadcd:~# </span></code></pre></div>
+
+<p>连接Mysql，查看Mysql的root用户的密码</p>
+<p><code>docker logs 137</code></p>
+<div class="hljs"><pre><code class="hljs bash">% docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+137c211eadcd        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           37 minutes ago      Up 37 minutes       0.0.0.0:32769-&gt;22/tcp, 0.0.0.0:32768-&gt;3306/tcp   nervous_northcutt
+zhuyangze@localhost mysql_sshd % docker logs 137
+=&gt; An empty or uninitialized MySQL volume is detected <span class="hljs-keyword">in</span> /var/lib/mysql
+=&gt; Installing MySQL ...
+=&gt; Done!
+=&gt; Creating admin user ...
+=&gt; Waiting <span class="hljs-keyword">for</span> confirmation of MySQL service startup, trying 0/13 ...
+=&gt; Creating MySQL user admin with random password
+=&gt; Done!
+========================================================================
+You can now connect to this MySQL Server using:
+
+    mysql -uadmin -pdWVMh7V1nDUa -h&lt;host&gt; -P&lt;port&gt;
+
+Please remember to change the above password as soon as possible!
+MySQL user <span class="hljs-string">&#x27;root&#x27;</span> has no password but only allows <span class="hljs-built_in">local</span> connections
+========================================================================
+200703 12:05:26 mysqld_safe Can<span class="hljs-string">&#x27;t log to error log and syslog at the same time.  Remove all --log-error configuration options for --syslog to take effect.</span>
+<span class="hljs-string">200703 12:05:26 mysqld_safe Logging to &#x27;</span>/var/<span class="hljs-built_in">log</span>/mysql/error.log<span class="hljs-string">&#x27;.</span>
+<span class="hljs-string">200703 12:05:26 mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql</span></code></pre></div>
+
+<h4 id="指定用户与密码登录"><a href="#指定用户与密码登录" class="headerlink" title="指定用户与密码登录"></a>指定用户与密码登录</h4><div class="hljs"><pre><code class="hljs bash">% docker run -d -P -e MYSQL_PASS=<span class="hljs-string">&quot;Aa123456&quot;</span> mysql
+b3662485a106c4311a8f052a6c4a49f1ec17bb3abaae1aabb7e76e19e41a0167
+zhuyangze@localhost mysql_sshd % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+b3662485a106        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           4 seconds ago       Up 3 seconds        0.0.0.0:32771-&gt;22/tcp, 0.0.0.0:32770-&gt;3306/tcp   eloquent_visvesvaraya
+137c211eadcd        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           14 hours ago        Up 14 hours         0.0.0.0:32769-&gt;22/tcp, 0.0.0.0:32768-&gt;3306/tcp   nervous_northcutt</code></pre></div>
+
+<h4 id="挂载目录到Mysql容器"><a href="#挂载目录到Mysql容器" class="headerlink" title="挂载目录到Mysql容器"></a>挂载目录到Mysql容器</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 没有操作权限</span>
+% docker run -d -P -v /opt/docker_mysqldb:/var/lib/mysql mysql
+0715cabfa557a54b325e0ad02f1f3717a8f3fc38fa9dc1d6a300337b3c4b2a3d
+docker: Error response from daemon: Mounts denied: 
+The path /opt/docker_mysqldb
+is not shared from OS X and is not known to Docker.
+You can configure shared paths from Docker -&gt; Preferences... -&gt; File Sharing.
+See https://docs.docker.com/docker-for-mac/osxfs/<span class="hljs-comment">#namespaces for more info.</span></code></pre></div>
+
+<p>指定到可访问可操作的目录，（建议挂载本地目录到容器，便于数据迁移，备份等管理）</p>
+<div class="hljs"><pre><code class="hljs bash">% docker run -d -P -v /Users/zhuyangze/Documents/docker/volumes/mysqldb:/var/lib/mysql mysql
+8b1e7b9d1a90ed063714938ea03dc753f9fd9dd2cc5337d63d2ee8e3bc2a6cad
+zhuyangze@localhost mysqldb % ls
+ib_logfile0		ib_logfile1		ibdata1			mysql			performance_schema	<span class="hljs-built_in">test</span>
+zhuyangze@localhost mysqldb % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+8b1e7b9d1a90        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           14 seconds ago      Up 10 seconds       0.0.0.0:32773-&gt;22/tcp, 0.0.0.0:32772-&gt;3306/tcp   brave_hofstadter
+
+<span class="hljs-comment"># docker logs 8b1</span>
+<span class="hljs-comment"># mysql -uadmin -ptxqo9GN5NyE0 -h&lt;host&gt; -P&lt;port&gt;</span></code></pre></div>
+
+<h4 id="启用主从模式"><a href="#启用主从模式" class="headerlink" title="启用主从模式"></a>启用主从模式</h4><p>主Mysql服务器的名称必须为mysql</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 主mysql容器</span>
+% sudo docker run -d -e REPLICATION_MASTER=<span class="hljs-literal">true</span> -P -v /Users/zhuyangze/Documents/docker/volumes/mysqldb_master:/var/lib/mysql --name mysql mysql
+Password:
+c472c728713bf1133e13dd6395d786718c610c8070c5afff34c880e27ce7b4fc
+zhuyangze@localhost mysqldb_master % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+c472c728713b        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           6 seconds ago       Up 5 seconds        0.0.0.0:32775-&gt;22/tcp, 0.0.0.0:32774-&gt;3306/tcp   mysql
+
+<span class="hljs-comment"># 从mysql容器</span>
+% sudo docker run -d -e REPLICATION_SLAVE=<span class="hljs-literal">true</span> -P -v /Users/zhuyangze/Documents/docker/volumes/mysqldb_slave:/var/lib/mysql --link mysql:mysql mysql 
+a50026556cbc9d42434149ff1a87104923e1a39f63e6535e3c74242742a24d73
+zhuyangze@localhost mysqldb_master % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                            NAMES
+a50026556cbc        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           3 seconds ago       Up 2 seconds        0.0.0.0:32777-&gt;22/tcp, 0.0.0.0:32776-&gt;3306/tcp   epic_tereshkova
+c472c728713b        mysql               <span class="hljs-string">&quot;/run.sh&quot;</span>           2 minutes ago       Up 2 minutes        0.0.0.0:32775-&gt;22/tcp, 0.0.0.0:32774-&gt;3306/tcp   mysql
+
+<span class="hljs-comment"># mysql -uadmin -p9WtBLQrXGB22 -h&lt;host&gt; -P&lt;port&gt;</span>
+<span class="hljs-comment"># mysql -uadmin -p19gtHyf8fbt2 -h&lt;host&gt; -P&lt;port&gt;</span></code></pre></div>
+
+<p><strong><u>ps: 本文仅为学习记录，仅为学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ssh/">ssh</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/26/finalcut-hotkey/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Finalcut-Pro快捷键记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/25/docker-webapp/">
+                        <span class="hidden-mobile">Docker之Web服务器与应用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker之mysql安装&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

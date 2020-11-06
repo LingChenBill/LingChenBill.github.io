@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Flink学习-DataStream API - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-05-30 17:11">
+                    May 30, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    776 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    14
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Flink学习—DataStream-API"><a href="#Flink学习—DataStream-API" class="headerlink" title="Flink学习—DataStream API"></a>Flink学习—DataStream API</h2><p>Apache Flink是一个分布式流批一体化的开源平台。Flink的核心是一个提供数据分发、通信以及自动容错的流计算引擎。<br>Flink在流计算之上构建批处理，并且原生的支持迭代计算，内存管理以及程序优化。</p>
+<h3 id="DataStream-API入门指导"><a href="#DataStream-API入门指导" class="headerlink" title="DataStream API入门指导"></a>DataStream API入门指导</h3><p>In this guide we will start from scratch and go from setting up a Flink project to running a streaming analysis program on a Flink cluster.<br>Wikipedia provides an IRC channel where all edits to the wiki are logged. We are going to read this channel in Flink and count the number of bytes that each user edits within a given window of time. This is easy enough to implement in a few minutes using Flink, but it will give you a good foundation from which to start building more complex analysis programs on your own.</p>
+<h4 id="Maven构建"><a href="#Maven构建" class="headerlink" title="Maven构建"></a>Maven构建</h4><div class="hljs"><pre><code class="hljs bash">$ mvn archetype:generate \
+&gt;     -DarchetypeGroupId=org.apache.flink \
+&gt;     -DarchetypeArtifactId=flink-quickstart-java \
+&gt;     -DarchetypeVersion=1.9.0 \
+&gt;     -DgroupId=wiki-edits \
+&gt;     -DartifactId=wiki-edits \
+&gt;     -Dversion=0.1 \
+&gt;     -Dpackage=wikiedits \
+&gt;     -DinteractiveMode=<span class="hljs-literal">false</span></code></pre></div>
+
+<p>查看构建好文件目录</p>
+<div class="hljs"><pre><code class="hljs bash">$ tree wiki-edits/
+// mac system
+$ ls -R
+wiki-edits
+
+./wiki-edits:
+pom.xml	src
+
+./wiki-edits/src:
+main
+
+./wiki-edits/src/main:
+java		resources
+
+./wiki-edits/src/main/java:
+wikiedits
+
+./wiki-edits/src/main/java/wikiedits:
+BatchJob.java		StreamingJob.java
+
+./wiki-edits/src/main/resources:
+log4j.properties</code></pre></div>
+
+<p>删除示例程序</p>
+<div class="hljs"><pre><code class="hljs java">$ rm wiki-edits/src/main/java/wikiedits<span class="hljs-comment">/*.java</span></code></pre></div>
+
+<h4 id="创建Java程序"><a href="#创建Java程序" class="headerlink" title="创建Java程序"></a>创建Java程序</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> wikiedits;
+
+<span class="hljs-keyword">import</span> org.apache.flink.api.common.functions.AggregateFunction;
+<span class="hljs-keyword">import</span> org.apache.flink.api.java.functions.KeySelector;
+<span class="hljs-keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStreamSource;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.KeyedStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.wikiedits.WikipediaEditEvent;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.wikiedits.WikipediaEditsSource;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: Wikipedia provides an IRC channel where all edits to the wiki are logged. </span>
+<span class="hljs-comment"> * We are going to read this channel in Flink and </span>
+<span class="hljs-comment"> * count the number of bytes that each user edits within a given window of time. </span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/5/31</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WikipediaAnalysis</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        StreamExecutionEnvironment see = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        DataStreamSource&lt;WikipediaEditEvent&gt; edits = see.addSource(<span class="hljs-keyword">new</span> WikipediaEditsSource());
+
+        KeyedStream&lt;WikipediaEditEvent, String&gt; keyedEdits = edits.keyBy(<span class="hljs-keyword">new</span> KeySelector&lt;WikipediaEditEvent, String&gt;() &#123;
+
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getKey</span><span class="hljs-params">(WikipediaEditEvent event)</span> </span>&#123;
+                <span class="hljs-keyword">return</span> event.getUser();
+            &#125;
+
+        &#125;);
+
+        DataStream&lt;Tuple2&lt;String, Long&gt;&gt; result = keyedEdits
+                .timeWindow(Time.seconds(<span class="hljs-number">5</span>))
+                .aggregate(<span class="hljs-keyword">new</span> AggregateFunction&lt;WikipediaEditEvent, Tuple2&lt;String, Long&gt;, Tuple2&lt;String, Long&gt;&gt;() &#123;
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;String, Long&gt; <span class="hljs-title">createAccumulator</span><span class="hljs-params">()</span> </span>&#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">0L</span>);
+                    &#125;
+
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;String, Long&gt; <span class="hljs-title">add</span><span class="hljs-params">(WikipediaEditEvent value, Tuple2&lt;String, Long&gt; accumulator)</span> </span>&#123;
+
+                        accumulator.f0 = value.getUser();
+                        accumulator.f1 += value.getByteDiff();
+
+                        <span class="hljs-keyword">return</span> accumulator;
+                    &#125;
+
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;String, Long&gt; <span class="hljs-title">getResult</span><span class="hljs-params">(Tuple2&lt;String, Long&gt; accumulator)</span> </span>&#123;
+                        <span class="hljs-keyword">return</span> accumulator;
+                    &#125;
+
+                    <span class="hljs-meta">@Override</span>
+                    <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;String, Long&gt; <span class="hljs-title">merge</span><span class="hljs-params">(Tuple2&lt;String, Long&gt; a, Tuple2&lt;String, Long&gt; b)</span> </span>&#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(a.f0, a.f1 + b.f1);
+                    &#125;
+                &#125;);
+
+        result.print();
+
+        see.execute();
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>编译打包</p>
+<div class="hljs"><pre><code class="hljs bash">$ mvn clean package
+
+[INFO] Replacing /Users/xxxxxx/Documents/Flink/self-code/wiki-edits/target/wiki-edits-0.1.jar with /Users/xxxxxx/Documents/Flink/self-code/wiki-edits/target/wiki-edits-0.1-shaded.jar
+[INFO] Dependency-reduced POM written at: /Users/xxxxxx/Documents/Flink/self-code/wiki-edits/dependency-reduced-pom.xml
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 20.218 s
+[INFO] Finished at: 2020-05-31T11:56:00+08:00
+[INFO] ------------------------------------------------------------------------</code></pre></div>
+
+<p>启动</p>
+<div class="hljs"><pre><code class="hljs bash">$ mvn <span class="hljs-built_in">exec</span>:java -Dexec.mainClass=wikiedits.WikipediaAnalysis</code></pre></div>
+
+<p>结果</p>
+<div class="hljs"><pre><code class="hljs bash">// 连接wiki不成功，尴尬，以下是官网结果
+
+1&gt; (Fenix down,114)
+6&gt; (AnomieBOT,155)
+8&gt; (BD2412bot,-3690)
+7&gt; (IgnorantArmies,49)
+3&gt; (Ckh3111,69)
+5&gt; (Slade360,0)
+7&gt; (Narutolovehinata5,2195)
+6&gt; (Vuyisa2001,79)
+4&gt; (Ms Sarah Welch,269)
+4&gt; (KasparBot,-245)</code></pre></div>
+
+<p><strong><u>ps: 本文摘取于网络，仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/flink/">flink</a>
+                    
+                      <a class="hover-with-bg" href="/tags/java/">java</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/02/mvs-2017-hotkey/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">VS2017常用快捷键</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/14/python-header-first/">
+                        <span class="hidden-mobile">Python Head-First学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Flink学习-DataStream API&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Elasticsearch与spring-boot整合 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-26 21:01">
+                    April 26, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    31
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Elasticsearch与spring-boot整合"><a href="#Elasticsearch与spring-boot整合" class="headerlink" title="Elasticsearch与spring-boot整合"></a>Elasticsearch与spring-boot整合</h2><h3 id="ES客户端"><a href="#ES客户端" class="headerlink" title="ES客户端"></a>ES客户端</h3><p>RestClient是官方推荐使用的，它包括两种:Java Low Level REST Client和 Java High Level REST Client。<br>ES在6.0之后提供 Java High Level REST Client， 两种客户端官方更推荐使用 **<u>Java High Level REST Client</u>**，不过当前它还处于完善中，有些功能还没有。<br>可以采用 Java High Level REST Client，如果它有不支持的功能，则使用Java Low Level REST Client。</p>
+<h3 id="依赖Pom"><a href="#依赖Pom" class="headerlink" title="依赖Pom"></a>依赖Pom</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-framework-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.xuecheng<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>&gt;</span>../xc-framework-parent/pom.xml<span class="hljs-tag">&lt;/<span class="hljs-name">relativePath</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-service-search<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--project config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.xuecheng<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-framework-model<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.xuecheng<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-framework-common<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.xuecheng<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-service-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--web config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--elasticsearch client config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.elasticsearch.client<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>elasticsearch-rest-high-level-client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>6.2.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--elasticsearch config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.elasticsearch<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>elasticsearch<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>6.2.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--test config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fastjson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--utils config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-lang3<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<h3 id="application配置"><a href="#application配置" class="headerlink" title="application配置"></a>application配置</h3><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-string">$&#123;port:40100&#125;</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">xc-service-search</span>
+<span class="hljs-attr">xuecheng:</span>
+  <span class="hljs-attr">elasticsearch:</span>
+    <span class="hljs-comment"># 多个节点中间使用逗号分隔</span>
+    <span class="hljs-attr">hostlist:</span> <span class="hljs-string">$&#123;eshostlist:127.0.0.1:9200&#125;</span></code></pre></div>
+
+<h3 id="Elasticsearch配置类"><a href="#Elasticsearch配置类" class="headerlink" title="Elasticsearch配置类"></a>Elasticsearch配置类</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.elasticsearch.config;
+
+<span class="hljs-keyword">import</span> org.apache.http.HttpHost;
+<span class="hljs-keyword">import</span> org.elasticsearch.client.RestClient;
+<span class="hljs-keyword">import</span> org.elasticsearch.client.RestHighLevelClient;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Value;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Elasticsearch配置类。</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/4/26</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ElasticsearchConfig</span> </span>&#123;
+
+    <span class="hljs-meta">@Value(&quot;$&#123;xuecheng.elasticsearch.hostlist&#125;&quot;)</span>
+    <span class="hljs-keyword">private</span> String hostList;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * RestHighLevelClient配置</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> RestHighLevelClient <span class="hljs-title">restHighLevelClient</span><span class="hljs-params">()</span> </span>&#123;
+
+        <span class="hljs-comment">// 解析hostList配置信息</span>
+        String[] split = hostList.split(<span class="hljs-string">&quot;,&quot;</span>);
+        <span class="hljs-comment">// 创建HttpHost数组，其中存放es主机和端口的配置信息</span>
+        HttpHost[] httpHosts = <span class="hljs-keyword">new</span> HttpHost[split.length];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; split.length; i++) &#123;
+            String item = split[i];
+            httpHosts[i] = <span class="hljs-keyword">new</span> HttpHost(item.split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">0</span>], Integer.parseInt(item.split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">1</span>]), <span class="hljs-string">&quot;http&quot;</span>);
+        &#125;
+
+        <span class="hljs-comment">// 创建RestHighLevelClient客户端</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> RestHighLevelClient(RestClient.builder(httpHosts));
+
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 低组的RestClient客户端，主要使用RestHighLevelClient</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> RestClient <span class="hljs-title">restClient</span><span class="hljs-params">()</span> </span>&#123;
+
+        <span class="hljs-comment">// 解析hostList配置信息</span>
+        String[] split = hostList.split(<span class="hljs-string">&quot;,&quot;</span>);
+        <span class="hljs-comment">// 创建HttpHost数组，其中存放es主机和端口的配置信息</span>
+        HttpHost[] httpHosts = <span class="hljs-keyword">new</span> HttpHost[split.length];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; split.length; i++) &#123;
+            String item = split[i];
+            httpHosts[i] = <span class="hljs-keyword">new</span> HttpHost(item.split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">0</span>], Integer.parseInt(item.split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">1</span>]), <span class="hljs-string">&quot;http&quot;</span>);
+        &#125;
+
+        <span class="hljs-keyword">return</span> RestClient.builder(httpHosts).build();
+
+    &#125;
+
+&#125;</code></pre></div>
+
+<h3 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.elasticsearch;
+
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.domain.EntityScan;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.ComponentScan;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * ElasticSearch项目启动类。</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/4/26</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EntityScan(&quot;com.xuecheng.framework.domain.search&quot;)</span><span class="hljs-comment">//扫描实体类</span>
+<span class="hljs-meta">@ComponentScan(basePackages = &#123;&quot;com.xuecheng.api&quot;&#125;)</span><span class="hljs-comment">//扫描接口</span>
+<span class="hljs-meta">@ComponentScan(basePackages = &#123;&quot;com.xuecheng.elasticsearch&quot;&#125;)</span><span class="hljs-comment">//扫描本项目下的所有类</span>
+<span class="hljs-meta">@ComponentScan(basePackages = &#123;&quot;com.xuecheng.framework&quot;&#125;)</span><span class="hljs-comment">//扫描common项目下的所有类</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ElasticSearchApplication</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+
+        SpringApplication.run(ElasticSearchApplication.class, args);
+
+    &#125;
+
+&#125;</code></pre></div>
+
+<h3 id="测试ES索引"><a href="#测试ES索引" class="headerlink" title="测试ES索引"></a>测试ES索引</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.elasticsearch;
+
+<span class="hljs-keyword">import</span> org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+<span class="hljs-keyword">import</span> org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+<span class="hljs-keyword">import</span> org.elasticsearch.client.IndicesClient;
+<span class="hljs-keyword">import</span> org.elasticsearch.client.RestClient;
+<span class="hljs-keyword">import</span> org.elasticsearch.client.RestHighLevelClient;
+<span class="hljs-keyword">import</span> org.junit.Test;
+<span class="hljs-keyword">import</span> org.junit.runner.RunWith;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;
+<span class="hljs-keyword">import</span> org.springframework.test.context.junit4.SpringRunner;
+
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * ES索引测试</span>
+<span class="hljs-comment"> * </span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>: &#123;Elasticsearch的版本是6.3.2，安装好分词器ik6.3.2版本。&#125;</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/4/26</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@SpringBootTest</span>
+<span class="hljs-meta">@RunWith(SpringRunner.class)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestIndex</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    RestHighLevelClient restHighLevelClient;
+
+    <span class="hljs-meta">@Autowired</span>
+    RestClient restClient;
+  
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 创建索引测试</span>
+<span class="hljs-comment">     * Elasticsearch的版本是6.3.2，安装好分词器ik6.3.2版本。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testCreateIndex</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        <span class="hljs-comment">// 创建索引对象</span>
+        CreateIndexRequest createIndexRequest = <span class="hljs-keyword">new</span> CreateIndexRequest(<span class="hljs-string">&quot;xc_course&quot;</span>);
+        <span class="hljs-comment">// 设置参数</span>
+        createIndexRequest.settings(Settings.builder().put(<span class="hljs-string">&quot;number_of_shards&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>)
+                .put(<span class="hljs-string">&quot;number_of_replicas&quot;</span>, <span class="hljs-string">&quot;0&quot;</span>));
+
+        createIndexRequest.mapping(<span class="hljs-string">&quot;doc&quot;</span>,<span class="hljs-string">&quot; &#123;\n&quot;</span> +
+                <span class="hljs-string">&quot; \t\&quot;properties\&quot;: &#123;\n&quot;</span> +
+                <span class="hljs-string">&quot;            \&quot;studymodel\&quot;:&#123;\n&quot;</span> +
+                <span class="hljs-string">&quot;             \&quot;type\&quot;:\&quot;keyword\&quot;\n&quot;</span> +
+                <span class="hljs-string">&quot;           &#125;,\n&quot;</span> +
+                <span class="hljs-string">&quot;            \&quot;name\&quot;:&#123;\n&quot;</span> +
+                <span class="hljs-string">&quot;             \&quot;type\&quot;:\&quot;keyword\&quot;\n&quot;</span> +
+                <span class="hljs-string">&quot;           &#125;,\n&quot;</span> +
+                <span class="hljs-string">&quot;           \&quot;description\&quot;: &#123;\n&quot;</span> +
+                <span class="hljs-string">&quot;              \&quot;type\&quot;: \&quot;text\&quot;,\n&quot;</span> +
+                <span class="hljs-string">&quot;              \&quot;analyzer\&quot;:\&quot;ik_max_word\&quot;,\n&quot;</span> +
+                <span class="hljs-string">&quot;              \&quot;search_analyzer\&quot;:\&quot;ik_smart\&quot;\n&quot;</span> +
+                <span class="hljs-string">&quot;           &#125;,\n&quot;</span> +
+                <span class="hljs-string">&quot;           \&quot;pic\&quot;:&#123;\n&quot;</span> +
+                <span class="hljs-string">&quot;             \&quot;type\&quot;:\&quot;text\&quot;,\n&quot;</span> +
+                <span class="hljs-string">&quot;             \&quot;index\&quot;:false\n&quot;</span> +
+                <span class="hljs-string">&quot;           &#125;\n&quot;</span> +
+                <span class="hljs-string">&quot; \t&#125;\n&quot;</span> +
+                <span class="hljs-string">&quot;&#125;&quot;</span>, XContentType.JSON);
+
+        <span class="hljs-comment">// 操作索引的客户端</span>
+        IndicesClient indices = restHighLevelClient.indices();
+
+        <span class="hljs-comment">// 执行创建索引库</span>
+        CreateIndexResponse createIndexResponse = indices.create(createIndexRequest);
+        <span class="hljs-comment">// 得到响应</span>
+        <span class="hljs-keyword">boolean</span> acknowledged = createIndexResponse.isAcknowledged();
+
+        System.out.println(acknowledged);
+
+    &#125;
+ 
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 添加文档</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testAddDoc</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        <span class="hljs-comment">// 文档内容</span>
+        HashMap&lt;Object, Object&gt; jsonMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+        jsonMap.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;spring cloud实战&quot;</span>);
+        jsonMap.put(<span class="hljs-string">&quot;description&quot;</span>, <span class="hljs-string">&quot;本课程主要从四个章节进行讲解： 1.微服务架构入门 2.spring cloud 基础入门 3.实战Spring Boot 4.注册中心eureka。&quot;</span>);
+        jsonMap.put(<span class="hljs-string">&quot;studymodel&quot;</span>, <span class="hljs-string">&quot;201001&quot;</span>);
+
+        SimpleDateFormat dateFormat = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);
+        jsonMap.put(<span class="hljs-string">&quot;timestamp&quot;</span>, dateFormat.format(<span class="hljs-keyword">new</span> Date()));
+        jsonMap.put(<span class="hljs-string">&quot;price&quot;</span>, <span class="hljs-number">5.6f</span>);
+
+        <span class="hljs-comment">// 创建索引创建对象</span>
+        IndexRequest indexRequest = <span class="hljs-keyword">new</span> IndexRequest(<span class="hljs-string">&quot;xc_course&quot;</span>, <span class="hljs-string">&quot;doc&quot;</span>);
+        <span class="hljs-comment">// 文档内容</span>
+        indexRequest.source(jsonMap);
+        <span class="hljs-comment">// 通过client进行http请求</span>
+        IndexResponse indexResponse = restHighLevelClient.index(indexRequest);
+
+        DocWriteResponse.Result result = indexResponse.getResult();
+
+        System.out.println(result);
+
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 查询文档</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testGetDoc</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        GetRequest getRequest = <span class="hljs-keyword">new</span> GetRequest(<span class="hljs-string">&quot;xc_course&quot;</span>, <span class="hljs-string">&quot;doc&quot;</span>, <span class="hljs-string">&quot;4HjhtnEBAZIsF0uSUCnm&quot;</span>);
+
+        GetResponse response = restHighLevelClient.get(getRequest);
+
+        Map&lt;String, Object&gt; sourceAsMap = response.getSourceAsMap();
+
+        System.out.println(sourceAsMap);
+
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 更新文档-局部更新（全局更新，重新设定所有map的值）</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testUpdateDoc</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        UpdateRequest updateRequest = <span class="hljs-keyword">new</span> UpdateRequest(<span class="hljs-string">&quot;xc_course&quot;</span>, <span class="hljs-string">&quot;doc&quot;</span>, <span class="hljs-string">&quot;4HjhtnEBAZIsF0uSUCnm&quot;</span>);
+
+        <span class="hljs-comment">// 文档内容</span>
+        HashMap&lt;Object, Object&gt; jsonMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+        jsonMap.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;spring cloud实战-更新&quot;</span>);
+
+        updateRequest.doc(jsonMap);
+
+        UpdateResponse update = restHighLevelClient.update(updateRequest);
+
+        RestStatus status = update.status();
+
+        System.out.println(status);
+
+    &#125;
+  
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 删除文档</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testDelDoc</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        <span class="hljs-comment">// 删除文档的ID</span>
+        String id = <span class="hljs-string">&quot;4HjhtnEBAZIsF0uSUCnm&quot;</span>;
+
+        <span class="hljs-comment">// 删除索引对象</span>
+        DeleteRequest deleteRequest = <span class="hljs-keyword">new</span> DeleteRequest(<span class="hljs-string">&quot;xc_course&quot;</span>, <span class="hljs-string">&quot;doc&quot;</span>, id);
+
+        <span class="hljs-comment">// 响应对象</span>
+        DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest);
+
+        DocWriteResponse.Result result = deleteResponse.getResult();
+
+        System.out.println(result);
+
+    &#125;
+  
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 删除索引库</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testDeleteIndex</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        <span class="hljs-comment">// 删除索引对象</span>
+        DeleteIndexRequest deleteIndexRequest = <span class="hljs-keyword">new</span> DeleteIndexRequest(<span class="hljs-string">&quot;xc_course&quot;</span>);
+        <span class="hljs-comment">// 操作索引的客户端</span>
+        IndicesClient indices = restHighLevelClient.indices();
+        <span class="hljs-comment">// 执行删除索引</span>
+        DeleteIndexResponse delete = indices.delete(deleteIndexRequest);
+        <span class="hljs-comment">// 得到删除响应</span>
+        <span class="hljs-keyword">boolean</span> acknowledged = delete.isAcknowledged();
+
+        System.out.println(acknowledged);
+
+    &#125;
+  
+&#125;</code></pre></div>
+
+<p>运行，访问’<a target="_blank" rel="noopener" href="http://localhost:9100/&#39;%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%8F%91%E7%8E%B0xc_course%E5%B7%B2%E7%BB%8F%E8%A2%AB%E5%88%9B%E5%BB%BA%EF%BC%8C%E5%88%A0%E9%99%A4%E3%80%82">http://localhost:9100/&#39;，可以发现xc_course已经被创建，删除。</a></p>
+<p><strong><u>ps: 本文为学习笔记，仅供学习与参考。</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/elasticsearch/">elasticsearch</a>
+                    
+                      <a class="hover-with-bg" href="/tags/spring-boot/">spring-boot</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/27/elasticsearch-dsl-search/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Elasticsearch-dsl搜索学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/23/elasticSearch-learning-one/">
+                        <span class="hidden-mobile">ElasticSearch学习一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Elasticsearch与spring-boot整合&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

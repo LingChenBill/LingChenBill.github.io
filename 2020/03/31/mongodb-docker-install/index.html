@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>MongoDB环境搭建（Docker系） - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-31 20:22">
+                    March 31, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.9k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    34
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="MongoDB环境搭建（Docker系）"><a href="#MongoDB环境搭建（Docker系）" class="headerlink" title="MongoDB环境搭建（Docker系）"></a>MongoDB环境搭建（Docker系）</h2><h3 id="查看MongoDB可用版本"><a href="#查看MongoDB可用版本" class="headerlink" title="查看MongoDB可用版本"></a>查看MongoDB可用版本</h3><p><code>docker search mongo</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker search mongo
+NAME                                DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+mongo                               MongoDB document databases provide high avai…   6710                [OK]                
+mongo-express                       Web-based MongoDB admin interface, written w…   654                 [OK]                
+tutum/mongodb                       MongoDB Docker image – listens <span class="hljs-keyword">in</span> port 27017…   230                                     [OK]
+bitnami/mongodb                     Bitnami MongoDB Docker Image                    111                                     [OK]
+mongoclient/mongoclient             Official docker image <span class="hljs-keyword">for</span> Mongoclient, featu…   80                                      [OK]
+mongooseim/mongooseim               Small docker image <span class="hljs-keyword">for</span> MongooseIM - robust a…   19                                      
+frodenas/mongodb                    A Docker Image <span class="hljs-keyword">for</span> MongoDB                      18                                      [OK]
+cvallance/mongo-k8s-sidecar         Kubernetes side car to setup and maintain a …   14                                      [OK]
+circleci/mongo                      CircleCI images <span class="hljs-keyword">for</span> MongoDB                     8                                       [OK]
+centos/mongodb-32-centos7           MongoDB NoSQL database server                   8                                       
+arm64v8/mongo                       MongoDB document databases provide high avai…   7                                       
+istepanov/mongodump                 Docker image with mongodump running as a cro…   6                                       [OK]
+centos/mongodb-36-centos7           MongoDB NoSQL database server                   5                                       
+webhippie/mongodb                   Docker images <span class="hljs-keyword">for</span> MongoDB                       5                                       [OK]
+eses/mongodb_exporter               mongodb exporter <span class="hljs-keyword">for</span> prometheus                 5                                       [OK]
+centos/mongodb-26-centos7           MongoDB NoSQL database server                   5                                       
+neowaylabs/mongodb-mms-agent        This Docker image with MongoDB Monitoring Ag…   3                                       [OK]
+centos/mongodb-34-centos7           MongoDB NoSQL database server                   3                                       
+openshift/mongodb-24-centos7        DEPRECATED: A Centos7 based MongoDB v2.4 ima…   1                                       
+ansibleplaybookbundle/mongodb-apb   An APB to deploy MongoDB.                       1                                       [OK]
+ekesken/mongo                       docker image <span class="hljs-keyword">for</span> mongo that is configurable …   1                                       [OK]
+andreasleicher/mongo-azure-backup   a docker container to backup a mongodb using…   1                                       [OK]
+phenompeople/mongodb                 MongoDB is an open-source, document databas…   0                                       [OK]
+targetprocess/mongodb_exporter      MongoDB exporter <span class="hljs-keyword">for</span> prometheus                 0                                       [OK]
+martel/mongo-replica-ctrl           A dockerized controller <span class="hljs-keyword">for</span> a Mongo db repli…   0                                       [OK]</code></pre></div>
+
+<h3 id="拉取MongoDB"><a href="#拉取MongoDB" class="headerlink" title="拉取MongoDB"></a>拉取MongoDB</h3><p><code>docker pull mongo:latest</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker pull mongo:latest
+latest: Pulling from library/mongo
+5bed26d33875: Pull complete 
+f11b29a9c730: Pull complete 
+930bda195c84: Pull complete 
+78bf9a5ad49e: Pull complete 
+3d7fb3809884: Pull complete 
+a7237292ff8a: Pull complete 
+c936e28b5159: Pull complete 
+3fb56b127f30: Pull complete 
+c54a0478af29: Pull complete 
+ffc3a4dd1cdc: Pull complete 
+236ffdb10499: Pull complete 
+c33efe03b109: Pull complete 
+1d3609ce2ac9: Pull complete 
+Digest: sha256:1e33093260855e83baee0237e29947e243818c58a1d37b1022909e227f624d7a
+Status: Downloaded newer image <span class="hljs-keyword">for</span> mongo:latest
+docker.io/library/mongo:latest
+
+$ docker image ls
+REPOSITORY                              TAG                 IMAGE ID            CREATED             SIZE
+mongo                                   latest              c5e5843d9f5f        4 days ago          387MB</code></pre></div>
+
+<h3 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h3><p><code>docker run -itd --name mongo -p 27017:27017 mongo --auth</code> </p>
+<p><strong>-p 27017:27017</strong> ：映射容器服务的 27017 端口到宿主机的 27017 端口。外部可以直接通过 宿主机 ip:27017 访问到 mongo 的服务。<br>**–auth**：需要密码才能访问容器服务。</p>
+<p><strong><u>第一次运行不带 –auth 参数</u></strong></p>
+<p><code>docker run -itd --name mongo -p 27017:27017 mongo</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker run -itd --name mongo -p 27017:27017 mongo --auth
+2d4bb82ced0e050e922e300db7ba4fa97afc37a10a0c21134465b261e8619792
+localhost:tmp zhuyangze$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+2d4bb82ced0e        mongo               <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   46 seconds ago      Up 46 seconds       0.0.0.0:27017-&gt;27017/tcp            mongo</code></pre></div>
+
+<h3 id="设置用户密码"><a href="#设置用户密码" class="headerlink" title="设置用户密码"></a>设置用户密码</h3><p><code>docker exec -it mongo mongo admin</code></p>
+<p><code>db.createUser(&#123; user:&#39;admin&#39;,pwd:&#39;123456&#39;,roles:[ &#123; role:&#39;userAdminAnyDatabase&#39;, db: &#39;admin&#39;&#125;]&#125;);</code></p>
+<p><code>db.auth(&#39;admin&#39;, &#39;123456&#39;)</code></p>
+<p>需要创建一个帐号，该账号需要有grant权限，即：账号管理的授权权限。<br><strong>注意一点</strong>，<u><strong>帐号是跟着库走的，所以在指定库里授权，必须也在指定库里验证(auth)。</strong></u></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span> -it mongo mongo admin
+
+MongoDB shell version v4.2.5
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb
+Implicit session: session &#123; <span class="hljs-string">&quot;id&quot;</span> : UUID(<span class="hljs-string">&quot;913745fe-904c-43ef-ad00-2e3caef28643&quot;</span>) &#125;
+MongoDB server version: 4.2.5
+Welcome to the MongoDB shell.
+For interactive <span class="hljs-built_in">help</span>, <span class="hljs-built_in">type</span> <span class="hljs-string">&quot;help&quot;</span>.
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+Server has startup warnings: 
+2020-03-31T11:16:39.887+0000 I  STORAGE  [initandlisten] 
+2020-03-31T11:16:39.887+0000 I  STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2020-03-31T11:16:39.887+0000 I  STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2020-03-31T11:16:40.436+0000 I  CONTROL  [initandlisten] 
+2020-03-31T11:16:40.436+0000 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled <span class="hljs-keyword">for</span> the database.
+2020-03-31T11:16:40.436+0000 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2020-03-31T11:16:40.436+0000 I  CONTROL  [initandlisten] 
+---
+Enable MongoDB<span class="hljs-string">&#x27;s free cloud-based monitoring service, which will then receive and display</span>
+<span class="hljs-string">metrics about your deployment (disk utilization, CPU, operation statistics, etc).</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">The monitoring data will be available on a MongoDB website with a unique URL accessible to you</span>
+<span class="hljs-string">and anyone you share the URL with. MongoDB may use this information to make product</span>
+<span class="hljs-string">improvements and to suggest MongoDB products and deployment options to you.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">To enable free monitoring, run the following command: db.enableFreeMonitoring()</span>
+<span class="hljs-string">To permanently disable this reminder, run the following command: db.disableFreeMonitoring()</span>
+<span class="hljs-string">---</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">&gt;</span></code></pre></div>
+
+<p>创建用户与密码</p>
+<div class="hljs"><pre><code class="hljs bash">&gt; use admin
+switched to db admin
+
+// 创建myadmin用户
+db.createUser(
+...      &#123;
+...        user:<span class="hljs-string">&quot;myadmin&quot;</span>,
+...        <span class="hljs-built_in">pwd</span>:<span class="hljs-string">&quot;secret&quot;</span>,
+...        roles:[&#123;role:<span class="hljs-string">&quot;root&quot;</span>,db:<span class="hljs-string">&quot;admin&quot;</span>&#125;]
+...      &#125;
+...   )
+
+Successfully added user: &#123;
+	<span class="hljs-string">&quot;user&quot;</span> : <span class="hljs-string">&quot;myadmin&quot;</span>,
+	<span class="hljs-string">&quot;roles&quot;</span> : [
+		&#123;
+			<span class="hljs-string">&quot;role&quot;</span> : <span class="hljs-string">&quot;root&quot;</span>,
+			<span class="hljs-string">&quot;db&quot;</span> : <span class="hljs-string">&quot;admin&quot;</span>
+		&#125;
+	]
+&#125;
+
+// 没有验证通过，查询会出错
+&gt; show users
+2020-03-31T14:20:29.326+0000 E  QUERY    [js] uncaught exception: Error: <span class="hljs-built_in">command</span> usersInfo requires authentication :
+_getErrorWithCode@src/mongo/shell/utils.js:25:13
+DB.prototype.getUsers@src/mongo/shell/db.js:1638:15
+shellHelper.show@src/mongo/shell/utils.js:883:9
+shellHelper@src/mongo/shell/utils.js:790:15
+@(shellhelp2):1:1
+
+// 验证用户
+&gt; db.auth(<span class="hljs-string">&#x27;myadmin&#x27;</span>, <span class="hljs-string">&#x27;secret&#x27;</span>)
+1
+&gt; show users
+&#123;
+	<span class="hljs-string">&quot;_id&quot;</span> : <span class="hljs-string">&quot;admin.myadmin&quot;</span>,
+	<span class="hljs-string">&quot;userId&quot;</span> : UUID(<span class="hljs-string">&quot;734e6d84-074b-4b67-85e3-450783d0a8ea&quot;</span>),
+	<span class="hljs-string">&quot;user&quot;</span> : <span class="hljs-string">&quot;myadmin&quot;</span>,
+	<span class="hljs-string">&quot;db&quot;</span> : <span class="hljs-string">&quot;admin&quot;</span>,
+	<span class="hljs-string">&quot;roles&quot;</span> : [
+		&#123;
+			<span class="hljs-string">&quot;role&quot;</span> : <span class="hljs-string">&quot;root&quot;</span>,
+			<span class="hljs-string">&quot;db&quot;</span> : <span class="hljs-string">&quot;admin&quot;</span>
+		&#125;
+	],
+	<span class="hljs-string">&quot;mechanisms&quot;</span> : [
+		<span class="hljs-string">&quot;SCRAM-SHA-1&quot;</span>,
+		<span class="hljs-string">&quot;SCRAM-SHA-256&quot;</span>
+	]
+&#125;
+
+&gt; db.createRole(
+&#123;
+	<span class="hljs-string">&quot;role&quot;</span> : <span class="hljs-string">&quot;sysadmin&quot;</span>,
+	<span class="hljs-string">&quot;roles&quot;</span> : [ ],
+	<span class="hljs-string">&quot;privileges&quot;</span> : [
+		&#123;
+			<span class="hljs-string">&quot;resource&quot;</span> : &#123;
+				<span class="hljs-string">&quot;anyResource&quot;</span> : <span class="hljs-literal">true</span>
+			&#125;,
+			<span class="hljs-string">&quot;actions&quot;</span> : [
+				<span class="hljs-string">&quot;anyAction&quot;</span>
+			]
+		&#125;
+	]
+&#125;
+)
+
+// 结果
+&#123;
+	<span class="hljs-string">&quot;role&quot;</span> : <span class="hljs-string">&quot;sysadmin&quot;</span>,
+	<span class="hljs-string">&quot;roles&quot;</span> : [ ],
+	<span class="hljs-string">&quot;privileges&quot;</span> : [
+		&#123;
+			<span class="hljs-string">&quot;resource&quot;</span> : &#123;
+				<span class="hljs-string">&quot;anyResource&quot;</span> : <span class="hljs-literal">true</span>
+			&#125;,
+			<span class="hljs-string">&quot;actions&quot;</span> : [
+				<span class="hljs-string">&quot;anyAction&quot;</span>
+			]
+		&#125;
+	]
+&#125;
+
+// 创建数据库lc-test
+&gt; use lc-test
+switched to db lc-test
+// 创建用户名与密码
+&gt; db.createUser(&#123;user:<span class="hljs-string">&#x27;sa&#x27;</span>, <span class="hljs-built_in">pwd</span>:<span class="hljs-string">&#x27;123456&#x27;</span>, roles:[&#123;role:<span class="hljs-string">&#x27;sysadmin&#x27;</span>,db:<span class="hljs-string">&#x27;admin&#x27;</span>&#125;]&#125;)
+Successfully added user: &#123;
+	<span class="hljs-string">&quot;user&quot;</span> : <span class="hljs-string">&quot;sa&quot;</span>,
+	<span class="hljs-string">&quot;roles&quot;</span> : [
+		&#123;
+			<span class="hljs-string">&quot;role&quot;</span> : <span class="hljs-string">&quot;sysadmin&quot;</span>,
+			<span class="hljs-string">&quot;db&quot;</span> : <span class="hljs-string">&quot;admin&quot;</span>
+		&#125;
+	]
+&#125;
+&gt; <span class="hljs-built_in">exit</span>
+
+// 重新进入容器
+$ docker <span class="hljs-built_in">exec</span> -it mongo mongo sa
+MongoDB shell version v4.2.5
+connecting to: mongodb://127.0.0.1:27017/sa?compressors=disabled&amp;gssapiServiceName=mongodb
+Implicit session: session &#123; <span class="hljs-string">&quot;id&quot;</span> : UUID(<span class="hljs-string">&quot;cc084b61-fa73-4118-a826-c7f77beb49bf&quot;</span>) &#125;
+MongoDB server version: 4.2.5
+// 切换数据库
+&gt; use lc-test
+switched to db lc-test
+// 没有授权前，查询出错
+&gt; db.student.find()
+Error: error: &#123;
+	<span class="hljs-string">&quot;ok&quot;</span> : 0,
+	<span class="hljs-string">&quot;errmsg&quot;</span> : <span class="hljs-string">&quot;command find requires authentication&quot;</span>,
+	<span class="hljs-string">&quot;code&quot;</span> : 13,
+	<span class="hljs-string">&quot;codeName&quot;</span> : <span class="hljs-string">&quot;Unauthorized&quot;</span>
+&#125;
+// 用户授权
+&gt; db.auth(<span class="hljs-string">&quot;sa&quot;</span>, <span class="hljs-string">&quot;123456&quot;</span>)
+1
+// 查询，插入操作均可
+&gt; db.student.find()
+&gt; db.student.insert(&#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrling&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-string">&quot;19&quot;</span>&#125;)
+WriteResult(&#123; <span class="hljs-string">&quot;nInserted&quot;</span> : 1 &#125;)</code></pre></div>
+
+<p>停止容器并重启容器</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+2d4bb82ced0e        mongo               <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   4 minutes ago       Up 4 minutes        0.0.0.0:27017-&gt;27017/tcp            mongo
+
+$ docker container restart mongo
+mongo
+$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+2d4bb82ced0e        mongo               <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   4 minutes ago       Up 7 seconds        0.0.0.0:27017-&gt;27017/tcp            mongo</code></pre></div>
+
+<h3 id="MongoDB的数据存储路径"><a href="#MongoDB的数据存储路径" class="headerlink" title="MongoDB的数据存储路径"></a>MongoDB的数据存储路径</h3><p><code>docker exec -it mongo bash</code></p>
+<p><code>/data/db</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span> -it mongo bash
+root@02cb330d07df:/<span class="hljs-comment"># cd /data/db/</span>
+root@02cb330d07df:/data/db<span class="hljs-comment"># ls</span>
+WiredTiger       WiredTiger.turtle  WiredTigerLAS.wt  collection-0--554143273899493200.wt  collection-4--554143273899493200.wt  diagnostic.data                 index-10--554143273899493200.wt  index-5--554143273899493200.wt  index-9--554143273899493200.wt  mongod.lock    storage.bson
+WiredTiger.lock  WiredTiger.wt      _mdb_catalog.wt   collection-2--554143273899493200.wt  collection-8--554143273899493200.wt  index-1--554143273899493200.wt  index-3--554143273899493200.wt   index-6--554143273899493200.wt  journal                         sizeStorer.wt</code></pre></div>
+
+<h3 id="安装MongoDB客户端"><a href="#安装MongoDB客户端" class="headerlink" title="安装MongoDB客户端"></a>安装MongoDB客户端</h3><p>**<u>Studio 3T</u>**下载</p>
+<p><code>https://studio3t.com/download/</code></p>
+<p>连接串：Docker ip地址</p>
+<p><code>docker-machine ip</code></p>
+<p><img src="mongodb-docker-install/1.png" srcset="/img/loading.gif" alt="MongoDB-ip"></p>
+<p>认证密码（sa：123456）</p>
+<p><strong><u>接入的数据库要写对</u></strong></p>
+<p><img src="mongodb-docker-install/2.png" srcset="/img/loading.gif" alt="MongoDB-pwd"></p>
+<p>测试连接</p>
+<p><img src="mongodb-docker-install/3.png" srcset="/img/loading.gif" alt="MongoDB-test"></p>
+<p>连接后界面</p>
+<p><img src="mongodb-docker-install/4.png" srcset="/img/loading.gif" alt="client"></p>
+<p>在Studio 3T脚本界面可以写MongoDB的相关脚本</p>
+<p><img src="mongodb-docker-install/5.png" srcset="/img/loading.gif" alt="MongoDB-script"></p>
+<h3 id="MongoDB脚本"><a href="#MongoDB脚本" class="headerlink" title="MongoDB脚本"></a>MongoDB脚本</h3><div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 使用admin数据库</span>
+use admin
+<span class="hljs-comment">// 创建student文档集合</span>
+db.createCollection(<span class="hljs-string">&quot;student&quot;</span>)
+<span class="hljs-comment">// 指定查询student文档集合</span>
+db.getCollection(<span class="hljs-string">&quot;student&quot;</span>)
+<span class="hljs-comment">// 替换插入文档集合</span>
+db.student.insert(&#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrling&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-string">&quot;19&quot;</span>&#125;)
+<span class="hljs-comment">// 更新文档集合</span>
+db.student.update(&#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrling&quot;</span>&#125;, &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrlingchen&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-string">&quot;29&quot;</span>&#125;)
+<span class="hljs-comment">// 更新-设定</span>
+db.student.update(&#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrlingchen&quot;</span>&#125;, &#123;<span class="hljs-attr">$set</span>: &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mrling&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-string">&quot;39&quot;</span>&#125;&#125;, &#123;<span class="hljs-attr">multi</span>:<span class="hljs-literal">true</span>&#125;)
+<span class="hljs-comment">// 查询student文档集合</span>
+db.student.find()
+<span class="hljs-comment">// 条件查询</span>
+db.student.find(&#123;<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;mrling&quot;</span>&#125;)
+<span class="hljs-comment">// 条件查询（输出结果指定，1，显示；0：不显示）</span>
+db.student.find(&#123;<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;mrling&quot;</span>&#125;, &#123;<span class="hljs-attr">name</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">age</span> : <span class="hljs-number">1</span>, <span class="hljs-attr">_id</span> : <span class="hljs-number">0</span>&#125;)
+db.student.find(&#123;<span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;mrling&quot;</span>&#125;, &#123;<span class="hljs-attr">age</span> : <span class="hljs-number">1</span>&#125;)
+
+</code></pre></div>
+
+<p>用户信息</p>
+<div class="hljs"><pre><code class="hljs js">db.createUser(&#123;<span class="hljs-attr">user</span>:<span class="hljs-string">&#x27;sa&#x27;</span>, <span class="hljs-attr">pwd</span>:<span class="hljs-string">&#x27;123456&#x27;</span>, <span class="hljs-attr">roles</span>:[&#123;<span class="hljs-attr">role</span>:<span class="hljs-string">&#x27;sysadmin&#x27;</span>,<span class="hljs-attr">db</span>:<span class="hljs-string">&#x27;admin&#x27;</span>&#125;]&#125;)</code></pre></div>
+
+<p><img src="mongodb-docker-install/6.png" srcset="/img/loading.gif" alt="MongDB-user"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mongo/">mongo</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/01/it-devops-convert/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从IT到DevOps实践（转载）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/29/jira-init/">
+                        <span class="hidden-mobile">Jira-Docker环境搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MongoDB环境搭建（Docker系）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

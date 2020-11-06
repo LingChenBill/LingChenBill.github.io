@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Freemarker与Spring Boot集成 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-06 15:50">
+                    April 6, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.1k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    47
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Freemarker与Spring-Boot集成"><a href="#Freemarker与Spring-Boot集成" class="headerlink" title="Freemarker与Spring Boot集成"></a>Freemarker与Spring Boot集成</h2><p>FreeMarker是一款模版引擎。一种基于模版和要改变的数据，并用来生成输出文本（HTML网页，电子邮件、配置文件，源代码等）的通用工具。它不是面向最终用户的，而是一个Java类库，是一款程序员可以嵌入他们所开发产品的组件。</p>
+<p>Freemarker并不关心数据的来源，只是根据模版的内容，将数据模型在模版中显示并输出文件（通常为html）。</p>
+<h3 id="Freemarker环境搭建"><a href="#Freemarker环境搭建" class="headerlink" title="Freemarker环境搭建"></a>Freemarker环境搭建</h3><p>项目右击 -&gt; Open module Settings -&gt; + -&gt; new module -&gt; Next -&gt; 继承父模块 -&gt; Next -&gt; Finsh。</p>
+<p><img src="freemake-spring-boot/1.png" srcset="/img/loading.gif" alt="Freemaker测试工程搭建"></p>
+<h4 id="POM引入依赖"><a href="#POM引入依赖" class="headerlink" title="POM引入依赖"></a>POM引入依赖</h4><div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>xc-framework-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.xuecheng<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>&gt;</span>../xc-framework-parent/pom.xml<span class="hljs-tag">&lt;/<span class="hljs-name">relativePath</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>test-freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--freemarker config--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--web config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--lombok config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--okhttp config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.squareup.okhttp3<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>okhttp<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--test config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--commons-io config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>刷新依赖，下载依赖包</p>
+<p><img src="freemake-spring-boot/2.png" srcset="/img/loading.gif" alt="Freemaker依赖包"></p>
+<h4 id="application-yml配置"><a href="#application-yml配置" class="headerlink" title="application.yml配置"></a>application.yml配置</h4><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">8088</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">test-freemarker</span>
+  <span class="hljs-attr">freemarker:</span>
+    <span class="hljs-comment"># 关闭模版缓存，方便测试</span>
+    <span class="hljs-attr">cache:</span> <span class="hljs-literal">false</span>
+    <span class="hljs-attr">settings:</span>
+      <span class="hljs-comment"># 检查模版更新延迟时间，设置为0表示立即检查，如果时间大于0会有缓存不方便进行模版测试</span>
+      <span class="hljs-attr">template_update_delay:</span> <span class="hljs-number">0</span></code></pre></div>
+
+<h4 id="日志文件配置"><a href="#日志文件配置" class="headerlink" title="日志文件配置"></a>日志文件配置</h4><p><code>logback-spring.xml</code></p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--定义日志文件的存储地址,使用绝对路径--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;LOG_HOME&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;/Users/xxx/Documents/tmp/log&quot;</span>/&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Console 输出设置 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">charset</span>&gt;</span>utf8<span class="hljs-tag">&lt;/<span class="hljs-name">charset</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- 按照每天生成日志文件 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;FILE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rollingPolicy</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--日志文件输出的文件名--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fileNamePattern</span>&gt;</span>$&#123;LOG_HOME&#125;/xc.%d&#123;yyyy-MM-dd&#125;.log<span class="hljs-tag">&lt;/<span class="hljs-name">fileNamePattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rollingPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- 异步输出 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ASYNC&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.classic.AsyncAppender&quot;</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">discardingThreshold</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">discardingThreshold</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 更改默认的队列的深度,该值会影响性能.默认值为256 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">queueSize</span>&gt;</span>512<span class="hljs-tag">&lt;/<span class="hljs-name">queueSize</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 添加附加的appender,最多只能添加一个 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;FILE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.apache.ibatis.cache.decorators.LoggingCache&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">logger</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.springframework.boot&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;info&quot;</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--&lt;appender-ref ref=&quot;ASYNC&quot;/&gt;--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;FILE&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<h3 id="Freemarker测试"><a href="#Freemarker测试" class="headerlink" title="Freemarker测试"></a>Freemarker测试</h3><p>创建model, controller,模版文件</p>
+<p><img src="freemake-spring-boot/3.png" srcset="/img/loading.gif" alt="freemarker目录结构"></p>
+<p><code>FreemarkerController.java</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.test.freemarker.controller;
+
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;
+
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Freemarker controller.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:  <span class="hljs-doctag">@Controller</span>: 指向模版文件，注意不可使用<span class="hljs-doctag">@RestController</span>（返回JSON串）。</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/4/6</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Controller</span>
+<span class="hljs-meta">@RequestMapping(&quot;/freemarker&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FreemarkerController</span> </span>&#123;
+
+    <span class="hljs-meta">@RequestMapping(&quot;/test1&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">test1</span><span class="hljs-params">(Map&lt;String, Object&gt; map)</span> </span>&#123;
+       map.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;FreeMarker&quot;</span>);
+
+       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;test1&quot;</span>;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>test1.ftl</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Hello World!<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+Hello $&#123;name&#125;!
+<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>启动类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.test.freemarker;
+
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * FreemarkerApplication.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span> 2020/4/6</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FreemarkerApplication</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        SpringApplication.run(FreemarkerApplication.class, args);
+    &#125;
+&#125;</code></pre></div>
+
+<p>运行启动类，访问</p>
+<p><code>http://localhost:8088/freemarker/test1</code></p>
+<p><code>Hello FreeMarker!</code></p>
+<h3 id="Freemarker指令"><a href="#Freemarker指令" class="headerlink" title="Freemarker指令"></a>Freemarker指令</h3><p>1、注释，即&lt;#‐‐和‐‐&gt;，介于其之间的内容会被freemarker忽略<br>2、插值(Interpolation):即${..}部分,freemarker会用真实的值代替${..}<br>3、FTL指令:和HTML标记类似，名字前加#予以区分，Freemarker会解析标签中的表达式或逻辑。<br>4、文本，仅文本信息，这些不是freemarker的注释、插值、FTL指令的内容会被freemarker忽略解析，直接输出内容。</p>
+<h4 id="List指令"><a href="#List指令" class="headerlink" title="List指令"></a>List指令</h4><p>Controller类中加入</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/test1&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">test1</span><span class="hljs-params">(Map&lt;String, Object&gt; map)</span> </span>&#123;
+    map.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;FreeMarker&quot;</span>);
+
+    Student stu1 = <span class="hljs-keyword">new</span> Student();
+    stu1.setName(<span class="hljs-string">&quot;小明&quot;</span>);
+    stu1.setAge(<span class="hljs-number">18</span>);
+    stu1.setMoney(<span class="hljs-number">1000.86f</span>);
+    stu1.setBirthday(<span class="hljs-keyword">new</span> Date());
+
+    Student stu2 = <span class="hljs-keyword">new</span> Student();
+    stu2.setName(<span class="hljs-string">&quot;小红&quot;</span>);
+    stu2.setMoney(<span class="hljs-number">200.1f</span>);
+    stu2.setAge(<span class="hljs-number">19</span>);
+    stu2.setBirthday(<span class="hljs-keyword">new</span> Date());
+
+    List&lt;Student&gt; friends = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    friends.add(stu1);
+    stu2.setFriends(friends);
+    stu2.setBestFriend(stu1);
+
+    List&lt;Student&gt; stus = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    stus.add(stu1);
+    stus.add(stu2);
+
+    <span class="hljs-comment">//向数据模型放数据</span>
+    map.put(<span class="hljs-string">&quot;stus&quot;</span>, stus);
+
+    <span class="hljs-comment">//准备map数据</span>
+    HashMap&lt;String, Student&gt; stuMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    stuMap.put(<span class="hljs-string">&quot;stu1&quot;</span>, stu1);
+    stuMap.put(<span class="hljs-string">&quot;stu2&quot;</span>, stu2);
+
+    <span class="hljs-comment">//向数据模型放数据</span>
+    map.put(<span class="hljs-string">&quot;stu1&quot;</span>, stu1);
+    <span class="hljs-comment">//向数据模型放数据</span>
+    map.put(<span class="hljs-string">&quot;stuMap&quot;</span>, stuMap);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;test1&quot;</span>;
+&#125;</code></pre></div>
+
+<p>模版文件</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+Hello $&#123;name&#125;!
+<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+
+遍历数据模型中的List学生信息（数据模型中的名字是stus）
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>序号<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>姓名<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>年龄<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>钱包<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        &lt;#--&lt;td&gt;生日日期&lt;/td&gt;--&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">#list</span> <span class="hljs-attr">stus</span> <span class="hljs-attr">as</span> <span class="hljs-attr">stu</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu_index + 1&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.age&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.money&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            &lt;#--&lt;td&gt;$&#123;stu.birthday&#125;&lt;/td&gt;--&gt;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">#list</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre></div>
+
+<p>显示效果</p>
+<div class="hljs"><pre><code class="hljs html">Hello FreeMarker!
+遍历数据模型中的List学生信息（数据模型中的名字是stus）
+序号	姓名	年龄	钱包
+1	小明	18	1,000.86
+2	小红	19	200.1</code></pre></div>
+
+<h4 id="遍历Map数据"><a href="#遍历Map数据" class="headerlink" title="遍历Map数据"></a>遍历Map数据</h4><p>模版文件</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+遍历数据模型中的Map数据（stuMap）<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+方法一：在[]中填写map的key<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+姓名：$&#123;stuMap[&#x27;stu1&#x27;].name&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+年龄：$&#123;stuMap[&#x27;stu1&#x27;].age&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+
+方法二：在map后边直接加.加key<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+姓名：$&#123;stuMap.stu1.name&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+年龄：$&#123;stuMap.stu1.age&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+遍历map中的key, keys就是key列表<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">#list</span> <span class="hljs-attr">stuMap</span>?<span class="hljs-attr">keys</span> <span class="hljs-attr">as</span> <span class="hljs-attr">k</span>&gt;</span>
+    $&#123;k&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    姓名：$&#123;stuMap[k].name&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    年龄：$&#123;stuMap[k].age&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">#list</span>&gt;</span></code></pre></div>
+
+<p>输出结果</p>
+<div class="hljs"><pre><code class="hljs html">遍历数据模型中的Map数据（stuMap）
+方法一：在[]中填写map的key
+姓名：小明
+年龄：18
+方法二：在map后边直接加.加key
+姓名：小明
+年龄：18
+
+遍历map中的key, keys就是key列表
+stu2
+姓名：小红
+年龄：19
+stu1
+姓名：小明
+年龄：18</code></pre></div>
+
+<h4 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h4><p>if 指令即判断指令，是常用的FTL指令，freemarker在解析时遇到if会进行判断，条件为真则输出if中间的内容，否则跳过内容不再输出。</p>
+<div class="hljs"><pre><code class="hljs html">&lt;td &lt;#if stu.name == &#x27;小明&#x27;&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.name&#125;&lt;/td&gt;</code></pre></div>
+
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>1、算数运算符<br>FreeMarker表达式中完全支持算术运算，FreeMarker支持的算术运算符包括:+, - , * , / , %<br>2、逻辑运算符<br>逻辑与:&amp;&amp;<br>逻辑或:||<br>逻辑非:!<br>逻辑运算符只能作用于布尔值,否则将产生错误<br>3、 比较运算符<br>表达式中支持的比较运算符有如下几个:<br>1 =或者==:判断两个值是否相等.<br>2 !=:判断两个值是否不等.<br>3 &gt; 或者gt:判断左边值是否大于右边值<br>4 &gt;=或者gte:判断左边值是否大于等于右边值<br>5 &lt;或者lt:判断左边值是否小于右边值<br>6 &lt;=或者lte:判断左边值是否小于等于右边值</p>
+<p>注意：使用gt等字母运算符代替 &gt; 会有更好的效果,因为 FreeMarker会把&gt;解释成FTL标签的结束字符,当然,也可以使用括 号来避免这种情况,如:&lt;#if (x&gt;y)&gt;</p>
+<div class="hljs"><pre><code class="hljs html">&lt;#--&lt;td &lt;#if (stu.money &gt; 300)&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.money&#125;&lt;/td&gt;--&gt;
+&lt;td &lt;#if stu.money gt 300&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.money&#125;&lt;/td&gt;</code></pre></div>
+
+<h4 id="空值处理"><a href="#空值处理" class="headerlink" title="空值处理"></a>空值处理</h4><p>判断某变量是否存在使用 “??” 用法为:variable??,如果该变量存在,返回true,否则返回false</p>
+<div class="hljs"><pre><code class="hljs html">遍历数据模型中的List学生信息（数据模型中的名字是stus）
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>序号<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>姓名<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>年龄<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>钱包<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        &lt;#--&lt;td&gt;生日日期&lt;/td&gt;--&gt;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">#--空值处理--</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">#if</span> <span class="hljs-attr">stus</span>??&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">#list</span> <span class="hljs-attr">stus</span> <span class="hljs-attr">as</span> <span class="hljs-attr">stu</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu_index + 1&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            &lt;td &lt;#if stu.name == &#x27;小明&#x27;&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.name&#125;&lt;/td&gt;
+            <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.age&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+        &lt;#--&lt;td &lt;#if stu.money &gt; 300&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.money&#125;&lt;/td&gt;--&gt;
+        &lt;#--&lt;td &lt;#if (stu.money &gt; 300)&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.money&#125;&lt;/td&gt;--&gt;
+            &lt;td &lt;#if stu.money gt 300&gt;style=&quot;background: cornflowerblue&quot;&lt;/#if&gt;&gt;$&#123;stu.money&#125;&lt;/td&gt;
+        &lt;#--&lt;td&gt;$&#123;stu.birthday&#125;&lt;/td&gt;--&gt;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">#list</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">#if</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span></code></pre></div>
+
+<p>也可以使用缺省值<br>缺失变量默认值使用 “!” 使用!要以指定一个默认值，当变量为空时显示默认值。<br>如：${name !’’}表示如果name为空显示空字符串。</p>
+<div class="hljs"><pre><code class="hljs html">遍历数据模型中的Map数据（stuMap）<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+方法一：在[]中填写map的key<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+&lt;#--&lt;#if stuMap?? &amp;&amp; stuMap.stu1??&gt;--&gt;
+姓名：$&#123;(stuMap[&#x27;stu1&#x27;].name) ! &#x27;&#x27;&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+年龄：$&#123;(stuMap[&#x27;stu1&#x27;].age) ! &#x27;&#x27;&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+
+方法二：在map后边直接加.加key<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+姓名：$&#123;(stuMap.stu1.name) ! &#x27;&#x27;&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+年龄：$&#123;(stuMap.stu1.age) ! &#x27;&#x27;&#125;<span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span></code></pre></div>
+
+<p>输出结果</p>
+<div class="hljs"><pre><code class="hljs html">遍历数据模型中的Map数据（stuMap）
+方法一：在[]中填写map的key
+姓名：
+年龄：
+方法二：在map后边直接加.加key
+姓名：
+年龄：</code></pre></div>
+
+<h4 id="内建函数"><a href="#内建函数" class="headerlink" title="内建函数"></a>内建函数</h4><p>到某个集合的大小</p>
+<p><code>$&#123;集合名?size&#125;</code></p>
+<div class="hljs"><pre><code class="hljs html">学生的个数：$&#123;stus?size&#125;
+// 输出
+学生的个数：2</code></pre></div>
+
+<p>日期格式化</p>
+<p>显示年月日: ${today?date}<br>显示时分秒:${today?time}<br>显示日期+时间:${today?datetime}<br>自定义格式化: ${today?string(“yyyy年MM月”)}</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.birthday?date&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+// 输出
+2020-4-6
+
+<span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>$&#123;stu.birthday?string(&quot;yyyy年MM月dd日&quot;)&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+// 输出
+2020年04月06日</code></pre></div>
+
+<p>内建函数c</p>
+<p>如果不想显示为每三位分隔的数字，可以使用c函数将数字型转成字符串输出</p>
+<div class="hljs"><pre><code class="hljs html">POINT数字型：$&#123;point&#125;
+// 输出
+POINT数字型：102,920,122
+
+POINT数字型：$&#123;point?c&#125;
+// 输出
+POINT数字型：102920122</code></pre></div>
+
+<p>将json字符串转成对象</p>
+<p>使用assign标签，assign的作用是定义一个变量</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">#assign</span> <span class="hljs-attr">text</span>=<span class="hljs-string">&quot;&#123;&#x27;bank&#x27;:&#x27;工商银行&#x27;,&#x27;account&#x27;:&#x27;10101920201920212&#x27;&#125;&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">#assign</span> <span class="hljs-attr">data</span>=<span class="hljs-string">text?eval</span> /&gt;</span>
+开户行:$&#123;data.bank&#125; 账号:$&#123;data.account&#125;
+// 输出
+开户行:工商银行 账号:10101920201920212</code></pre></div>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/freemaker/">freemaker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/spring-boot/">spring boot</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/09/rabbit-mq-start/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rabbit-MQ学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/01/it-devops-convert/">
+                        <span class="hidden-mobile">从IT到DevOps实践（转载）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Freemarker与Spring Boot集成&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

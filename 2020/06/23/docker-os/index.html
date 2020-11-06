@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker之操作系统学习(SSH容器搭建) - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-23 21:35">
+                    June 23, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    38
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker之操作系统学习"><a href="#Docker之操作系统学习" class="headerlink" title="Docker之操作系统学习"></a>Docker之操作系统学习</h2><h3 id="1、BusyBox"><a href="#1、BusyBox" class="headerlink" title="1、BusyBox"></a>1、BusyBox</h3><p>Busybox是一个集成了一百多个最常用的Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix的工具集。</p>
+<div class="hljs"><pre><code class="hljs bash">% docker search busybox
+% docker pull busybox
+Using default tag: latest
+latest: Pulling from library/busybox
+76df9210b28c: Pull complete 
+Digest: sha256:95cf004f559831017cdf4628aaf1bb30133677be8702a8c5f2994629f637a209
+Status: Downloaded newer image <span class="hljs-keyword">for</span> busybox:latest
+docker.io/library/busybox:latest
+
+% docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+busybox             latest              1c35c4412082        2 weeks ago         1.22MB
+
+<span class="hljs-comment"># 启动busybox容器</span>
+% docker run -it busybox
+<span class="hljs-comment"># 运行grep命令</span>
+/ <span class="hljs-comment"># grep</span>
+BusyBox v1.31.1 (2020-06-02 02:36:36 UTC) multi-call binary.
+
+Usage: grep [-HhnlLoqvsriwFE] [-m N] [-A/B/C N] PATTERN/-e PATTERN.../-f FILE [FILE]...
+
+Search <span class="hljs-keyword">for</span> PATTERN <span class="hljs-keyword">in</span> FILEs (or stdin)
+
+	-H	Add <span class="hljs-string">&#x27;filename:&#x27;</span> prefix
+	-h	Do not add <span class="hljs-string">&#x27;filename:&#x27;</span> prefix
+	-n	Add <span class="hljs-string">&#x27;line_no:&#x27;</span> prefix
+	-l	Show only names of files that match
+	-L	Show only names of files that don<span class="hljs-string">&#x27;t match</span>
+<span class="hljs-string">	-c	Show only count of matching lines</span>
+<span class="hljs-string">	-o	Show only the matching part of line</span>
+<span class="hljs-string">	-q	Quiet. Return 0 if PATTERN is found, 1 otherwise</span>
+<span class="hljs-string">	-v	Select non-matching lines</span>
+<span class="hljs-string">	-s	Suppress open and read errors</span>
+<span class="hljs-string">	-r	Recurse</span>
+<span class="hljs-string">	-i	Ignore case</span>
+<span class="hljs-string">	-w	Match whole words only</span>
+<span class="hljs-string">	-x	Match whole lines only</span>
+<span class="hljs-string">	-F	PATTERN is a literal (not regexp)</span>
+<span class="hljs-string">	-E	PATTERN is an extended regexp</span>
+<span class="hljs-string">	-m N	Match up to N times per file</span>
+<span class="hljs-string">	-A N	Print N lines of trailing context</span>
+<span class="hljs-string">	-B N	Print N lines of leading context</span>
+<span class="hljs-string">	-C N	Same as &#x27;</span>-A N -B N<span class="hljs-string">&#x27;</span>
+<span class="hljs-string">	-e PTRN	Pattern to match</span>
+<span class="hljs-string">	-f FILE	Read pattern from file</span>
+<span class="hljs-string"></span>
+<span class="hljs-string"># 查看容器内的挂载信息</span>
+<span class="hljs-string">/ # mount</span>
+<span class="hljs-string">overlay on / type overlay (rw,relatime,lowerdir=/var/lib/docker/overlay2/l/CI4ZX3GGYIARAQBCPDSWXFDIVK:/var/lib/docker/overlay2/l/PXT5LRJGKYW2STZOH4DLZRYCD4,upperdir=/var/lib/docker/overlay2/4b6cb63e4a6b00292b57ae981a1c23c812418e68aa02c10c959cdbd7bd4f5332/diff,workdir=/var/lib/docker/overlay2/4b6cb63e4a6b00292b57ae981a1c23c812418e68aa02c10c959cdbd7bd4f5332/work)</span>
+<span class="hljs-string">proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)</span>
+<span class="hljs-string">tmpfs on /dev type tmpfs (rw,nosuid,size=65536k,mode=755)</span>
+<span class="hljs-string">devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=666)</span>
+<span class="hljs-string">sysfs on /sys type sysfs (ro,nosuid,nodev,noexec,relatime)</span>
+<span class="hljs-string">tmpfs on /sys/fs/cgroup type tmpfs (ro,nosuid,nodev,noexec,relatime,mode=755)</span>
+<span class="hljs-string">cpuset on /sys/fs/cgroup/cpuset type cgroup (ro,nosuid,nodev,noexec,relatime,cpuset)</span>
+<span class="hljs-string">cpu on /sys/fs/cgroup/cpu type cgroup (ro,nosuid,nodev,noexec,relatime,cpu)</span>
+<span class="hljs-string">cpuacct on /sys/fs/cgroup/cpuacct type cgroup (ro,nosuid,nodev,noexec,relatime,cpuacct)</span></code></pre></div>
+
+<p>busybox虽然小巧，但是它提供了常见的Linux命令，可以用来练习和熟悉Linux命令。</p>
+<h3 id="2、Ubuntu"><a href="#2、Ubuntu" class="headerlink" title="2、Ubuntu"></a>2、Ubuntu</h3><p>Debian和Ubuntu都是目前较为流行的Debian系的服务器操作系统。</p>
+<div class="hljs"><pre><code class="hljs bash">% docker search -s 10 ubuntu
+Flag --stars has been deprecated, use --filter=stars=3 instead
+NAME                                                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+ubuntu                                                    Ubuntu is a Debian-based Linux operating sys…   11031               [OK]                
+dorowu/ubuntu-desktop-lxde-vnc                            Docker image to provide HTML5 VNC interface …   441                                     [OK]
+rastasheep/ubuntu-sshd                                    Dockerized SSH service, built on top of offi…   244                                     [OK]
+consol/ubuntu-xfce-vnc                                    Ubuntu container with <span class="hljs-string">&quot;headless&quot;</span> VNC session…   220                                     [OK]
+ubuntu-upstart                                            Upstart is an event-based replacement <span class="hljs-keyword">for</span> th…   110                 [OK]                
+ansible/ubuntu14.04-ansible                               Ubuntu 14.04 LTS with ansible                   98                                      [OK]
+neurodebian                                               NeuroDebian provides neuroscience research s…   68                  [OK]                
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5      ubuntu-16-nginx-php-phpmyadmin-mysql-5          50                                      [OK]
+ubuntu-debootstrap                                        debootstrap --variant=minbase --components=m…   44                  [OK]                
+nuagebec/ubuntu                                           Simple always updated Ubuntu docker images w…   24                                      [OK]
+i386/ubuntu                                               Ubuntu is a Debian-based Linux operating sys…   21                                      
+1and1internet/ubuntu-16-apache-php-5.6                    ubuntu-16-apache-php-5.6                        14                                      [OK]
+1and1internet/ubuntu-16-apache-php-7.0                    ubuntu-16-apache-php-7.0                        13                                      [OK]
+eclipse/ubuntu_jdk8                                       Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   12                                      [OK]
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mariadb-10   ubuntu-16-nginx-php-phpmyadmin-mariadb-10       11                                      [OK]
+
+<span class="hljs-comment"># 使用Ubuntu 14.04，查看其版本号</span>
+% docker run -it ubuntu:14.04 /bin/bash
+Unable to find image <span class="hljs-string">&#x27;ubuntu:14.04&#x27;</span> locally
+14.04: Pulling from library/ubuntu
+2e6e20c8e2e6: Pull complete 
+30bb187ac3fc: Pull complete 
+b7a5bcc4a58a: Pull complete 
+Digest: sha256:ffc76f71dd8be8c9e222d420dc96901a07b61616689a44c7b3ef6a10b7213de4
+Status: Downloaded newer image <span class="hljs-keyword">for</span> ubuntu:14.04
+root@d3bc90968ea7:/<span class="hljs-comment"># lsb_release -a</span>
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 14.04.6 LTS
+Release:	14.04
+Codename:	trusty
+
+<span class="hljs-comment"># 安装curl</span>
+root@d3bc90968ea7:/<span class="hljs-comment"># apt-get install curl</span>
+root@d3bc90968ea7:/<span class="hljs-comment"># curl</span>
+curl: try <span class="hljs-string">&#x27;curl --help&#x27;</span> or <span class="hljs-string">&#x27;curl --manual&#x27;</span> <span class="hljs-keyword">for</span> more information
+
+<span class="hljs-comment"># 安装apache2</span>
+root@d3bc90968ea7:/<span class="hljs-comment"># apt-get install apache2</span>
+
+<span class="hljs-comment"># 启动apache2服务</span>
+root@d3bc90968ea7:/<span class="hljs-comment"># service apache2 start</span>
+ * Starting web server apache2                                                                                                                                                                              AH00558: apache2: Could not reliably determine the server<span class="hljs-string">&#x27;s fully qualified domain name, using 172.17.0.2. Set the &#x27;</span>ServerName<span class="hljs-string">&#x27; directive globally to suppress this message</span>
+<span class="hljs-string"> * </span>
+<span class="hljs-string"></span>
+<span class="hljs-string"># 访问apache2服务</span>
+<span class="hljs-string">root@d3bc90968ea7:/# curl 127.0.0.1</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
+<span class="hljs-string">&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;</span>
+<span class="hljs-string">  &lt;!--</span>
+<span class="hljs-string">    Modified from the Debian original for Ubuntu</span>
+<span class="hljs-string">    Last updated: 2014-03-19</span>
+<span class="hljs-string">    See: https://launchpad.net/bugs/1288690</span>
+<span class="hljs-string">  --&gt;</span>
+<span class="hljs-string">  &lt;head&gt;</span>
+<span class="hljs-string">    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;</span>
+<span class="hljs-string">    &lt;title&gt;Apache2 Ubuntu Default Page: It works&lt;/title&gt;</span>
+<span class="hljs-string">    &lt;style type=&quot;text/css&quot; media=&quot;screen&quot;&gt;</span>
+<span class="hljs-string">......</span></code></pre></div>
+
+<h3 id="3、Centos-Fedora"><a href="#3、Centos-Fedora" class="headerlink" title="3、Centos/Fedora"></a>3、Centos/Fedora</h3><p>Centos和Fedora都是基于Redhat的Linux发行版。前者以兼容Redhat软件而闻名，Centos是企业级服务器的常用选型。后者则主要面向个人用户。</p>
+<h3 id="4、创建支持SSH服务的镜像"><a href="#4、创建支持SSH服务的镜像" class="headerlink" title="4、创建支持SSH服务的镜像"></a>4、创建支持SSH服务的镜像</h3><h4 id="基于commit命令创建"><a href="#基于commit命令创建" class="headerlink" title="基于commit命令创建"></a>基于commit命令创建</h4><p>Docker提供的docker commit命令，支持用户提交自己对容器的修改，并生成新的镜像。<br>命令格式为<code>docker commit CONTAINER [REPOSITORY[:TAG]]</code>。</p>
+<div class="hljs"><pre><code class="hljs bash">xxx@bogon ~ % docker run -it ubuntu:14.04 /bin/bash
+root@8d0c91836292:/<span class="hljs-comment"># sshd</span>
+bash: sshd: <span class="hljs-built_in">command</span> not found
+
+<span class="hljs-comment"># 安装sshd</span>
+root@8d0c91836292:/<span class="hljs-comment"># apt-get install openssh-server</span>
+
+<span class="hljs-comment"># 查看容器的22端口，处于监听状态</span>
+root@8d0c91836292:/<span class="hljs-comment"># netstat -tunlp</span>
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      579/sshd        
+tcp6       0      0 :::22                   :::*                    LISTEN      579/sshd    
+
+<span class="hljs-comment"># 修改SSH服务的安全登录配置，取消pam登录限制</span>
+root@8d0c91836292:/<span class="hljs-comment"># sed -ri &#x27;s/session required pam_loginuid.so/#session required pam_loginuid.so/g&#x27; /etc/pam.d/sshd</span>
+
+<span class="hljs-comment"># 在root用户目录下创建．ssh目录，并复制需要登录的公钥信息</span>
+<span class="hljs-comment"># (一般为本地主机用户目录下的．ssh/id_rsa.pub文件，可由ssh-keygen -t rsa命令生成)到authorized_keys文件中</span>
+root@8d0c91836292:/<span class="hljs-comment"># mkdir root/.ssh</span>
+root@8d0c91836292:/<span class="hljs-comment"># vi /root/.ssh/authorized_keys</span>
+
+<span class="hljs-comment"># 创建自动启动ssh服务的脚本</span>
+root@8d0c91836292:/<span class="hljs-comment"># vi /run.sh</span>
+<span class="hljs-meta">#! /bin/bash</span>
+/usr/sbin/sshd -D
+
+<span class="hljs-comment"># 添加执行权限</span>
+root@8d0c91836292:/<span class="hljs-comment"># chmod +x run.sh </span>
+root@8d0c91836292:/<span class="hljs-comment"># ls -l</span>
+-rwxr-xr-x   1 root root   31 Jun 23 14:44 run.sh
+
+<span class="hljs-comment"># 退出容器</span>
+root@8d0c91836292:/<span class="hljs-comment"># exit</span>
+<span class="hljs-built_in">exit</span>
+xxx@bogon ~ % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+<span class="hljs-comment"># 保存（创建新的镜像）</span>
+<span class="hljs-comment"># 命令格式为`docker commit CONTAINER [REPOSITORY[:TAG]]`</span>
+xxx@bogon ~ % docker commit 8d0c91836292 sshd:ubuntu
+sha256:6943898c8bac0f6968878ba7f8ce9bbcb974f43d483ceb118ae254aed1bbb4f9
+
+<span class="hljs-comment"># 查看新的镜像</span>
+xxx@bogon ~ % docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+sshd                ubuntu              6943898c8bac        6 seconds ago       235MB
+busybox             latest              1c35c4412082        2 weeks ago         1.22MB
+ubuntu              14.04               6e4f1fe62ff1        6 months ago        197MB
+
+<span class="hljs-comment"># 启动新的容器</span>
+<span class="hljs-comment"># 添加22端口映射10022 -&gt; 22，10022为宿主主机的端口，22为容器的端口</span>
+xxx@bogon ~ % docker run -p 10022:22 -d sshd:ubuntu /run.sh
+982bbb0c883bb01a4b3c91dc659b1f6b34b5408369e332164ad794d302b60544
+xxx@bogon ~ % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                   NAMES
+982bbb0c883b        sshd:ubuntu         <span class="hljs-string">&quot;/run.sh&quot;</span>           4 seconds ago       Up 3 seconds        0.0.0.0:10022-&gt;22/tcp   hungry_haibt
+
+<span class="hljs-comment"># 连接之前要将本机的.ssh 目录下的id_rsa.pub内容拷贝到docker容器中的root目录下.ssh/authorized_keys中</span>
+
+<span class="hljs-comment"># 连接容器(一定要指定root名，因为本地mac用户为自己的用户名)</span>
+xxx@bogon ~ % ssh root@192.168.0.107 -p 10022
+Welcome to Ubuntu 14.04 LTS (GNU/Linux 4.4.0-170-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms <span class="hljs-keyword">for</span> each program are described <span class="hljs-keyword">in</span> the
+individual files <span class="hljs-keyword">in</span> /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+root@982bbb0c883b:~<span class="hljs-comment">#</span></code></pre></div>
+
+<h4 id="使用Dockerfile创建"><a href="#使用Dockerfile创建" class="headerlink" title="使用Dockerfile创建"></a>使用Dockerfile创建</h4><div class="hljs"><pre><code class="hljs bash">xxx@localhost docker % mkdir sshd_ubuntu
+xxx@localhost docker % <span class="hljs-built_in">cd</span> sshd_ubuntu 
+xxx@localhost sshd_ubuntu % ls
+xxx@localhost sshd_ubuntu % touch Dockerfile run.sh
+xxx@localhost sshd_ubuntu % ls
+Dockerfile	run.sh
+
+<span class="hljs-comment"># 编写run.sh</span>
+<span class="hljs-meta">#!/bin/bash</span>
+/usr/sbin/sshd -D
+
+<span class="hljs-comment"># 生成ssh密钥对</span>
+% ssh-keygen -t rsa
+% cat ~/.ssh/id_rsa.pub &gt; authorized_keys
+% ls
+Dockerfile	authorized_keys	run.sh
+
+<span class="hljs-comment"># 编写Dockerfile</span>
+<span class="hljs-comment"># 设置继承镜像</span>
+FROM ubuntu:14.04
+
+<span class="hljs-comment"># 提供一些作者的信息</span>
+MAINTAINER from www.lc-ling.com by lingchen (lingchen1316@163.com)
+
+<span class="hljs-comment"># 下面开始运行命令，此处更改ubuntu的源为国内163的源</span>
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://mirrors.163.com/ubuntu/ trusty main restricted universe multiverse&quot;</span> &gt; /etc/apt/sources.list
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://mirrors.163.com/ubuntu/ trusty-security main restricted universe multiverse&quot;</span> &gt;&gt; /etc/apt/sources.list
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://mirrors.163.com/ubuntu/ trusty-updates main restricted universe multiverse&quot;</span> &gt;&gt; /etc/apt/sources.list
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://mirrors.163.com/ubuntu/ trusty-proposed main restricted universe multiverse&quot;</span> &gt;&gt; /etc/apt/sources.list
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://mirrors.163.com/ubuntu/ trusty-backports main restricted universe multiverse&quot;</span> &gt;&gt; /etc/apt/sources.list
+RUN apt-get update
+
+<span class="hljs-comment"># 安装ssh服务</span>
+RUN apt-get install -y openssh-server
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /root/.ssh
+
+<span class="hljs-comment"># 取消pam限制</span>
+RUN sed -ri <span class="hljs-string">&#x27;s/session required pam_loginuid.so/#session required pam_loginuid.so/g&#x27;</span> /etc/pam.d/sshd
+
+<span class="hljs-comment"># 复制配置文件到相应位置，并赋予脚本可执行权限</span>
+ADD authorized_keys /root/.ssh/authorized_keys
+ADD run.sh /run.sh
+RUN chmod 755 /run.sh
+
+<span class="hljs-comment"># 开放端口</span>
+EXPOSE 22
+
+<span class="hljs-comment"># 设置自启动命令</span>
+CMD [<span class="hljs-string">&quot;/run.sh&quot;</span>]
+
+<span class="hljs-comment"># 创建镜像 (有 . 号)</span>
+xxx@localhost sshd_ubuntu % sudo docker build -t sshd:dockerfile .
+<span class="hljs-comment"># 查看docker images</span>
+xxx@localhost sshd_ubuntu % docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+sshd                dockerfile          44638bb2f804        10 seconds ago      249MB
+
+<span class="hljs-comment"># 使用sshd:dockerfile镜像，创建容器，测试自定义镜像</span>
+% docker run -d -p 10122:22 sshd:dockerfile
+
+<span class="hljs-comment"># 错误一：</span>
+b5f645724ce1d19b85228e401bbfda008a13c39da9f9452b09754ffab4816e9f
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:349: starting container process caused <span class="hljs-string">&quot;exec: \&quot;/run.sh\&quot;: permission denied&quot;</span>: unknown.
+<span class="hljs-comment"># Dockerfile文件中没有设置run.sh的执行权限</span>
+RUN chmod 755 /run.sh
+
+<span class="hljs-comment"># ssh连接自定义容器</span>
+xxx@localhost sshd_ubuntu % ssh root@192.168.0.107 -p 10122
+The authenticity of host <span class="hljs-string">&#x27;[192.168.0.107]:10122 ([192.168.0.107]:10122)&#x27;</span> can<span class="hljs-string">&#x27;t be established.</span>
+<span class="hljs-string">ECDSA key fingerprint is SHA256:byz56n6ggX89uz39PZnFnS40Vkn4Ry5omVoAqi4UNZI.</span>
+<span class="hljs-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span>
+<span class="hljs-string">Warning: Permanently added &#x27;</span>[192.168.0.107]:10122<span class="hljs-string">&#x27; (ECDSA) to the list of known hosts.</span>
+<span class="hljs-string">Welcome to Ubuntu 14.04 LTS (GNU/Linux 4.4.0-170-generic x86_64)</span>
+<span class="hljs-string"></span>
+<span class="hljs-string"> * Documentation:  https://help.ubuntu.com/</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">The programs included with the Ubuntu system are free software;</span>
+<span class="hljs-string">the exact distribution terms for each program are described in the</span>
+<span class="hljs-string">individual files in /usr/share/doc/*/copyright.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span>
+<span class="hljs-string">applicable law.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">root@9e9b7f178cce:~# </span>
+<span class="hljs-string"></span></code></pre></div>
+
+<p><strong><u>ps：本文为学习记录，仅为学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ssh/">ssh</a>
+                    
+                      <a class="hover-with-bg" href="/tags/os/">os</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/25/docker-webapp/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker之Web服务器与应用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/22/docker-dockfile-nginx/">
+                        <span class="hidden-mobile">Docker之Dockfile的nginx构建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker之操作系统学习(SSH容器搭建)&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

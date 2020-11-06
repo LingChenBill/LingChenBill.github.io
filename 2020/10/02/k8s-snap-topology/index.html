@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>10_应用存储和持久化数据卷：存储快照与拓扑调度 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-10-02 22:17">
+                    October 2, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    6.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    71
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="10-应用存储和持久化数据卷：存储快照与拓扑调度"><a href="#10-应用存储和持久化数据卷：存储快照与拓扑调度" class="headerlink" title="10_应用存储和持久化数据卷：存储快照与拓扑调度"></a>10_应用存储和持久化数据卷：存储快照与拓扑调度</h3><h4 id="一、基本知识"><a href="#一、基本知识" class="headerlink" title="一、基本知识"></a><strong>一、基本知识</strong></h4><h5 id="存储快照产生背景"><a href="#存储快照产生背景" class="headerlink" title="存储快照产生背景"></a><strong>存储快照产生背景</strong></h5><p>在使用存储时，为了提高数据操作的容错性，我们通常有需要对线上数据进行snapshot，以及能快速restore的能力。<br>另外，当需要对线上数据进行快速的复制以及迁移等动作，如进行环境的复制、数据开发等功能时，都可以通过存储快照来满足需求，而 K8s 中通过 CSI Snapshotter controller 来实现存储快照的功能。</p>
+<h5 id="存储快照用户接口-Snapshot"><a href="#存储快照用户接口-Snapshot" class="headerlink" title="存储快照用户接口-Snapshot"></a>存储快照用户接口-Snapshot</h5><p>我们知道，K8s 中通过 pvc 以及 pv 的设计体系来简化用户对存储的使用，而存储快照的设计其实是仿照 pvc &amp; pv 体系的设计思想。<br>当用户需要存储快照的功能时，可以通过 VolumeSnapshot 对象来声明，并指定相应的 VolumeSnapshotClass 对象，之后由集群中的相关组件动态生成存储快照以及存储快照对应的对象 VolumeSnapshotContent。如下对比图所示，动态生成 VolumeSnapshotContent 和动态生成 pv 的流程是非常相似的。</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194512-aa6b0073-db0d-4e7a-96a6-7576ceac767c.png" srcset="/img/loading.gif" alt="img"></p>
+<h5 id="存储快照用户接口-Restore"><a href="#存储快照用户接口-Restore" class="headerlink" title="存储快照用户接口-Restore"></a>存储快照用户接口-Restore</h5><p>有了存储快照之后，如何将快照数据快速恢复过来呢？如下图所示： </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195691-527f012f-8544-48f0-a825-26324596340d.png" srcset="/img/loading.gif" alt="img"></p>
+<p>如上所示的流程，可以借助 PVC 对象将其的 dataSource 字段指定为 VolumeSnapshot 对象。这样当 PVC 提交之后，会由集群中的相关组件找到 dataSource 所指向的存储快照数据，然后新创建对应的存储以及 pv 对象，将存储快照数据恢复到新的 pv 中，这样数据就恢复回来了，这就是存储快照的restore用法。</p>
+<h5 id="Topolopy-含义"><a href="#Topolopy-含义" class="headerlink" title="Topolopy-含义"></a>Topolopy-含义</h5><p>首先了解一下拓扑是什么意思：这里所说的拓扑是 <strong>K8s 集群中为管理的 nodes 划分的一种“位置”关系</strong>，意思为：可以通过在 node 的 labels 信息里面填写某一个 node 属于某一个拓扑。 </p>
+<p>常见的有三种，这三种在使用时经常会遇到的： </p>
+<ul>
+<li><p>第一种，在使用云存储服务的时候，经常会遇到 <strong>region</strong>，也就是**<u>地区</u>**的概念，在 K8s 中常通过 label failure-domain.beta.kubernetes.io/region 来标识。这个是为了标识单个 K8s 集群管理的跨 region 的 nodes 到底属于哪个地区； </p>
+</li>
+<li><p>第二种，比较常用的是**<u>可用区</u><strong>，也就是 available **zone</strong>，在 K8s 中常通过 label failure-domain.beta.kubernetes.io/zone 来标识。这个是为了标识单个 K8s 集群管理的跨 zone 的 nodes 到底属于哪个可用区；</p>
+</li>
+<li><p>第三种，是 <strong>hostname，</strong>就是**<u>单机维度</u>**，是拓扑域为 node 范围，在 K8s 中常通过 label kubernetes.io/hostname 来标识，这个在文章的最后讲 local pv 的时候，会再详细描述。</p>
+</li>
+</ul>
+<p>上面讲到的三个拓扑是比较常用的，而拓扑其实是可以自己定义的。**<u>可以定义一个字符串来表示一个拓扑域</u>**，这个 key 所对应的值其实就是拓扑域下不同的拓扑位置。</p>
+<p>举个例子：可以用 <strong>rack，</strong>也就是机房中的机架这个纬度来做一个拓扑域。这样就可以将不同机架 (rack) 上面的机器标记为不同的拓扑位置，也就是说可以将不同机架上机器的位置关系通过 rack 这个纬度来标识。属于 rack1 上的机器，node label 中都添加 rack 的标识，它的 value 就标识成 rack1，即 rack=rack1；另外一组机架上的机器可以标识为 rack=rack2，这样就可以通过机架的纬度就来区分来 K8s 中的 node 所处的位置。</p>
+<p>接下来就一起来看看拓扑在 K8s 存储中的使用。</p>
+<h5 id="存储拓扑调度产生背景"><a href="#存储拓扑调度产生背景" class="headerlink" title="存储拓扑调度产生背景"></a>存储拓扑调度产生背景</h5><p>上一节课我们说过，K8s 中通过 PV 的 PVC 体系将存储资源和计算资源分开管理了。如果创建出来的 PV有”访问位置”的限制，也就是说，它通过 **<u>nodeAffinity 来指定哪些 node 可以访问这个 PV</u>**。为什么会有这个访问位置的限制？</p>
+<p>因为在 K8s 中创建 pod 的流程和创建 PV 的流程，其实可以认为是并行进行的，这样的话，就没有办法来保证 pod 最终运行的 node 是能访问到 有位置限制的 PV 对应的存储，最终导致 pod 没法正常运行。这里来举两个经典的例子：</p>
+<p>首先来看一下 <strong>Local PV 的例子</strong>，Local PV 是将一个 node 上的本地存储封装为 PV，通过使用 PV 的方式来访问本地存储。为什么会有 Local PV 的需求呢？简单来说，<u>刚开始使用 PV 或 PVC 体系的时候，主要是用来针对分布式存储的，分布式存储依赖于网络</u>，如果某些业务对 I/O 的性能要求非常高，可能通过网络访问分布式存储没办法满足它的性能需求。这个时候需要使用本地存储，刨除了网络的 overhead，性能往往会比较高。但是用本地存储也是有坏处的！分布式存储可以通过多副本来保证高可用，但本地存储就需要业务自己用类似 Raft 协议来实现多副本高可用。</p>
+<p>接下来看一下 Local PV 场景可能如果没有对PV做“访问位置”的限制会遇到什么问题？ </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195576-951dd2cc-78ce-4e2c-b52a-0d871609f8cd.png" srcset="/img/loading.gif" alt="img"></p>
+<p>当用户在提交完 PVC 的时候，K8s PV controller可能绑定的是 node2 上面的 PV。但是，真正使用这个 PV 的 pod，在被调度的时候，有可能调度在 node1 上，最终导致这个 pod 在起来的时候没办法去使用这块存储，因为 pod 真实情况是要使用 node2 上面的存储。</p>
+<p>第二个(如果不对 PV 做“访问位置”的限制会出问题的)场景：</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195664-bfcc77ea-9ad7-4584-86e9-23f8d2b14be5.png" srcset="/img/loading.gif" alt="img"></p>
+<p>如果搭建的 K8s 集群管理的 nodes 分布在单个区域多个可用区内。在创建动态存储的时候，创建出来的存储属于可用区 2，但之后在提交使用该存储的 pod，它可能会被调度到可用区 1 了，那就可能没办法使用这块存储。因此像阿里云的云盘，也就是块存储，当前不能跨可用区使用，如果创建的存储其实属于可用区 2，但是 pod 运行在可用区 1，就没办法使用这块存储，这是第二个常见的问题场景。</p>
+<p>接下来我们来看看 K8s 中如何通过存储拓扑调度来解决上面的问题的。</p>
+<h5 id="存储拓扑调度"><a href="#存储拓扑调度" class="headerlink" title="存储拓扑调度"></a>存储拓扑调度</h5><p>首先总结一下之前的两个问题，它们都是 PV 在给 PVC 绑定或者动态生成 PV 的时候，我并不知道后面将使用它的 pod 将调度在哪些 node 上。但 PV 本身的使用，是对 pod 所在的 node 有拓扑位置的限制的，如 Local PV 场景是我要调度在指定的 node 上我才能使用那块 PV，而对第二个问题场景就是说跨可用区的话，必须要在将使用该 PV 的 pod 调度到同一个可用区的 node 上才能使用阿里云云盘服务，那 K8s 中怎样去解决这个问题呢？</p>
+<p>简单来说，在 K8s 中将 PV 和 PVC 的 binding 操作和动态创建 PV 的操作做了 delay，delay 到 pod 调度结果出来之后，再去做这两个操作。这样的话有什么好处？</p>
+<ul>
+<li>首先，如果要是所要使用的 PV 是预分配的，如 Local PV，其实使用这块 PV 的 pod 它对应的 PVC 其实还没有做绑定，就可以通过调度器在调度的过程中，结合 pod 的计算资源需求(如 cpu/mem) 以及 pod 的 PVC 需求，选择的 node 既要满足计算资源的需求又要 pod 使用的 pvc 要能 binding 的 pv 的 nodeaffinity 限制;</li>
+<li>其次对动态生成 PV 的场景其实就相当于是如果知道 pod 运行的 node 之后，就可以根据 node 上记录的拓扑信息来动态的创建这个 PV，也就是保证新创建出来的 PV 的拓扑位置与运行的 node 所在的拓扑位置是一致的，如上面所述的阿里云云盘的例子，既然知道 pod 要运行到可用区 1，那之后创建存储时指定在可用区 1 创建即可。</li>
+</ul>
+<p>为了实现上面所说的延迟绑定和延迟创建 PV，需要在 K8s 中的改动涉及到的相关组件有三个：</p>
+<ul>
+<li>PV Controller 也就是 persistent volume controller，它需要支持延迟 Binding 这个操作。</li>
+<li>另一个是动态生成 PV 的组件，如果 pod 调度结果出来之后，它要根据 pod 的拓扑信息来去动态的创建 PV。</li>
+<li>第三组件，也是最重要的一个改动点就是 kube-scheduler。在为 pod 选择 node 节点的时候，它不仅要考虑 pod 对 CPU/MEM 的计算资源的需求，它还要考虑这个 pod 对存储的需求，也就是根据它的 PVC，它要先去看一下当前要选择的 node，能否满足能和这个 PVC 能匹配的 PV 的 nodeAffinity；或者是动态生成 PV 的过程，它要根据 StorageClass 中指定的拓扑限制来 check 当前的 node 是不是满足这个拓扑限制，这样就能保证调度器最终选择出来的 node 就能满足存储本身对拓扑的限制。 </li>
+</ul>
+<p>这就是存储拓扑调度的相关知识。</p>
+<h4 id="二、用例解读"><a href="#二、用例解读" class="headerlink" title="二、用例解读"></a><strong>二、用例解读</strong></h4><p>接下来通过 yaml 用例来解读一下第一部分的基本知识。</p>
+<h5 id="Volume-Snapshot-Restore示例"><a href="#Volume-Snapshot-Restore示例" class="headerlink" title="Volume Snapshot/Restore示例"></a>Volume Snapshot/Restore示例</h5><p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194874-b4683ef0-f4a0-4cc0-b66e-9dea1f31bd99.png" srcset="/img/loading.gif" alt="img"></p>
+<p>下面来看一下存储快照如何使用：首先需要集群管理员，在集群中创建 VolumeSnapshotClass 对象，VolumeSnapshotClass 中一个重要字段就是 Snapshot，它是指定真正创建存储快照所使用的卷插件，这个卷插件是需要提前部署的，稍后再说这个卷插件。</p>
+<p>接下来用户他如果要做真正的存储快照，需要声明一个 VolumeSnapshotClass，VolumeSnapshotClass 首先它要指定的是 VolumeSnapshotClassName，接着它要指定的一个非常重要的字段就是 source，这个 source 其实就是指定快照的数据源是啥。这个地方指定 name 为 disk-pvc，也就是说通过这个 pvc 对象来创建存储快照。提交这个 VolumeSnapshot 对象之后，集群中的相关组件它会找到这个 PVC 对应的 PV 存储，对这个 PV 存储做一次快照。</p>
+<p>有了存储快照之后，那接下来怎么去用存储快照恢复数据呢？这个其实也很简单，通过声明一个新的 PVC 对象并在它的 spec 下面的 DataSource 中来声明我的数据源来自于哪个 VolumeSnapshot，这里指定的是 disk-snapshot 对象，当我这个 PVC 提交之后，集群中的相关组件，它会动态生成新的 PV 存储，这个新的 PV 存储中的数据就来源于这个 Snapshot 之前做的存储快照。 </p>
+<h5 id="Local-PV-的示例"><a href="#Local-PV-的示例" class="headerlink" title="Local PV 的示例"></a>Local PV 的示例</h5><p>如下图看一下 Local PV 的 yaml 示例：</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195580-5d8a0272-c8d2-480d-b68b-94b9b53ebaa6.png" srcset="/img/loading.gif" alt="img"></p>
+<p>Local PV 大部分使用的时候都是通过**<u>静态创建的方式</u>**，也就是要先去声明 PV 对象，既然 Local PV 只能是本地访问，就需要在声明 PV 对象的，在 PV 对象中通过 <u>nodeAffinity 来限制我这个 PV 只能在单 node 上访问，也就是给这个 PV 加上拓扑限制</u>。如上图拓扑的 key 用 kubernetes.io/hostname 来做标记，也就是只能在 node1 访问。如果想用这个 PV，你的 pod 必须要调度到 node1 上。</p>
+<p>既然是静态创建 PV 的方式，这里为什么还需要 storageClassname 呢？<br>前面也说了，在 Local PV 中，如果要想让它正常工作，需要用到<strong>延迟绑定特性</strong>才行，那既然是延迟绑定，当用户在写完 PVC 提交之后，即使集群中有相关的 PV 能跟它匹配，它也暂时不能做匹配，也就是说 PV controller 不能马上去做 binding，这个时候你就要通过一种手段来告诉 PV controller，什么情况下是不能立即做 binding。这里的 storageClass 就是为了起到这个副作用，我们可以看到 storageClass 里面的 provisioner 指定的是 <strong>no-provisioner</strong>，其实就是相当于告诉 K8s 它不会去动态创建 PV，它主要用到 storageclass 的 VolumeBindingMode 字段，叫 <u>WaitForFirstConsumer</u>，可以先简单地认为它是延迟绑定。</p>
+<p>当用户开始提交 PVC 的时候，pv controller 在看到这个 pvc 的时候，它会找到相应的 storageClass，发现这个 BindingMode 是延迟绑定，它就不会做任何事情。</p>
+<p>之后当真正使用这个 pvc 的 pod，在调度的时候，当它恰好调度在符合 pv nodeaffinity 的 node 的上面后，这个 pod 里面所使用的 PVC 才会真正地与 PV 做绑定，这样就保证我 pod 调度到这台 node 上之后，这个 PVC 才与这个 PV 绑定，最终保证的是创建出来的 pod 能访问这块 Local PV，也就是静态 Provisioning 场景下怎么去满足 PV 的拓扑限制。 </p>
+<h5 id="限制-Dynamic-Provisioning-PV-拓扑示例"><a href="#限制-Dynamic-Provisioning-PV-拓扑示例" class="headerlink" title="限制 Dynamic Provisioning PV 拓扑示例"></a>限制 Dynamic Provisioning PV 拓扑示例</h5><p>再看一下动态 Provisioning PV 的时候，怎么去做拓扑限制的？</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194620-720a4fa2-4edb-4f40-9fb3-ef1a55c0f51b.png" srcset="/img/loading.gif" alt="img"></p>
+<p>动态就是指动态创建 PV 就有拓扑位置的限制，那怎么去指定？ </p>
+<p>首先在 storageclass 还是需要指定 BindingMode，就是 WaitForFirstConsumer，就是延迟绑定。 </p>
+<p>其次特别重要的一个字段就是 <strong>allowedTopologies</strong>，限制就在这个地方。上图中可以看到拓扑限制是可用区的级别，这里其实有两层意思： </p>
+<ol>
+<li>第一层意思就是说我在动态创建 PV 的时候，创建出来的 PV 必须是在这个可用区可以访问的;</li>
+<li>第二层含义是因为声明的是延迟绑定，那调度器在发现使用它的 PVC 正好对应的是该 storageclass 的时候，调度 pod 就要选择位于该可用区的 nodes。</li>
+</ol>
+<p>总之，就是要从两方面保证，<br>一是动态创建出来的存储时要能被这个可用区访问的，<br>二是我调度器在选择 node 的时候，要落在这个可用区内的，这样的话就保证我的存储和我要使用存储的这个 pod 它所对应的 node，它们之间的拓扑域是在同一个拓扑域，用户在写 PVC 文件的时候，写法是跟以前的写法是一样的，主要是在 storageclass 中要做一些拓扑限制。</p>
+<h4 id="三、操作演示"><a href="#三、操作演示" class="headerlink" title="三、操作演示"></a><strong>三、操作演示</strong></h4><p>本节将在线上环境来演示一下前面讲解的内容。 </p>
+<p>首先来看一下我的阿里云服务器上搭建的 K8s 服务。总共有 3 个 node 节点。一个 master 节点，两个 node。其中 master 节点是不能调度 pod 的。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194849-acd10ee0-b792-4838-a09b-c392b0b94874.png" srcset="/img/loading.gif" alt="img"></p>
+<p>再看一下，我已经提前把我需要的插件已经布好了，一个是 snapshot 插件 (csi-external-snapshot*)，一个是动态云盘的插件 (csi-disk*)。</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194845-6d83d2dc-c3dc-41c0-b567-5210739e906e.png" srcset="/img/loading.gif" alt="img"></p>
+<p>现在开始 snapshot 的演示。首先去动态创建云盘，然后才能做 snapshot。动态创建云盘需要先创建 storageclass，然后去根据 PVC 动态创建 PV，然后再创建一个使用它的 pod 了。</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195569-40bb1cca-b35a-41ce-87d5-651c581ff583.png" srcset="/img/loading.gif" alt="img"></p>
+<p>有个以上对象，现在就可以做 snapshot 了，首先看一下做 snapshot 需要的第一个配置文件：snapshotclass.yaml。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194835-dbeb8206-5bfa-44b7-83d1-9aab45261251.png" srcset="/img/loading.gif" alt="img"></p>
+<p>其实里面就是指定了在做存储快照的时候需要使用的插件，这个插件刚才演示了已经部署好了，就是 csi-external-snapshot-0 这个插件。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195666-f4bbca6b-9613-49de-b8cd-ecc1dcae4252.png" srcset="/img/loading.gif" alt="img"></p>
+<p>接下来创建 volume-snapshotclass 文件，创建完之后就开始了 snapshot。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194598-0e4fc921-904d-4ffc-9f41-81c1919c310c.png" srcset="/img/loading.gif" alt="img"></p>
+<p>然后看 snapshot.yaml，Volumesnapshot 声明创建存储快照了，这个地方就指定刚才创建的那个 PVC 来做的数据源来做 snapshot，那我们开始创建。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195665-00167b7b-a9a0-4134-8952-dc68af84a4aa.png" srcset="/img/loading.gif" alt="img"></p>
+<p>我们看一下 Snapshot 有没有创建好，如下图所示，content 已经在 11 秒之前创建好了。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194555-0c1ea298-ce1f-4db6-bd2f-71f7c14762f5.png" srcset="/img/loading.gif" alt="img"></p>
+<p>可以看一下它里面的内容，主要看 volumesnapshotcontent 记录的一些信息，这个是我 snapshot 出来之后，它记录的就是云存储厂商那边返回给我的 snapshot 的 ID。然后是这个 snapshot 数据源，也就是刚才指定的 PVC，可以通过它会找到对应的 PV。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195572-806015e9-fbfd-41e3-adf4-ec5cd3d7f6df.png" srcset="/img/loading.gif" alt="img"></p>
+<p>snapshot 的演示大概就是这样，把刚才创建的 snapshot 删掉，还是通过 volumesnapshot 来删掉。然后看一下，动态创建的这个 volumesnapshotcontent 也被删掉。</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195577-5f02c4a5-7ba2-4f11-ad04-c3c14b8227ef.png" srcset="/img/loading.gif" alt="img"></p>
+<p>接下来看一下动态 PV 创建的过程加上一些拓扑限制，首先将的 storageclass 创建出来，然后再看一下 **<u>storageclass 里面做的限制</u>**，storageclass 首先还是指定它的 BindingMode 为 WaitForFirstConsumer，也就是做延迟绑定，然后是对它的拓扑限制，我这里面在 allowedTopologies 字段中配置了一个可用区级别的限制。  </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195576-5a4485c1-c5f7-4972-99e0-1d4490a309ca.png" srcset="/img/loading.gif" alt="img"></p>
+<p>来尝试创建一下的 PVC，PVC 创建出来之后，理论上它应该处在 pending 状态。看一下，它现在因为它要做延迟绑定，由于现在没有使用它的 pod，暂时没办法去做绑定，也没办法去动态创建新的 PV。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194562-57947007-a2bb-471d-87a3-e9c0589bf191.png" srcset="/img/loading.gif" alt="img"></p>
+<p>接下来创建使用该 pvc 的 pod 看会有什么效果，看一下 pod，pod 也处在 pending了。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195579-5a101390-ed6f-42f4-83c8-87af76bdcec2.png" srcset="/img/loading.gif" alt="img"></p>
+<p>那来看一下 pod 为啥处在 pending 状态，可以看一下是调度失败了，调度失败原因：一个 node 由于 taint 不能调度，这个其实是 master，另外两个 node 也是没有说是可绑定的 PV。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194843-3a326d47-9d36-437c-a760-106eeeb77eea.png" srcset="/img/loading.gif" alt="img"></p>
+<p>为什么会有两个 node 出现没有可绑定的 pv 的错误？不是动态创建么？ </p>
+<p>我们来仔细看看 storageclass 中的拓扑限制，通过上面的讲解我们知道，这里限制使用该 storageclass 创建的 PV 存储必须在可用区 cn-hangzhou-d 可访问的，而使用该存储的 pod 也必须调度到 cn-hangzhou-d 的 node 上。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195574-deac570b-5185-4284-aa99-8bb7c5e9ea63.png" srcset="/img/loading.gif" alt="img"></p>
+<p>那就来看一下 node 节点上有没有这个拓扑信息，如果它没有当然是不行了。 </p>
+<p>看一下第一个 node 的全量信息吧，主要找它的 <strong>labels 里面的信息</strong>，看 lables 里面的确有一个这样的 key。也就是说有一个这样的拓扑，但是这指定是 cn-hangzhou-b，刚才 storageclass 里面指定的是 cn-hangzhou-d。</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194832-08995d91-f4c2-4456-a40f-0a488e389b89.png" srcset="/img/loading.gif" alt="img"></p>
+<p>那看一下另外的一个 node 上的这个拓扑信息写的也是 hangzhou-b，但是我们那个 storageclass 里面限制是 d。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195652-2e5b63f0-cb23-4ce6-9ac6-3aa0a321ac65.png" srcset="/img/loading.gif" alt="img"></p>
+<p>这就导致最终没办法将 pod 调度在这两个 node 上。现在我们修改一下 storageclass 中的拓扑限制，将 cn-hangzhou-d 改为 cn-hangzhou-b。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195897-0b8dea87-9b32-427b-bebd-b5ad44e0ba9e.png" srcset="/img/loading.gif" alt="img"></p>
+<p>改完之后再看一下，其实就是说我动态创建出来的 PV 要能被 hangzhou-b 这个可用区访问的，使用该存储的 pod 要调度到该可用区的 node 上。把之前的 pod 删掉，让它重新被调度看一下有什么结果，好，现在这个已经调度成功了，就是已经在启动容器阶段。 </p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195584-9aeea04e-5b42-4b3e-b554-c8e73d6debf3.png" srcset="/img/loading.gif" alt="img"></p>
+<p>说明刚才把 storageclass 它里面的对可用区的限制从 hangzhou-d 改为 hangzhou-b 之后，集群中就有两个 node，它的拓扑关系是和 storageclass 里要求的拓扑关系是相匹配的，这样的话它就能保证它的 pod 是有 node 节点可调度的。上图中最后一点 Pod 已经 Running 了，说明刚才的拓扑限制改动之后可以 work 了。 </p>
+<h4 id="四、处理流程"><a href="#四、处理流程" class="headerlink" title="四、处理流程"></a><strong>四、处理流程</strong></h4><h5 id="kubernetes-对-Volume-Snapshot-Restore-处理流程"><a href="#kubernetes-对-Volume-Snapshot-Restore-处理流程" class="headerlink" title="kubernetes 对 Volume Snapshot/Restore 处理流程"></a>kubernetes 对 Volume Snapshot/Restore 处理流程</h5><p>接下来看一下 K8s 中对存储快照与拓扑调度的具体处理流程。如下图所示：</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982194841-767c437e-975a-4eca-ba02-2b53de059698.png" srcset="/img/loading.gif" alt="img"></p>
+<p>首先来看一下存储快照的处理流程，这里来首先解释一下 csi 部分。K8s 中对存储的扩展功能都是推荐通过 csi out-of-tree 的方式来实现的。</p>
+<p>csi 实现存储扩展主要包含两部分： </p>
+<ul>
+<li>第一部分是由 K8s 社区推动实现的 **<u>csi controller 部分</u>**，也就是这里的 csi-snapshottor controller 以及 csi-provisioner controller，这些主要是通用的 controller 部分;</li>
+<li>另外一部分是由特定的云存储厂商用自身 OpenAPI 实现的不同的 csi-plugin 部分，也叫存储的 driver 部分。</li>
+</ul>
+<p>两部分部件通过 unix domain socket 通信连接到一起。有这两部分，才能形成一个真正的存储扩展功能。</p>
+<p>如上图所示，当用户提交 VolumeSnapshot 对象之后，会被 csi-snapshottor controller watch 到。之后它会通过 GPPC 调用到 csi-plugin，**<u>csi-plugin 通过 OpenAPI 来真正实现存储快照的动作</u>**，等存储快照已经生成之后，会返回到 csi-snapshottor controller 中，csi-snapshottor controller 会将存储快照生成的相关信息放到 VolumeSnapshotContent 对象中并将用户提交的 VolumeSnapshot 做 bound。这个 bound 其实就有点类似 PV 和 PVC 的 bound 一样。</p>
+<p>有了存储快照，如何去使用存储快照恢复之前的数据呢？前面也说过，通过声明一个新的 PVC 对象，并且指定他的 dataSource 为 Snapshot 对象，当提交 PVC 的时候会被 csi-provisioner watch 到，之后会通过 GRPC 去创建存储。这里创建存储跟之前讲解的 csi-provisioner 有一个不太一样的地方，就是它里面还指定了 Snapshot 的 ID，当去云厂商创建存储时，需要多做一步操作，即将之前的快照数据恢复到新创建的存储中。之后流程返回到 csi-provisioner，它会将新创建的存储的相关信息写到一个新的 PV 对象中，新的 PV 对象被 PV controller watch 到它会将用户提交的 PVC 与 PV 做一个 bound，之后 pod 就可以通过 PVC 来使用 Restore 出来的数据了。这是 K8s 中对存储快照的处理流程。 </p>
+<h5 id="kubernetes-对-Volume-Topology-aware-Scheduling-处理流程"><a href="#kubernetes-对-Volume-Topology-aware-Scheduling-处理流程" class="headerlink" title="kubernetes 对 Volume Topology-aware Scheduling 处理流程"></a><strong>kubernetes</strong> 对 Volume Topology-aware Scheduling 处理流程</h5><p>接下来看一下存储拓扑调度的处理流程：</p>
+<p><img src="https://intranetproxy.alipay.com/skylark/lark/0/2019/png/225439/1566982195594-a9b23a64-1fbd-48d2-9638-956aaf2ed4b8.png" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>第一个步骤</strong>其实就是要去声明延迟绑定，这个通过 StorageClass 来做的，上面已经阐述过，这里就不做详细描述了。 </p>
+<p>接下来看一下调度器，上图中红色部分就是调度器新加的存储拓扑调度逻辑，我们先来看一下不加红色部分时调度器的为一个 pod 选择 node 时，它的大概流程： </p>
+<ul>
+<li>首先用户提交完 pod 之后，会被调度器 watch 到，它就会去首先做**<u>预选</u>**，预选就是说它会将集群中的所有 node 都来与这个 pod 它需要的资源做匹配；</li>
+<li>如果匹配上，就相当于这个 node 可以使用，当然可能不止一个 node 可以使用，最终会选出来一批 node；</li>
+<li>然后再经过第二个阶段优选，优选就相当于我要对这些 node 做一个打分的过程，通过打分找到最匹配的一个 node；</li>
+<li>之后调度器将调度结果写到 pod 里面的 spec.nodeName 字段里面，然后会被相应的 node 上面的 kubelet watch 到，最后就开始创建 pod 的整个流程。</li>
+</ul>
+<p>那现在看一下加上卷相关的调度的时候，筛选 node(<strong>第二个步骤</strong>)又是怎么做的？ </p>
+<ul>
+<li>先就要找到 pod 中使用的所有 PVC，找到已经 bound 的 PVC，以及需要延迟绑定的这些 PVC；</li>
+<li>对于已经 bound 的 PVC，要 check 一下它对应的 PV 里面的 nodeAffinity 与当前 node 的拓扑是否匹配 。如果不匹配， 就说明这个 node 不能被调度。如果匹配，继续往下走，就要去看一下需要延迟绑定的 PVC；</li>
+<li>对于需要延迟绑定的 PVC。先去获取集群中存量的 PV，满足 PVC 需求的，先把它全部捞出来，然后再将它们一一与当前的 node labels 上的拓扑做匹配，如果它们(存量的 PV)都不匹配，那就说明当前的存量的 PV 不能满足需求，就要进一步去看一下如果要动态创建 PV 当前 node 是否满足拓扑限制，也就是还要进一步去 check StorageClass 中的拓扑限制，如果 StorageClass 中声明的拓扑限制与当前的 node 上面已经有的 labels 里面的拓扑是相匹配的，那其实这个 node 就可以使用，如果不匹配，说明该 node 就不能被调度。</li>
+</ul>
+<p>经过这上面步骤之后，就找到了所有即满足 pod 计算资源需求又满足 pod 存储资源需求的所有 nodes。</p>
+<p>当 node 选出来之后，<strong>第三个步骤</strong>就是调度器内部做的一个优化。这里简单过一下，就是更新经过预选和优选之后，pod 的 node 信息，以及 PV 和 PVC 在 scheduler 中做的一些 cache 信息。</p>
+<p><strong>第四个步骤</strong>也是重要的一步，已经选择出来 node 的 Pod，不管其使用的 PVC 是要 binding 已经存在的 PV，还是要做动态创建 PV，这时就可以开始做。由调度器来触发，调度器它就会去更新 PVC 对象和 PV 对象里面的相关信息，然后去触发 PV controller 去做 binding 操作，或者是由 csi-provisioner 去做动态创建流程。 </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>通过对比 PVC&amp;PV 体系讲解了存储快照的相关 K8s 资源对象以及使用方法；</li>
+<li>通过两个实际场景遇到的问题引出存储拓扑调度功能必要性，以及 K8s 中如何通过拓扑调度来解决这些问题；</li>
+<li>通过剖析 K8s 中存储快照和存储拓扑调度内部运行机制，深入理解该部分功能的工作原理。</li>
+</ol>
+<p><strong><u>PS：本文摘录于阿里云公开课，仅供学习与参考。</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/k8s/">k8s</a>
+                    
+                      <a class="hover-with-bg" href="/tags/snap/">snap</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/04/k8s-app-status/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">11_可观测性_你的应用健康</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/01/k8s-pv-pvc/">
+                        <span class="hidden-mobile">9_应用存储和持久化数据卷-核心知识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "10_应用存储和持久化数据卷：存储快照与拓扑调度&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

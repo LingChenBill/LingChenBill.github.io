@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Elasticsearch集群搭建 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-05-01 21:38">
+                    May 1, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.7k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    23
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Elasticsearch集群搭建"><a href="#Elasticsearch集群搭建" class="headerlink" title="Elasticsearch集群搭建"></a>Elasticsearch集群搭建</h2><h3 id="集群结构"><a href="#集群结构" class="headerlink" title="集群结构"></a>集群结构</h3><p>ES通常以<strong>集群方式</strong>工作，这样做不仅能够提高 ES的搜索能力还可以处理大数据搜索的能力，同时也增加了系统的容错能力及高可用，ES可以实现PB级数据的搜索。</p>
+<p><img src="elasticsearch-cluster-node/1.png" srcset="/img/loading.gif" alt="es-cluster"></p>
+<p>1、结点<br>ES集群由多个服务器组成，每个服务器即为一个Node结点(该服务只部署了一个ES进程)。<br>2、分片<br>当我们的文档量很大时，由于内存和硬盘的限制，同时也为了提高ES的处理能力、容错能力及高可用能力，我们将索引分成若干分片，每个分片可以放在不同的服务器，这样就实现了多个服务器共同对外提供索引及搜索服务。一个搜索请求过来，会分别从各个分片去查询，最后将查询到的数据合并返回给用户。<br> 3、副本<br>为了提高ES的高可用同时也为了提高搜索的吞吐量，我们将分片复制一份或多份存储在其它的服务器，这样即使当前的服务器挂掉了，拥有副本的服务器照常可以提供服务。<br>4、主结点<br>一个集群中会有一个或多个主结点，主结点的作用是集群管理，比如增加节点，移除节点等，主结点挂掉后ES会重新选一个主结点。<br>5、结点转发<br>每个结点都知道其它结点的信息，我们可以对任意一个结点发起请求，接收请求的结点会转发给其它结点查询数据。</p>
+<h3 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h3><p>主结点：master节点主要用于集群的管理及索引，比如新增结点、分片分配、索引的新增和删除等。<br>数据结点：data节点上保存了数据分片，它负责索引和搜索操作。<br>客户端结点：client 节点仅作为请求客户端存在，client的作用也作为负载均衡器，client节点不存数据，只是将请求均衡转发到其它结点。</p>
+<p>通过下边两项参数来配置结点的功能:<br> node.master: 是否允许为主结点<br> node.data: 允许存储数据作为数据结点<br> node.ingest: 是否允许成为协调节点<br> 四种组合方式:<br> master=true，data=true：即是主结点又是数据结点<br> master=false，data=true：仅是数据结点<br> master=true，data=false：仅是主结点，不存储数据<br>master=false，data=false：即不是主结点也不是数据结点，此时可设置ingest为true表示它是一个客户端。</p>
+<p>本次实验是在同一台机器模拟集群，生产环境是不同的服务器IP上，端口不变，IP改变即可。</p>
+<h4 id="config配置"><a href="#config配置" class="headerlink" title="config配置"></a>config配置</h4><p>master结点的elasticsearch.yml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-comment">#cluster.name: my-application</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">lc-xc</span>
+
+<span class="hljs-comment">#node.name: node-1</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">xc_node-1</span>
+
+<span class="hljs-comment">#path.data: /path/to/data</span>
+<span class="hljs-attr">path.data:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/data/elasticsearch-6.3.2</span>
+
+<span class="hljs-comment">#path.logs: /path/to/logs</span>
+<span class="hljs-attr">path.logs:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/log/elasticsearch-6.3.2</span>
+
+<span class="hljs-comment">#bootstrap.memory_lock: true</span>
+<span class="hljs-attr">bootstrap.memory_lock:</span> <span class="hljs-literal">false</span>
+<span class="hljs-comment">#network.host: 192.168.0.1</span>
+<span class="hljs-attr">network.host:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.104</span>
+
+<span class="hljs-comment">#http.port: 9200</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9200</span>
+<span class="hljs-attr">transport.tcp.port:</span> <span class="hljs-number">9300</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.data:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.enabled:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.allow-origin:</span> <span class="hljs-string">/.*/</span>
+
+<span class="hljs-comment">#discovery.zen.ping.unicast.hosts: [&quot;host1&quot;, &quot;host2&quot;]</span>
+<span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;192.168.0.104:9300&quot;</span>, <span class="hljs-string">&quot;192.168.0.104:9301&quot;</span>]
+
+<span class="hljs-comment">#discovery.zen.minimum_master_nodes: </span>
+<span class="hljs-attr">discovery.zen.minimum_master_nodes:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">node.ingest:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.max_local_storage_nodes:</span> <span class="hljs-number">2</span></code></pre></div>
+
+<p>节点1的elasticsearch.yml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-comment">#cluster.name: my-application</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">lc-xc</span>
+
+<span class="hljs-comment">#node.name: node-1</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">xc_node-2</span>
+
+<span class="hljs-comment">#path.data: /path/to/data</span>
+<span class="hljs-attr">path.data:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/data/elasticsearch-6.3.2-2</span>
+
+<span class="hljs-comment">#path.logs: /path/to/logs</span>
+<span class="hljs-attr">path.logs:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/log/elasticsearch-6.3.2-2</span>
+
+<span class="hljs-comment">#bootstrap.memory_lock: true</span>
+<span class="hljs-attr">bootstrap.memory_lock:</span> <span class="hljs-literal">false</span>
+
+<span class="hljs-comment">#network.host: 192.168.0.1</span>
+<span class="hljs-attr">network.host:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.104</span>
+
+<span class="hljs-comment">#http.port: 9200</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9201</span>
+<span class="hljs-attr">transport.tcp.port:</span> <span class="hljs-number">9301</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.data:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.enabled:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.allow-origin:</span> <span class="hljs-string">/.*/</span>
+
+<span class="hljs-comment">#discovery.zen.ping.unicast.hosts: [&quot;host1&quot;, &quot;host2&quot;]</span>
+<span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;192.168.0.104:9300&quot;</span>, <span class="hljs-string">&quot;192.168.0.104:9301&quot;</span>]
+
+<span class="hljs-comment">#discovery.zen.minimum_master_nodes: </span>
+<span class="hljs-attr">discovery.zen.minimum_master_nodes:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">node.ingest:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.max_local_storage_nodes:</span> <span class="hljs-number">2</span></code></pre></div>
+
+<p>节点3的elasticsearch.yml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-comment">#cluster.name: my-application</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">lc-xc</span>
+
+<span class="hljs-comment">#node.name: node-1</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">xc_node-3</span>
+
+<span class="hljs-comment">#path.data: /path/to/data</span>
+<span class="hljs-attr">path.data:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/data/elasticsearch-6.3.2-3</span>
+
+<span class="hljs-comment">#path.logs: /path/to/logs</span>
+<span class="hljs-attr">path.logs:</span> <span class="hljs-string">/Users/user_name/Documents/elasticsearch/log/elasticsearch-6.3.2-3</span>
+
+<span class="hljs-comment">#bootstrap.memory_lock: true</span>
+<span class="hljs-attr">bootstrap.memory_lock:</span> <span class="hljs-literal">false</span>
+
+<span class="hljs-comment">#network.host: 192.168.0.1</span>
+<span class="hljs-attr">network.host:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.104</span>
+
+<span class="hljs-comment">#http.port: 9200</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9202</span>
+<span class="hljs-attr">transport.tcp.port:</span> <span class="hljs-number">9302</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.data:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.enabled:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.cors.allow-origin:</span> <span class="hljs-string">/.*/</span>
+
+<span class="hljs-comment">#discovery.zen.ping.unicast.hosts: [&quot;host1&quot;, &quot;host2&quot;]</span>
+<span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;192.168.0.104:9300&quot;</span>, <span class="hljs-string">&quot;192.168.0.104:9301&quot;</span>]
+
+<span class="hljs-comment">#discovery.zen.minimum_master_nodes: </span>
+<span class="hljs-attr">discovery.zen.minimum_master_nodes:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">node.ingest:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">node.max_local_storage_nodes:</span> <span class="hljs-number">2</span></code></pre></div>
+
+<p>说明：主节点的plugin中的ik分词器，也要复制到节点1，2中。</p>
+<h4 id="启动主结点与节点1"><a href="#启动主结点与节点1" class="headerlink" title="启动主结点与节点1"></a>启动主结点与节点1</h4><p><code>bin/elasticsearch</code></p>
+<p>通过es-head插件访问 <code>http://192.168.0.104:9100/</code></p>
+<p><img src="elasticsearch-cluster-node/2.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
+<p>创建索引，共2个分片，每个分片一个副本。<br><img src="elasticsearch-cluster-node/3.png" srcset="/img/loading.gif" alt="es-cluster-index"></p>
+<p>新建索引，Postman的访问：<br>Post方法：<code>http://192.168.0.104:9200/xc_course/doc/_mapping</code></p>
+<div class="hljs"><pre><code class="hljs json"><span class="hljs-comment">// 请求JSON串</span>
+&#123;
+    <span class="hljs-attr">&quot;properties&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;description&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>,
+            <span class="hljs-attr">&quot;analyzer&quot;</span>: <span class="hljs-string">&quot;ik_max_word&quot;</span>,
+            <span class="hljs-attr">&quot;search_analyzer&quot;</span>: <span class="hljs-string">&quot;ik_smart&quot;</span>
+        &#125;,
+        <span class="hljs-attr">&quot;name&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>,
+            <span class="hljs-attr">&quot;analyzer&quot;</span>: <span class="hljs-string">&quot;ik_max_word&quot;</span>,
+            <span class="hljs-attr">&quot;search_analyzer&quot;</span>: <span class="hljs-string">&quot;ik_smart&quot;</span>
+        &#125;,
+        <span class="hljs-attr">&quot;pic&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;text&quot;</span>,
+            <span class="hljs-attr">&quot;index&quot;</span>: <span class="hljs-literal">false</span>
+        &#125;,
+        <span class="hljs-attr">&quot;price&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;float&quot;</span>
+        &#125;,
+        <span class="hljs-attr">&quot;studymodel&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;keyword&quot;</span>
+        &#125;,
+        <span class="hljs-attr">&quot;timestamp&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;date&quot;</span>,
+            <span class="hljs-attr">&quot;format&quot;</span>: <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis&quot;</span>
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>插入数据<br>Post方法：<code>http://192.168.0.104:9200/xc_course/doc/1</code></p>
+<div class="hljs"><pre><code class="hljs json"><span class="hljs-comment">// 请求JSON串</span>
+&#123;
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bootstrap开发&quot;</span>,
+    <span class="hljs-attr">&quot;description&quot;</span>: <span class="hljs-string">&quot;Bootstrap是由Twitter推出的一个前台页面开发框架，是一个非常流行的开发框架，此框架集成了多种页面效果。此开发框架包含了大量的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的精美界面效果。&quot;</span>,
+    <span class="hljs-attr">&quot;studymodel&quot;</span>: <span class="hljs-string">&quot;201002&quot;</span>,
+    <span class="hljs-attr">&quot;price&quot;</span>: <span class="hljs-number">38.6</span>,
+    <span class="hljs-attr">&quot;timestamp&quot;</span>: <span class="hljs-string">&quot;2018-04-25 19:11:35&quot;</span>,
+    <span class="hljs-attr">&quot;pic&quot;</span>: <span class="hljs-string">&quot;group1/M00/00/00/wKhlQFs6RCeAY0pHAAJx5ZjNDEM428.jpg&quot;</span>
+&#125;</code></pre></div>
+
+<p>访问主节点，查看数据</p>
+<p><img src="elasticsearch-cluster-node/4.png" srcset="/img/loading.gif" alt="es-cluster-main"></p>
+<p>访问节点1，查看数据</p>
+<p><img src="elasticsearch-cluster-node/5.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
+<p>此时，启动节点2，访问节点2，会发现上述数据会自动复制到节点2中。</p>
+<p><img src="elasticsearch-cluster-node/6.png" srcset="/img/loading.gif" alt="es-cluster-node-3"></p>
+<p>集群的健康，可以访问<code>http://192.168.0.104:9200/_cluster/health</code></p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;cluster_name&quot;</span>: <span class="hljs-string">&quot;lc-xc&quot;</span>,
+    <span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;green&quot;</span>,
+    <span class="hljs-attr">&quot;timed_out&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">&quot;number_of_nodes&quot;</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">&quot;number_of_data_nodes&quot;</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">&quot;active_primary_shards&quot;</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">&quot;active_shards&quot;</span>: <span class="hljs-number">4</span>,
+    <span class="hljs-attr">&quot;relocating_shards&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;initializing_shards&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;unassigned_shards&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;delayed_unassigned_shards&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;number_of_pending_tasks&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;number_of_in_flight_fetch&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;task_max_waiting_in_queue_millis&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;active_shards_percent_as_number&quot;</span>: <span class="hljs-number">100</span>
+&#125;</code></pre></div>
+
+<p><strong><u>ps：该文仅为学习笔记与记录，仅供参考与学习</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/elasticsearch/">elasticsearch</a>
+                    
+                      <a class="hover-with-bg" href="/tags/cluster/">cluster</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/06/logstash-data-transform/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Logstash安装学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/27/elasticsearch-dsl-search/">
+                        <span class="hidden-mobile">Elasticsearch-dsl搜索学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Elasticsearch集群搭建&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

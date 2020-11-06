@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>vim快捷键记录 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-09 19:07">
+                    March 9, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    16
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="vim快捷键记录"><a href="#vim快捷键记录" class="headerlink" title="vim快捷键记录"></a>vim快捷键记录</h3><h4 id="less操作"><a href="#less操作" class="headerlink" title="less操作"></a>less操作</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># less -N config.xml</span>
+// 显示文件内容，带行号</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml">1 <span class="hljs-meta">&lt;?xml version=&#x27;1.1&#x27; encoding=&#x27;UTF-8&#x27;?&gt;</span>
+      2 <span class="hljs-tag">&lt;<span class="hljs-name">hudson</span>&gt;</span>
+      3   <span class="hljs-tag">&lt;<span class="hljs-name">disabledAdministrativeMonitors</span>/&gt;</span>
+      4   <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.164.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+      5   <span class="hljs-tag">&lt;<span class="hljs-name">installStateName</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">installStateName</span>&gt;</span>
+      6   <span class="hljs-tag">&lt;<span class="hljs-name">numExecutors</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">numExecutors</span>&gt;</span>
+      7   <span class="hljs-tag">&lt;<span class="hljs-name">mode</span>&gt;</span>NORMAL<span class="hljs-tag">&lt;/<span class="hljs-name">mode</span>&gt;</span></code></pre></div>
+
+<h4 id="vim基本操作"><a href="#vim基本操作" class="headerlink" title="vim基本操作"></a>vim基本操作</h4><div class="hljs"><pre><code class="hljs bash">:wq       // 在命令模式下，执行存盘退出操作（:ZZ）
+:w        // 在命令模式下，执行存盘操作
+:w!       // 在命令模式下，执行强制存盘操作
+:q        // 在命令模式下，执行退出vi操作
+:q！      // 在命令模式下，执行强制退出vi操作
+:e 文件名  // 在命令模式下，打开并编辑指定名称的文件
+:n       // 在命令模式下，如果同时打开多个文件，则继续编辑下一个文件
+:f       // 在命令模式下，用于显示当前的文件名、光标所在行的行号以及显示比例</code></pre></div>
+
+<h4 id="vim翻页"><a href="#vim翻页" class="headerlink" title="vim翻页"></a>vim翻页</h4><div class="hljs"><pre><code class="hljs awk">ctrl + f 　　　<span class="hljs-regexp">//</span> 向下（后面）翻页
+ctrl + b 　　　<span class="hljs-regexp">//</span> 向上（前面）翻页
+或者：
+ctrl+u 　　　　<span class="hljs-regexp">//</span> 向文件首翻半屏
+ctrl+d 　　　　<span class="hljs-regexp">//</span> 向文件尾翻半屏</code></pre></div>
+
+<h4 id="vim展示行号"><a href="#vim展示行号" class="headerlink" title="vim展示行号"></a>vim展示行号</h4><div class="hljs"><pre><code class="hljs bash">: <span class="hljs-built_in">set</span> nu
+
+ 1 &lt;?xml version=<span class="hljs-string">&#x27;1.1&#x27;</span> encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>?&gt;
+  2 &lt;hudson&gt;
+  3   &lt;disabledAdministrativeMonitors/&gt;
+  4   &lt;version&gt;2.164.3&lt;/version&gt;
+  5   &lt;installStateName&gt;RUNNING&lt;/installStateName&gt;
+  6   &lt;numExecutors&gt;2&lt;/numExecutors&gt;
+  7   &lt;mode&gt;NORMAL&lt;/mode&gt;</code></pre></div>
+
+<h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><div class="hljs"><pre><code class="hljs bash">a 　　// 在当前字符后添加文本
+A 　　// 在行末添加文本
+i 　　// 在当前字符前插入文本
+I 　　// 在行首插入文本
+o 　　// 在当前行后面插入一空行
+O 　　// 在当前行前面插入一空行</code></pre></div>
+
+<h4 id="vim模式切换"><a href="#vim模式切换" class="headerlink" title="vim模式切换"></a>vim模式切换</h4><p>​    在命令行模式　-&gt;  按字符选择模式</p>
+<div class="hljs"><pre><code class="hljs bash">v　　　　// 输入字符v（小写）
+或者：
+Ctrl + v</code></pre></div>
+
+<p>​    通过h、i、j、k键移动光标选择要进行复制的字符串<br>​    完成选择后按下y键进行复制，按下p执行粘贴操作</p>
+<p>​    在命令行模式　-&gt;  按行选择模式</p>
+<div class="hljs"><pre><code class="hljs bash">V　　　　// 输入字符V（大写）
+或者：
+<span class="hljs-built_in">shift</span> + v</code></pre></div>
+
+<p>​    通过h、i、j、k键移动光标选择要进行复制的行号<br>​    将光标移动到要进行粘贴的位置，按下p键进行粘贴操作</p>
+<p>​    编辑模式　-&gt;  命令模式</p>
+<div class="hljs"><pre><code class="hljs bash">Esc</code></pre></div>
+
+<h4 id="至文件的首行"><a href="#至文件的首行" class="headerlink" title="至文件的首行"></a>至文件的首行</h4><div class="hljs"><pre><code class="hljs bash">gg</code></pre></div>
+
+<h4 id="至文件的末行"><a href="#至文件的末行" class="headerlink" title="至文件的末行"></a>至文件的末行</h4><div class="hljs"><pre><code class="hljs bash">G</code></pre></div>
+
+<h4 id="至指定位置"><a href="#至指定位置" class="headerlink" title="至指定位置"></a>至指定位置</h4><p>​    到指定行的行首</p>
+<div class="hljs"><pre><code class="hljs bash">:行号</code></pre></div>
+
+<p>​    到最后一行的行首</p>
+<div class="hljs"><pre><code class="hljs bash">:$</code></pre></div>
+
+<h4 id="移动到单词"><a href="#移动到单词" class="headerlink" title="移动到单词"></a>移动到单词</h4><div class="hljs"><pre><code class="hljs bash">w			// 向前移到到单词词尾
+e			// 向前移到到单词词尾
+b			// 向后移到到单词词首</code></pre></div>
+
+<h4 id="删除字符操作"><a href="#删除字符操作" class="headerlink" title="删除字符操作"></a>删除字符操作</h4><h5 id="光标后字符"><a href="#光标后字符" class="headerlink" title="光标后字符"></a>光标后字符</h5><div class="hljs"><pre><code class="hljs bash">x // （小写）</code></pre></div>
+
+<h5 id="光标前字符"><a href="#光标前字符" class="headerlink" title="光标前字符"></a>光标前字符</h5><div class="hljs"><pre><code class="hljs bash">X // （大写）</code></pre></div>
+
+<h5 id="光标至行尾"><a href="#光标至行尾" class="headerlink" title="光标至行尾"></a>光标至行尾</h5><div class="hljs"><pre><code class="hljs bash">D</code></pre></div>
+
+<h5 id="光标行内容"><a href="#光标行内容" class="headerlink" title="光标行内容"></a>光标行内容</h5><div class="hljs"><pre><code class="hljs bash">dd</code></pre></div>
+
+<h5 id="行及其后n-1行"><a href="#行及其后n-1行" class="headerlink" title="行及其后n-1行"></a>行及其后n-1行</h5><div class="hljs"><pre><code class="hljs bash">ndd</code></pre></div>
+
+<h4 id="剪切操作"><a href="#剪切操作" class="headerlink" title="剪切操作"></a>剪切操作</h4><div class="hljs"><pre><code class="hljs bash">dd  // 剪切当前行
+ndd // n表示大于1的数字，剪切n行
+dw  // 从光标处剪切至一个单词的末尾，包括空格
+de  // 从光标处剪切至一个单词的末尾，不包括空格
+d$  // 从当前光标剪切到行末
+d0  // 从当前光标位置（不包括光标位置）剪切到行首
+d3l // 从光标位置（包括光标位置）向右剪切3个字符
+d5G // 将当前行（包括当前行）至第5行（不包括它）剪切
+d3B // 从当前光标位置（不包括光标位置）反向剪切3个单词
+dH  // 剪切从当前行至所显示屏幕顶行的全部行
+dL  // 剪切从当前行至所显示屏幕底的全部行
+
+:行号1, 行号2 m 行号3 // 剪切行号1-行号2到行号3之后</code></pre></div>
+
+<h4 id="复制－粘贴操作"><a href="#复制－粘贴操作" class="headerlink" title="复制－粘贴操作"></a>复制－粘贴操作</h4><h5 id="复制行内容"><a href="#复制行内容" class="headerlink" title="复制行内容"></a>复制行内容</h5><div class="hljs"><pre><code class="hljs bash">yy</code></pre></div>
+
+<h5 id="至行及其下n行"><a href="#至行及其下n行" class="headerlink" title="至行及其下n行"></a>至行及其下n行</h5><div class="hljs"><pre><code class="hljs bash">nyy</code></pre></div>
+
+<h5 id="常用复制操作"><a href="#常用复制操作" class="headerlink" title="常用复制操作"></a>常用复制操作</h5><div class="hljs"><pre><code class="hljs bash">yw       // 从光标处复制至一个单子/单词的末尾，包括空格
+ye       // 从光标处复制至一个单子/单词的末尾，不包括空格
+y$       // 从当前光标复制到行末
+y0       // 从当前光标位置（不包括光标位置）复制之行首
+y3l      // 从光标位置（包括光标位置）向右复制3个字符
+y5G      // 将当前行（包括当前行）至第5行（不包括它）复制
+y3B      // 从当前光标位置（不包括光标位置）反向复制3个单词
+
+:行号1, 行号2 co 行号3  // 复制行号1-行号2到行号3之后</code></pre></div>
+
+<h5 id="粘贴操作"><a href="#粘贴操作" class="headerlink" title="粘贴操作"></a>粘贴操作</h5><div class="hljs"><pre><code class="hljs bash">p // （小写）粘贴到当前光标所在位置的下方
+P // （大写）粘贴到当前光标所在位置的上方</code></pre></div>
+
+<h5 id="单词的复制替换"><a href="#单词的复制替换" class="headerlink" title="单词的复制替换"></a>单词的复制替换</h5><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 复制单词（任意位置），替换到第二个单词</span>
+yiw			// 复制
+viwp		// 替换
+<span class="hljs-comment"># 切换单词（任意位置）</span>
+ciw
+caw</code></pre></div>
+
+<h4 id="文本查找操作"><a href="#文本查找操作" class="headerlink" title="文本查找操作"></a>文本查找操作</h4><h5 id="向文件头部查找"><a href="#向文件头部查找" class="headerlink" title="向文件头部查找"></a>向文件头部查找</h5><div class="hljs"><pre><code class="hljs bash">?查找文本
+n 　　　　　　　 // 按n键查找上一个查找文本
+<span class="hljs-built_in">shift</span>　＋　n　　// 按n键查找下一个查找文本</code></pre></div>
+
+<h5 id="向文件尾部查找"><a href="#向文件尾部查找" class="headerlink" title="向文件尾部查找"></a>向文件尾部查找</h5><div class="hljs"><pre><code class="hljs bash">/查找文本
+n             // 按n键查找下个查找文本
+<span class="hljs-built_in">shift</span> ＋ n    // 按n键查找下一个查找文本</code></pre></div>
+
+<h4 id="替换操作"><a href="#替换操作" class="headerlink" title="替换操作"></a>替换操作</h4><h5 id="全局替换"><a href="#全局替换" class="headerlink" title="全局替换"></a>全局替换</h5><div class="hljs"><pre><code class="hljs bash">:% s/查找文本/替换文本/gc
+// 强制每个替换要确认</code></pre></div>
+
+<h5 id="指定行范围"><a href="#指定行范围" class="headerlink" title="指定行范围"></a>指定行范围</h5><div class="hljs"><pre><code class="hljs bash">// 强制每个替换要确认
+:行号1, 行号2 s/查找文本/替换文本/gc
+
+// 从指定行至文本末查找替换文本
+:行号, <span class="hljs-variable">$s</span>/查找文本/替换文本/gc</code></pre></div>
+
+<h4 id="多窗口操作"><a href="#多窗口操作" class="headerlink" title="多窗口操作"></a>多窗口操作</h4><div class="hljs"><pre><code class="hljs bash">:sp filename         // vim将分割出一个横向窗口，并在该窗口中打开新文件
+:vsp filename        // vim将在右边分割出一个窗口，并在该窗口中打开新文件
+
+vim -o file1 file2   // 打开的两个文件上下窗口分布
+vim -O file1 file2   // 打开的两个文件左右窗口分布
+
+ctrl + w             // 来在vim打开的多个窗口中切换
+:close               // 关闭当前窗口</code></pre></div>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/hot-key/">hot-key</a>
+                    
+                      <a class="hover-with-bg" href="/tags/vim/">vim</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/10/spring-cloud-security/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring-Cloud安全认证OAuth2与JWT</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/08/hive-view/">
+                        <span class="hidden-mobile">Hive-view处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "vim快捷键记录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

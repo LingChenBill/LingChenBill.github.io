@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker之Web服务器与应用 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-25 19:56">
+                    June 25, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.3k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    36
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker之Web服务器与应用"><a href="#Docker之Web服务器与应用" class="headerlink" title="Docker之Web服务器与应用"></a>Docker之Web服务器与应用</h2><h3 id="1、Apache服务搭建"><a href="#1、Apache服务搭建" class="headerlink" title="1、Apache服务搭建"></a>1、Apache服务搭建</h3><p>使用Dockerfile来创建带apache服务的Docker镜像的容器</p>
+<div class="hljs"><pre><code class="hljs bash">xxx@localhost docker % mkdir apache_ubuntu
+xxx@localhost docker % <span class="hljs-built_in">cd</span> apache_ubuntu 
+xxx@localhost apache_ubuntu % ls
+xxx@localhost apache_ubuntu % touch Dockerfile run.sh
+xxx@localhost apache_ubuntu % ls
+Dockerfile	run.sh
+xxx@localhost apache_ubuntu % mkdir sample
+xxx@localhost apache_ubuntu % ls
+Dockerfile	run.sh		sample
+xxx@localhost apache_ubuntu % vim Dockerfile 
+
+<span class="hljs-comment"># Dockerfile文件</span>
+<span class="hljs-comment"># 继承镜像</span>
+FROM sshd:dockerfile
+
+<span class="hljs-comment"># 提供一些作者的信息</span>
+MAINTAINER from www.lc-ling.com by lingchen (lingchen1316@163.com)
+
+<span class="hljs-comment"># 设置环境变量，所有操作都是非交互式的</span>
+ENV DEBIAN_FRONTEND noninteractive
+
+<span class="hljs-comment"># 安装</span>
+RUN apt-get -yq install apache2&amp;&amp;\
+    rm -rf /var/lib/apt/lists/*
+
+RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Asia/Shanghai&quot;</span> &gt; /etc/timezone &amp;&amp; \
+    dpkg-reconfigure -f noninteractive tzdata
+
+<span class="hljs-comment"># 注意这里要更改系统的时区设置，因为在Web应用中经常会用到时区这个系统变量，</span>
+<span class="hljs-comment"># 默认的ubuntu会让你的应用程序发生不可思议的效果哦</span>
+
+<span class="hljs-comment"># 添加脚本，并设置权限，这会覆盖之前放在这个位置的脚本</span>
+ADD run.sh /run.sh
+RUN chmod 755 /*.sh
+
+<span class="hljs-comment"># 添加一个示例的Web站点，删掉默认安装在apache文件夹下面的文件</span>
+<span class="hljs-comment"># 并将我们添加的示例用软链接链到/var/www/html目录下面</span>
+RUN mkdir -p /var/lock/apache2 &amp;&amp; mkdir -p /app &amp;&amp; rm -fr /var/www/html &amp;&amp; ln -s /app /var/www/html
+COPY sample/ /app
+
+<span class="hljs-comment"># 设置apache相关的一些变量，在容器启动的时候可以使用-e参数替代</span>
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/<span class="hljs-built_in">log</span>/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+ENV APACHE_RUN_DIR /var/run/apache2
+ENV APACHE_LOCK_DIR /var/lock/apache2
+ENV APACHE_SERVERADMIN admin@localhost
+ENV APACHE_SERVERNAME localhost
+ENV APACHE_SERVERALIAS docker.localhost
+ENV APACHE_DOCUMENTROOT /var/www
+
+EXPOSE 80
+WORKDIR /app
+CMD [<span class="hljs-string">&quot;/run.sh&quot;</span>]</code></pre></div>
+
+<p>在sample文件夹中新建index.html</p>
+<div class="hljs"><pre><code class="hljs bash">% <span class="hljs-built_in">cd</span> sample
+% vim index.html</code></pre></div>
+
+<p>index.html：</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Hello, Docker!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>编辑run.sh</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">exec</span> apache2 -D FOREGROUND</code></pre></div>
+
+<p>创建镜像</p>
+<div class="hljs"><pre><code class="hljs bash">xxx@localhost apache_ubuntu % docker build -t apache:ubuntu .
+...
+Successfully tagged apache:ubuntu
+
+<span class="hljs-comment"># 查看镜像</span>
+xxx@localhost apache_ubuntu % docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+apache              ubuntu              fb3d56d54d11        7 seconds ago       262MB
+sshd                dockerfile          5a0d9e4740fa        5 hours ago         249MB
+
+<span class="hljs-comment"># 启动容器（-P：端口自动分配）</span>
+xxx@localhost apache_ubuntu % docker run -d -P apache:ubuntu
+4018616a748cb7add25e8a9eb0d785e14f4722a4c9fd50f7329212a62da2961f
+xxx@localhost apache_ubuntu % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                          NAMES
+4018616a748c        apache:ubuntu       <span class="hljs-string">&quot;/run.sh&quot;</span>           4 seconds ago       Up 3 seconds        0.0.0.0:32769-&gt;22/tcp, 0.0.0.0:32768-&gt;80/tcp   compassionate_benz
+
+<span class="hljs-comment"># 验证apache服务</span>
+xxx@localhost apache_ubuntu % curl 192.168.0.107:32768
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;p&gt;Hello, Docker!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+<p>或者访问<code>http://192.168.0.107:32768/</code></p>
+<p><img src="docker-webapp/1.png" srcset="/img/loading.gif" alt="docker_webapp"></p>
+<p>在使用Dockerfile镜像时，会继承父镜像开放的端口，但却不会继承启动命令。</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 访问22端口</span>
+xxx@localhost apache_ubuntu % ssh root@192.168.0.107 -p 32769
+kex_exchange_identification: Connection closed by remote host
+
+<span class="hljs-comment"># 解决：</span>
+xxx@localhost apache_ubuntu % vim run.sh 
+<span class="hljs-meta">#!/bin/bash</span>
+/usr/sbin/sshd &amp;
+<span class="hljs-built_in">exec</span> apache2 -D FOREGROUND
+
+<span class="hljs-comment"># 重新构建镜像</span>
+% docker build -t apache:ubuntu .
+xxx@localhost apache_ubuntu % docker run -d -P apache:ubuntu
+16537d326eed465be3ddd058c477d319df5df1977f2884af6737f11eaeb99878
+xxx@localhost apache_ubuntu % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                          NAMES
+16537d326eed        apache:ubuntu       <span class="hljs-string">&quot;/run.sh&quot;</span>           6 seconds ago       Up 5 seconds        0.0.0.0:32771-&gt;22/tcp, 0.0.0.0:32770-&gt;80/tcp   unruffled_lamarr
+
+<span class="hljs-comment"># 测试ssh</span>
+xxx@localhost apache_ubuntu % ssh root@192.168.0.107 -p 32771
+The authenticity of host <span class="hljs-string">&#x27;[192.168.0.107]:32771 ([192.168.0.107]:32771)&#x27;</span> can<span class="hljs-string">&#x27;t be established.</span>
+<span class="hljs-string">ECDSA key fingerprint is SHA256:byz56n6ggX89uz39PZnFnS40Vkn4Ry5omVoAqi4UNZI.</span>
+<span class="hljs-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span>
+<span class="hljs-string">Warning: Permanently added &#x27;</span>[192.168.0.107]:32771<span class="hljs-string">&#x27; (ECDSA) to the list of known hosts.</span>
+<span class="hljs-string">Welcome to Ubuntu 14.04 LTS (GNU/Linux 4.4.0-170-generic x86_64)</span>
+<span class="hljs-string"></span>
+<span class="hljs-string"> * Documentation:  https://help.ubuntu.com/</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">The programs included with the Ubuntu system are free software;</span>
+<span class="hljs-string">the exact distribution terms for each program are described in the</span>
+<span class="hljs-string">individual files in /usr/share/doc/*/copyright.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span>
+<span class="hljs-string">applicable law.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">root@16537d326eed:~# </span></code></pre></div>
+
+<h3 id="2、Nginx搭建"><a href="#2、Nginx搭建" class="headerlink" title="2、Nginx搭建"></a>2、Nginx搭建</h3><p>Nginx是一个高性能的Web和反向代理服务器。一个Nginx实例能够轻松支持高达50000个并发连接数的响应。</p>
+<div class="hljs"><pre><code class="hljs bash">xxx@localhost docker % mkdir nginx_ubuntu
+xxx@localhost docker % cp apache_ubuntu/* nginx_ubuntu 
+cp: apache_ubuntu/sample is a directory (not copied).
+xxx@localhost docker % cp apache_ubuntu/*.* nginx_ubuntu
+xxx@localhost docker % <span class="hljs-built_in">cd</span> nginx_ubuntu 
+xxx@localhost nginx_ubuntu % ls
+Dockerfile	run.sh</code></pre></div>
+
+<p>编辑Dockerfile文件：<code>% vim Dockerfile </code></p>
+<div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 继承镜像sshd:dockerfile</span>
+<span class="hljs-keyword">FROM</span> sshd:dockerfile
+
+<span class="hljs-comment"># 提供一些作者的信息</span>
+<span class="hljs-keyword">MAINTAINER</span> <span class="hljs-keyword">from</span> www.lc-ling.com by lingchen (lingchen1316@<span class="hljs-number">163</span>.com)
+
+<span class="hljs-comment"># 设置环境变量，所有操作都是非交互式的</span>
+<span class="hljs-keyword">ENV</span> DEBIAN_FRONTEND noninteractive
+
+<span class="hljs-comment"># 安装nginx，以非daemon启动</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> \</span>
+<span class="bash">   apt-get install -y nginx &amp;&amp; \</span>
+<span class="bash">   rm -rf /var/lib/apt/lists/* &amp;&amp; \</span>
+<span class="bash">   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;\ndaemon off;&quot;</span> &gt;&gt; /etc/nginx/nginx.conf &amp;&amp; \</span>
+<span class="bash">   chown -R www-data:www-data /var/lib/nginx</span>
+
+<span class="hljs-keyword">RUN</span><span class="bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Asia/Shanghai&quot;</span> &gt; /etc/timezone &amp;&amp; \</span>
+<span class="bash">    dpkg-reconfigure -f noninteractive tzdata</span>
+<span class="hljs-comment"># 注意这里要更改系统的时区设置，因为在Web应用中经常会用到时区这个系统变量，</span>
+<span class="hljs-comment"># 默认的ubuntu会让你的应用程序发生不可思议的效果哦</span>
+
+<span class="hljs-comment"># 添加脚本，并设置权限，这会覆盖之前放在这个位置的脚本</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> run.sh /run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod 755 /*.sh</span>
+
+<span class="hljs-comment"># 定义可以被挂载的目录，分别是虚拟主机的挂载目录，证书目录，配置目录和日志目录</span>
+<span class="hljs-keyword">VOLUME</span><span class="bash"> [<span class="hljs-string">&quot;/etc/nginx/sites-enabled&quot;</span>, <span class="hljs-string">&quot;/etc/nginx/certs&quot;</span>, <span class="hljs-string">&quot;/etc/nginx/conf.d&quot;</span>, <span class="hljs-string">&quot;/var/log/nginx&quot;</span>] </span>
+
+<span class="hljs-comment"># 定义工作目录</span>
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /etc/nginx</span>
+
+<span class="hljs-comment"># 定义输出命令</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/run.sh&quot;</span>]</span>
+
+<span class="hljs-comment"># 定义暴露端口</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">80</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">443</span></code></pre></div>
+
+<p>编辑run.sh <code>vim run.sh</code></p>
+<div class="hljs"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span>
+/usr/sbin/sshd &amp;
+/usr/sbin/nginx</code></pre></div>
+
+<p>创建镜像</p>
+<div class="hljs"><pre><code class="hljs bash">xxx@localhost nginx_ubuntu % docker build -t nginx:stable .
+....
+Successfully built 99a2f2008406
+Successfully tagged nginx:stable
+
+<span class="hljs-comment"># 查看镜像</span>
+xxx@localhost nginx_ubuntu % docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               stable              99a2f2008406        16 seconds ago      270MB
+apache              ubuntu              ffac826ee6f2        17 hours ago        262MB</code></pre></div>
+
+<p>基于nginx镜像，启动新的容器</p>
+<div class="hljs"><pre><code class="hljs bash">% docker run -d -P nginx:stable
+89a2b5971b5718669feb099cdff6c5c35b99eac2c4fc2d74e1b3543b1f41945d
+
+xxx@localhost nginx_ubuntu % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                                                  NAMES
+89a2b5971b57        nginx:stable        <span class="hljs-string">&quot;/run.sh&quot;</span>           8 seconds ago       Up 7 seconds        0.0.0.0:32770-&gt;22/tcp, 0.0.0.0:32769-&gt;80/tcp, 0.0.0.0:32768-&gt;443/tcp   busy_dubinsky
+
+<span class="hljs-comment"># 测试nginx是否成功</span>
+xxx@localhost nginx_ubuntu % curl 192.168.0.107:32769
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body &#123;
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    &#125;
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href=<span class="hljs-string">&quot;http://nginx.org/&quot;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href=<span class="hljs-string">&quot;http://nginx.com/&quot;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you <span class="hljs-keyword">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+<p>访问地址：<code>http://192.168.0.107:32769/</code></p>
+<p><img src="docker-webapp/2.png" srcset="/img/loading.gif" alt="nginx-stable"></p>
+<h3 id="3、Tengine镜像"><a href="#3、Tengine镜像" class="headerlink" title="3、Tengine镜像"></a>3、Tengine镜像</h3><p>Dockerfile文件：</p>
+<div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 继承镜像sshd:dockerfile</span>
+<span class="hljs-keyword">FROM</span> sshd:dockerfile
+
+<span class="hljs-comment"># 提供一些作者的信息</span>
+<span class="hljs-keyword">MAINTAINER</span> <span class="hljs-keyword">from</span> www.lc-ling.com by lingchen (lingchen1316@<span class="hljs-number">163</span>.com)
+
+<span class="hljs-comment"># 安装编译环境</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> apt-get install -y build-essential debhelper make autoconf automake patch</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> apt-get install -y dpkg-dev fakeroot pbuilder gnupg dh-make libssl-dev libpcre3-dev git-core</span>
+
+<span class="hljs-keyword">RUN</span><span class="bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Asia/Shanghai&quot;</span> &gt; /etc/timezone &amp;&amp; \</span>
+<span class="bash">    dpkg-reconfigure -f noninteractive tzdata</span>
+<span class="hljs-comment"># 注意这里要更改系统的时区设置，因为在Web应用中经常会用到时区这个系统变量，</span>
+<span class="hljs-comment"># 默认的ubuntu会让你的应用程序发生不可思议的效果哦</span>
+
+<span class="hljs-comment"># 创建Nginx用户</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> adduser --disabled-login --gecos <span class="hljs-string">&#x27;Tengine&#x27;</span> nginx</span>
+
+<span class="hljs-comment"># tengine安装的shell脚本</span>
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /home/nginx</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> su nginx -c <span class="hljs-string">&#x27;git clone https://github.com/alibaba/tengine.git&#x27;</span></span>
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /home/nginx/tengine</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> su nginx -c <span class="hljs-string">&#x27;mv packages/debian .&#x27;</span></span>
+
+<span class="hljs-keyword">ENV</span> DEB_BUILD_OPTIONS nocheck
+
+<span class="hljs-keyword">RUN</span><span class="bash"> su nginx -c <span class="hljs-string">&#x27;dpkg-buildpackage -rfakeroot -uc -b&#x27;</span></span>
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /home/nginx</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> dpkg -i tengine_2.0.2-1_amd64.deb</span>
+
+<span class="hljs-comment"># 定义挂载的目录</span>
+<span class="hljs-keyword">VOLUME</span><span class="bash"> [<span class="hljs-string">&quot;/data&quot;</span>, <span class="hljs-string">&quot;/etc/nginx/sites-enabled&quot;</span>, <span class="hljs-string">&quot;/var/log/nginx&quot;</span>]</span>
+
+<span class="hljs-comment"># 让nginx运行在非Daemon模式</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;\ndaemon off;&quot;</span> &gt;&gt; /etc/nginx/nginx.conf</span>
+
+<span class="hljs-comment"># 定义工作目录</span>
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /etc/nginx</span>
+
+<span class="hljs-comment"># 添加脚本，并设置权限，这会覆盖之前放在这个位置的脚本</span>
+<span class="hljs-keyword">ADD</span><span class="bash"> run.sh /run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod 755 /*.sh</span>
+
+<span class="hljs-comment"># 定义输出命令</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/run.sh&quot;</span>]</span>
+
+<span class="hljs-comment"># 定义暴露端口</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">80</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">443</span></code></pre></div>
+
+<p>run.sh：</p>
+<div class="hljs"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span>
+/usr/sbin/sshd &amp;
+/usr/sbin/nginx</code></pre></div>
+
+<p><code>docker build -t nginx:alibaba .</code></p>
+<h3 id="4、Tomcat"><a href="#4、Tomcat" class="headerlink" title="4、Tomcat"></a>4、Tomcat</h3><p>Tomcat服务器是一个免费开放源代码的Web应用服务器，属于轻量级的应用服务器</p>
+<h3 id="5、LAMP"><a href="#5、LAMP" class="headerlink" title="5、LAMP"></a>5、LAMP</h3><p>LAMP指的是Linux（操作系统）、ApacheHTTP服务器、MySQL（有时也指MariaDB，数据库软件）和PHP（有时也指Perl和Python）的组合方案，一般也适用来建立Web服务环境。</p>
+<div class="hljs"><pre><code class="hljs bash">% docker pull tutum/lamp
+xxx@localhost lamp % docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+tutum/lamp          latest              3d49e175ec00        4 years ago         427MB
+
+<span class="hljs-comment"># 启动lamp容器（3306端口已被mysql占用，改为3316）</span>
+% docker run -d -p 8080:80 -p 3316:3306 tutum/lamp
+cc28860af6210e7d9ce97bd62cf5a68b238bcf0bf1459bb748a174901b3141fa
+xxx@localhost lamp % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                                          NAMES
+cc28860af621        tutum/lamp          <span class="hljs-string">&quot;/run.sh&quot;</span>           2 minutes ago       Up 2 minutes        0.0.0.0:8080-&gt;80/tcp, 0.0.0.0:3316-&gt;3306/tcp   great_clarke</code></pre></div>
+
+<p>访问<code>http://127.0.0.1:8080/</code></p>
+<p><img src="docker-webapp/3.png" srcset="/img/loading.gif" alt="lamp-acess"></p>
+<h3 id="6、CMS"><a href="#6、CMS" class="headerlink" title="6、CMS"></a>6、CMS</h3><p>内容管理系统（Content Management System, CMS）指的是提供内容编辑服务的平台程序。CMS可以让不懂编程的人方便又轻松地发布、更改和管理各类数字内容（主要以文本和图片为主）</p>
+<p>WordPress是风靡全球的免费开源的内容管理系统。WordPress是博客、企业官网、产品首页等内容相关平台的主流实现方案之一。</p>
+<div class="hljs"><pre><code class="hljs bash">% docker pull wordpress
+% docker run --name some-wordpress --link some-mysql:mysql -d wordpress</code></pre></div>
+
+<p><code>--link some-mysql:mysql</code>，连接到mysql的容器</p>
+<p>若没有相应的mysql容器</p>
+<div class="hljs"><pre><code class="hljs bash">% docker run --name some-wordpress --link some-mysql:mysql -d wordpress
+docker: Error response from daemon: could not get container <span class="hljs-keyword">for</span> some-mysql: No such container: some-mysql.</code></pre></div>
+
+<p><strong><u>ps：本文为学习记录，仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/webapp/">webapp</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/03/docker-mysql-ssh/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker之mysql安装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/23/docker-os/">
+                        <span class="hidden-mobile">Docker之操作系统学习(SSH容器搭建)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker之Web服务器与应用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

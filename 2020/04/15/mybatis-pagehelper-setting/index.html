@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Mybatis-PageHelper设定 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-15 22:20">
+                    April 15, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    30
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Mybatis-PageHelper设定"><a href="#Mybatis-PageHelper设定" class="headerlink" title="Mybatis-PageHelper设定"></a>Mybatis-PageHelper设定</h2><p>PageHelper是mybatis的通用分页插件，通过mybatis的拦截器实现分页功能，拦截sql查询请求，添加分页语句，最终实现分页查询功能。项目中使用Pagehelper实现Mybatis分页功能开发，与springboot开发整合，在springboot上集成<a target="_blank" rel="noopener" href="https://github.com/pagehelper/pagehelper-spring-boot">pagehelper</a>。</p>
+<p>PageHelper的使用方法及原理如下:<br>在调用dao的service方法中设置分页参数:PageHelper.startPage(page, size)，分页参数会设置在ThreadLocal中，PageHelper在mybatis执行sql前进行拦截，从ThreadLocal取出分页参数，修改当前执行的sql语句，添加分页 sql。<br>最后执行添加了分页sql的sql语句，实现分页查询。</p>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">31200</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">xc-service-manage-course</span>
+  <span class="hljs-attr">datasource:</span>
+    <span class="hljs-attr">druid:</span>
+      <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/xc_course?useSSL=false&amp;characterEncoding=utf-8</span>
+      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-string">Aa123456</span>
+      <span class="hljs-attr">driverClassName:</span> <span class="hljs-string">com.mysql.jdbc.Driver</span>
+      <span class="hljs-attr">initialSize:</span> <span class="hljs-number">5</span>  <span class="hljs-comment">#初始建立连接数量</span>
+      <span class="hljs-attr">minIdle:</span> <span class="hljs-number">5</span>  <span class="hljs-comment">#最小连接数量</span>
+      <span class="hljs-attr">maxActive:</span> <span class="hljs-number">20</span> <span class="hljs-comment">#最大连接数量</span>
+      <span class="hljs-attr">maxWait:</span> <span class="hljs-number">10000</span>  <span class="hljs-comment">#获取连接最大等待时间，毫秒</span>
+      <span class="hljs-attr">testOnBorrow:</span> <span class="hljs-literal">true</span> <span class="hljs-comment">#申请连接时检测连接是否有效</span>
+      <span class="hljs-attr">testOnReturn:</span> <span class="hljs-literal">false</span> <span class="hljs-comment">#归还连接时检测连接是否有效</span>
+      <span class="hljs-attr">timeBetweenEvictionRunsMillis:</span> <span class="hljs-number">60000</span> <span class="hljs-comment">#配置间隔检测连接是否有效的时间（单位是毫秒）</span>
+      <span class="hljs-attr">minEvictableIdleTimeMillis:</span> <span class="hljs-number">300000</span>   <span class="hljs-comment">#连接在连接池的最小生存时间（毫秒）</span>
+<span class="hljs-comment">#pagehelper配置</span>
+<span class="hljs-attr">pagehelper:</span>
+  <span class="hljs-attr">helper-dialect:</span> <span class="hljs-string">mysql</span></code></pre></div>
+
+<h3 id="Mapper文件"><a href="#Mapper文件" class="headerlink" title="Mapper文件"></a>Mapper文件</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.manage_course.dao;
+
+<span class="hljs-keyword">import</span> com.github.pagehelper.Page;
+<span class="hljs-keyword">import</span> com.xuecheng.framework.domain.course.CourseBase;
+<span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Mapper;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by Administrator.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Mapper</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CourseMapper</span> </span>&#123;
+
+    <span class="hljs-function">CourseBase <span class="hljs-title">findCourseBaseById</span><span class="hljs-params">(String id)</span></span>;
+
+    <span class="hljs-comment">// 分页查询课程</span>
+    <span class="hljs-function">Page&lt;CourseBase&gt; <span class="hljs-title">findCourseListPage</span><span class="hljs-params">()</span></span>;
+&#125;</code></pre></div>
+
+<h3 id="xml文件"><a href="#xml文件" class="headerlink" title="xml文件"></a>xml文件</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">mapper</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span> &gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.xuecheng.manage_course.dao.CourseMapper&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findCourseBaseById&quot;</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">&quot;java.lang.String&quot;</span></span>
+<span class="hljs-tag">            <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.xuecheng.framework.domain.course.CourseBase&quot;</span>&gt;</span>
+        select * from course_base where id = #&#123;id&#125;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findCourseListPage&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.xuecheng.framework.domain.course.CourseBase&quot;</span>&gt;</span>
+        SELECT
+	      	*
+        FROM
+	      	course_base
+    <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span></code></pre></div>
+
+<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--定义日志文件的存储地址,使用绝对路径--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;LOG_HOME&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;d:/logs&quot;</span>/&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Console 输出设置 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">charset</span>&gt;</span>utf8<span class="hljs-tag">&lt;/<span class="hljs-name">charset</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- 按照每天生成日志文件 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;FILE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rollingPolicy</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--日志文件输出的文件名--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fileNamePattern</span>&gt;</span>$&#123;LOG_HOME&#125;/xc.%d&#123;yyyy-MM-dd&#125;.log<span class="hljs-tag">&lt;/<span class="hljs-name">fileNamePattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rollingPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- 异步输出 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ASYNC&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.classic.AsyncAppender&quot;</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">discardingThreshold</span>&gt;</span>0<span class="hljs-tag">&lt;/<span class="hljs-name">discardingThreshold</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 更改默认的队列的深度,该值会影响性能.默认值为256 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">queueSize</span>&gt;</span>512<span class="hljs-tag">&lt;/<span class="hljs-name">queueSize</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 添加附加的appender,最多只能添加一个 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;FILE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.apache.ibatis.cache.decorators.LoggingCache&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">logger</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;org.springframework.boot&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span>/&gt;</span>
+    <span class="hljs-comment">&lt;!-- sql文查看-debug级别 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;debug&quot;</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--&lt;appender-ref ref=&quot;ASYNC&quot;/&gt;--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;FILE&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<p>测试文件</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.xuecheng.manage_course.dao;
+
+<span class="hljs-keyword">import</span> com.github.pagehelper.Page;
+<span class="hljs-keyword">import</span> com.github.pagehelper.PageHelper;
+<span class="hljs-keyword">import</span> com.xuecheng.framework.domain.course.CourseBase;
+<span class="hljs-keyword">import</span> org.junit.Test;
+<span class="hljs-keyword">import</span> org.junit.runner.RunWith;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.boot.test.context.SpringBootTest;
+<span class="hljs-keyword">import</span> org.springframework.test.context.junit4.SpringRunner;
+
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> java.util.Optional;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> Administrator</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@version</span> 1.0</span>
+<span class="hljs-comment"> **/</span>
+<span class="hljs-meta">@SpringBootTest</span>
+<span class="hljs-meta">@RunWith(SpringRunner.class)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDao</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    CourseMapper courseMapper;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询课程测试</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Test</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testPageHelperFindCourse</span><span class="hljs-params">()</span> </span>&#123;
+
+        <span class="hljs-comment">// 查询第1页，每页显示10条记录(从1开始)</span>
+        PageHelper.startPage(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+        Page&lt;CourseBase&gt; courseListPage = courseMapper.findCourseListPage();
+
+        List&lt;CourseBase&gt; result = courseListPage.getResult();
+        <span class="hljs-keyword">long</span> total = courseListPage.getTotal();
+
+        System.out.println(result);
+        System.out.println(total);
+    &#125;
+&#125;</code></pre></div>
+
+<p>运行日志</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">33.561</span> [main] DEBUG o.m.s.t.SpringManagedTransaction - JDBC Connection [com.alibaba.druid.proxy.jdbc.ConnectionProxyImpl@<span class="hljs-number">66e341</span>e9] will not be managed by Spring
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">33.622</span> [main] DEBUG c.x.m.d.C.findCourseListPage_COUNT - ==&gt;  Preparing: <span class="hljs-function">SELECT <span class="hljs-title">count</span><span class="hljs-params">(<span class="hljs-number">0</span>)</span> FROM course_base </span>
+<span class="hljs-function">2020-04-15 22:49:34.006 [main] DEBUG c.x.m.d.C.findCourseListPage_COUNT - </span>==&gt; Parameters: 
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.269</span> [main] DEBUG c.x.m.d.C.findCourseListPage_COUNT - &lt;==      Total: <span class="hljs-number">1</span>
+
+# 自动拼接分页参数
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.320</span> [main] DEBUG c.x.m.d.C.findCourseListPage - ==&gt;  Preparing: SELECT * FROM course_base LIMIT ? 
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.325</span> [main] DEBUG c.x.m.d.C.findCourseListPage - ==&gt; Parameters: <span class="hljs-number">10</span>(Integer)
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.365</span> [main] DEBUG c.x.m.d.C.findCourseListPage - &lt;==      Total: <span class="hljs-number">10</span>
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.366</span> [main] DEBUG org.mybatis.spring.SqlSessionUtils - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@<span class="hljs-number">2e549515</span>]
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">34.367</span> [main] DEBUG o.s.jdbc.datasource.DataSourceUtils - Returning JDBC Connection to DataSource
+Page&#123;count=<span class="hljs-keyword">true</span>, pageNum=<span class="hljs-number">1</span>, pageSize=<span class="hljs-number">10</span>, startRow=<span class="hljs-number">0</span>, endRow=<span class="hljs-number">10</span>, total=<span class="hljs-number">21</span>, pages=<span class="hljs-number">3</span>, reasonable=<span class="hljs-keyword">false</span>, pageSizeZero=<span class="hljs-keyword">false</span>&#125;[CourseBase(id=<span class="hljs-number">297e7</span>c7c62b888f00162b8a7dec20000, name=test_java基础<span class="hljs-number">33</span>, users=b1, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">3</span>, grade=<span class="hljs-number">200002</span>, studymodel=<span class="hljs-number">201002</span>, teachmode=<span class="hljs-keyword">null</span>, description=test_java基础<span class="hljs-number">33</span>test_java基础<span class="hljs-number">33</span>test_java基础<span class="hljs-number">33</span>, status=<span class="hljs-number">202002</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b888f00162b8a965510001, name=test_java基础, users=test_java基础, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>test_java基础<span class="hljs-number">2</span>, status=<span class="hljs-number">202002</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8ab13910000, name=java基础<span class="hljs-number">3</span>, users=java基础<span class="hljs-number">3</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>, status=<span class="hljs-number">202002</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8ab56ba0001, name=java基础<span class="hljs-number">3</span>, users=b2, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3f</span>fff, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8ab70e90002, name=java基础<span class="hljs-number">3</span>, users=java基础<span class="hljs-number">3</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>java基础<span class="hljs-number">3</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8accd4c0003, name=java基础<span class="hljs-number">4</span>, users=java基础<span class="hljs-number">4</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>java基础<span class="hljs-number">4</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8ad78a10004, name=java基础<span class="hljs-number">5</span>, users=java基础<span class="hljs-number">5</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">5</span>java基础<span class="hljs-number">5</span>java基础<span class="hljs-number">5</span>java基础<span class="hljs-number">5</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8aa9d0162b8ae50300005, name=java基础<span class="hljs-number">5</span>, users=java基础<span class="hljs-number">5</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=java基础<span class="hljs-number">5</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8afe20162b8b0477c0000, name=test_java基础<span class="hljs-number">6</span>, users=test_java基础<span class="hljs-number">6</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=test_java基础<span class="hljs-number">6</span>test_java基础<span class="hljs-number">6</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>), CourseBase(id=<span class="hljs-number">297e7</span>c7c62b8b3ff0162b8b58c260000, name=test_java基础<span class="hljs-number">6</span>, users=test_java基础<span class="hljs-number">6</span>, mt=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>, st=<span class="hljs-number">1</span>-<span class="hljs-number">3</span>-<span class="hljs-number">2</span>, grade=<span class="hljs-number">200001</span>, studymodel=<span class="hljs-number">201001</span>, teachmode=<span class="hljs-keyword">null</span>, description=test_java基础<span class="hljs-number">6</span>, status=<span class="hljs-number">202001</span>, companyId=<span class="hljs-keyword">null</span>, userId=<span class="hljs-keyword">null</span>)]
+<span class="hljs-number">2020</span>-<span class="hljs-number">04</span>-<span class="hljs-number">15</span> <span class="hljs-number">22</span>:<span class="hljs-number">49</span>:<span class="hljs-number">46.149</span> [cluster-ClusterId&#123;value=<span class="hljs-string">&#x27;5e971ef10d7a8aa870e707ed&#x27;</span>, description=<span class="hljs-string">&#x27;null&#x27;</span>&#125;-localhost:<span class="hljs-number">27017</span>] DEBUG org.mongodb.driver.connection - Closing connection connectionId&#123;localValue:<span class="hljs-number">3</span>&#125;
+<span class="hljs-number">21</span></code></pre></div>
+
+<p><strong><u>ps:本文为学习记录，仅供参考与学习</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pagehelper/">pagehelper</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mybatis/">mybatis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/19/fastDFS-install-settings/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">FastDFS安装设定</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/14/vue-jsx-setting/">
+                        <span class="hidden-mobile">Vue-jsx语法配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Mybatis-PageHelper设定&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

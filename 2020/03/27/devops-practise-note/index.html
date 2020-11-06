@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>DevOps实践笔记 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-27 19:45">
+                    March 27, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    17
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h2 id="DevOps实践笔记"><a href="#DevOps实践笔记" class="headerlink" title="DevOps实践笔记"></a>DevOps实践笔记</h2><p>Devops能够做到的事：需要对产品的质量负责。Devops能够提供一个平台或机制，让我能够从中找到所需的资源。<br>在企业里，使用自动化和持续交付来提高代码部署频率、降低代码上线间隔。</p>
+<p>DevOps = 开发（developers）+ 运维（operations）<br>DevOps旨在将不同的社区，比如开发和运维社区，联合起来变成一个更有效率的整体。</p>
+<h3 id="DevOps和持续交付"><a href="#DevOps和持续交付" class="headerlink" title="DevOps和持续交付"></a>DevOps和持续交付</h3><p>敏捷宣言里的经典摘录：</p>
+<p>个体和互动 高于 流程和工具<br>工作的软件 高于 详尽的文档<br>客户合作 高于 合同谈判<br>响应变化 高于 遵循计划<br>也就是说，尽管右项有其价值，我们更看重左项的价值。</p>
+<p>DevOps的另一个核心目标是自动化和持续交付。简单来说，自动化一切可重复的乏味的工作，把更多时间留给人与人之间的交流，这才能产生真实的价值。<br>DevOps工程师致力于让公司的流程更快、更有效，并且更可靠。只要有可能，就取代那些容易出错的重复性人力劳动。</p>
+<h3 id="洞察全局"><a href="#洞察全局" class="headerlink" title="洞察全局"></a>洞察全局</h3><p>持续交付流水线</p>
+<p><img src="devops-practise-note/1.png" srcset="/img/loading.gif" alt="持续交付流水线"></p>
+<h4 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h4><p>版本控制系统一般来说是开发环境的中心。</p>
+<h4 id="构建服务器"><a href="#构建服务器" class="headerlink" title="构建服务器"></a>构建服务器</h4><p>最常用的模式是让构建服务器紧盯着版本控制系统的提交。当一个提交发生时，构建服务器就从版本控制系统上更新自己本地的源代码。随即，构建代码并运行测试来验证代码提交的质量。这个过程被称为<strong>持续集成</strong>。<br>Jenkins能做到开箱即用，给你简单而健壮的体验。安装也相当容易。</p>
+<h4 id="工件库"><a href="#工件库" class="headerlink" title="工件库"></a>工件库</h4><p>当构建服务器确认了代码质量并将其编译成可交付物时，将这些编译好的二进制工件存放在一个库里是非常有用的。<br>这些二进制代码库是通过HTTP协议操作的文件系统。<br>亚马逊S3是一个可以用来存储二进制工件的键值数据库。</p>
+<h4 id="包管理库"><a href="#包管理库" class="headerlink" title="包管理库"></a>包管理库</h4><p>包管理系统最大的优势是能很容易地安装和升级，并且自动安装依赖。<br>如Red Hat系统上的yum。</p>
+<h4 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h4><p>一般来说，测试环境应该尽可能像生产环境一样。所以，它们也应该能用相同方法在生产环境上安装和配置。</p>
+<h4 id="预发布-生产"><a href="#预发布-生产" class="headerlink" title="预发布/生产"></a>预发布/生产</h4><p>你把最新的发布安装到预发布服务器上，检查一切是否都正常，然后将老的生产环境切换过来，这样预发布环境就变成了新的生产环境—<u><strong>蓝绿发布策略</strong></u>。</p>
+<h4 id="发布管理"><a href="#发布管理" class="headerlink" title="发布管理"></a>发布管理</h4><p>发布过程主要是自动化的。</p>
+<ul>
+<li>需要相当高程度的自动化测试才能更有信心实践自动化部署，而这通常很难做到。</li>
+<li>业务和技术开发的节奏不一定相同。</li>
+</ul>
+<p>在发布过程中人工介入是必要的。</p>
+<h3 id="DevOps如何影响架构"><a href="#DevOps如何影响架构" class="headerlink" title="DevOps如何影响架构"></a>DevOps如何影响架构</h3><p>DevOps和持续交付着眼于软件架构的两个非功能需求：</p>
+<ul>
+<li>需要频繁交付小的变更</li>
+<li>需要对质量有大的信心</li>
+</ul>
+<h4 id="架构经验法则"><a href="#架构经验法则" class="headerlink" title="架构经验法则"></a>架构经验法则</h4><ul>
+<li>关注点分离（应该分开考虑系统不同的方面）</li>
+<li>内聚原则（内聚指的是软件模块的各部分之间相互关联的程度）</li>
+<li>耦合（耦合指的是两个模块间相互依赖的程度）</li>
+</ul>
+<p>康威定律—设计软件的组织结构，等价于软件的组织架构。<br>拥抱DevOps和持续交付的企业里，REST的实现更加流行的一个原因。</p>
+<h3 id="一切皆代码"><a href="#一切皆代码" class="headerlink" title="一切皆代码"></a>一切皆代码</h3><p>一切皆代码，而你需要一个地方来存储。这个地方就是企业里的源代码管理系统。<br>提供集中式代码库：</p>
+<ul>
+<li>可以使用软件即服务的解决方案，如GitHub、Bitbucket或者GitLab。性价比高。</li>
+<li>可以使用云提供商。如AWS。</li>
+</ul>
+<h4 id="源代码控制的必要性"><a href="#源代码控制的必要性" class="headerlink" title="源代码控制的必要性"></a>源代码控制的必要性</h4><p>对于DevOps而言，确实几乎一切都可以用代码的形式来表达。</p>
+<ul>
+<li>构建的应用程序</li>
+<li>部署应用程序的基础设施</li>
+<li>产品文档</li>
+</ul>
+<p>Git是这个类别里最流行的工具。<br>Git是一个分布式版本管理系统（DVCS）。</p>
+<h4 id="角色与代码"><a href="#角色与代码" class="headerlink" title="角色与代码"></a>角色与代码</h4><p>开发者靠源代码管理来生活和呼吸。<br>运维人员也喜欢通过代码、脚本或者其他产品的方式管理描述基础设施。</p>
+<h4 id="选择一个客户端"><a href="#选择一个客户端" class="headerlink" title="选择一个客户端"></a>选择一个客户端</h4><p>大部分的开发环境都能很好地支持使用Git。<br>许多开发者用的是集成在开发环境里的客户端，或者Git的命令行客户端。当执行运维任务时，更倾向于使用Git命令行客户端，因为在远程ssh的时候很方便。</p>
+<p>无论如何，使用GitHub或GitLab是一个学习探索Git的捷径。</p>
+<p>GitLab和GitHub的功能强点：</p>
+<ul>
+<li>web界面</li>
+<li>内置wiki提供文档存放</li>
+<li>问题跟踪器</li>
+<li>提交可视化</li>
+<li>分支可视化</li>
+<li>拉请求工作流</li>
+</ul>
+<h4 id="Gerrit"><a href="#Gerrit" class="headerlink" title="Gerrit"></a>Gerrit</h4><p>Gerrit是基于Git的代码审查工具。<br>Gerrit可以让你创建规则来允许开发者审查和批准其他开发者对代码库的变更。<br>更简单的方法是使用Docker来尝试Gerrit。<br>Gerrit允许对敏感的代码库进行细粒度的操作。变更可以在授权人审查之后入库。这是Gerrit最主要的优势。</p>
+<h4 id="拉请求模型"><a href="#拉请求模型" class="headerlink" title="拉请求模型"></a>拉请求模型</h4><p>由于GitHub而变得流行起来的拉请求模型。<br>除非是代码库所有者，推送是不被允许的。不过其他开发者被允许fork代码库，然后做变更，提交一个拉请求。代码库所有者可以审查这个请求并决定是否把变更合并到主代码库里。</p>
+<h4 id="GitLab"><a href="#GitLab" class="headerlink" title="GitLab"></a>GitLab</h4><p>基于Docker-compose来安装GitLab</p>
+<div class="hljs"><pre><code class="hljs bash">$ mkdir gitlab
+$ <span class="hljs-built_in">pwd</span>
+/root/gitlab
+$ wget https://raw.githubusercontent.com/sameersbn/docker-gitlab/master/docker-compose.yml
+$ docker-compose up</code></pre></div>
+
+<p>命令docker-compose将会读取.yml文件并用默认的演示配置启动所有需要的服务。<br>查看控制台窗口的启动日志，会发现三个单独的应用程序被启动：</p>
+<p>gitlab、postgresql1、gitlab redis1和gitlab gitlab1</p>
+<p>文件docker-compose.yml在/srv/docker/gitlab创建了数据卷。</p>
+<p>GitLab增加的主要价值能消除DevOps工作流程的瓶颈。</p>
+<ul>
+<li>用户ssh密钥的管理</li>
+<li>新版本库的创建</li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/devops/">devops</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/29/jira-init/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Jira-Docker环境搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/27/jenkins-pipeline/">
+                        <span class="hidden-mobile">Jenkins-Pipeline学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "DevOps实践笔记&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

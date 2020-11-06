@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>SSO单点登录 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-11 18:10">
+                    March 11, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    42
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="SSO单点登录"><a href="#SSO单点登录" class="headerlink" title="SSO单点登录"></a>SSO单点登录</h2><h3 id="单点登录"><a href="#单点登录" class="headerlink" title="单点登录"></a>单点登录</h3><p>单点登录，英文全称Single Sign On，简称就是SSO。它的解释是：在多个应用系统中，只需要登录一次，就可以访问其他相互信任的应用系统。可分为同域下的单点登录，不同域下的单点登录（Cookie是不能跨域的）。</p>
+<p>CAS流程—这个流程是单点登录的标准流程。</p>
+<p><img src="oauth2-sso/1.png" srcset="/img/loading.gif" alt="单点登录流程"></p>
+<ul>
+<li>单点登录（SSO系统）是保障各业务系统的用户资源的安全 。</li>
+<li>各个业务系统获得的信息是，这个用户能不能访问我的资源。</li>
+<li>单点登录，资源都在各个业务系统这边，不在SSO那一方。 用户在给SSO服务器提供了用户名密码后，作为业务系统并不知道这件事。 SSO随便给业务系统一个ST，那么业务系统是不能确定这个ST是用户伪造的，还是真的有效，所以要拿着这个ST去SSO服务器再问一下，这个用户给我的ST是否有效，是有效的我才能让这个用户访问。</li>
+</ul>
+<p>注明：以上内容摘录于以下链接，仅供学习记录。<br><code>https://yq.aliyun.com/articles/636281</code></p>
+<h3 id="搭建第三方客户端服务"><a href="#搭建第三方客户端服务" class="headerlink" title="搭建第三方客户端服务"></a>搭建第三方客户端服务</h3><p>构建oauth2-client应用，它将使用Spring Cloud Security提供的单点登录功能。oauth2-client将封装客户端与授权服务器交互的流程，使用户可以使用第三方登录的方式登录客户端应用。</p>
+<h4 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h4><div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.lc<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>chapter12-oauth2-client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">packaging</span>&gt;</span>jar<span class="hljs-tag">&lt;/<span class="hljs-name">packaging</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>chapter12-oauth2-client<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.1.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span><span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.build.sourceEncoding</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">project.reporting.outputEncoding</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">project.reporting.outputEncoding</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">spring-cloud.version</span>&gt;</span>Finchley.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">spring-cloud.version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--eureka client--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--web config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--security config--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-security<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--actuator config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--lombok config. --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--test config--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<h4 id="application-yml"><a href="#application-yml" class="headerlink" title="application.yml"></a>application.yml</h4><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">oauth2-client</span>
+
+<span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">8888</span>
+
+<span class="hljs-attr">eureka:</span>
+  <span class="hljs-attr">instance:</span>
+    <span class="hljs-attr">instance-id:</span> <span class="hljs-string">$&#123;spring.application.name&#125;:$&#123;vcap.application.instance_id:$&#123;spring.application.instance_id:$&#123;random.value&#125;&#125;&#125;</span>
+  <span class="hljs-attr">client:</span>
+    <span class="hljs-attr">service-url:</span>
+      <span class="hljs-attr">default-zone:</span> <span class="hljs-string">http://localhost:8761/eureka/,</span> <span class="hljs-string">http://localhost:8762/eureka/</span>
+
+<span class="hljs-attr">security:</span>
+  <span class="hljs-attr">oauth2:</span>
+    <span class="hljs-attr">client:</span>
+      <span class="hljs-attr">client-id:</span> <span class="hljs-string">client</span>
+      <span class="hljs-attr">client-secret:</span> <span class="hljs-string">secret</span>
+      <span class="hljs-attr">access-token-uri:</span> <span class="hljs-string">http://localhost:8766/oauth/token</span>
+      <span class="hljs-attr">user-authorization-uri:</span> <span class="hljs-string">http://localhost:8766/oauth/authorize</span>
+      <span class="hljs-attr">client-authentication-scheme:</span> <span class="hljs-string">form</span>
+    <span class="hljs-attr">resource:</span>
+      <span class="hljs-attr">user-info-uri:</span> <span class="hljs-string">http://localhost:8767/user</span>
+      <span class="hljs-attr">prefer-token-info:</span> <span class="hljs-literal">false</span></code></pre></div>
+
+<h4 id="添加SecurityConfig配置文件"><a href="#添加SecurityConfig配置文件" class="headerlink" title="添加SecurityConfig配置文件"></a>添加SecurityConfig配置文件</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.config;
+
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+<span class="hljs-keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<span class="hljs-keyword">import</span> org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+<span class="hljs-keyword">import</span> org.springframework.security.config.http.SessionCreationPolicy;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 单点登录配置</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchenbill</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Component</span>
+<span class="hljs-meta">@EnableOAuth2Sso</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SecurityConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WebSecurityConfigurerAdapter</span> </span>&#123;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                .requestMatchers().anyRequest()
+                .and()
+                .authorizeRequests()
+                .antMatchers(<span class="hljs-string">&quot;/user/**&quot;</span>).authenticated()
+                .and()
+                .formLogin().successForwardUrl(<span class="hljs-string">&quot;/index&quot;</span>)
+                .and()
+                .logout().logoutUrl(<span class="hljs-string">&quot;/logout&quot;</span>).permitAll()
+                .logoutSuccessUrl(<span class="hljs-string">&quot;/&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="访问接口"><a href="#访问接口" class="headerlink" title="访问接口"></a>访问接口</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.controller;
+
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;
+
+<span class="hljs-keyword">import</span> java.security.Principal;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 访问接口</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchenbill</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainController</span> </span>&#123;
+
+    <span class="hljs-meta">@RequestMapping(method = RequestMethod.GET)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Welcome to the main index!&quot;</span>;
+    &#125;
+
+    <span class="hljs-meta">@RequestMapping(value = &quot;/index&quot;, method = RequestMethod.GET)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">index</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Welcome to the index!&quot;</span>;
+    &#125;
+
+    <span class="hljs-meta">@RequestMapping(value = &quot;/user&quot;, method = RequestMethod.GET)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Principal <span class="hljs-title">principal</span><span class="hljs-params">(Principal user)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> user;
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="授权服务器配置"><a href="#授权服务器配置" class="headerlink" title="授权服务器配置"></a>授权服务器配置</h4><p>authorization-server应用中修改客户端的回调地址</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.config;
+
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.security.authentication.AuthenticationManager;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 授权服务器配置。</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchenbill</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@EnableAuthorizationServer</span>
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthorizationServerConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AuthorizationServerConfigurerAdapter</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    AuthenticationManager authenticationManager;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 配置一个客户端</span>
+<span class="hljs-comment">     * 即可以通过授权码类型获取令牌，也可以通过密码类型获取令牌。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> clients</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Exception</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(ClientDetailsServiceConfigurer clients)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        clients.inMemory()
+                <span class="hljs-comment">// 客户端ID</span>
+                .withClient(<span class="hljs-string">&quot;client&quot;</span>)
+                <span class="hljs-comment">// 客户端可以使用的授权类型</span>
+                .authorizedGrantTypes(<span class="hljs-string">&quot;authorization_code&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>, <span class="hljs-string">&quot;refresh_token&quot;</span>, <span class="hljs-string">&quot;implicit&quot;</span>)
+                <span class="hljs-comment">// 允许请求范围</span>
+                .scopes(<span class="hljs-string">&quot;all&quot;</span>)
+                <span class="hljs-comment">// 客户端安全码</span>
+                .secret(<span class="hljs-string">&quot;secret&quot;</span>)
+                <span class="hljs-comment">// 回调地址（第三方客户端的IP地址）</span>
+                .redirectUris(<span class="hljs-string">&quot;http://xxx.xxx.x.xxx:8888/&quot;</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 配置AuthorizationServer tokenServices.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> endpoints</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Exception</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(AuthorizationServerEndpointsConfigurer endpoints)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">// 将令牌保存到内存中，也可以保存到数据库中，或者是Redis中</span>
+        endpoints.tokenStore(<span class="hljs-keyword">new</span> InMemoryTokenStore())
+                .accessTokenConverter(accessTokenConverter())
+                .authenticationManager(authenticationManager)
+                .reuseRefreshTokens(<span class="hljs-keyword">false</span>);
+
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 配置JWT转换器。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> JwtAccessTokenConverter <span class="hljs-title">accessTokenConverter</span><span class="hljs-params">()</span> </span>&#123;
+
+        JwtAccessTokenConverter jwtAccessTokenConverter = <span class="hljs-keyword">new</span> JwtAccessTokenConverter();
+        <span class="hljs-comment">// 设置JWT的签名的密钥为：secret</span>
+        jwtAccessTokenConverter.setSigningKey(<span class="hljs-string">&quot;secret&quot;</span>);
+
+        <span class="hljs-keyword">return</span> jwtAccessTokenConverter;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(AuthorizationServerSecurityConfigurer security)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        security.tokenKeyAccess(<span class="hljs-string">&quot;permitAll()&quot;</span>)
+                .checkTokenAccess(<span class="hljs-string">&quot;isAuthenticated()&quot;</span>)
+                .allowFormAuthenticationForClients();
+
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="资源服务器配置"><a href="#资源服务器配置" class="headerlink" title="资源服务器配置"></a>资源服务器配置</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.controller;
+
+<span class="hljs-keyword">import</span> com.lc.dto.Instance;
+<span class="hljs-keyword">import</span> com.lc.dto.User;
+<span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.security.core.Authentication;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.PathVariable;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.security.Principal;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 资源访问控制器。</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchenbill</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@Slf4j</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResourceController</span> </span>&#123;
+
+    BearerTokenExtractor tokenExtractor = <span class="hljs-keyword">new</span> BearerTokenExtractor();
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> ResourceServerTokenServices tokenServices;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 根据访问令牌获取用户认证信息的接口。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> req</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@RequestMapping(value = &quot;/user&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Principal <span class="hljs-title">userInfo</span><span class="hljs-params">(ServletRequest req)</span> </span>&#123;
+
+        <span class="hljs-keyword">final</span> HttpServletRequest request = (HttpServletRequest) req;
+        Authentication authentication = tokenExtractor.extract(request);
+        String token = (String) authentication.getPrincipal();
+        <span class="hljs-keyword">return</span> tokenServices.loadAuthentication(token);
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>配置文件中注入ResourceServerTokenServices Bean</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.config;
+
+<span class="hljs-keyword">import</span> org.springframework.cloud.client.loadbalancer.LoadBalanced;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.http.client.ClientHttpResponse;
+<span class="hljs-keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<span class="hljs-keyword">import</span> org.springframework.security.config.http.SessionCreationPolicy;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+<span class="hljs-keyword">import</span> org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+<span class="hljs-keyword">import</span> org.springframework.web.client.DefaultResponseErrorHandler;
+<span class="hljs-keyword">import</span> org.springframework.web.client.RestTemplate;
+
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 资源服务器配置。</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> lingchenbill</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-meta">@EnableResourceServer</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResourceServerConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ResourceServerConfigurerAdapter</span> </span>&#123;
+
+<span class="hljs-comment">//    @Autowired</span>
+<span class="hljs-comment">//    private RestTemplate restTemplate;</span>
+
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(ResourceServerSecurityConfigurer resources)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">//resources.tokenStore(new JwtTokenStore(accessTokenConverter()))</span>
+        <span class="hljs-comment">//        .stateless(true);</span>
+
+        resources.tokenServices(tokenServices())
+                .stateless(<span class="hljs-keyword">true</span>);
+    &#125;
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ResourceServerTokenServices <span class="hljs-title">tokenServices</span><span class="hljs-params">()</span> </span>&#123;
+
+        <span class="hljs-comment">// 从AuthorizationServer中获取令牌服务。</span>
+        RemoteTokenServices tokenServices = <span class="hljs-keyword">new</span> RemoteTokenServices();
+        tokenServices.setAccessTokenConverter(accessTokenConverter());
+
+        <span class="hljs-comment">// 为restTemplate配置异常处理器，忽略400错误</span>
+        RestTemplate restTemplate = restTemplate();
+        restTemplate.setErrorHandler(<span class="hljs-keyword">new</span> DefaultResponseErrorHandler() &#123;
+
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">handleError</span><span class="hljs-params">(ClientHttpResponse response)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+                <span class="hljs-keyword">if</span> (response.getRawStatusCode() != <span class="hljs-number">400</span>) &#123;
+                    <span class="hljs-keyword">super</span>.handleError(response);
+                &#125;
+
+            &#125;
+
+        &#125;);
+
+        tokenServices.setRestTemplate(restTemplate);
+        tokenServices.setCheckTokenEndpointUrl(<span class="hljs-string">&quot;http://AUTHORIZATION-SERVER/oauth/check_token&quot;</span>);
+        tokenServices.setClientId(<span class="hljs-string">&quot;client&quot;</span>);
+        tokenServices.setClientSecret(<span class="hljs-string">&quot;secret&quot;</span>);
+
+        <span class="hljs-keyword">return</span> tokenServices;
+
+    &#125;
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-meta">@LoadBalanced</span>
+    <span class="hljs-function">RestTemplate <span class="hljs-title">restTemplate</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> RestTemplate();
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 配置JWT转换器。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> JwtAccessTokenConverter <span class="hljs-title">accessTokenConverter</span><span class="hljs-params">()</span> </span>&#123;
+        JwtAccessTokenConverter converter = <span class="hljs-keyword">new</span> JwtAccessTokenConverter();
+        converter.setSigningKey(<span class="hljs-string">&quot;secret&quot;</span>);
+        <span class="hljs-keyword">return</span> converter;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 配置资源服务器的拦截规则。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> http</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Exception</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                .requestMatchers().anyRequest()
+                .and()
+                .anonymous()
+                .and()
+                .authorizeRequests()
+                .antMatchers(<span class="hljs-string">&quot;/user/**&quot;</span>).authenticated()
+                .and()
+                .exceptionHandling().accessDeniedHandler(<span class="hljs-keyword">new</span> OAuth2AccessDeniedHandler());
+    &#125;
+&#125;</code></pre></div>
+
+<p>启动Eureka Server、授权服务器、资源服务器以及本服务，效果如下</p>
+<p><img src="oauth2-sso/2.png" srcset="/img/loading.gif" alt="启动服务"></p>
+<h4 id="访问测试"><a href="#访问测试" class="headerlink" title="访问测试"></a>访问测试</h4><p><code>http://xxx.xxx.xxx.xx6:8888/</code></p>
+<div class="hljs"><pre><code class="hljs html">Welcome to the main index!</code></pre></div>
+
+<p><code>http://xxx.xxx.xxx.xx6:8888/index</code></p>
+<div class="hljs"><pre><code class="hljs html">Welcome to the index!</code></pre></div>
+
+<p><code>http://xxx.xxx.xxx.xx6:8888/user</code></p>
+<p><img src="oauth2-sso/5.png" srcset="/img/loading.gif" alt="认证访问"></p>
+<p>返回结果</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;authorities&quot;</span>: [
+        &#123;
+            <span class="hljs-attr">&quot;authority&quot;</span>: <span class="hljs-string">&quot;USER&quot;</span>
+        &#125;
+    ],
+    <span class="hljs-attr">&quot;details&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;remoteAddress&quot;</span>: <span class="hljs-string">&quot;xxx.xxx.x.xxx&quot;</span>,
+        <span class="hljs-attr">&quot;sessionId&quot;</span>: <span class="hljs-string">&quot;2335CEC749CF3C65D7E1FC6E2B78837A&quot;</span>,
+        <span class="hljs-attr">&quot;tokenValue&quot;</span>: <span class="hljs-string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM5NjM2NTQsInVzZXJfbmFtZSI6InVzZXJfYXV0aG9yaXphdGlvbl9jb2RlIiwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiI2MjYzZDhiZS0yYzU1LTRjNWMtOTE3YS03YWEwMTc4YjM2MGUiLCJjbGllbnRfaWQiOiJjbGllbnQiLCJzY29wZSI6WyJhbGwiXX0.YGv-jBCIHPloMQGHmFuFKv5iyQ8v3rdnAcuPKEIZI2U&quot;</span>,
+        <span class="hljs-attr">&quot;tokenType&quot;</span>: <span class="hljs-string">&quot;bearer&quot;</span>,
+        <span class="hljs-attr">&quot;decodedDetails&quot;</span>: <span class="hljs-literal">null</span>
+    &#125;,
+    <span class="hljs-attr">&quot;authenticated&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">&quot;userAuthentication&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;authorities&quot;</span>: [
+            &#123;
+                <span class="hljs-attr">&quot;authority&quot;</span>: <span class="hljs-string">&quot;USER&quot;</span>
+            &#125;
+        ],
+        <span class="hljs-attr">&quot;details&quot;</span>: &#123;
+            <span class="hljs-attr">&quot;authorities&quot;</span>: [
+                &#123;
+                    <span class="hljs-attr">&quot;authority&quot;</span>: <span class="hljs-string">&quot;USER&quot;</span>
+                &#125;
+            ],
+            <span class="hljs-attr">&quot;details&quot;</span>: <span class="hljs-literal">null</span>,
+            <span class="hljs-attr">&quot;authenticated&quot;</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">&quot;userAuthentication&quot;</span>: &#123;
+                <span class="hljs-attr">&quot;authorities&quot;</span>: [
+                    &#123;
+                        <span class="hljs-attr">&quot;authority&quot;</span>: <span class="hljs-string">&quot;USER&quot;</span>
+                    &#125;
+                ],
+                <span class="hljs-attr">&quot;details&quot;</span>: <span class="hljs-literal">null</span>,
+                <span class="hljs-attr">&quot;authenticated&quot;</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">&quot;principal&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>,
+                <span class="hljs-attr">&quot;credentials&quot;</span>: <span class="hljs-string">&quot;N/A&quot;</span>,
+                <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>
+            &#125;,
+            <span class="hljs-attr">&quot;credentials&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+            <span class="hljs-attr">&quot;oauth2Request&quot;</span>: &#123;
+                <span class="hljs-attr">&quot;clientId&quot;</span>: <span class="hljs-string">&quot;client&quot;</span>,
+                <span class="hljs-attr">&quot;scope&quot;</span>: [
+                    <span class="hljs-string">&quot;all&quot;</span>
+                ],
+                <span class="hljs-attr">&quot;requestParameters&quot;</span>: &#123;
+                    <span class="hljs-attr">&quot;client_id&quot;</span>: <span class="hljs-string">&quot;client&quot;</span>
+                &#125;,
+                <span class="hljs-attr">&quot;resourceIds&quot;</span>: [],
+                <span class="hljs-attr">&quot;authorities&quot;</span>: [],
+                <span class="hljs-attr">&quot;approved&quot;</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">&quot;refresh&quot;</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">&quot;redirectUri&quot;</span>: <span class="hljs-literal">null</span>,
+                <span class="hljs-attr">&quot;responseTypes&quot;</span>: [],
+                <span class="hljs-attr">&quot;extensions&quot;</span>: &#123;&#125;,
+                <span class="hljs-attr">&quot;refreshTokenRequest&quot;</span>: <span class="hljs-literal">null</span>,
+                <span class="hljs-attr">&quot;grantType&quot;</span>: <span class="hljs-literal">null</span>
+            &#125;,
+            <span class="hljs-attr">&quot;clientOnly&quot;</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">&quot;principal&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>,
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>
+        &#125;,
+        <span class="hljs-attr">&quot;authenticated&quot;</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">&quot;principal&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>,
+        <span class="hljs-attr">&quot;credentials&quot;</span>: <span class="hljs-string">&quot;N/A&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>
+    &#125;,
+    <span class="hljs-attr">&quot;principal&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>,
+    <span class="hljs-attr">&quot;clientOnly&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">&quot;credentials&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+    <span class="hljs-attr">&quot;oauth2Request&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;clientId&quot;</span>: <span class="hljs-string">&quot;client&quot;</span>,
+        <span class="hljs-attr">&quot;scope&quot;</span>: [],
+        <span class="hljs-attr">&quot;requestParameters&quot;</span>: &#123;&#125;,
+        <span class="hljs-attr">&quot;resourceIds&quot;</span>: [],
+        <span class="hljs-attr">&quot;authorities&quot;</span>: [],
+        <span class="hljs-attr">&quot;approved&quot;</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">&quot;refresh&quot;</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-attr">&quot;redirectUri&quot;</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">&quot;responseTypes&quot;</span>: [],
+        <span class="hljs-attr">&quot;extensions&quot;</span>: &#123;&#125;,
+        <span class="hljs-attr">&quot;grantType&quot;</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">&quot;refreshTokenRequest&quot;</span>: <span class="hljs-literal">null</span>
+    &#125;,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;user_authorization_code&quot;</span>
+&#125;</code></pre></div>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/oauth2/">oauth2</a>
+                    
+                      <a class="hover-with-bg" href="/tags/sso/">sso</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/15/docker-images/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker镜像</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/10/spring-cloud-security/">
+                        <span class="hidden-mobile">Spring-Cloud安全认证OAuth2与JWT</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "SSO单点登录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

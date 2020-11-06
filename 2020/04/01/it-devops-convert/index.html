@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>从IT到DevOps实践（转载） - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-04-01 19:21">
+                    April 1, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    25
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="从-IT-到-DevOps-实践"><a href="#从-IT-到-DevOps-实践" class="headerlink" title="从 IT 到 DevOps 实践"></a>从 IT 到 DevOps 实践</h2><p>ps：该文拉取于<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106525719">知乎帖子</a>,仅供学习与参考。</p>
+<p>从事过 IT 工作的人可能会对以下这段经历感到非常熟悉：您最初是一位技术支持，扮演 IT 桌面工程师的角色（IT 桌面工程师，能够为与计算机系统，软硬件相关的问题提供技术帮助和支持）。在这个职位上，您不断获得经验，可能会晋升为 2 级桌面工程师，并成为 IT 管理员。之后您将有足够的经验以系统管理员或系统工程师的身份开始在系统上工作。</p>
+<p>你开始思考：“我应该更多地关注代码还是运维？”</p>
+<p>如果您是要从事软件或 Web 开发的系统管理员，那么 DevOps 自然而然成为了下一步将要关注的理念。系统管理员和工程师的主要目标是使不同部门的员工可以共享信息并更有效地合作。DevOps 工程师在效率和优化的方面与这些角色非常相似，但是他们要做的是将软件开发团队与部署团队联系在一起。</p>
+<p>许多人仍然不知道如何进入软件开发领域，同时觉得他们一直困在重启计算机和修复打印机的炼狱中，但是如果努力学习的话，仍然有一条光明的出路。</p>
+<p><strong>这篇文章是写给谁的？</strong></p>
+<p>首先，我们需要清楚两件事：</p>
+<ol>
+<li><p>这不是从 IT /运营转移到 DevOps 的唯一且最佳的方法，但这是曾经实践过并且有效的方法。您可能有不同的经历，并且过程可能会有所不同。</p>
+</li>
+<li><p>我们之前都知道：“ DevOps 不是工作，而是一种文化。” 当然如此。有人说DevOps 不是一项真正的工作，开发和运维团队应该携手合作。如果您的公司负担得起聘请 DevOps 工程师是非常有优势的。如果不能，可以试图将 DevOps 理念与您当前的团队结合起来。</p>
+</li>
+</ol>
+<p>话虽如此，这篇文章实际上是为那些从事 IT 并希望更多地参与软件开发，Web 开发或者产出人员所写。</p>
+<h3 id="DevOps-工具和技能"><a href="#DevOps-工具和技能" class="headerlink" title="DevOps 工具和技能"></a>DevOps 工具和技能</h3><p>以下是我关注的关键技能和技术，这些技能和技术使我走上了软件开发的道路。</p>
+<h3 id="操作系统：Linux"><a href="#操作系统：Linux" class="headerlink" title="操作系统：Linux"></a>操作系统：Linux</h3><p>如果想要进入 DevOps 的领域，习惯 Linux 是非常必要的。即使不实践 DevOps，我们也应该使用Linux，因为 Linux 支持全球 90％ 以上的计算机和系统。</p>
+<p>如果使用 Mac 作为日常驱动程序事情将会变得非常容易。 由于 Mac 是基于 Unix 的，因此许多（即使不是大多数）Linux 命令也可以 在Mac 上使用。 当我们进行 Mac 管理时，如果想把每日任务编写入脚本并自动化，或者将 SSH 加密到服务器和计算机中以执行支持，这是非常有用的。稍后我们会关注更多这个话题。</p>
+<h3 id="Web-Stack：LAMP"><a href="#Web-Stack：LAMP" class="headerlink" title="Web Stack：LAMP"></a>Web Stack：LAMP</h3><p>虽然并非总是适用于每个 DevOps 角色，但学习 LAMP 堆栈有助于我们从操作系统级别了解 Web 应用程序的基本基础。 我们每个人每天都在使用应用程序，但是了解Web 应用程序的这些主要组件如何协同工作，有助于处理正在发生的事情及其时间和原因。</p>
+<p>当然，还有其他堆栈，例如 LEMP（Linux，NGINX，MySQL，PHP / Python）和MEAN，但是我学习 LAMP 是因为它是最受欢迎的堆栈之一。 熟悉堆栈的基本底线是了解 Web 应用程序的不同部分如何工作。</p>
+<h3 id="后端语言：Python"><a href="#后端语言：Python" class="headerlink" title="后端语言：Python"></a>后端语言：Python</h3><p>Python 非常适合脚本，Web 应用程序等。每当有人决定要参与 Web 或软件开发时，他们几乎总是花太多时间来决定应该专注于哪种语言。 虽然学习特定的语言对于特定的角色肯定有其好处，但是当我们刚开始学习如何开发应用程序或软件时，选择任何一种语言并坚持使用是最重要的部分。</p>
+<p>话虽如此，我个人认为系统管理员和未来的 DevOps 工程师应该真正坚持使用Python。 由于人性化，它可能是最易于学习和使用的语言之一。目前有许多用Python 编写的安全工具和框架。 但实际上，语言选择并不是最关键的。 在学习 DevOps 的第一年，我已经使用过 Ruby，Python，Shell 甚至是 PHP。我们要做的就是选择一些工具并坚持实践。</p>
+<h3 id="脚本：Bash"><a href="#脚本：Bash" class="headerlink" title="脚本：Bash"></a>脚本：Bash</h3><p>您应该习惯使用命令行界面。尽管 Python 很棒，但作为 Mac 的系统管理员，有一个显而易见的优势是 Mac 基于Unix 并具有终端。 我编写了脚本来帮助配置系统并自动执行重复的任务。例如，我写了一些脚本，可以创建用户，安装应用程序，并配置打印机设置。 通常，这些任务将花费几个小时，但是谁有如此多的时间呢？ 通过使用 Bash 脚本，我可以利用 Apple Remote Desktop 之类的工具一次配置五台甚至十台机器，从而将启动时间减少到数分钟而不是数小时。</p>
+<h3 id="自动化：Ansible"><a href="#自动化：Ansible" class="headerlink" title="自动化：Ansible"></a>自动化：Ansible</h3><p>Ansible 是一个开源的 IT 自动化引擎，可以减免工作中的繁琐任务，同时能够显著提高 IT 环境的可伸缩性，一致性和可靠性。 我们可以学习 Ansible 的资源调配，配置管理以及应用程序测试和部署。</p>
+<p>一旦开始编写脚本，例如用户入门和应用程序安装，我便开始将脚本与 Apple Remote Desktop（ARD）和 AutoDMG 等工具结合起来，以自动进行计算机镜像处理。 Ansible 可以将我的更多任务组合到一个我可以执行的 playbook 中，playbook 能够进行配置管理和多主机部署。</p>
+<p>以下链接是 GitHub 存储库，其中包含一些出色的Mac sysadmin 的 playbook。</p>
+<p><a href="https://link.zhihu.com/?target=https://github.com/geerlingguy/mac-dev-playbook">https://github.com/geerlingguy/mac-dev-playbook</a></p>
+<h3 id="VIrtualBox-Vagrant"><a href="#VIrtualBox-Vagrant" class="headerlink" title="VIrtualBox: Vagrant"></a>VIrtualBox: Vagrant</h3><p>Vagrant 是用于在单个工作流程中构建和管理虚拟机环境的工具。 Vagrant 提供了易于配置，可复制且可移植的工作环境。列两个场景，你是否需要 Ubuntu 18.04 实例进行测试？ 登台服务器的 CentOS 实例如何？ Vagrant 提供了一个用于开发和测试基础结构管理脚本的一次性环境和一致的工作流程。</p>
+<h3 id="持续集成和部署：Jenkins"><a href="#持续集成和部署：Jenkins" class="headerlink" title="持续集成和部署：Jenkins"></a>持续集成和部署：Jenkins</h3><p>持续集成（CI）和持续部署（CD）是 DevOps 最重要的部分之一，但也是掌握和理解最复杂的部分之一。 Jenkins 可能不是CI/CD的最佳工具，但它无疑是最受欢迎的并且是行业必备的工具之一。</p>
+<p>作为一种自动化工具，Jenkins用于构建，测试和启动应用程序的部署，从而使开发人员可以更轻松地将更改和错误修复持续集成到软件中，从而消除了可怕的“推向生产然后祈祷”的固有思维。在 DevOps 的世界里，Jenkins 具有显而易见的重要地位，因此强烈建议您全面了解 Jenkins。</p>
+<p>译者注：如果想要体验全流程服务，可以尝试一些一站式解决方案，例如 CODING DevOps</p>
+<h3 id="云：AWS"><a href="#云：AWS" class="headerlink" title="云：AWS"></a>云：AWS</h3><p>在云基础架构和服务方面，Amazon Web Services（AWS）无疑是一个优秀的平台。 AWS 无需担心服务器配置和物理资产限制，从而帮助公司降低成本，缩短部署时间并增加运营规模。 如果想要尝试进行 DevOps 或软件开发，AWS 是一个不错的选择。AWS提供了数百种服务，但是重要的是要了解诸如 EC2，S3，RDS，Route53 和 Lambda等核心服务。</p>
+<p>译者注: 这篇文章面向的中国受众可能在体验 AWS 时遇到一些问题，如服务不够本土化，备案不流畅等等。因此您可以自行尝试一些针对中国用户市场的产品。CODING DevOps 提供了高可用，安全可靠的本地化云服务，国内速度稳定流畅，让云上开发更简单。</p>
+<p><strong>总结</strong></p>
+<p>真正了解软件开发和 DevOps 来龙去脉的最佳方法是启动自己的项目。即使整天观看YouTube 教程并彻夜阅读经验帖子无疑是一种手段，但是在真正开始编写一些代码，配置服务器并推动部署之前，您所学到的东西都不会真正被吸收消化。</p>
+<p>以下是对新入门者的一些学习建议：<br>从全新的 Ubuntu 安装开始，配置 LAMP 堆栈并部署自己的网站<br>安装和构建 Jenkins 服务器，或者使用可安装 Jenkins 插件的工具并练习推送代码以进行部署<br>创建一个免费的云服务器账户，然后开始处理EC2，S3存储桶和其他服务<br>开始构建脚本，实现部分日常任务自动化。</p>
+<p>笔者在 IT 领域浸淫了五年，并且学到了很多与DevOps 相关的知识。这些探索与经验能够帮助更多人减少走弯路的机会。这篇文章就是在指导您如何在最短时间内最有效地去实践 DevOps 过程。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/devops/">devops</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/06/freemake-spring-boot/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Freemarker与Spring Boot集成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/31/mongodb-docker-install/">
+                        <span class="hidden-mobile">MongoDB环境搭建（Docker系）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "从IT到DevOps实践（转载）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker Compose部署应用 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-19 21:48">
+                    March 19, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    45
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker-Compose部署应用"><a href="#Docker-Compose部署应用" class="headerlink" title="Docker Compose部署应用"></a>Docker Compose部署应用</h2><p>Docker Compose能够在Docker节点上，以单引擎（Single-Engine Mode）进行多容器应用的部署与管理。<br>多数的现代应用通过多个更小的服务互相协同来组成一个完整可用的应用。<br>Docker Compose并不是通过脚本和各种冗长的docker命令来将应用组件组织起来，而是通过一个声明式的配置文件描述整个应用，从而使用一条命令完成部署。</p>
+<p>Docker Compose的前身是Fig。Fig是一个基于Docker的Python工具，允许用户基于一个YAML文件定义多容器应用，从而可以使用fig命令行工具进行应用的部署。Fig还可以对应用的全生命周期进行管理。<br>内部实现上，Fig会解析YAML文件，并通过Docker API进行应用的部署和管理。<br>Fig更名为Docker Compose，并自此成为绑定在Docker引擎之上的外部工具。虽然它从未完全集成到Docker引擎中，但是仍然受到广泛关注并得到普通使用。</p>
+<p>Docker Compose仍然是一个需要在Docker主机上进行安装的外部Python工具。使用它时，首先编写定义多容器（多服务）应用的YAML文件，然后将其交由docker-compose命令处理，Docker Compose就会基于Docker引擎API完成应用的部署。 </p>
+<h3 id="安装Docker-Compose"><a href="#安装Docker-Compose" class="headerlink" title="安装Docker Compose"></a>安装Docker Compose</h3><p>安装Docker-compose</p>
+<p>访问网址，查找合适的版本</p>
+<p><code>https://github.com/docker/compose/releases</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/<span class="hljs-built_in">local</span>/bin/docker-compose
+// 换取国内镜像
+curl -L https://get.daocloud.io/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` &gt; /usr/<span class="hljs-built_in">local</span>/bin/docker-compose
+
+$ chmod +x /usr/<span class="hljs-built_in">local</span>/bin/docker-compose</code></pre></div>
+
+<p>检查Docker Compose是否安装</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose --version
+docker-compose version 1.23.2, build 1110ad01</code></pre></div>
+
+<p>Compose文件</p>
+<p>Docker Compose使用YAML文件来定义多服务的应用。YAML是JSON的一个子集，因此也可以使用JSON。<br>Docker Compose默认使用文件名docker-compose.yml。当然，用户也可以使用 -f 参数指定具体文件。</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3.5&quot;</span>
+<span class="hljs-attr">services:</span>
+	<span class="hljs-attr">web-fe:</span>
+		<span class="hljs-attr">build:</span> <span class="hljs-string">.</span>
+		<span class="hljs-attr">command:</span> <span class="hljs-string">python</span> <span class="hljs-string">app.py</span>
+		<span class="hljs-attr">ports:</span>
+			<span class="hljs-bullet">-</span> <span class="hljs-attr">target:</span> <span class="hljs-number">5000</span>
+				<span class="hljs-attr">published:</span> <span class="hljs-number">5000</span>
+		<span class="hljs-attr">networks:</span>
+			<span class="hljs-bullet">-</span> <span class="hljs-string">counter-net</span>
+		<span class="hljs-attr">volumes:</span>
+			<span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">volume</span>
+				<span class="hljs-attr">source:</span> <span class="hljs-string">counter-vol</span>
+				<span class="hljs-attr">target:</span> <span class="hljs-string">/code</span>
+	<span class="hljs-attr">redis:</span>
+		<span class="hljs-attr">image:</span> <span class="hljs-string">&quot;redis:alpine&quot;</span>
+		<span class="hljs-attr">networks:</span>
+			<span class="hljs-attr">counter-net:</span>
+
+<span class="hljs-attr">networks:</span>
+	<span class="hljs-attr">counter-net:</span>
+
+<span class="hljs-attr">volumes:</span>
+	<span class="hljs-attr">counter-vol:</span></code></pre></div>
+
+<p>version是必须指定的，总是位于文件的第一行。定义了Compose文件格式的版本。<br>services用于定义不同的应用服务。<br>networks用于指引Docker创建新的网络。<br>volumes用于指引Docker来创建新的卷。<br>Docker Compose会将每个服务部署为一个容器，并且会使用key作为容器名字的一部分。</p>
+<h3 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h3><p>常用的启动一个Compose应用的方式就是<strong>docker-compose up命令</strong>。它会构建所需的镜像，创建网络和卷，并启动容器</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose up &amp;
+// 应先进入Docker
+
+[1] 98639
+localhost:counter-app xxxx$ Creating network <span class="hljs-string">&quot;counter-app_counter-net&quot;</span> with the default driver
+Creating volume <span class="hljs-string">&quot;counter-app_counter-vol&quot;</span> with default driver
+Building web-fe
+Step 1/5 : FROM python:3.4-alpine
+3.4-alpine: Pulling from library/python
+8e402f1a9c57: Pull complete
+cda9ba2397ef: Pull complete
+aafecf9bbbfd: Pull complete
+bc2e7e266629: Pull complete
+e1977129b756: Pull complete
+Digest: sha256:c210b660e2ea553a7afa23b41a6ed112f85dbce25cbcb567c75dfe05342a4c4b
+Status: Downloaded newer image <span class="hljs-keyword">for</span> python:3.4-alpine
+ ---&gt; c06adcf62f6e
+Step 2/5 : ADD . /code
+ ---&gt; 140d7686d413
+Step 3/5 : WORKDIR /code
+ ---&gt; Running <span class="hljs-keyword">in</span> 94884afcd407
+Removing intermediate container 94884afcd407
+ ---&gt; af5369ebc768
+Step 4/5 : RUN pip install -r requirements.txt
+ ---&gt; Running <span class="hljs-keyword">in</span> ba41aa887b15
+DEPRECATION: Python 3.4 support has been deprecated. pip 19.1 will be the last one supporting it. Please upgrade your Python as Python 3.4 won<span class="hljs-string">&#x27;t be maintained after March 2019 (cf PEP 429).</span>
+<span class="hljs-string">Collecting flask (from -r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/d8/94/7350820ae209ccdba073f83220cea1c376f2621254d1e0e82609c9a65e58/Flask-1.0.4-py2.py3-none-any.whl (92kB)</span>
+<span class="hljs-string">Collecting redis (from -r requirements.txt (line 2))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/32/ae/28613a62eea0d53d3db3147f8715f90da07667e99baeedf1010eb400f8c0/redis-3.3.11-py2.py3-none-any.whl (66kB)</span>
+<span class="hljs-string">Collecting Werkzeug&gt;=0.14 (from flask-&gt;-r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/c2/e4/a859d2fe516f466642fa5c6054fd9646271f9da26b0cac0d2f37fc858c8f/Werkzeug-0.16.1-py2.py3-none-any.whl (327kB)</span>
+<span class="hljs-string">Collecting itsdangerous&gt;=0.24 (from flask-&gt;-r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl</span>
+<span class="hljs-string">Collecting Jinja2&gt;=2.10 (from flask-&gt;-r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/65/e0/eb35e762802015cab1ccee04e8a277b03f1d8e53da3ec3106882ec42558b/Jinja2-2.10.3-py2.py3-none-any.whl (125kB)</span>
+<span class="hljs-string">Collecting click&gt;=5.1 (from flask-&gt;-r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl (81kB)</span>
+<span class="hljs-string">Collecting MarkupSafe&gt;=0.23 (from Jinja2&gt;=2.10-&gt;flask-&gt;-r requirements.txt (line 1))</span>
+<span class="hljs-string">  Downloading https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz</span>
+<span class="hljs-string">Building wheels for collected packages: MarkupSafe</span>
+<span class="hljs-string">  Building wheel for MarkupSafe (setup.py): started</span>
+<span class="hljs-string">  Building wheel for MarkupSafe (setup.py): finished with status &#x27;</span><span class="hljs-keyword">done</span><span class="hljs-string">&#x27;</span>
+<span class="hljs-string">  Stored in directory: /root/.cache/pip/wheels/f2/aa/04/0edf07a1b8a5f5f1aed7580fffb69ce8972edc16a505916a77</span>
+<span class="hljs-string">Successfully built MarkupSafe</span>
+<span class="hljs-string">Installing collected packages: Werkzeug, itsdangerous, MarkupSafe, Jinja2, click, flask, redis</span>
+<span class="hljs-string">Successfully installed Jinja2-2.10.3 MarkupSafe-1.1.1 Werkzeug-0.16.1 click-7.0 flask-1.0.4 itsdangerous-1.1.0 redis-3.3.11</span>
+<span class="hljs-string">You are using pip version 19.0.3, however version 19.1.1 is available.</span>
+<span class="hljs-string">You should consider upgrading via the &#x27;</span>pip install --upgrade pip<span class="hljs-string">&#x27; command.</span>
+<span class="hljs-string">Removing intermediate container ba41aa887b15</span>
+<span class="hljs-string"> ---&gt; 7b1ad6caceb8</span>
+<span class="hljs-string">Step 5/5 : CMD [&quot;python&quot;, &quot;app.py&quot;]</span>
+<span class="hljs-string"> ---&gt; Running in 268e39050c88</span>
+<span class="hljs-string">Removing intermediate container 268e39050c88</span>
+<span class="hljs-string"> ---&gt; f2c090352f6d</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">Successfully built f2c090352f6d</span>
+<span class="hljs-string">Successfully tagged counter-app_web-fe:latest</span>
+<span class="hljs-string">WARNING: Image for service web-fe was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.</span>
+<span class="hljs-string">Pulling redis (redis:alpine)...</span>
+<span class="hljs-string">alpine: Pulling from library/redis</span>
+<span class="hljs-string">c9b1b535fdd9: Already exists</span>
+<span class="hljs-string">8dd5e7a0ba4a: Pull complete</span>
+<span class="hljs-string">e20c1cdf5aef: Pull complete</span>
+<span class="hljs-string">25131c35a099: Pull complete</span>
+<span class="hljs-string">bd7c9740b22d: Pull complete</span>
+<span class="hljs-string">d4f86850c303: Pull complete</span>
+<span class="hljs-string">Creating counter-app_redis_1  ... done</span>
+<span class="hljs-string">Creating counter-app_web-fe_1 ... done</span>
+<span class="hljs-string">Attaching to counter-app_web-fe_1, counter-app_redis_1</span>
+<span class="hljs-string">redis_1   | 1:C 19 Mar 2020 10:10:01.123 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span>
+<span class="hljs-string">redis_1   | 1:C 19 Mar 2020 10:10:01.123 # Redis version=5.0.8, bits=64, commit=00000000, modified=0, pid=1, just started</span>
+<span class="hljs-string">redis_1   | 1:C 19 Mar 2020 10:10:01.123 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf</span>
+<span class="hljs-string">redis_1   | 1:M 19 Mar 2020 10:10:01.125 * Running mode=standalone, port=6379.</span>
+<span class="hljs-string">redis_1   | 1:M 19 Mar 2020 10:10:01.125 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.</span>
+<span class="hljs-string">redis_1   | 1:M 19 Mar 2020 10:10:01.125 # Server initialized</span>
+<span class="hljs-string">redis_1   | 1:M 19 Mar 2020 10:10:01.126 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &#x27;</span>vm.overcommit_memory = 1<span class="hljs-string">&#x27; to /etc/sysctl.conf and then reboot or run the command &#x27;</span>sysctl vm.overcommit_memory=1<span class="hljs-string">&#x27; for this to take effect.</span>
+<span class="hljs-string">web-fe_1  |  * Serving Flask app &quot;app&quot; (lazy loading)</span>
+<span class="hljs-string">web-fe_1  |  * Environment: production</span>
+<span class="hljs-string">web-fe_1  |    WARNING: This is a development server. Do not use it in a production deployment.</span>
+<span class="hljs-string">web-fe_1  |    Use a production WSGI server instead.</span>
+<span class="hljs-string">web-fe_1  |  * Debug mode: on</span>
+<span class="hljs-string">web-fe_1  |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)</span>
+<span class="hljs-string">web-fe_1  |  * Restarting with stat</span>
+<span class="hljs-string">web-fe_1  |  * Debugger is active!</span>
+<span class="hljs-string">web-fe_1  |  * Debugger PIN: 241-353-594</span>
+<span class="hljs-string">web-fe_1  | xxx.xxx.xxx.x - - [19/Mar/2020 10:11:44] &quot;GET / HTTP/1.1&quot; 200 -</span></code></pre></div>
+
+<p>默认情况下，docker-compose up会查找名为docker-compose.yml或docker-compose.yaml的Compose文件。也可以启动通过-f 参数来指定别的文件来启动</p>
+<p><code>docker-compose -f prod-equus-bass.yml up</code></p>
+<p>使用 -d 参数在后台启动应用</p>
+<p>使用命令来终止Compose应用</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container ls -qa
+686232b31153
+a981515f8699
+2b5f3ca12592
+51e5f3afca98
+localhost:counter-app xxxx$ docker container stop $(docker container ls -qa)
+// 批量关闭
+
+redis_1   | 1:M 19 Mar 2020 10:10:01.127 * Ready to accept connections
+web-fe_1  | xxx.xxx.xxx.xxx - - [19/Mar/2020 10:54:57] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 200 -
+redis_1   | 1:signal-handler (1584615486) Received SIGTERM scheduling shutdown...
+redis_1   | 1:M 19 Mar 2020 10:58:06.120 <span class="hljs-comment"># User requested shutdown...</span>
+redis_1   | 1:M 19 Mar 2020 10:58:06.120 * Saving the final RDB snapshot before exiting.
+686232b31153
+counter-app_web-fe_1 exited with code 0
+redis_1   | 1:M 19 Mar 2020 10:58:06.121 * DB saved on disk
+redis_1   | 1:M 19 Mar 2020 10:58:06.121 <span class="hljs-comment"># Redis is now ready to exit, bye bye...</span>
+a981515f8699
+2b5f3ca12592
+51e5f3afca98
+counter-app_redis_1 exited with code 0
+localhost:counter-app xxxx$ docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</code></pre></div>
+
+<p>Compose应用后台启动</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose up -d
+Starting counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+Starting counter-app_redis_1  ... <span class="hljs-keyword">done</span></code></pre></div>
+
+<p>Docker Compose会将项目名称（counter-app）和Compose文件中定义的资源名（web-fe）连接起来，作为新构建的镜像的名称。Docker Compose部署的所有资源的名称都会遵循这一规范。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker image ls
+REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
+counter-app_web-fe                                     latest              f2c090352f6d        About an hour ago   84.5MB</code></pre></div>
+
+<p>每个容器的名称都以<strong>项目名称（所在目录名称）为前缀</strong>。此外它们还都以一个<strong>数字为后缀</strong>用于标识容器实例序号—因为Docker Compose允许扩缩容。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container ls
+CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                    NAMES
+686232b31153        counter-app_web-fe   <span class="hljs-string">&quot;python app.py&quot;</span>          About an hour ago   Up 10 seconds       0.0.0.0:5000-&gt;5000/tcp   counter-app_web-fe_1
+a981515f8699        redis:alpine         <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   About an hour ago   Up 10 seconds       6379/tcp                 counter-app_redis_1</code></pre></div>
+
+<p>显示容器的网络与卷</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker network ls
+NETWORK ID          NAME                      DRIVER              SCOPE
+db8fbbb6664e        bridge                    bridge              <span class="hljs-built_in">local</span>
+456f16f998df        counter-app_counter-net   bridge              <span class="hljs-built_in">local</span>
+fd0e04e21a2a        host                      host                <span class="hljs-built_in">local</span>
+e6370760945d        none                      null                <span class="hljs-built_in">local</span>
+localhost:counter-app xxxx$ docker volume ls
+DRIVER              VOLUME NAME
+....
+<span class="hljs-built_in">local</span>               counter-app_counter-vol
+....</code></pre></div>
+
+<h3 id="使用Docker-Compose管理应用"><a href="#使用Docker-Compose管理应用" class="headerlink" title="使用Docker Compose管理应用"></a>使用Docker Compose管理应用</h3><h4 id="停止应用"><a href="#停止应用" class="headerlink" title="停止应用"></a>停止应用</h4><p><code>docker-compose down</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose down
+Stopping counter-app_web-fe_1 ... 
+Stopping counter-app_redis_1  ... 
+redis_1   | 1:M 19 Mar 2020 11:28:00.922 * Ready to accept connections
+redis_1   | 1:signal-handler (1584617313) Received SIGTERM scheduling shutdown...
+redis_1   | 1:M 19 Mar 2020 11:28:33.848 <span class="hljs-comment"># User requested shutdown...</span>
+redis_1   | 1:M 19 Mar 2020 11:28:33.848 * Saving the final RDB snapshot before exiting.
+web-fe_1  | 192.168.99.1 - - [19/Mar/2020 11:28:15] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 200 -
+Stopping counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+redis_1   | 1:M 19 Mar 2020 11:28:33.849 <span class="hljs-comment"># Redis is now ready to exit, bye bye...</span>
+Stopping counter-app_redis_1  ... <span class="hljs-keyword">done</span>
+counter-app_redis_1 exited with code 0
+Removing counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+Removing counter-app_redis_1  ... <span class="hljs-keyword">done</span>
+Removing network counter-app_counter-net</code></pre></div>
+
+<p>停止应用时，应用的卷counter-vol并没有被删除，因为卷应该是用于数据的长期持久化存储的。因此，卷的生命周期是与相应的容器完全解耦的。执行$ docker volume ls发现，该卷依然存在于系统中。写到卷上的所有数据都会保存上。再次执行docker-compose up过程中拉取或构建的镜像也会保留在系统中。因此，再次部署该应用将更加快捷。</p>
+<h4 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h4><p><code>docker-compose up -d</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose up -d
+Creating network <span class="hljs-string">&quot;counter-app_counter-net&quot;</span> with the default driver
+Creating counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+Creating counter-app_redis_1  ... <span class="hljs-keyword">done</span>
+[1]+  Done                    docker-compose up</code></pre></div>
+
+<p>再次启动时，发现counter-vol卷已经存在，而且不需要去拉取和构建镜像。启动速度变快。</p>
+<h4 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h4><p><code>docker-compose ps</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose ps
+        Name                      Command               State           Ports         
+--------------------------------------------------------------------------------------
+counter-app_redis_1    docker-entrypoint.sh redis ...   Up      6379/tcp              
+counter-app_web-fe_1   python app.py                    Up      0.0.0.0:5000-&gt;5000/tcp</code></pre></div>
+
+<h4 id="列出进程"><a href="#列出进程" class="headerlink" title="列出进程"></a>列出进程</h4><p><code>docker-compose top</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose top
+counter-app_redis_1
+UID   PID    PPID   C   STIME   TTY     TIME         CMD     
+-------------------------------------------------------------
+999   4928   4898   0   11:47   ?     00:00:00   redis-server
+
+counter-app_web-fe_1
+UID    PID    PPID   C   STIME   TTY     TIME                    CMD                
+------------------------------------------------------------------------------------
+root   4953   4912   0   11:47   ?     00:00:00   python app.py                     
+root   5068   4953   0   11:47   ?     00:00:00   /usr/<span class="hljs-built_in">local</span>/bin/python /code/app.py</code></pre></div>
+
+<p>停止应用</p>
+<p><code>docker-compose stop</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose stop
+Stopping counter-app_redis_1  ... <span class="hljs-keyword">done</span>
+Stopping counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+localhost:counter-app xxxx$ docker-compose ps
+        Name                      Command               State    Ports
+----------------------------------------------------------------------
+counter-app_redis_1    docker-entrypoint.sh redis ...   Exit 0        
+counter-app_web-fe_1   python app.py                    Exit 0</code></pre></div>
+
+<p>停止Compose应用并不会在系统中删除对应用的定义，而仅将应用的容器停止。</p>
+<div class="hljs"><pre><code class="hljs bash">$ docker container ls -a
+CONTAINER ID        IMAGE                                COMMAND                  CREATED             STATUS                      PORTS                  NAMES
+97e38bcf6f7f        redis:alpine                         <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   21 minutes ago      Exited (0) 5 minutes ago                           counter-app_redis_1
+d30a05ed10a1        counter-app_web-fe                   <span class="hljs-string">&quot;python app.py&quot;</span>          21 minutes ago      Exited (0) 5 minutes ago                           counter-app_web-fe_1</code></pre></div>
+
+<h4 id="重启应用"><a href="#重启应用" class="headerlink" title="重启应用"></a>重启应用</h4><p><code>docker-compose restart</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker-compose restart
+Restarting counter-app_redis_1  ... <span class="hljs-keyword">done</span>
+Restarting counter-app_web-fe_1 ... <span class="hljs-keyword">done</span>
+localhost:counter-app xxxx$ docker container ls
+CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                    NAMES
+97e38bcf6f7f        redis:alpine         <span class="hljs-string">&quot;docker-entrypoint.s…&quot;</span>   23 minutes ago      Up 3 seconds        6379/tcp                 counter-app_redis_1
+d30a05ed10a1        counter-app_web-fe   <span class="hljs-string">&quot;python app.py&quot;</span>          23 minutes ago      Up 3 seconds        0.0.0.0:5000-&gt;5000/tcp   counter-app_web-fe_1
+
+// 或者
+$ docker-compose ps
+        Name                      Command               State           Ports         
+--------------------------------------------------------------------------------------
+counter-app_redis_1    docker-entrypoint.sh redis ...   Up      6379/tcp              
+counter-app_web-fe_1   python app.py                    Up      0.0.0.0:5000-&gt;5000/tcp</code></pre></div>
+
+<p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/compose/">compose</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/20/docker-swarm/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker Swarm</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/18/docker-containerizing/">
+                        <span class="hidden-mobile">Docker应用的容器化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker Compose部署应用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

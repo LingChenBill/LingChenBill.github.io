@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Docker-Stack部署应用 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-24 20:04">
+                    March 24, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    36
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h2 id="Docker-Stack部署应用"><a href="#Docker-Stack部署应用" class="headerlink" title="Docker-Stack部署应用"></a>Docker-Stack部署应用</h2><p>大规模场景下的多服务部署和管理是一件很难的事情。<br>Docker Stack通过提供期望状态、滚动升级、简单易用、扩缩容、健康检查等特性简化了应用的管理。<br>Stack能够在单个声明文件中定义复杂的多服务应用。<br>Stack还提供了简单的方式来部署应用并管理其完整的生命周期。<br>初始化部署 &gt; 健康检查 &gt; 扩容 &gt; 更新 &gt; 回滚，以及其他功能。<br>Compose文件中包含了构成应用所需的完整服务栈。此外还包含了卷、网络、安全以及应用所需的其他基础架构。</p>
+<p>Stack是基于Docker Swarm之上来完成应用的部署。<br>Docker适用于开发与测试。Docker Stack则适用于大规模场景和生产环境。</p>
+<p>使用Docker Stack部署应用<br>Stack一直是期望的Compose—完全集成到Docker中，并能够管理应用的整个生命周期。</p>
+<p><img src="docker-stack/1.png" srcset="/img/loading.gif" alt="stack-structure"></p>
+<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><p><img src="docker-stack/2.png" srcset="/img/loading.gif" alt="AtSea"></p>
+<p>docker-stack.yml文件通常常被称为Stack文件，在该文件中定义了应用及其依赖。<br>在该文件中，定义了4种顶级关键字</p>
+<ul>
+<li>version（Compose文件格式的版本号。为了应用于Stack,需要3.0或者更高的版本）</li>
+<li>services（定义了组成当前应用的服务都有哪些）</li>
+<li>networks（列出了必需的网络）</li>
+<li>secrets（定义了应用用到的密钥）</li>
+</ul>
+<div class="hljs"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3.2&quot;</span>
+
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">reverse_proxy:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atseasampleshopapp_reverse_proxy</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;80:80&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;443:443&quot;</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">revprox_cert</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">revprox_cert</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">revprox_key</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">revprox_key</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">front-tier</span>
+
+  <span class="hljs-attr">database:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atsea_db</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">gordonuser</span>
+      <span class="hljs-attr">POSTGRES_DB_PASSWORD_FILE:</span> <span class="hljs-string">/run/secrets/postgres_password</span>
+      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">atsea</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">back-tier</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">postgres_password</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == worker&#x27;</span>
+
+  <span class="hljs-attr">appserver:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atsea_app</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">front-tier</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">back-tier</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">payment</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">replicas:</span> <span class="hljs-number">2</span>
+      <span class="hljs-attr">update_config:</span>
+        <span class="hljs-attr">parallelism:</span> <span class="hljs-number">2</span>
+        <span class="hljs-attr">failure_action:</span> <span class="hljs-string">rollback</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == worker&#x27;</span>
+      <span class="hljs-attr">restart_policy:</span>
+        <span class="hljs-attr">condition:</span> <span class="hljs-string">on-failure</span>
+        <span class="hljs-attr">delay:</span> <span class="hljs-string">5s</span>
+        <span class="hljs-attr">max_attempts:</span> <span class="hljs-number">3</span>
+        <span class="hljs-attr">window:</span> <span class="hljs-string">120s</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">postgres_password</span>
+
+  <span class="hljs-attr">visualizer:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/visualizer:stable</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8001:8080&quot;</span>
+    <span class="hljs-attr">stop_grace_period:</span> <span class="hljs-string">1m30s</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">update_config:</span>
+        <span class="hljs-attr">failure_action:</span> <span class="hljs-string">rollback</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == manager&#x27;</span>
+
+  <span class="hljs-attr">payment_gateway:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atseasampleshopapp_payment_gateway</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">staging_token</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">payment_token</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">payment</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">update_config:</span>
+        <span class="hljs-attr">failure_action:</span> <span class="hljs-string">rollback</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == worker&#x27;</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.labels.pcidss == yes&#x27;</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">front-tier:</span>
+  <span class="hljs-attr">back-tier:</span>
+  <span class="hljs-attr">payment:</span>
+    <span class="hljs-attr">driver:</span> <span class="hljs-string">overlay</span>
+    <span class="hljs-attr">driver_opts:</span>
+      <span class="hljs-attr">encrypted:</span> <span class="hljs-string">&#x27;yes&#x27;</span>
+
+<span class="hljs-attr">secrets:</span>
+  <span class="hljs-attr">postgres_password:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">staging_token:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">revprox_key:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">revprox_cert:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span></code></pre></div>
+
+<p>Stack文件是应用的一个自描述文件，并且作为一个很好的工具弥合了开发和运维之间的隔阂。</p>
+<h3 id="深入分析Stack文件"><a href="#深入分析Stack文件" class="headerlink" title="深入分析Stack文件"></a>深入分析Stack文件</h3><p>在Docker根据某个Stack文件部署应用的时候，首先会检查并创建networks。如果对应网络不存在，Docker则创建。</p>
+<h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">front-tier:</span>
+  <span class="hljs-attr">back-tier:</span>
+  <span class="hljs-attr">payment:</span>
+    <span class="hljs-attr">driver:</span> <span class="hljs-string">overlay</span>
+    <span class="hljs-attr">driver_opts:</span>
+      <span class="hljs-attr">encrypted:</span> <span class="hljs-string">&#x27;yes&#x27;</span>
+
+<span class="hljs-comment"># 默认情况下，网络都会采用overlay驱动</span>
+<span class="hljs-comment"># payment网络需要数据层加密，通常额外开销会在10%的范围之内。</span>
+<span class="hljs-comment"># 网络均会先于密钥和服务被创建。</span></code></pre></div>
+
+<h4 id="密钥"><a href="#密钥" class="headerlink" title="密钥"></a>密钥</h4><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">secrets:</span>
+  <span class="hljs-attr">postgres_password:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">staging_token:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">revprox_key:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">revprox_cert:</span>
+    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span>
+
+<span class="hljs-comment"># external意味着在Stack部署之前，这些密钥必须存在。</span></code></pre></div>
+
+<h4 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h4><p>Docker Stack和Docker Compose的一个区别是，Stack不支持构建。这意味着<u>在部署Stack之前，所有镜像必须提前构建完成。</u></p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">services:</span>
+  <span class="hljs-attr">reverse_proxy:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atseasampleshopapp_reverse_proxy</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;80:80&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;443:443&quot;</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">revprox_cert</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">revprox_cert</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">source:</span> <span class="hljs-string">revprox_key</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">revprox_key</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">front-tier</span>
+
+<span class="hljs-comment"># image关键字是服务对象中唯一的必填项。定义了将要用于构建的服务副本的Docker镜像。</span>
+<span class="hljs-comment"># ports关键字定义了端口映射。默认情况下，所有端口映射都采用Ingress模式。（每个节点可访问）</span>
+<span class="hljs-comment"># secrets关键字定义了两个密钥，密钥以普通文件的形式被挂载到服务副本当中。（Linux路径: /run/secrets）</span>
+<span class="hljs-comment"># networks关键字确保服务所有副本都会连接到front-tier网络中。</span>
+
+<span class="hljs-attr">database:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atsea_db</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">gordonuser</span>
+      <span class="hljs-attr">POSTGRES_DB_PASSWORD_FILE:</span> <span class="hljs-string">/run/secrets/postgres_password</span>
+      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">atsea</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">back-tier</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">postgres_password</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == worker&#x27;</span>
+
+<span class="hljs-comment"># environment关键字允许在服务副本中注入环境变量。</span>
+<span class="hljs-comment"># deploy关键字定义了部署约束。只会运行在Swarm集群的worker节点中。</span>
+
+<span class="hljs-attr">appserver:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/atsea_app</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">front-tier</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">back-tier</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">payment</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">replicas:</span> <span class="hljs-number">2</span>
+      <span class="hljs-attr">update_config:</span>
+        <span class="hljs-attr">parallelism:</span> <span class="hljs-number">2</span>
+        <span class="hljs-attr">failure_action:</span> <span class="hljs-string">rollback</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == worker&#x27;</span>
+      <span class="hljs-attr">restart_policy:</span>
+        <span class="hljs-attr">condition:</span> <span class="hljs-string">on-failure</span>
+        <span class="hljs-attr">delay:</span> <span class="hljs-string">5s</span>
+        <span class="hljs-attr">max_attempts:</span> <span class="hljs-number">3</span>
+        <span class="hljs-attr">window:</span> <span class="hljs-string">120s</span>
+    <span class="hljs-attr">secrets:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">postgres_password</span>
+
+<span class="hljs-comment"># replicas设置期望服务的副本数量为2。默认是1。</span>
+<span class="hljs-comment"># update_config.parallelism定义了Docker在服务滚动升级的时候具体如何操作。（每次更新两个副本）</span>
+<span class="hljs-comment"># update_config.failure_action在升级失败后自动回滚。（默认操作是pause）</span>
+<span class="hljs-comment"># deploy.restart_policy定义了Swarm针对容器异常退出的重启策略。（若某个副本以非0返回值退出，会立即重启当前副本。重启最多重试3次，每次都会等待至多120s来检测是否启动成功，每次重启的间隔是5s）</span>
+
+<span class="hljs-attr">visualizer:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">dockersamples/visualizer:stable</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8001:8080&quot;</span>
+    <span class="hljs-attr">stop_grace_period:</span> <span class="hljs-string">1m30s</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
+    <span class="hljs-attr">deploy:</span>
+      <span class="hljs-attr">update_config:</span>
+        <span class="hljs-attr">failure_action:</span> <span class="hljs-string">rollback</span>
+      <span class="hljs-attr">placement:</span>
+        <span class="hljs-attr">constraints:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;node.role == manager&#x27;</span>
+
+<span class="hljs-comment"># 挂载了一个指定卷，并且定义了容器的优雅停止方式。（stop_grace_period）</span>
+<span class="hljs-comment"># volumes关键字用于挂载提前创建的卷或者主机目录到某个服务副本当中。</span></code></pre></div>
+
+<h3 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h3><p>在部署应用之前，前置处理</p>
+<ul>
+<li>Swarm模式 （应用将采用Docker Stack部署，而Stack依赖于Swarm模式）</li>
+<li>标签 （某个Swarm worker节点需要自定义标签）</li>
+<li>密钥 （应用所需的密钥需要在部署前创建完成）</li>
+</ul>
+<p><img src="docker-stack/3.png" srcset="/img/loading.gif" alt="部署环境"></p>
+<h4 id="创建新的Swarm"><a href="#创建新的Swarm" class="headerlink" title="创建新的Swarm"></a>创建新的Swarm</h4><p>一个管理节点和两个工作节点构成</p>
+<p><code>docker swarm init</code></p>
+<p><code>docker swarm join</code></p>
+<p><code>docker node ls</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker node ls
+ID                            HOSTNAME                                           STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+w75fjsgwvw74bsux8q7dqgeg4     ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Ready               Active                                  18.09.9-ce
+fcjl1u2ogpw3yxsg0l47i7pbf     ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Ready               Active                                  18.09.9-ce
+z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                    Ready               Active              Leader              18.09.9-ce</code></pre></div>
+
+<h4 id="在Swarm管理节点上添加标签pcidss"><a href="#在Swarm管理节点上添加标签pcidss" class="headerlink" title="在Swarm管理节点上添加标签pcidss"></a>在Swarm管理节点上添加标签pcidss</h4><p><code>docker node update --label-add pcidss=yes ip-172-xxx-xxx-57.ap-northeast-1.compute.internal</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker node update --label-add pcidss=yes ip-172-xxx-xxx-57.ap-northeast-1.compute.internal
+ip-172-xxx-xxx-57.ap-northeast-1.compute.internal
+
+// 查看节点标签
+$ docker node inspect ip-172-xxx-xxx-57.ap-northeast-1.compute.internal
+[
+    &#123;
+        <span class="hljs-string">&quot;ID&quot;</span>: <span class="hljs-string">&quot;fcjl1u2ogpw3yxsg0l47i7pbf&quot;</span>,
+        <span class="hljs-string">&quot;Version&quot;</span>: &#123;
+            <span class="hljs-string">&quot;Index&quot;</span>: 419
+        &#125;,
+        <span class="hljs-string">&quot;CreatedAt&quot;</span>: <span class="hljs-string">&quot;2020-03-20T06:46:46.680403232Z&quot;</span>,
+        <span class="hljs-string">&quot;UpdatedAt&quot;</span>: <span class="hljs-string">&quot;2020-03-24T13:54:36.991693666Z&quot;</span>,
+        <span class="hljs-string">&quot;Spec&quot;</span>: &#123;
+            <span class="hljs-string">&quot;Labels&quot;</span>: &#123;
+                <span class="hljs-string">&quot;pcidss&quot;</span>: <span class="hljs-string">&quot;yes&quot;</span>
+            &#125;,
+            <span class="hljs-string">&quot;Role&quot;</span>: <span class="hljs-string">&quot;worker&quot;</span>,
+            <span class="hljs-string">&quot;Availability&quot;</span>: <span class="hljs-string">&quot;active&quot;</span>
+        &#125;,
+...</code></pre></div>
+
+<h4 id="在Swarm管理节点上创建新的键值对"><a href="#在Swarm管理节点上创建新的键值对" class="headerlink" title="在Swarm管理节点上创建新的键值对"></a>在Swarm管理节点上创建新的键值对</h4><p><code>openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 365 -out domain.crt</code></p>
+<p><code>docker secret create revprox_cert domain.crt</code></p>
+<p><code>docker secret create revprox_key domain.key</code></p>
+<p><code>docker secret create postgres_password domain.key</code></p>
+<p><code>echo staging | docker secret create staging_token -</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 365 -out domain.crt
+Generating a 4096 bit RSA private key
+..................................................................................................................................................................................................................++
+.............................................................++
+writing new private key to <span class="hljs-string">&#x27;domain.key&#x27;</span>
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span class="hljs-string">&#x27;.&#x27;</span>, the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:CN
+State or Province Name (full name) []:bj
+Locality Name (eg, city) [Default City]:bj
+Organization Name (eg, company) [Default Company Ltd]:.
+Organizational Unit Name (eg, section) []:,^H
+Common Name (eg, your name or your server<span class="hljs-string">&#x27;s hostname) []:ling</span>
+<span class="hljs-string">Email Address []:ling@^H</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">$ docker secret create revprox_cert domain.crt</span>
+<span class="hljs-string">wn30cqrf6f8wspe5p2td061s4</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">$ docker secret create revprox_key domain.key</span>
+<span class="hljs-string">x1d5pp4isgxgesytt885qgzum</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">$ docker secret create postgres_password domain.key</span>
+<span class="hljs-string">j4tc6tm4c9sccq2n7ji34uw54</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">// 创建 stage_token 密钥</span>
+<span class="hljs-string">$ echo staging | docker secret create staging_token -</span>
+<span class="hljs-string">ij02s4a3rrbtnwd2hsbfi8as5</span></code></pre></div>
+
+<p>列出所有密钥</p>
+<p><code>docker secret ls</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker secret ls
+ID                          NAME                DRIVER              CREATED             UPDATED
+j4tc6tm4c9sccq2n7ji34uw54   postgres_password                       15 minutes ago      15 minutes ago
+wn30cqrf6f8wspe5p2td061s4   revprox_cert                            16 minutes ago      16 minutes ago
+x1d5pp4isgxgesytt885qgzum   revprox_key                             15 minutes ago      15 minutes ago
+ij02s4a3rrbtnwd2hsbfi8as5   staging_token                           7 minutes ago       7 minutes ago</code></pre></div>
+
+<h4 id="部署应用-1"><a href="#部署应用-1" class="headerlink" title="部署应用"></a>部署应用</h4><p><code>docker stack deploy -c docker-stack.yml seastack</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker stack deploy -c docker-stack.yml seastack
+Creating network seastack_back-tier
+Creating network seastack_payment
+Creating network seastack_front-tier
+Creating network seastack_default
+Creating service seastack_appserver
+Creating service seastack_visualizer
+Creating service seastack_payment_gateway
+Creating service seastack_reverse_proxy
+Creating service seastack_database
+
+// 查看网络
+$ docker network ls
+NETWORK ID          NAME                  DRIVER              SCOPE
+hvg1z4ixwsmx        seastack_back-tier    overlay             swarm
+yihnzx16dbpi        seastack_default      overlay             swarm
+uxha9rcn1pzf        seastack_front-tier   overlay             swarm
+cq0hd66xn345        seastack_payment      overlay             swarm
+
+// 查看服务
+$ docker service ls
+ID                  NAME                       MODE                REPLICAS            IMAGE                                                     PORTS
+oxzijg2tb5og        seastack_appserver         replicated          2/2                 dockersamples/atsea_app:latest                            
+mzp0p6tdfzkv        seastack_database          replicated          1/1                 dockersamples/atsea_db:latest                             
+6c3af1m0boeg        seastack_payment_gateway   replicated          1/1                 dockersamples/atseasampleshopapp_payment_gateway:latest   
+sxqxwy090zz6        seastack_reverse_proxy     replicated          1/1                 dockersamples/atseasampleshopapp_reverse_proxy:latest     *:80-&gt;80/tcp, *:443-&gt;443/tcp
+nwfjdrncsjcc        seastack_visualizer        replicated          1/1                 dockersamples/visualizer:stable                           *:8001-&gt;8080/tcp</code></pre></div>
+
+<p>网络是先于服务创建的。这是因为服务依赖于网络，所以网络需要在服务启动前创建。</p>
+<p>Docker将Stack名称附加到由他创建的任何资源名称前作为前缀。<strong>Stack名称_<resource></strong></p>
+<p>列出Stack信息，包含多少个服务。</p>
+<p><code>docker stack ls</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker stack ls
+NAME                SERVICES            ORCHESTRATOR
+seastack            5                   Swarm</code></pre></div>
+
+<p>针对某个指定的Stack查看详细信息</p>
+<p><code>docker stack ps seastack</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker stack ps seastack
+ID                  NAME                         IMAGE                                                     NODE                                               DESIRED STATE       CURRENT STATE                ERROR                       PORTS
+ljf3wkqiydgm        seastack_appserver.1         dockersamples/atsea_app:latest                            ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Running             Running 42 seconds ago                                   
+y2l4p9vdv3kd        seastack_database.1          dockersamples/atsea_db:latest                             ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Running             Running 35 seconds ago                                   
+9hnaggyf0u25        seastack_reverse_proxy.1     dockersamples/atseasampleshopapp_reverse_proxy:latest     ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Running             Running 54 seconds ago                                   
+gqanvork109y        seastack_payment_gateway.1   dockersamples/atseasampleshopapp_payment_gateway:latest   ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Running             Running 58 seconds ago                                   
+qmslp63e8a59        seastack_visualizer.1        dockersamples/visualizer:stable                           ip-172-xxx-xxx-90                                    Running             Running about a minute ago                               
+ksdh2ky0fulw        seastack_appserver.1         dockersamples/atsea_app:latest                            ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Shutdown            Failed 49 seconds ago        <span class="hljs-string">&quot;task: non-zero exit (1)&quot;</span>   
+gef9xv7ek8xe        seastack_appserver.2         dockersamples/atsea_app:latest                            ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Running             Running 41 seconds ago                                   
+k6r1cq1ibf33         \_ seastack_appserver.2     dockersamples/atsea_app:latest                            ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    Shutdown            Failed 49 seconds ago        <span class="hljs-string">&quot;task: non-zero exit (1)&quot;</span></code></pre></div>
+
+<p>查看某个服务的具体信息</p>
+<p><code>docker service logs seastack_reverse_proxy</code></p>
+<div class="hljs"><pre><code class="hljs bash">$ docker service logs seastack_reverse_proxy
+seastack_reverse_proxy.1.9hnaggyf0u25@ip-172-xxx-xxx-221.ap-northeast-1.compute.internal    | 2020/03/24 14:44:50 [warn] 1<span class="hljs-comment">#1: the &quot;ssl&quot; directive is deprecated, use the &quot;listen ... ssl&quot; directive instead in /etc/nginx/nginx.conf:38</span>
+seastack_reverse_proxy.1.9hnaggyf0u25@ip-172-xxx-xxx-221.ap-northeast-1.compute.internal    | nginx: [warn] the <span class="hljs-string">&quot;ssl&quot;</span> directive is deprecated, use the <span class="hljs-string">&quot;listen ... ssl&quot;</span> directive instead <span class="hljs-keyword">in</span> /etc/nginx/nginx.conf:38</code></pre></div>
+
+<p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                      <a class="hover-with-bg" href="/tags/stack/">stack</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/25/docker-security/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker安全</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/23/docker-volume/">
+                        <span class="hidden-mobile">Docker卷与持久化数据</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Docker-Stack部署应用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

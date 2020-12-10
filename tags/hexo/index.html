@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Tags - Hexo - LingChen&#39;s blog</title>
+  <title>Tags - hexo - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -156,9 +156,9 @@
       
       <p class="h5">2020</p>
     
-    <a href="/2020/03/07/hexo-info/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Hexo使用命令</span>
-      <span style="float: right;">03-07</span>
+    <a href="/2020/03/06/hexo-github-markdown-install/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">hexo-github搭建博客</span>
+      <span style="float: right;">03-06</span>
     </a>
   
 </div>
@@ -252,7 +252,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Tag - Hexo&nbsp;",
+        "Tag - hexo&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -313,17 +313,20 @@
 
 
 
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

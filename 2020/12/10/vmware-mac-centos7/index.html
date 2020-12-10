@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Mac-vmware中Centos7网络连接 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-12-10 22:08">
+                    December 10, 2020 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    801 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    13
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[toc]</p>
+<h3 id="Mac-vmware中Centos7网络连接"><a href="#Mac-vmware中Centos7网络连接" class="headerlink" title="Mac-vmware中Centos7网络连接"></a>Mac-vmware中Centos7网络连接</h3><h4 id="1-虚拟机安装"><a href="#1-虚拟机安装" class="headerlink" title="1.虚拟机安装"></a>1.虚拟机安装</h4><p>前提</p>
+<ul>
+<li>VMware Fusion安装</li>
+<li>Centos7虚拟镜像</li>
+</ul>
+<p>导入Centos7虚拟镜像,</p>
+<p>右击 -&gt; 网络适配器 -&gt; 连接网络适配器 -&gt; 与我的Mac共享</p>
+<p>启动Centos7</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 用户名与密码.</span>
+% root
+root</code></pre></div>
+
+<h4 id="2-设置主机名"><a href="#2-设置主机名" class="headerlink" title="2.设置主机名"></a>2.设置主机名</h4><div class="hljs"><pre><code class="hljs bash">% hostnamectl set-hostname hdss7-11.host.com
+
+<span class="hljs-comment"># 退出重新登录.</span>
+% <span class="hljs-built_in">logout</span>
+root
+root
+
+<span class="hljs-comment"># 主机名已变成hdss7-50.</span>
+[root@hdss7-50 ~]<span class="hljs-comment"># </span></code></pre></div>
+
+<h4 id="3-关闭防火墙"><a href="#3-关闭防火墙" class="headerlink" title="3.关闭防火墙"></a>3.关闭防火墙</h4><div class="hljs"><pre><code class="hljs bash">% sestatus
+% vi /etc/selinux/config
+
+SELINUX=disabled
+
+<span class="hljs-comment"># 重启.</span>
+% reboot
+
+<span class="hljs-comment"># 查看.</span>
+getenforce
+
+<span class="hljs-comment"># 关闭防火墙.</span>
+systemctl status firewalld
+systemctl stop firewalld
+systemctl <span class="hljs-built_in">disable</span> firewalld.service</code></pre></div>
+
+<h4 id="4-配置IP地址"><a href="#4-配置IP地址" class="headerlink" title="4.配置IP地址"></a>4.配置IP地址</h4><p>查看mac本机的vmnet8的网关地址，这个对应NAT模式的网络连接.</p>
+<div class="hljs"><pre><code class="hljs bash">% <span class="hljs-built_in">cd</span> /Library/Preferences/VMware Fusion/vmnet8
+<span class="hljs-comment"># 查看和修改nat.conf</span>
+% cat nat.conf
+
+<span class="hljs-comment"># NAT gateway address</span>
+ip = 10.4.7.2
+netmask = 255.255.255.0</code></pre></div>
+
+<p>修改虚拟机中的文件: ifcfg-ens33</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># vi /etc/sysconfig/network-scripts/ifcfg-ens33</span>
+
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+UUID=8d71fc45-b8dc-42c4-9f8c-65f17323eb5a
+DEVICE=ens33
+ONBOOT=yes
+IPADDR=10.4.7.50
+NETMASK=255.255.255.0
+GATEWAY=10.4.7.2
+DNS1=10.4.7.2
+<span class="hljs-comment">#DNS1=114.114.114.114</span>
+
+<span class="hljs-comment"># 自己设置IP: IPADDR=10.4.7.50</span>
+<span class="hljs-comment"># 修改如下内容:</span>
+<span class="hljs-comment"># BOOTPROTO=static</span>
+<span class="hljs-comment"># NETMASK=255.255.255.0</span>
+<span class="hljs-comment"># GATEWAY=10.4.7.2</span>
+<span class="hljs-comment"># DNS1=10.4.7.2</span></code></pre></div>
+
+<p>重启network服务</p>
+<div class="hljs"><pre><code class="hljs bash">% service network restart
+<span class="hljs-comment"># 或者</span>
+% systemctl restart network.service</code></pre></div>
+
+<p>查看Mac中的wifi中的dns配置,并配置</p>
+<p>wifi -&gt; 打开网络偏好设置 -&gt; 高级 -&gt; DNS</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># dns可以不设</span>
+10.4.7.11
+192.168.0.253
+192.168.1.1</code></pre></div>
+
+<h4 id="5-验证上网"><a href="#5-验证上网" class="headerlink" title="5.验证上网"></a>5.验证上网</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># ping baidu.com</span>
+PING baidu.com (220.181.38.148) 56(84) bytes of data.
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=1 ttl=128 time=7.13 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=2 ttl=128 time=130 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=3 ttl=128 time=10.2 ms</code></pre></div>
+
+<h4 id="6-安装必须组件"><a href="#6-安装必须组件" class="headerlink" title="6.安装必须组件"></a>6.安装必须组件</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># yum install wget net-tools telnet tree nmap sysstat lrzsz dos2unix bind-utils -y</span>
+
+<span class="hljs-comment"># 查看ip地址:10.4.7.50</span>
+[root@hdss7-50 ~]<span class="hljs-comment"># ifconfig</span>
+ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 10.4.7.50  netmask 255.255.255.0  broadcast 10.4.7.255
+        inet6 fe80::3194:9427:e40b:b2a0  prefixlen 64  scopeid 0x20&lt;link&gt;
+......</code></pre></div>
+
+<h4 id="7-安装docker"><a href="#7-安装docker" class="headerlink" title="7.安装docker"></a>7.安装docker</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 通过阿里镜像来安装</span>
+[root@hdss7-50 ~]<span class="hljs-comment"># curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span>
+.....等待即可.
+
+<span class="hljs-comment"># 查看docker版本.</span>
+[root@hdss7-50 ~]<span class="hljs-comment"># systemctl start docker</span>
+[root@hdss7-50 ~]<span class="hljs-comment"># systemctl enable docker</span>
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+[root@hdss7-50 ~]<span class="hljs-comment"># docker info</span>
+Client:
+ Context:    default
+ Debug Mode: <span class="hljs-literal">false</span>
+ Plugins:
+  app: Docker App (Docker Inc., v0.9.1-beta3)
+....
+
+[root@hdss7-50 ~]<span class="hljs-comment"># docker --version</span>
+Docker version 20.10.0, build 7287ab3
+
+<span class="hljs-comment"># 修改docker镜像源.</span>
+[root@hdss7-50 docker]<span class="hljs-comment"># mkdir -p /data/docker</span>
+[root@hdss7-50 docker]<span class="hljs-comment"># vi /etc/docker/daemon.json</span>
+
+&#123;
+  <span class="hljs-string">&quot;graph&quot;</span>: <span class="hljs-string">&quot;/data/docker&quot;</span>,
+  <span class="hljs-string">&quot;registry-mirrors&quot;</span>: [<span class="hljs-string">&quot;https://aorfq0az.mirror.aliyuncs.com&quot;</span>]
+&#125;
+
+<span class="hljs-comment"># 重启docker.</span>
+[root@hdss7-50 docker]<span class="hljs-comment"># systemctl daemon-reload</span>
+[root@hdss7-50 docker]<span class="hljs-comment"># systemctl restart docker</span>
+
+<span class="hljs-comment"># 验证镜像.</span>
+[root@hdss7-50 docker]<span class="hljs-comment"># docker info</span>
+......
+ Insecure Registries:
+  127.0.0.0/8
+ Registry Mirrors:
+  https://aorfq0az.mirror.aliyuncs.com/
+ Live Restore Enabled: <span class="hljs-literal">false</span></code></pre></div>
+
+<h4 id="8-安装rancher"><a href="#8-安装rancher" class="headerlink" title="8.安装rancher"></a>8.安装rancher</h4><div class="hljs"><pre><code class="hljs bash">% sudo docker run -d --restart=unless-stopped -p 8080:8080 -p 443:443 -v /data/rancher/:/var/lib/rancher/ rancher/rancher:stable
+
+<span class="hljs-comment"># 查看rancher容器.</span>
+[root@hdss7-50 rancher]<span class="hljs-comment"># docker ps</span>
+CONTAINER ID   IMAGE                    COMMAND           CREATED          STATUS                          PORTS     NAMES
+465eb034c7e6   rancher/rancher:stable   <span class="hljs-string">&quot;entrypoint.sh&quot;</span>   43 seconds ago   Restarting (1) 15 seconds ago             sad_pascal
+
+[root@hdss7-50 rancher]<span class="hljs-comment"># sudo vi /etc/hosts</span>
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.4.7.50 hdss7-50 hdss7-50.host.com
+......</code></pre></div>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vmware/">vmware</a>
+                    
+                      <a class="hover-with-bg" href="/tags/centos7/">centos7</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/10/micro-docker/">
+                        <span class="hidden-mobile">Dockerfile微服务</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Mac-vmware中Centos7网络连接&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

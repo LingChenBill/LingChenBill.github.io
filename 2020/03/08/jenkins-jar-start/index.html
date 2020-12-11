@@ -184,12 +184,12 @@
             <article class="markdown-body">
               <p>[TOC]</p>
 <h2 id="jenkins打包jar发布流程"><a href="#jenkins打包jar发布流程" class="headerlink" title="jenkins打包jar发布流程"></a>jenkins打包jar发布流程</h2><h3 id="jenkins配置"><a href="#jenkins配置" class="headerlink" title="jenkins配置"></a>jenkins配置</h3><h4 id="新建jenkins任务"><a href="#新建jenkins任务" class="headerlink" title="新建jenkins任务"></a>新建jenkins任务</h4><p>​        jenkins -&gt; 新建任务 -&gt; 输入任务 -&gt; 构建一个自由风格的软件项目</p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="Jenkins任务"></p>
+<p><img src="/2020/03/08/jenkins-jar-start/1.png" srcset="/img/loading.gif" alt="Jenkins任务"></p>
 <h4 id="jenkins任务配置"><a href="#jenkins任务配置" class="headerlink" title="jenkins任务配置"></a>jenkins任务配置</h4><p>​        任务 -&gt; General -&gt; 源码管理</p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="源码管理"></p>
+<p><img src="/2020/03/08/jenkins-jar-start/2.png" srcset="/img/loading.gif" alt="源码管理"></p>
 <p>​        Git的权限可以通过：添加 按钮来添加，可以是Username with password，也可以是SSH Username with private key类型</p>
 <h4 id="添加Maven目标"><a href="#添加Maven目标" class="headerlink" title="添加Maven目标"></a>添加Maven目标</h4><p>​        增加构建步骤 -&gt; 调用顶层Maven目标。<strong>（jenkins服务器中要事先安装好Maven）</strong><br>​        目标：clean install<br>​        POM：指向工程中的pom.xml文件。<strong>（pom.xml路径要对！）</strong></p>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="maven属性配置"></p>
+<p><img src="/2020/03/08/jenkins-jar-start/3.png" srcset="/img/loading.gif" alt="maven属性配置"></p>
 <h4 id="添加执行Shell"><a href="#添加执行Shell" class="headerlink" title="添加执行Shell"></a>添加执行Shell</h4><p>​        增加构建步骤 -&gt; 执行Shell</p>
 <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span>
 cd /home/jenkins/shell/microservice-discovery-eureka
@@ -234,10 +234,10 @@ java -jar /home/jenkins/webapp/microservice-discovery-eureka-1.0-SNAPSHOT.jar</c
 
 <h3 id="jenkins发布操作"><a href="#jenkins发布操作" class="headerlink" title="jenkins发布操作"></a>jenkins发布操作</h3><p>​    任务 -&gt; 立即构建<br>​        该jenkins任务开始构建</p>
 <p>​    Build History -&gt; 构建历史 ：可以查看当前正常构建的jenkins任务</p>
-<img src="/.io//4.png" srcset="/img/loading.gif" alt="jenkins构建" style="zoom:80%;">
+<img src="/2020/03/08/jenkins-jar-start/4.png" srcset="/img/loading.gif" alt="jenkins构建" style="zoom:80%;">
 
 <p>​    点击构建历史：进入日志控制台，查看当前任务执行日志</p>
-<img src="/.io//5.png" srcset="/img/loading.gif" alt="jenkins日志" style="zoom:80%;">
+<img src="/2020/03/08/jenkins-jar-start/5.png" srcset="/img/loading.gif" alt="jenkins日志" style="zoom:80%;">
 
 <p>​    进入服务器查看jar启动情况</p>
 <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">cd</span> /home/jenkins/webapp</span>

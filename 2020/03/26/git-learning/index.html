@@ -232,7 +232,7 @@ $ git rebase master</code></pre></div>
 <div class="hljs"><pre><code class="hljs bash">$ git checkout C4
 // C4提交树上的节点</code></pre></div>
 
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="git-head"></p>
+<p><img src="/2020/03/26/git-learning/1.png" srcset="/img/loading.gif" alt="git-head"></p>
 <h3 id="相对引用"><a href="#相对引用" class="headerlink" title="相对引用"></a>相对引用</h3><p>通过指定提交记录哈希值的方式在 Git 中移动不太方便。在实际应用时，并没有像本程序中这么漂亮的可视化提交树供你参考，所以你就不得不用 <code>git log</code> 来查查看提交记录的哈希值。<br>并且哈希值在真实的 Git 世界中也会更长（基于 SHA-1，共 40 位）。例如前一关的介绍中的提交记录的哈希值可能是 <code>fed2da64c0efc5293610bdd892f82a58e8cbc5d8</code>。<br>比较令人欣慰的是，Git 对哈希的处理很智能。<strong>你只需要提供能够唯一标识提交记录的前几个字符即可</strong>。因此我可以仅输入<code>fed2</code> 而不是上面的一长串字符。</p>
 <p>相对引用非常给力，这里我介绍两个简单的用法：</p>
 <ul>
@@ -242,16 +242,16 @@ $ git rebase master</code></pre></div>
 <p>操作符 (^)，把这个符号加在引用名称的后面，表示让 Git 寻找指定提交记录的父提交。<br>所以 <code>master^</code> 相当于“<code>master</code> 的父节点”。<code>master^^</code> 是 <code>master</code> 的第二个父节点。</p>
 <div class="hljs"><pre><code class="hljs bash">$ git checkout bugFix^</code></pre></div>
 
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="checkout-^"></p>
+<p><img src="/2020/03/26/git-learning/2.png" srcset="/img/loading.gif" alt="checkout-^"></p>
 <h3 id="“-”操作符"><a href="#“-”操作符" class="headerlink" title="“~”操作符"></a>“~”操作符</h3><p>想在提交树中向上移动很多步的话，又引入了操作符 <code>~</code>。该操作符后面可以跟一个数字（可选，不跟数字时与 <code>^</code> 相同，向上移动一次），指定向上移动多少次。</p>
 <p><strong>使用相对引用最多的就是移动分支</strong>。可以直接使用 <code>-f</code> 选项让分支指向另一个提交。例如:</p>
 <div class="hljs"><pre><code class="hljs crmsh">git branch -f <span class="hljs-keyword">master</span> <span class="hljs-title">HEAD</span>~<span class="hljs-number">3</span></code></pre></div>
 
 <p>上面的命令会将 master 分支强制指向 HEAD 的第 3 级父提交。</p>
 <p>操作源显示：</p>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<p><img src="/2020/03/26/git-learning/3.png" srcset="/img/loading.gif" alt="git-branch"></p>
 <p>显示目标：</p>
-<p><img src="/.io//4.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<p><img src="/2020/03/26/git-learning/4.png" srcset="/img/loading.gif" alt="git-branch"></p>
 <div class="hljs"><pre><code class="hljs bash">$ git branch -f master C6
 $ git branch -f bugFix C0
 $ git checkout master~3</code></pre></div>
@@ -360,7 +360,7 @@ $ git checkout two
 $ git cherry-pick C5 C4 C3 C2
 $ git branch -f three C2</code></pre></div>
 
-<p><img src="/.io//5.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<p><img src="/2020/03/26/git-learning/5.png" srcset="/img/loading.gif" alt="git-branch"></p>
 
             </article>
             <hr>

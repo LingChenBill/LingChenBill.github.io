@@ -284,7 +284,7 @@ xxx@localhost apache_ubuntu % curl 192.168.0.107:32768
 &lt;/html&gt;</code></pre></div>
 
 <p>或者访问<code>http://192.168.0.107:32768/</code></p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="docker_webapp"></p>
+<p><img src="/2020/06/25/docker-webapp/1.png" srcset="/img/loading.gif" alt="docker_webapp"></p>
 <p>在使用Dockerfile镜像时，会继承父镜像开放的端口，但却不会继承启动命令。</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 访问22端口</span>
 xxx@localhost apache_ubuntu % ssh root@192.168.0.107 -p 32769
@@ -425,7 +425,7 @@ Commercial support is available at
 &lt;/html&gt;</code></pre></div>
 
 <p>访问地址：<code>http://192.168.0.107:32769/</code></p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="nginx-stable"></p>
+<p><img src="/2020/06/25/docker-webapp/2.png" srcset="/img/loading.gif" alt="nginx-stable"></p>
 <h3 id="3、Tengine镜像"><a href="#3、Tengine镜像" class="headerlink" title="3、Tengine镜像"></a>3、Tengine镜像</h3><p>Dockerfile文件：</p>
 <div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 继承镜像sshd:dockerfile</span>
 <span class="hljs-keyword">FROM</span> sshd:dockerfile
@@ -500,7 +500,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 cc28860af621        tutum/lamp          <span class="hljs-string">&quot;/run.sh&quot;</span>           2 minutes ago       Up 2 minutes        0.0.0.0:8080-&gt;80/tcp, 0.0.0.0:3316-&gt;3306/tcp   great_clarke</code></pre></div>
 
 <p>访问<code>http://127.0.0.1:8080/</code></p>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="lamp-acess"></p>
+<p><img src="/2020/06/25/docker-webapp/3.png" srcset="/img/loading.gif" alt="lamp-acess"></p>
 <h3 id="6、CMS"><a href="#6、CMS" class="headerlink" title="6、CMS"></a>6、CMS</h3><p>内容管理系统（Content Management System, CMS）指的是提供内容编辑服务的平台程序。CMS可以让不懂编程的人方便又轻松地发布、更改和管理各类数字内容（主要以文本和图片为主）</p>
 <p>WordPress是风靡全球的免费开源的内容管理系统。WordPress是博客、企业官网、产品首页等内容相关平台的主流实现方案之一。</p>
 <div class="hljs"><pre><code class="hljs bash">% docker pull wordpress

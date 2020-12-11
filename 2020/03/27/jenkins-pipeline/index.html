@@ -204,9 +204,9 @@ pipeline &#123;
     &#125;
 &#125;</code></pre></div>
 
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="pipelines-script"></p>
+<p><img src="/2020/03/27/jenkins-pipeline/1.png" srcset="/img/loading.gif" alt="pipelines-script"></p>
 <p>阶段视图</p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="pipeline-stage"></p>
+<p><img src="/2020/03/27/jenkins-pipeline/2.png" srcset="/img/loading.gif" alt="pipeline-stage"></p>
 <h3 id="超时、重试和更多"><a href="#超时、重试和更多" class="headerlink" title="超时、重试和更多"></a>超时、重试和更多</h3><p>Jenkins Pipeline 提供了很多的步骤（step），这些步骤可以相互组合嵌套，方便地解决像重复执行步骤直到成功（重试）和如果一个步骤执行花费的时间太长则退出（超时）等问题。</p>
 <div class="hljs"><pre><code class="hljs json"><span class="hljs-comment">// Jenkinsfile (Declarative Pipeline)</span>
 pipeline &#123;
@@ -380,7 +380,7 @@ pipeline &#123;
     &#125;
 &#125;</code></pre></div>
 
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="pipeline-post"></p>
+<p><img src="/2020/03/27/jenkins-pipeline/3.png" srcset="/img/loading.gif" alt="pipeline-post"></p>
 <p>有很多方法可以发送通知， 下面是一些示例展示了如何通过电子邮件、Hipchat room 或者 Slack channel 发送 Pipeline 的相关信息。</p>
 <div class="hljs"><pre><code class="hljs json">post &#123;
     failure &#123;

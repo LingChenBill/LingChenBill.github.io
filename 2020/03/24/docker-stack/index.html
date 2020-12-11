@@ -186,8 +186,8 @@
 <h2 id="Docker-Stack部署应用"><a href="#Docker-Stack部署应用" class="headerlink" title="Docker-Stack部署应用"></a>Docker-Stack部署应用</h2><p>大规模场景下的多服务部署和管理是一件很难的事情。<br>Docker Stack通过提供期望状态、滚动升级、简单易用、扩缩容、健康检查等特性简化了应用的管理。<br>Stack能够在单个声明文件中定义复杂的多服务应用。<br>Stack还提供了简单的方式来部署应用并管理其完整的生命周期。<br>初始化部署 &gt; 健康检查 &gt; 扩容 &gt; 更新 &gt; 回滚，以及其他功能。<br>Compose文件中包含了构成应用所需的完整服务栈。此外还包含了卷、网络、安全以及应用所需的其他基础架构。</p>
 <p>Stack是基于Docker Swarm之上来完成应用的部署。<br>Docker适用于开发与测试。Docker Stack则适用于大规模场景和生产环境。</p>
 <p>使用Docker Stack部署应用<br>Stack一直是期望的Compose—完全集成到Docker中，并能够管理应用的整个生命周期。</p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="stack-structure"></p>
-<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><p><img src="/.io//2.png" srcset="/img/loading.gif" alt="AtSea"></p>
+<p><img src="/2020/03/24/docker-stack/1.png" srcset="/img/loading.gif" alt="stack-structure"></p>
+<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><p><img src="/2020/03/24/docker-stack/2.png" srcset="/img/loading.gif" alt="AtSea"></p>
 <p>docker-stack.yml文件通常常被称为Stack文件，在该文件中定义了应用及其依赖。<br>在该文件中，定义了4种顶级关键字</p>
 <ul>
 <li>version（Compose文件格式的版本号。为了应用于Stack,需要3.0或者更高的版本）</li>
@@ -409,7 +409,7 @@
 <li>标签 （某个Swarm worker节点需要自定义标签）</li>
 <li>密钥 （应用所需的密钥需要在部署前创建完成）</li>
 </ul>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="部署环境"></p>
+<p><img src="/2020/03/24/docker-stack/3.png" srcset="/img/loading.gif" alt="部署环境"></p>
 <h4 id="创建新的Swarm"><a href="#创建新的Swarm" class="headerlink" title="创建新的Swarm"></a>创建新的Swarm</h4><p>一个管理节点和两个工作节点构成</p>
 <p><code>docker swarm init</code></p>
 <p><code>docker swarm join</code></p>

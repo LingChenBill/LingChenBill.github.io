@@ -192,17 +192,17 @@
 <p>​        Resource Server（资源服务器）：持有受保护的资源，允许持有访问令牌（Access Token）的请求访问受保护资源</p>
 <p>​        Client（客户端）：持有资源所有者的授权，代表资源所有者对受保护资源进行访问。</p>
 <p>​        Authorization Server（授权服务器）：对资源所有者的授权进行认证，成功后向客户发送访问令牌。</p>
-<h4 id="OAuth2协议流程"><a href="#OAuth2协议流程" class="headerlink" title="OAuth2协议流程"></a>OAuth2协议流程</h4><p>​        <img src="/.io//1.png" srcset="/img/loading.gif" alt="OAuth2协议流程"></p>
+<h4 id="OAuth2协议流程"><a href="#OAuth2协议流程" class="headerlink" title="OAuth2协议流程"></a>OAuth2协议流程</h4><p>​        <img src="/2020/03/10/spring-cloud-security/1.png" srcset="/img/loading.gif" alt="OAuth2协议流程"></p>
 <h4 id="客户端授权类型"><a href="#客户端授权类型" class="headerlink" title="客户端授权类型"></a>客户端授权类型</h4><p>​        Authorization Code（授权码类型）</p>
 <p>​        Implicit（简化类型，也称为隐式类型）</p>
 <p>​        Resource Owner Password Credentials（密码类型）</p>
 <p>​        Client Credential（客户端类型）</p>
 <p>​        授权码类型的授权流程</p>
-<p>​            <img src="/.io//2.png" srcset="/img/loading.gif" alt="授权码类型"></p>
+<p>​            <img src="/2020/03/10/spring-cloud-security/2.png" srcset="/img/loading.gif" alt="授权码类型"></p>
 <p>​        密码类型流程</p>
-<p>​            <img src="/.io//3.png" srcset="/img/loading.gif" alt="密码类型"></p>
+<p>​            <img src="/2020/03/10/spring-cloud-security/3.png" srcset="/img/loading.gif" alt="密码类型"></p>
 <h3 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h3><p>​    JWT（JSON Web Token）作为一个开放的标准，通过紧凑或者包含的方式，定义了用于在各方之间发送的安全的JSON对象。JWT可以充当访问令牌和刷新令牌的载体，这是Web双方之间进行安全传输信息的良好方式。</p>
-<h4 id="JWT格式"><a href="#JWT格式" class="headerlink" title="JWT格式"></a>JWT格式</h4><h4 id><a href="#" class="headerlink" title></a><img src="/.io//4.png" srcset="/img/loading.gif" alt="JWT格式"></h4><h4 id="JWT组成"><a href="#JWT组成" class="headerlink" title="JWT组成"></a>JWT组成</h4><p>​        Header（头部）</p>
+<h4 id="JWT格式"><a href="#JWT格式" class="headerlink" title="JWT格式"></a>JWT格式</h4><h4 id><a href="#" class="headerlink" title></a><img src="/2020/03/10/spring-cloud-security/4.png" srcset="/img/loading.gif" alt="JWT格式"></h4><h4 id="JWT组成"><a href="#JWT组成" class="headerlink" title="JWT组成"></a>JWT组成</h4><p>​        Header（头部）</p>
 <div class="hljs"><pre><code class="hljs json">&#123;
   <span class="hljs-attr">&quot;alg&quot;</span>: <span class="hljs-string">&quot;HS256&quot;</span>,
   <span class="hljs-attr">&quot;typ&quot;</span>: <span class="hljs-string">&quot;JWT&quot;</span>
@@ -769,7 +769,7 @@
 <h3 id="访问受限资源"><a href="#访问受限资源" class="headerlink" title="访问受限资源"></a>访问受限资源</h3><p>​    启动Eureka Server jar<br>​        java -jar chapter4-eureka-server-0.0.1-SNAPSHOT.jar<br>​        java -jar chapter4-eureka-server-0.0.1-SNAPSHOT.jar –server.port=8762</p>
 <p>​    启动授权服务与资源服务 jar<br>​        java -jar chapter12-authorization-server-1.0-SNAPSHOT.jar<br>​        java -jar chapter12-resource-server-1.0-SNAPSHOT.jar</p>
 <p>​    查看Eureka    </p>
-<img src="/.io//5.png" srcset="/img/loading.gif" alt="eureka" style="zoom:50%;">
+<img src="/2020/03/10/spring-cloud-security/5.png" srcset="/img/loading.gif" alt="eureka" style="zoom:50%;">
 
 <p>​    访问不受保护的资源</p>
 <p>​        <code>http://localhost:8767/instance/application-app</code></p>
@@ -789,7 +789,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">oauth</span>&gt;</span></code></pre></div>
 
 <h5 id="通过授权码类型获取访问令牌"><a href="#通过授权码类型获取访问令牌" class="headerlink" title="通过授权码类型获取访问令牌"></a>通过授权码类型获取访问令牌</h5><p>​    <code>http://localhost:8766/oauth/authorize?client_id=client&amp;response_type=code&amp;redirect_uri=http://localhost:8888/login</code></p>
-<p>​    <img src="/.io//6.png" srcset="/img/loading.gif" alt="authorize"></p>
+<p>​    <img src="/2020/03/10/spring-cloud-security/6.png" srcset="/img/loading.gif" alt="authorize"></p>
 <p>​    授权码将通过回调地址获取</p>
 <p>​        <code>http://localhost:8888/login?code=2dgnZO</code></p>
 <p>​        <strong>2dgnZO</strong>即为授权码</p>
@@ -797,7 +797,7 @@
 <p>​        method：post</p>
 <p>​        <code>http://localhost:8766/oauth/token?grant_type=authorization_code&amp;code=2dgnZO&amp;redirect_uri=http://localhost:8888/login&amp;client_id=client&amp;client_secret=secret</code></p>
 <p>​        可以通过IDEA中的Rest Client工具访问</p>
-<p><img src="/.io//7.png" srcset="/img/loading.gif" alt="post-visit"></p>
+<p><img src="/2020/03/10/spring-cloud-security/7.png" srcset="/img/loading.gif" alt="post-visit"></p>
 <p>​         返回</p>
 <div class="hljs"><pre><code class="hljs json">&#123;
     <span class="hljs-attr">&quot;access_token&quot;</span>: <span class="hljs-string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM4ODkwMDIsInVzZXJfbmFtZSI6InVzZXJfYXV0aG9yaXphdGlvbl9jb2RlIiwiYXV0aG9yaXRpZXMiOlsiVVNFUiJdLCJqdGkiOiJmNTJkMGVkNy0yMGI2LTQ5MGUtOGVmMS01MWQ2NWQyMDk3YTciLCJjbGllbnRfaWQiOiJjbGllbnQiLCJzY29wZSI6WyJhbGwiXX0.eNwBLIXB85ZXiQIPrDMtqL3ktW2vWu1FVVnra36XDTk&quot;</span>,
@@ -817,7 +817,7 @@
 
 <h5 id="通过密码类型获取访问令牌"><a href="#通过密码类型获取访问令牌" class="headerlink" title="通过密码类型获取访问令牌"></a>通过密码类型获取访问令牌</h5><p>​        method：post</p>
 <p>​        <code>http://localhost:8766/oauth/token?username=user_password&amp;password=123456&amp;grant_type=password&amp;scope=all&amp;client_id=client&amp;client_secret=secret</code></p>
-<p><img src="/.io//8.png" srcset="/img/loading.gif" alt="password-visit"></p>
+<p><img src="/2020/03/10/spring-cloud-security/8.png" srcset="/img/loading.gif" alt="password-visit"></p>
 <p>​        返回</p>
 <div class="hljs"><pre><code class="hljs json">&#123;
     <span class="hljs-attr">&quot;access_token&quot;</span>: <span class="hljs-string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM4ODk1MzMsInVzZXJfbmFtZSI6InVzZXJfcGFzc3dvcmQiLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6ImQyNmNmMTFkLTljZjAtNDM3NS05YjIzLTY1ZjRiZTQyYzE1ZSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImFsbCJdfQ.d4QZF0Vc9ePP01TmWM9EiixiqJNELu2UpvG1sjcWapU&quot;</span>,

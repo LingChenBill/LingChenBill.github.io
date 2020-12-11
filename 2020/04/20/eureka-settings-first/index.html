@@ -439,7 +439,7 @@
 &#125;</code></pre></div>
 
 <p>启动访问<br><code>http://localhost:50101/</code></p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="eureka-http"></p>
+<p><img src="/2020/04/20/eureka-settings-first/1.png" srcset="/img/loading.gif" alt="eureka-http"></p>
 <p>说明：Eureka Server有一种自我保护模式，当微服务不再向Eureka Server上报状态，Eureka Server会从服务列表将此服务删除，如果出现网络异常情况(微服务正常)，此时Eureka server进入自保护模式，不再将微服务从服务列表删除。</p>
 <p><strong><u>在开发阶段建议关闭自保护模式。</u></strong></p>
 <h3 id="高可用环境搭建"><a href="#高可用环境搭建" class="headerlink" title="高可用环境搭建"></a>高可用环境搭建</h3><p>Eureka Server 高可用环境需要部署两个Eureka server，它们互相向对方注册。<br>如果在本机启动两个Eureka需要注意两个Eureka Server的端口要设置不一样，这里我们部署一个Eureka Server工程，将端口可配置，制作两个 Eureka Server启动脚本，启动不同的端口。</p>
@@ -471,7 +471,7 @@
 <h4 id="启动脚本设置"><a href="#启动脚本设置" class="headerlink" title="启动脚本设置"></a>启动脚本设置</h4><p>Run -&gt; Edit configurations，设置端口，EUREKA_SERVER，EUREKA_DOMAIN如下</p>
 <p><code>-DPORT=50101 -DEUREKA_SERVER=http://eureka02:50102/eureka/ -DEUREKA_DOMAIN=eureka01</code></p>
 <p><code>-DPORT=50102 -DEUREKA_SERVER=http://eureka01:50101/eureka/ -DEUREKA_DOMAIN=eureka02</code></p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="eureka-script"></p>
+<p><img src="/2020/04/20/eureka-settings-first/2.png" srcset="/img/loading.gif" alt="eureka-script"></p>
 <p>配置hostname<br>Eureka 组成高可用，两个Eureka互相向对方注册，这里需要通过域名或主机名访问，这里我们设置两个Eureka服务的主机名分别为 eureka01、eureka02。</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># sudo vim /etc/hosts</span>
 
@@ -481,7 +481,7 @@
 <p>启动访问</p>
 <p><code>http://eureka01:50101/</code></p>
 <p><code>http://eureka02:50102/</code></p>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="eureka-01-02"></p>
+<p><img src="/2020/04/20/eureka-settings-first/3.png" srcset="/img/loading.gif" alt="eureka-01-02"></p>
 <h3 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h3><p>将cms微服务向Eureka Server注册</p>
 <h4 id="添加pom依赖"><a href="#添加pom依赖" class="headerlink" title="添加pom依赖"></a>添加pom依赖</h4><p><code>spring-cloud-starter-netflix-eureka-client</code></p>
 <div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
@@ -641,7 +641,7 @@
 
 <p>启动该类，访问</p>
 <p><code>http://eureka01:50101/</code></p>
-<p><img src="/.io//4.png" srcset="/img/loading.gif" alt="eureka-client"></p>
+<p><img src="/2020/04/20/eureka-settings-first/4.png" srcset="/img/loading.gif" alt="eureka-client"></p>
 
             </article>
             <hr>

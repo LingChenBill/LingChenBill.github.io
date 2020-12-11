@@ -190,12 +190,12 @@
 <span class="hljs-meta">$</span><span class="bash"> hexo init</span></code></pre></div>
 
 <p>​    hexo会自动下载一些文件到这个目录，包括node_modules，目录结构如下图：</p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="hexo目录路径"></p>
+<p><img src="/2020/03/06/hexo-github-markdown-install/1.png" srcset="/img/loading.gif" alt="hexo目录路径"></p>
 <h3 id="配置github"><a href="#配置github" class="headerlink" title="配置github"></a>配置github</h3><div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> <span class="hljs-built_in">cd</span> ~/.ssh/</span>
 <span class="hljs-meta">$</span><span class="bash"> cat id_rsa.pub</span></code></pre></div>
 
 <p>​    将ssh的密钥内容拷贝到github中配置好密钥信息</p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="ssh密钥github配置"></p>
+<p><img src="/2020/03/06/hexo-github-markdown-install/2.png" srcset="/img/loading.gif" alt="ssh密钥github配置"></p>
 <h4 id="测试ssh是否成功"><a href="#测试ssh是否成功" class="headerlink" title="测试ssh是否成功"></a>测试ssh是否成功</h4><div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> ssh -T git@github.com</span>
 `Hi xxxxx! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.`</code></pre></div>
 
@@ -221,7 +221,7 @@
 <p>​    进入Hexo工作路径中，下载主题到themes文件夹中</p>
 <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> git <span class="hljs-built_in">clone</span> https://github.com/litten/hexo-theme-yilia.git themes/yilia</span></code></pre></div>
 
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="主题路径"></p>
+<p><img src="/2020/03/06/hexo-github-markdown-install/3.png" srcset="/img/loading.gif" alt="主题路径"></p>
 <p>​    更换主题需要修改配置文件</p>
 <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> vim _config.yml</span></code></pre></div>
 
@@ -330,10 +330,10 @@ link = link.substring(beginPos, endPos);
 
 <h3 id="将新建的hexo博客上传到github中"><a href="#将新建的hexo博客上传到github中" class="headerlink" title="将新建的hexo博客上传到github中"></a>将新建的hexo博客上传到github中</h3><div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> hexo d -g</span></code></pre></div>
 
-<p><img src="/.io//4.png" srcset="/img/loading.gif" alt="github上传工作目录"></p>
+<p><img src="/2020/03/06/hexo-github-markdown-install/4.png" srcset="/img/loading.gif" alt="github上传工作目录"></p>
 <p>​    再在浏览器访问:</p>
 <p>​    <a href="https://lingchenbill.github.io/">https://lingchenbill.github.io/</a></p>
-<p><img src="/.io//5.png" srcset="/img/loading.gif" alt="浏览器地址"></p>
+<p><img src="/2020/03/06/hexo-github-markdown-install/5.png" srcset="/img/loading.gif" alt="浏览器地址"></p>
 
             </article>
             <hr>

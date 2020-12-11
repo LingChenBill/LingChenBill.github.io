@@ -205,9 +205,9 @@ GRANT ALL PRIVILEGES ON my_suppliers.* TO &#39;ffawp&#39;@&#39;localhost&#39;;
 FLUSH PRIVILEGES;</code></pre></div>
 
 <p>使用PyCharm连接Mysql，如下：</p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="pycharm-mysql"></p>
+<p><img src="/2020/06/02/python-mysql-csv/1.png" srcset="/img/loading.gif" alt="pycharm-mysql"></p>
 <p>安装mysqlclient<br>‘pip install mysqlclient’<br>在PyCharm的插件库中查看，Perferences -&gt; Project -&gt; Project Interpreter</p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="project-interpreter-mysqlclient"></p>
+<p><img src="/2020/06/02/python-mysql-csv/2.png" srcset="/img/loading.gif" alt="project-interpreter-mysqlclient"></p>
 <h3 id="CSV至Mysql数据表"><a href="#CSV至Mysql数据表" class="headerlink" title="CSV至Mysql数据表"></a>CSV至Mysql数据表</h3><p>CSV文件：data/supplier_data.csv</p>
 <div class="hljs"><pre><code class="hljs python">Supplier Name,Invoice Number,Part Number,Cost,Purchase Date
 Supplier X,<span class="hljs-number">001</span><span class="hljs-number">-1001</span>,<span class="hljs-number">2341</span>,$<span class="hljs-number">500.00</span>,<span class="hljs-number">1</span>/<span class="hljs-number">20</span>/<span class="hljs-number">14</span>
@@ -286,7 +286,7 @@ ln -s /usr/<span class="hljs-built_in">local</span>/mysql/lib/libssl.1.0.0.dylib
 ln -s /usr/<span class="hljs-built_in">local</span>/mysql/lib/libcrypto.1.0.0.dylib /usr/<span class="hljs-built_in">local</span>/lib/libcrypto.1.0.0.dylib</code></pre></div>
 
 <p>运行<code>python 4_db_mysql_load_from_csv.py data/supplier_data.csv</code>，会将CSV文件中的文本写入到数据表Suppliers中</p>
-<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="mysql_load_from_csv"></p>
+<p><img src="/2020/06/02/python-mysql-csv/3.png" srcset="/img/loading.gif" alt="mysql_load_from_csv"></p>
 <h3 id="Mysql数据表至CSV文件"><a href="#Mysql数据表至CSV文件" class="headerlink" title="Mysql数据表至CSV文件"></a>Mysql数据表至CSV文件</h3><p>从mysql数据表Suppliers数据表中查询出一组特定记录，然后将输出写入到CSV输出文件。找出Cost列中的值大于700.00的所有记录，并将记录输出。<br>处理程序：<code>5_db_mysql_write_to_file.py</code></p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># Date:2020/6/2</span>
 <span class="hljs-comment"># Author:Lingchen</span>
@@ -323,7 +323,7 @@ rows = c.fetchall()
 </code></pre></div>
 
 <p>运行，查看效果<br><code>python 5_db_mysql_write_to_file.py data/output_files/5_output.csv</code></p>
-<p><img src="/.io//4.png" srcset="/img/loading.gif" alt="mysql_write_to_file"></p>
+<p><img src="/2020/06/02/python-mysql-csv/4.png" srcset="/img/loading.gif" alt="mysql_write_to_file"></p>
 <p><strong><u>ps: 本文仅为学习笔记，仅供学习与参考</u></strong></p>
 
             </article>

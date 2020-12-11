@@ -187,7 +187,7 @@
 <p>为什么要使用FastDFS呢?</p>
 <p>上边介绍的NFS、GFS都是通用的分布式文件系统，通用的分布式文件系统的优点的是开发体验好，但是系统复杂性高、性能一般，而专用的分布式文件系统虽然开发体验性差，但是<u>系统复杂性低并且性能高</u>。<strong>fastDFS非常适合存储图片</strong>等那些小文件，fastDFS不对文件进行分块，所以它就没有分块合并的开销，fastDFS网络通信采用socket，通信速度很快。</p>
 <p><strong>FastDFS架构包括Tracker server和Storageserver。</strong>客户端请求Tracker server进行文件上传、下载，通过Tracker server调度最终由Storage server完成文件上传和下载。</p>
-<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="FastDFS架构"></p>
+<p><img src="/2020/04/19/fastDFS-install-settings/1.png" srcset="/img/loading.gif" alt="FastDFS架构"></p>
 <p>Tracker</p>
 <p><strong>Tracker Server作用是负载均衡和调度</strong>，通过Tracker server在文件上传时可以根据一些策略找到Storage server提供文件上传服务。可以将tracker称为<u>追踪服务器或调度服务器</u>。<br> FastDFS集群中的Tracker server可以有多台，Tracker server之间是相互平等关系同时提供服务，Tracker server不存在单点故障。客户端请求Tracker server采用<strong>轮询方式</strong>，如果请求的tracker无法提供服务则换另一个tracker。</p>
 <p>Storage</p>
@@ -421,7 +421,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 <p>上述图片测试的图片可以在浏览器上直接访问</p>
 <p><code>http://1xx.xxx.xxx.xxx:8100/group1/M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png</code></p>
 <p>注意，阿里云ECS安全组的配置也要设置好，才能正常访问或图片上传</p>
-<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="阿里云ECS安全组的配置"></p>
+<p><img src="/2020/04/19/fastDFS-install-settings/2.png" srcset="/img/loading.gif" alt="阿里云ECS安全组的配置"></p>
 
             </article>
             <hr>

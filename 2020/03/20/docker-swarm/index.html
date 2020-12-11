@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>Docker Swarm - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -414,7 +414,7 @@ davkzelaad5o        web-fe.1            nigelpoulton/pluralsight-docker-ci:lates
 y7tw6ryd2vw1        web-fe.2            nigelpoulton/pluralsight-docker-ci:latest   ip-172-xxx-xxx-90                                    Running             Running 20 minutes ago                       
 lkbh8k5t2lus        web-fe.3            nigelpoulton/pluralsight-docker-ci:latest   ip-172-xxx-xxx-221.ap-northeast-1.compute.internal   Running             Running 20 minutes ago</code></pre></div>
 
-<p>docker service ps <service-name or serviceid>命令可以查看服务副本列表及各副本的状态。</p>
+<p>docker service ps <service-name or serviceid>命令可以查看服务副本列表及各副本的状态。</service-name></p>
 <p>查看详细状态</p>
 <p><code>docker service inspect --pretty web-fe</code></p>
 <div class="hljs"><pre><code class="hljs ba">$ docker service inspect --pretty web-fe
@@ -526,7 +526,7 @@ ovynni3in53e        uber-svc.6          nigelpoulton/tu-demo:v1   ip-172-xxx-xxx
 
 <p>–network 参数声明所有的副本都连接到uber-net网络。</p>
 <p>此时输入Swarm应用访问地址</p>
-<p><img src="docker-swarm/1.png" srcset="/img/loading.gif" alt="访问Swarm应用"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="访问Swarm应用"></p>
 <h4 id="滚动更新"><a href="#滚动更新" class="headerlink" title="滚动更新"></a>滚动更新</h4><p>将新镜像更新到Swarm中时采用一种阶段性的方式—每次更新两个副本，并且中间间隔20s。</p>
 <p><code>docker service update</code></p>
 <div class="hljs"><pre><code class="hljs bash">$ docker service update --image nigelpoulton/tu-demo:v2 \
@@ -698,9 +698,9 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/Docker/">Docker</a>
+                      <a class="hover-with-bg" href="/tags/Docker/">Docker</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/Swarm/">Swarm</a>
+                      <a class="hover-with-bg" href="/tags/Swarm/">Swarm</a>
                     
                   </div>
                 
@@ -713,7 +713,7 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../21/docker-network/">
+                      <a href="/2020/03/21/docker-network/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Docker网络</span>
                         <span class="visible-mobile">上一篇</span>
@@ -723,7 +723,7 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../19/docker-compose/">
+                      <a href="/2020/03/19/docker-compose/">
                         <span class="hidden-mobile">Docker Compose部署应用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -808,17 +808,17 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -847,8 +847,8 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -859,7 +859,7 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -879,7 +879,7 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -896,9 +896,9 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -908,8 +908,8 @@ z9dr0oc0z0oj3wuw38m8ylwqg *   ip-172-xxx-xxx-90                                 
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

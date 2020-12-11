@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>FastDFS安装设定 - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -187,7 +187,7 @@
 <p>为什么要使用FastDFS呢?</p>
 <p>上边介绍的NFS、GFS都是通用的分布式文件系统，通用的分布式文件系统的优点的是开发体验好，但是系统复杂性高、性能一般，而专用的分布式文件系统虽然开发体验性差，但是<u>系统复杂性低并且性能高</u>。<strong>fastDFS非常适合存储图片</strong>等那些小文件，fastDFS不对文件进行分块，所以它就没有分块合并的开销，fastDFS网络通信采用socket，通信速度很快。</p>
 <p><strong>FastDFS架构包括Tracker server和Storageserver。</strong>客户端请求Tracker server进行文件上传、下载，通过Tracker server调度最终由Storage server完成文件上传和下载。</p>
-<p><img src="fastDFS-install-settings/1.png" srcset="/img/loading.gif" alt="FastDFS架构"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="FastDFS架构"></p>
 <p>Tracker</p>
 <p><strong>Tracker Server作用是负载均衡和调度</strong>，通过Tracker server在文件上传时可以根据一些策略找到Storage server提供文件上传服务。可以将tracker称为<u>追踪服务器或调度服务器</u>。<br> FastDFS集群中的Tracker server可以有多台，Tracker server之间是相互平等关系同时提供服务，Tracker server不存在单点故障。客户端请求Tracker server采用<strong>轮询方式</strong>，如果请求的tracker无法提供服务则换另一个tracker。</p>
 <p>Storage</p>
@@ -421,7 +421,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 <p>上述图片测试的图片可以在浏览器上直接访问</p>
 <p><code>http://1xx.xxx.xxx.xxx:8100/group1/M00/00/00/rBEJ_l6bxmKAMWPCAAAawU0ID2Q071_big.png</code></p>
 <p>注意，阿里云ECS安全组的配置也要设置好，才能正常访问或图片上传</p>
-<p><img src="fastDFS-install-settings/2.png" srcset="/img/loading.gif" alt="阿里云ECS安全组的配置"></p>
+<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="阿里云ECS安全组的配置"></p>
 
             </article>
             <hr>
@@ -432,11 +432,11 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/nginx/">nginx</a>
+                      <a class="hover-with-bg" href="/tags/nginx/">nginx</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/fastdfs/">fastdfs</a>
+                      <a class="hover-with-bg" href="/tags/fastdfs/">fastdfs</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/aliyu/">aliyu</a>
+                      <a class="hover-with-bg" href="/tags/aliyu/">aliyu</a>
                     
                   </div>
                 
@@ -449,7 +449,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../20/eureka-settings-first/">
+                      <a href="/2020/04/20/eureka-settings-first/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Eureka-settings学习一</span>
                         <span class="visible-mobile">上一篇</span>
@@ -459,7 +459,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../15/mybatis-pagehelper-setting/">
+                      <a href="/2020/04/15/mybatis-pagehelper-setting/">
                         <span class="hidden-mobile">Mybatis-PageHelper设定</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -544,17 +544,17 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -583,8 +583,8 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -595,7 +595,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -615,7 +615,7 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -632,9 +632,9 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -644,8 +644,8 @@ nobody   16807 16806  0 4月17 ?       00:00:00 nginx: worker process
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

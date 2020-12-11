@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>Elasticsearch集群搭建 - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -184,7 +184,7 @@
             <article class="markdown-body">
               <p>[TOC]</p>
 <h2 id="Elasticsearch集群搭建"><a href="#Elasticsearch集群搭建" class="headerlink" title="Elasticsearch集群搭建"></a>Elasticsearch集群搭建</h2><h3 id="集群结构"><a href="#集群结构" class="headerlink" title="集群结构"></a>集群结构</h3><p>ES通常以<strong>集群方式</strong>工作，这样做不仅能够提高 ES的搜索能力还可以处理大数据搜索的能力，同时也增加了系统的容错能力及高可用，ES可以实现PB级数据的搜索。</p>
-<p><img src="elasticsearch-cluster-node/1.png" srcset="/img/loading.gif" alt="es-cluster"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="es-cluster"></p>
 <p>1、结点<br>ES集群由多个服务器组成，每个服务器即为一个Node结点(该服务只部署了一个ES进程)。<br>2、分片<br>当我们的文档量很大时，由于内存和硬盘的限制，同时也为了提高ES的处理能力、容错能力及高可用能力，我们将索引分成若干分片，每个分片可以放在不同的服务器，这样就实现了多个服务器共同对外提供索引及搜索服务。一个搜索请求过来，会分别从各个分片去查询，最后将查询到的数据合并返回给用户。<br> 3、副本<br>为了提高ES的高可用同时也为了提高搜索的吞吐量，我们将分片复制一份或多份存储在其它的服务器，这样即使当前的服务器挂掉了，拥有副本的服务器照常可以提供服务。<br>4、主结点<br>一个集群中会有一个或多个主结点，主结点的作用是集群管理，比如增加节点，移除节点等，主结点挂掉后ES会重新选一个主结点。<br>5、结点转发<br>每个结点都知道其它结点的信息，我们可以对任意一个结点发起请求，接收请求的结点会转发给其它结点查询数据。</p>
 <h3 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h3><p>主结点：master节点主要用于集群的管理及索引，比如新增结点、分片分配、索引的新增和删除等。<br>数据结点：data节点上保存了数据分片，它负责索引和搜索操作。<br>客户端结点：client 节点仅作为请求客户端存在，client的作用也作为负载均衡器，client节点不存数据，只是将请求均衡转发到其它结点。</p>
 <p>通过下边两项参数来配置结点的功能:<br> node.master: 是否允许为主结点<br> node.data: 允许存储数据作为数据结点<br> node.ingest: 是否允许成为协调节点<br> 四种组合方式:<br> master=true，data=true：即是主结点又是数据结点<br> master=false，data=true：仅是数据结点<br> master=true，data=false：仅是主结点，不存储数据<br>master=false，data=false：即不是主结点也不是数据结点，此时可设置ingest为true表示它是一个客户端。</p>
@@ -296,8 +296,8 @@
 <p>说明：主节点的plugin中的ik分词器，也要复制到节点1，2中。</p>
 <h4 id="启动主结点与节点1"><a href="#启动主结点与节点1" class="headerlink" title="启动主结点与节点1"></a>启动主结点与节点1</h4><p><code>bin/elasticsearch</code></p>
 <p>通过es-head插件访问 <code>http://192.168.0.104:9100/</code></p>
-<p><img src="elasticsearch-cluster-node/2.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
-<p>创建索引，共2个分片，每个分片一个副本。<br><img src="elasticsearch-cluster-node/3.png" srcset="/img/loading.gif" alt="es-cluster-index"></p>
+<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
+<p>创建索引，共2个分片，每个分片一个副本。<br><img src="/.io//3.png" srcset="/img/loading.gif" alt="es-cluster-index"></p>
 <p>新建索引，Postman的访问：<br>Post方法：<code>http://192.168.0.104:9200/xc_course/doc/_mapping</code></p>
 <div class="hljs"><pre><code class="hljs json"><span class="hljs-comment">// 请求JSON串</span>
 &#123;
@@ -341,11 +341,11 @@
 &#125;</code></pre></div>
 
 <p>访问主节点，查看数据</p>
-<p><img src="elasticsearch-cluster-node/4.png" srcset="/img/loading.gif" alt="es-cluster-main"></p>
+<p><img src="/.io//4.png" srcset="/img/loading.gif" alt="es-cluster-main"></p>
 <p>访问节点1，查看数据</p>
-<p><img src="elasticsearch-cluster-node/5.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
+<p><img src="/.io//5.png" srcset="/img/loading.gif" alt="es-cluster-node-1"></p>
 <p>此时，启动节点2，访问节点2，会发现上述数据会自动复制到节点2中。</p>
-<p><img src="elasticsearch-cluster-node/6.png" srcset="/img/loading.gif" alt="es-cluster-node-3"></p>
+<p><img src="/.io//6.png" srcset="/img/loading.gif" alt="es-cluster-node-3"></p>
 <p>集群的健康，可以访问<code>http://192.168.0.104:9200/_cluster/health</code></p>
 <div class="hljs"><pre><code class="hljs json">&#123;
     <span class="hljs-attr">&quot;cluster_name&quot;</span>: <span class="hljs-string">&quot;lc-xc&quot;</span>,
@@ -376,9 +376,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/elasticsearch/">elasticsearch</a>
+                      <a class="hover-with-bg" href="/tags/elasticsearch/">elasticsearch</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/cluster/">cluster</a>
+                      <a class="hover-with-bg" href="/tags/cluster/">cluster</a>
                     
                   </div>
                 
@@ -391,7 +391,7 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../06/logstash-data-transform/">
+                      <a href="/2020/05/06/logstash-data-transform/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Logstash安装学习</span>
                         <span class="visible-mobile">上一篇</span>
@@ -401,7 +401,7 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../../04/27/elasticsearch-dsl-search/">
+                      <a href="/2020/04/27/elasticsearch-dsl-search/">
                         <span class="hidden-mobile">Elasticsearch-dsl搜索学习</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -486,17 +486,17 @@
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -525,8 +525,8 @@
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -537,7 +537,7 @@
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -557,7 +557,7 @@
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -574,9 +574,9 @@
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -586,8 +586,8 @@
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>Vue-jsx语法配置 - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -209,12 +209,12 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 <p>解决方案如下：</p>
 <p>JSX 是Javascript和XML结合的一种格式，它是<strong>React的核心组成部分</strong>，JSX和XML语法类似，可以定义属性以及子元 素。唯一特殊的是可以用大括号来加入JavaScript表达式。遇到 HTML 标签(以 &lt; 开头)，就用 HTML 规则解析; 遇到代码块(以 { 开头)，就用 JavaScript 规则解析。</p>
 <p>WebStorm设置如下：</p>
-<p><img src="vue-jsx-setting/1.png" srcset="/img/loading.gif" alt="WebStorm设置"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="WebStorm设置"></p>
 <p>HTML类型文件中增加Vue</p>
 <p>preferences -&gt; Editor -&gt; File Types 中找到上边框中HTML 在下边加一个 *.vue</p>
-<p><img src="vue-jsx-setting/2.png" srcset="/img/loading.gif" alt="File Types"></p>
+<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="File Types"></p>
 <p>如果已经在vue template 中已存在.vue 则把它改为.vue2( Html .vue)</p>
-<p><img src="vue-jsx-setting/3.png" srcset="/img/loading.gif" alt="vue template"></p>
+<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="vue template"></p>
 <p>另外，工程的.babelrc文件如下：</p>
 <div class="hljs"><pre><code class="hljs json">&#123;
   <span class="hljs-attr">&quot;presets&quot;</span>: [
@@ -243,11 +243,11 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/vue/">vue</a>
+                      <a class="hover-with-bg" href="/tags/vue/">vue</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/jsx/">jsx</a>
+                      <a class="hover-with-bg" href="/tags/jsx/">jsx</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/webStorm/">webStorm</a>
+                      <a class="hover-with-bg" href="/tags/webStorm/">webStorm</a>
                     
                   </div>
                 
@@ -260,7 +260,7 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../15/mybatis-pagehelper-setting/">
+                      <a href="/2020/04/15/mybatis-pagehelper-setting/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Mybatis-PageHelper设定</span>
                         <span class="visible-mobile">上一篇</span>
@@ -270,7 +270,7 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../09/rabbit-mq-start/">
+                      <a href="/2020/04/09/rabbit-mq-start/">
                         <span class="hidden-mobile">Rabbit-MQ学习</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -355,17 +355,17 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -394,8 +394,8 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -406,7 +406,7 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -426,7 +426,7 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -443,9 +443,9 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -455,8 +455,8 @@ renderContent(h, &#123; node, data, store &#125;) &#123;
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

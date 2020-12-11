@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>Docker网络 - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -189,12 +189,12 @@
 <li>Libnetwork</li>
 <li>驱动</li>
 </ul>
-<p><img src="docker-network/1.png" srcset="/img/loading.gif" alt="网络架构"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="网络架构"></p>
 <p>CNM定义了三个基本要素：沙盒（Sandbox）、终端（Endpoint）和网络（Network）。</p>
-<p><img src="docker-network/2.png" srcset="/img/loading.gif" alt="CNM"></p>
+<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="CNM"></p>
 <p>Docker环境中最小的调度单位就是容器。CNM组件—沙盒被放置在容器内部，为容器提供网络连接。</p>
-<p><img src="docker-network/3.png" srcset="/img/loading.gif" alt="CNM与容器"></p>
-<p>Libnetwork实现了CNM中定义的全部3个组件。此外它还实现了本地化服务发现（Service Discovery）、基于Ingress的容器负载均衡，以及网络控制层和管理层功能。<br>Libnetwork实现了控制层和管理层功能。<br>驱动就负责实现数据层。<br><img src="docker-network/4.png" srcset="/img/loading.gif" alt="控制层管理层和数据层关系"></p>
+<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="CNM与容器"></p>
+<p>Libnetwork实现了CNM中定义的全部3个组件。此外它还实现了本地化服务发现（Service Discovery）、基于Ingress的容器负载均衡，以及网络控制层和管理层功能。<br>Libnetwork实现了控制层和管理层功能。<br>驱动就负责实现数据层。<br><img src="/.io//4.png" srcset="/img/loading.gif" alt="控制层管理层和数据层关系"></p>
 <h3 id="单机桥接网络"><a href="#单机桥接网络" class="headerlink" title="单机桥接网络"></a>单机桥接网络</h3><p>单机意味着该网络只能在单个Docker主机上运行，并且只能与所在Docker主机上的容器进行连接。<br>桥接意味着这是802.1.d桥接的一种实现（二层交换机）。</p>
 <p>每个Docker主机都有一个默认的单机桥接网络，Linux上网络名称为bridge，在Windows上叫作nat。</p>
 <h4 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h4><p><code>docker network ls</code></p>
@@ -362,7 +362,7 @@ svc1.4.xla77t1eo0ts@ip-172-xxx-xxx-57.ap-northeast-1.compute.internal    | 10.25
 </code></pre></div>
 
 <h3 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h3><p>服务发现（Service Discovery）允许容器和Swarm服务通过名称互相定位。唯一的要求就是需要处于同一个网络当中。</p>
-<p><img src="docker-network/5.png" srcset="/img/loading.gif" alt="服务发现"></p>
+<p><img src="/.io//5.png" srcset="/img/loading.gif" alt="服务发现"></p>
 <p>每个启动时使用了–name参数的Swarm服务或者独立的容器，都会将自己的名称和IP地址注册到Docker DNS服务。这意味着容器和服务副本可以通过Docker DNS服务互相发现。<br>服务发现是受网络限制的。这意味着名称解析只对位于<strong>同一网络中</strong>的容器和服务生效。如果两个容器在不同的网络，那么就不能互相解析。</p>
 <h4 id="Ingress网络"><a href="#Ingress网络" class="headerlink" title="Ingress网络"></a>Ingress网络</h4><p>Swarm支持两种服务发布模式，两种模式均保证服务从集群外可访问。</p>
 <ul>
@@ -390,14 +390,14 @@ fcjl1u2ogpw3yxsg0l47i7pbf     ip-172-xxx-xxx-57.ap-northeast-1.compute.internal 
 z9dr0oc0z0oj3wuw38m8ylwqg     ip-172-xxx-xxx-90                                    Ready               Active              Reachable           18.09.9-ce</code></pre></div>
 
 <p>从三个节点都可访问：<code>http://52.xxx.xxx.124:5000/</code></p>
-<p><img src="docker-network/6.png" srcset="/img/loading.gif" alt="Ingress模式"></p>
+<p><img src="/.io//6.png" srcset="/img/loading.gif" alt="Ingress模式"></p>
 <p>如果存在多个运行中的副本，流量会平均到每个副本之上。</p>
 <div class="hljs"><pre><code class="hljs bash">$ docker service create -d --name svc1 --network uber-net \
 &gt; --replicas 5 \
 &gt; --publish published=5000,target=80 nginx
 k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
-<p><img src="docker-network/7.png" srcset="/img/loading.gif" alt="ingress-replicas"></p>
+<p><img src="/.io//7.png" srcset="/img/loading.gif" alt="ingress-replicas"></p>
 <p><u>ps: 本文摘取于《深入浅出Docker》一书，仅供学习参考</u></p>
 
             </article>
@@ -409,9 +409,9 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/docker/">docker</a>
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/network/">network</a>
+                      <a class="hover-with-bg" href="/tags/network/">network</a>
                     
                   </div>
                 
@@ -424,7 +424,7 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../22/docker-over-network/">
+                      <a href="/2020/03/22/docker-over-network/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Docker覆盖网络</span>
                         <span class="visible-mobile">上一篇</span>
@@ -434,7 +434,7 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../20/docker-swarm/">
+                      <a href="/2020/03/20/docker-swarm/">
                         <span class="hidden-mobile">Docker Swarm</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -519,17 +519,17 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -558,8 +558,8 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -570,7 +570,7 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -590,7 +590,7 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -607,9 +607,9 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -619,8 +619,8 @@ k07efmmmggiz1buu1vod1xe9p</code></pre></div>
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

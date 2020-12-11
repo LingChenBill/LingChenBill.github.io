@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/favicon.png">
-  <link rel="icon" type="image/png" href="../../../../img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,25 +19,25 @@
   <meta name="keywords" content="">
   <title>Docker之Web服务器与应用 - LingChen&#39;s blog</title>
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
 
 
 
-<link rel="stylesheet" href="../../../../at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -50,7 +50,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="../../../../index.html">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -66,7 +66,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../index.html">
+            <a class="nav-link" href="/">
               <i class="iconfont icon-home-fill"></i>
               Home</a>
           </li>
@@ -75,7 +75,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../archives/">
+            <a class="nav-link" href="/archives/">
               <i class="iconfont icon-archive-fill"></i>
               Archives</a>
           </li>
@@ -84,7 +84,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../categories/">
+            <a class="nav-link" href="/categories/">
               <i class="iconfont icon-category-fill"></i>
               Categories</a>
           </li>
@@ -93,7 +93,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../tags/">
+            <a class="nav-link" href="/tags/">
               <i class="iconfont icon-tags-fill"></i>
               Tags</a>
           </li>
@@ -102,7 +102,7 @@
           
           
           <li class="nav-item">
-            <a class="nav-link" href="../../../../about/">
+            <a class="nav-link" href="/about/">
               <i class="iconfont icon-user-fill"></i>
               About</a>
           </li>
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('../../../../img/Hippopx-desk.jpg') no-repeat center center;
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -284,7 +284,7 @@ xxx@localhost apache_ubuntu % curl 192.168.0.107:32768
 &lt;/html&gt;</code></pre></div>
 
 <p>或者访问<code>http://192.168.0.107:32768/</code></p>
-<p><img src="docker-webapp/1.png" srcset="/img/loading.gif" alt="docker_webapp"></p>
+<p><img src="/.io//1.png" srcset="/img/loading.gif" alt="docker_webapp"></p>
 <p>在使用Dockerfile镜像时，会继承父镜像开放的端口，但却不会继承启动命令。</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 访问22端口</span>
 xxx@localhost apache_ubuntu % ssh root@192.168.0.107 -p 32769
@@ -425,7 +425,7 @@ Commercial support is available at
 &lt;/html&gt;</code></pre></div>
 
 <p>访问地址：<code>http://192.168.0.107:32769/</code></p>
-<p><img src="docker-webapp/2.png" srcset="/img/loading.gif" alt="nginx-stable"></p>
+<p><img src="/.io//2.png" srcset="/img/loading.gif" alt="nginx-stable"></p>
 <h3 id="3、Tengine镜像"><a href="#3、Tengine镜像" class="headerlink" title="3、Tengine镜像"></a>3、Tengine镜像</h3><p>Dockerfile文件：</p>
 <div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 继承镜像sshd:dockerfile</span>
 <span class="hljs-keyword">FROM</span> sshd:dockerfile
@@ -500,7 +500,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 cc28860af621        tutum/lamp          <span class="hljs-string">&quot;/run.sh&quot;</span>           2 minutes ago       Up 2 minutes        0.0.0.0:8080-&gt;80/tcp, 0.0.0.0:3316-&gt;3306/tcp   great_clarke</code></pre></div>
 
 <p>访问<code>http://127.0.0.1:8080/</code></p>
-<p><img src="docker-webapp/3.png" srcset="/img/loading.gif" alt="lamp-acess"></p>
+<p><img src="/.io//3.png" srcset="/img/loading.gif" alt="lamp-acess"></p>
 <h3 id="6、CMS"><a href="#6、CMS" class="headerlink" title="6、CMS"></a>6、CMS</h3><p>内容管理系统（Content Management System, CMS）指的是提供内容编辑服务的平台程序。CMS可以让不懂编程的人方便又轻松地发布、更改和管理各类数字内容（主要以文本和图片为主）</p>
 <p>WordPress是风靡全球的免费开源的内容管理系统。WordPress是博客、企业官网、产品首页等内容相关平台的主流实现方案之一。</p>
 <div class="hljs"><pre><code class="hljs bash">% docker pull wordpress
@@ -522,9 +522,9 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="../../../../tags/docker/">docker</a>
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
                     
-                      <a class="hover-with-bg" href="../../../../tags/webapp/">webapp</a>
+                      <a class="hover-with-bg" href="/tags/webapp/">webapp</a>
                     
                   </div>
                 
@@ -537,7 +537,7 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
                   <div class="post-prev col-6">
                     
                     
-                      <a href="../../../07/03/docker-mysql-ssh/">
+                      <a href="/2020/07/03/docker-mysql-ssh/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Docker之mysql安装</span>
                         <span class="visible-mobile">上一篇</span>
@@ -547,7 +547,7 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
                   <div class="post-next col-6">
                     
                     
-                      <a href="../../23/docker-os/">
+                      <a href="/2020/06/23/docker-os/">
                         <span class="hidden-mobile">Docker之操作系统学习(SSH容器搭建)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -632,17 +632,17 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 </footer>
 
 <!-- SCRIPTS -->
-<script  src="../../../../https:/cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
-<script  src="../../../../https:/cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/main.js" ></script>
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
 
 
-  <script  src="../../../../js/lazyload.js" ></script>
+  <script  src="/js/lazyload.js" ></script>
 
 
 
   
-  <script  src="../../../../https:/cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
       var boardCtn = $('#board-ctn');
@@ -671,8 +671,8 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 
 
 
-  <script defer src="../../../../https:/cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="../../../../js/clipboard-use.js" ></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
@@ -683,7 +683,7 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
   <script>
     var typed = new Typed('#subtitle', {
       strings: [
@@ -703,7 +703,7 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
   <script>
     anchors.options = {
       placement: "right",
@@ -720,9 +720,9 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 
 
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
   <script>
-    var path = "../../../../local-search.xml";
+    var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
       searchFunc(path, 'local-search-input', 'local-search-result');
@@ -732,8 +732,8 @@ docker: Error response from daemon: could not get container <span class="hljs-ke
 
 
 
-  <script  src="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="../../../../https:/cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
 
   <script>
     $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(

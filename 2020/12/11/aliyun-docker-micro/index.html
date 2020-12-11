@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Mac-vmware中Centos7网络连接 - LingChen&#39;s blog</title>
+  <title>Docker微服务镜像推送至阿里云 - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -132,8 +132,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-12-10 22:08">
-                    December 10, 2020 pm
+                  <time datetime="2020-12-11 20:46">
+                    December 11, 2020 pm
                   </time>
                 </div>
               
@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    801 字
+                    333 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    13
+                    5
                      分钟
                   </span>
                 
@@ -183,165 +183,57 @@
             
             <article class="markdown-body">
               <p>[toc]</p>
-<h3 id="Mac-vmware中Centos7网络连接"><a href="#Mac-vmware中Centos7网络连接" class="headerlink" title="Mac-vmware中Centos7网络连接"></a>Mac-vmware中Centos7网络连接</h3><h4 id="1-虚拟机安装"><a href="#1-虚拟机安装" class="headerlink" title="1.虚拟机安装"></a>1.虚拟机安装</h4><p>前提</p>
+<h3 id="Docker微服务镜像推送至阿里云"><a href="#Docker微服务镜像推送至阿里云" class="headerlink" title="Docker微服务镜像推送至阿里云"></a>Docker微服务镜像推送至阿里云</h3><h4 id="1-登录阿里云Docker-Registry"><a href="#1-登录阿里云Docker-Registry" class="headerlink" title="1.登录阿里云Docker Registry"></a>1.登录阿里云Docker Registry</h4><p>前提:</p>
 <ul>
-<li>VMware Fusion安装</li>
-<li>Centos7虚拟镜像</li>
+<li>本机安装docker</li>
+<li>本机安装有maven</li>
 </ul>
-<p>导入Centos7虚拟镜像,</p>
-<p>右击 -&gt; 网络适配器 -&gt; 连接网络适配器 -&gt; 与我的Mac共享</p>
-<p>启动Centos7</p>
-<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 用户名与密码.</span>
-% root
-root</code></pre></div>
-
-<h4 id="2-设置主机名"><a href="#2-设置主机名" class="headerlink" title="2.设置主机名"></a>2.设置主机名</h4><div class="hljs"><pre><code class="hljs bash">% hostnamectl set-hostname hdss7-11.host.com
-
-<span class="hljs-comment"># 退出重新登录.</span>
-% <span class="hljs-built_in">logout</span>
-root
-root
-
-<span class="hljs-comment"># 主机名已变成hdss7-50.</span>
-[root@hdss7-50 ~]<span class="hljs-comment"># </span></code></pre></div>
-
-<h4 id="3-关闭防火墙"><a href="#3-关闭防火墙" class="headerlink" title="3.关闭防火墙"></a>3.关闭防火墙</h4><div class="hljs"><pre><code class="hljs bash">% sestatus
-% vi /etc/selinux/config
-
-SELINUX=disabled
-
-<span class="hljs-comment"># 重启.</span>
-% reboot
-
-<span class="hljs-comment"># 查看.</span>
-getenforce
-
-<span class="hljs-comment"># 关闭防火墙.</span>
-systemctl status firewalld
-systemctl stop firewalld
-systemctl <span class="hljs-built_in">disable</span> firewalld.service</code></pre></div>
-
-<h4 id="4-配置IP地址"><a href="#4-配置IP地址" class="headerlink" title="4.配置IP地址"></a>4.配置IP地址</h4><p>查看mac本机的vmnet8的网关地址，这个对应NAT模式的网络连接.</p>
-<div class="hljs"><pre><code class="hljs bash">% <span class="hljs-built_in">cd</span> /Library/Preferences/VMware Fusion/vmnet8
-<span class="hljs-comment"># 查看和修改nat.conf</span>
-% cat nat.conf
-
-<span class="hljs-comment"># NAT gateway address</span>
-ip = 10.4.7.2
-netmask = 255.255.255.0</code></pre></div>
-
-<p>修改虚拟机中的文件: ifcfg-ens33</p>
-<div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># vi /etc/sysconfig/network-scripts/ifcfg-ens33</span>
-
-TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-BOOTPROTO=static
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-IPV6_ADDR_GEN_MODE=stable-privacy
-NAME=ens33
-UUID=8d71fc45-b8dc-42c4-9f8c-65f17323eb5a
-DEVICE=ens33
-ONBOOT=yes
-IPADDR=10.4.7.50
-NETMASK=255.255.255.0
-GATEWAY=10.4.7.2
-DNS1=10.4.7.2
-<span class="hljs-comment">#DNS1=114.114.114.114</span>
-
-<span class="hljs-comment"># 自己设置IP: IPADDR=10.4.7.50</span>
-<span class="hljs-comment"># 修改如下内容:</span>
-<span class="hljs-comment"># BOOTPROTO=static</span>
-<span class="hljs-comment"># NETMASK=255.255.255.0</span>
-<span class="hljs-comment"># GATEWAY=10.4.7.2</span>
-<span class="hljs-comment"># DNS1=10.4.7.2</span></code></pre></div>
-
-<p>重启network服务</p>
-<div class="hljs"><pre><code class="hljs bash">% service network restart
-<span class="hljs-comment"># 或者</span>
-% systemctl restart network.service</code></pre></div>
-
-<p>查看Mac中的wifi中的dns配置,并配置</p>
-<p>wifi -&gt; 打开网络偏好设置 -&gt; 高级 -&gt; DNS</p>
-<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># dns可以不设</span>
-10.4.7.11
-192.168.0.253
-192.168.1.1</code></pre></div>
-
-<h4 id="5-验证上网"><a href="#5-验证上网" class="headerlink" title="5.验证上网"></a>5.验证上网</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># ping baidu.com</span>
-PING baidu.com (220.181.38.148) 56(84) bytes of data.
-64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=1 ttl=128 time=7.13 ms
-64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=2 ttl=128 time=130 ms
-64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=3 ttl=128 time=10.2 ms</code></pre></div>
-
-<h4 id="6-安装必须组件"><a href="#6-安装必须组件" class="headerlink" title="6.安装必须组件"></a>6.安装必须组件</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-50 ~]<span class="hljs-comment"># yum install wget net-tools telnet tree nmap sysstat lrzsz dos2unix bind-utils -y</span>
-
-<span class="hljs-comment"># 查看ip地址:10.4.7.50</span>
-[root@hdss7-50 ~]<span class="hljs-comment"># ifconfig</span>
-ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
-        inet 10.4.7.50  netmask 255.255.255.0  broadcast 10.4.7.255
-        inet6 fe80::3194:9427:e40b:b2a0  prefixlen 64  scopeid 0x20&lt;link&gt;
-......</code></pre></div>
-
-<h4 id="7-安装docker"><a href="#7-安装docker" class="headerlink" title="7.安装docker"></a>7.安装docker</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 通过阿里镜像来安装</span>
-[root@hdss7-50 ~]<span class="hljs-comment"># curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span>
-.....等待即可.
-
-<span class="hljs-comment"># 查看docker版本.</span>
-[root@hdss7-50 ~]<span class="hljs-comment"># systemctl start docker</span>
-[root@hdss7-50 ~]<span class="hljs-comment"># systemctl enable docker</span>
-Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
-[root@hdss7-50 ~]<span class="hljs-comment"># docker info</span>
-Client:
- Context:    default
- Debug Mode: <span class="hljs-literal">false</span>
- Plugins:
-  app: Docker App (Docker Inc., v0.9.1-beta3)
-....
-
-[root@hdss7-50 ~]<span class="hljs-comment"># docker --version</span>
-Docker version 20.10.0, build 7287ab3
-
-<span class="hljs-comment"># 修改docker镜像源.</span>
-[root@hdss7-50 docker]<span class="hljs-comment"># mkdir -p /data/docker</span>
-[root@hdss7-50 docker]<span class="hljs-comment"># vi /etc/docker/daemon.json</span>
-
-&#123;
-  <span class="hljs-string">&quot;graph&quot;</span>: <span class="hljs-string">&quot;/data/docker&quot;</span>,
-  <span class="hljs-string">&quot;registry-mirrors&quot;</span>: [<span class="hljs-string">&quot;https://aorfq0az.mirror.aliyuncs.com&quot;</span>]
-&#125;
-
-<span class="hljs-comment"># 重启docker.</span>
-[root@hdss7-50 docker]<span class="hljs-comment"># systemctl daemon-reload</span>
-[root@hdss7-50 docker]<span class="hljs-comment"># systemctl restart docker</span>
-
-<span class="hljs-comment"># 验证镜像.</span>
-[root@hdss7-50 docker]<span class="hljs-comment"># docker info</span>
+<p>登录阿里云docker镜像</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 登录.</span>
+% docker login --username=your_name registry.cn-beijing.aliyuncs.com
+<span class="hljs-comment"># 输入服务密码.</span></code></pre></div>
+<h4 id="2-打包微服务"><a href="#2-打包微服务" class="headerlink" title="2.打包微服务"></a>2.打包微服务</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在idea命令窗口.</span>
+% <span class="hljs-built_in">source</span> ~/.bash_profile 
+% mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>
 ......
- Insecure Registries:
-  127.0.0.0/8
- Registry Mirrors:
-  https://aorfq0az.mirror.aliyuncs.com/
- Live Restore Enabled: <span class="hljs-literal">false</span></code></pre></div>
+ % ls target 
+classes                                 eureka-0.0.1-SNAPSHOT.jar.original      maven-archiver
+eureka-0.0.1-SNAPSHOT.jar               generated-sources                       maven-status</code></pre></div>
+<h4 id="3-编写Dockerfile"><a href="#3-编写Dockerfile" class="headerlink" title="3.编写Dockerfile"></a>3.编写Dockerfile</h4><p>在工程根目录下创建Dockerfile文件:</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 拉取jdk镜像.</span>
+FROM openjdk:8-alpine
 
-<h4 id="8-安装rancher"><a href="#8-安装rancher" class="headerlink" title="8.安装rancher"></a>8.安装rancher</h4><div class="hljs"><pre><code class="hljs bash">% sudo docker run -d --restart=unless-stopped -p 8080:8080 -p 443:443 -v /data/rancher/:/var/lib/rancher/ rancher/rancher:stable
+<span class="hljs-comment"># 添加微服务jar,并命名为app.jar.</span>
+ADD target/*.jar app.jar
 
-<span class="hljs-comment"># 查看rancher容器.</span>
-[root@hdss7-50 rancher]<span class="hljs-comment"># docker ps</span>
-CONTAINER ID   IMAGE                    COMMAND           CREATED          STATUS                          PORTS     NAMES
-465eb034c7e6   rancher/rancher:stable   <span class="hljs-string">&quot;entrypoint.sh&quot;</span>   43 seconds ago   Restarting (1) 15 seconds ago             sad_pascal
+<span class="hljs-comment"># 暴露端口号.</span>
+EXPOSE 8761
 
-[root@hdss7-50 rancher]<span class="hljs-comment"># sudo vi /etc/hosts</span>
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-10.4.7.50 hdss7-50 hdss7-50.host.com
-......</code></pre></div>
+<span class="hljs-comment"># 运行jar.</span>
+ENTRYPOINT [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app.jar&quot;</span>]</code></pre></div>
+<h4 id="4-构建微服务docker镜像"><a href="#4-构建微服务docker镜像" class="headerlink" title="4.构建微服务docker镜像"></a>4.构建微服务docker镜像</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 镜像路径:registry.cn-beijing.aliyuncs.com/lcyun/</span>
+<span class="hljs-comment"># 镜像名:eureka</span>
+% docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .
+......
+Successfully tagged registry.cn-beijing.aliyuncs.com/lcyun/eureka:latest
 
+<span class="hljs-comment"># 查看该镜像.</span>
+% docker images
+REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
+registry.cn-beijing.aliyuncs.com/lcyun/eureka   latest              7a8fa6abf26e        10 seconds ago      155MB</code></pre></div>
+<h4 id="5-推送镜像"><a href="#5-推送镜像" class="headerlink" title="5.推送镜像"></a>5.推送镜像</h4><div class="hljs"><pre><code class="hljs bash">% docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
+<p>访问阿里云镜像仓库,该镜像已推送.</p>
+<p><img src="aliyun-docker-micro/001.png" srcset="/img/loading.gif" alt="docker-registry"></p>
+<h4 id="6-编写shell脚本"><a href="#6-编写shell脚本" class="headerlink" title="6.编写shell脚本"></a>6.编写shell脚本</h4><p>在工程根目录下创建build.sh文件:</p>
+<div class="hljs"><pre><code class="hljs sh"><span class="hljs-meta">#!/usr/bin/env bash</span>
+
+mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>
+
+docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .
+
+docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
+<p>启动脚本,一键打包,上传微服务镜像到阿里云仓库</p>
+<div class="hljs"><pre><code class="hljs bash">% bash build.sh</code></pre></div>
 
             </article>
             <hr>
@@ -352,9 +244,11 @@ CONTAINER ID   IMAGE                    COMMAND           CREATED          STATU
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/vmware/">vmware</a>
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
                     
-                      <a class="hover-with-bg" href="/tags/centos7/">centos7</a>
+                      <a class="hover-with-bg" href="/tags/aliyun/">aliyun</a>
+                    
+                      <a class="hover-with-bg" href="/tags/micro/">micro</a>
                     
                   </div>
                 
@@ -367,18 +261,12 @@ CONTAINER ID   IMAGE                    COMMAND           CREATED          STATU
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/11/aliyun-docker-micro/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Docker微服务镜像推送至阿里云</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/12/10/micro-docker/">
-                        <span class="hidden-mobile">Dockerfile微服务</span>
+                      <a href="/2020/12/10/vmware-mac-centos7/">
+                        <span class="hidden-mobile">Mac-vmware中Centos7网络连接</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -518,7 +406,7 @@ CONTAINER ID   IMAGE                    COMMAND           CREATED          STATU
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Mac-vmware中Centos7网络连接&nbsp;",
+        "Docker微服务镜像推送至阿里云&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

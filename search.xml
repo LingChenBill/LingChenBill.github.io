@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>Docker微服务镜像推送至阿里云</title>
+      <link href="2020/12/11/aliyun-docker-micro/"/>
+      <url>2020/12/11/aliyun-docker-micro/</url>
+      
+        <content type="html"><![CDATA[<p>[toc]</p><h3 id="Docker微服务镜像推送至阿里云"><a href="#Docker微服务镜像推送至阿里云" class="headerlink" title="Docker微服务镜像推送至阿里云"></a>Docker微服务镜像推送至阿里云</h3><h4 id="1-登录阿里云Docker-Registry"><a href="#1-登录阿里云Docker-Registry" class="headerlink" title="1.登录阿里云Docker Registry"></a>1.登录阿里云Docker Registry</h4><p>前提:</p><ul><li>本机安装docker</li><li>本机安装有maven</li></ul><p>登录阿里云docker镜像</p><pre><code class="hljs bash"><span class="hljs-comment"># 登录.</span>% docker login --username=your_name registry.cn-beijing.aliyuncs.com<span class="hljs-comment"># 输入服务密码.</span></code></pre><h4 id="2-打包微服务"><a href="#2-打包微服务" class="headerlink" title="2.打包微服务"></a>2.打包微服务</h4><pre><code class="hljs bash"><span class="hljs-comment"># 在idea命令窗口.</span>% <span class="hljs-built_in">source</span> ~/.bash_profile % mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>...... % ls target classes                                 eureka-0.0.1-SNAPSHOT.jar.original      maven-archivereureka-0.0.1-SNAPSHOT.jar               generated-sources                       maven-status</code></pre><h4 id="3-编写Dockerfile"><a href="#3-编写Dockerfile" class="headerlink" title="3.编写Dockerfile"></a>3.编写Dockerfile</h4><p>在工程根目录下创建Dockerfile文件:</p><pre><code class="hljs bash"><span class="hljs-comment"># 拉取jdk镜像.</span>FROM openjdk:8-alpine<span class="hljs-comment"># 添加微服务jar,并命名为app.jar.</span>ADD target/*.jar app.jar<span class="hljs-comment"># 暴露端口号.</span>EXPOSE 8761<span class="hljs-comment"># 运行jar.</span>ENTRYPOINT [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app.jar&quot;</span>]</code></pre><h4 id="4-构建微服务docker镜像"><a href="#4-构建微服务docker镜像" class="headerlink" title="4.构建微服务docker镜像"></a>4.构建微服务docker镜像</h4><pre><code class="hljs bash"><span class="hljs-comment"># 镜像路径:registry.cn-beijing.aliyuncs.com/lcyun/</span><span class="hljs-comment"># 镜像名:eureka</span>% docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .......Successfully tagged registry.cn-beijing.aliyuncs.com/lcyun/eureka:latest<span class="hljs-comment"># 查看该镜像.</span>% docker imagesREPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZEregistry.cn-beijing.aliyuncs.com/lcyun/eureka   latest              7a8fa6abf26e        10 seconds ago      155MB</code></pre><h4 id="5-推送镜像"><a href="#5-推送镜像" class="headerlink" title="5.推送镜像"></a>5.推送镜像</h4><pre><code class="hljs bash">% docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre><p>访问阿里云镜像仓库,该镜像已推送.</p><p><img src="aliyun-docker-micro/001.png" alt="docker-registry"></p><h4 id="6-编写shell脚本"><a href="#6-编写shell脚本" class="headerlink" title="6.编写shell脚本"></a>6.编写shell脚本</h4><p>在工程根目录下创建build.sh文件:</p><pre><code class="hljs sh"><span class="hljs-meta">#!/usr/bin/env bash</span>mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre><p>启动脚本,一键打包,上传微服务镜像到阿里云仓库</p><pre><code class="hljs bash">% bash build.sh</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> docker </tag>
+            
+            <tag> aliyun </tag>
+            
+            <tag> micro </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Mac-vmware中Centos7网络连接</title>
       <link href="2020/12/10/vmware-mac-centos7/"/>
       <url>2020/12/10/vmware-mac-centos7/</url>

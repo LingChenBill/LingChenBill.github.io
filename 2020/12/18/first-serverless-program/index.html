@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Docker微服务镜像推送至阿里云 - LingChen&#39;s blog</title>
+  <title>第一个serverless程序 - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -132,8 +132,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-12-11 20:46">
-                    December 11, 2020 pm
+                  <time datetime="2020-12-18 21:29">
+                    December 18, 2020 pm
                   </time>
                 </div>
               
@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    333 字
+                    766 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    5
+                    10
                      分钟
                   </span>
                 
@@ -182,65 +182,106 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <p>[toc]</p>
-<h3 id="Docker微服务镜像推送至阿里云"><a href="#Docker微服务镜像推送至阿里云" class="headerlink" title="Docker微服务镜像推送至阿里云"></a>Docker微服务镜像推送至阿里云</h3><h4 id="1-登录阿里云Docker-Registry"><a href="#1-登录阿里云Docker-Registry" class="headerlink" title="1.登录阿里云Docker Registry"></a>1.登录阿里云Docker Registry</h4><p>前提:</p>
+              <p>[TOC]</p>
+<h3 id="第一个serverless程序"><a href="#第一个serverless程序" class="headerlink" title="第一个serverless程序"></a>第一个serverless程序</h3><h4 id="1-注册用户"><a href="#1-注册用户" class="headerlink" title="1.注册用户"></a>1.注册用户</h4><p>进入阿里云云开发平台,登录用户.</p>
+<div class="hljs"><pre><code class="hljs html">https://workbench.aliyun.com</code></pre></div>
+
+<p>创建空白应用,本例以NodeJs和FC计算服务为例.</p>
+<p><img src="/2020/12/18/first-serverless-program/001.png" srcset="/img/loading.gif" alt="app-list"></p>
+<p>点击应用卡片上的开发部署按钮,进入云端CloudIDE.</p>
+<p><img src="/2020/12/18/first-serverless-program/002.png" srcset="/img/loading.gif" alt="app-windows"></p>
+<h4 id="2-编辑程序"><a href="#2-编辑程序" class="headerlink" title="2.编辑程序"></a>2.编辑程序</h4><p>查看readme.md,查看帮助<br>编辑helloworld.js</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-built_in">module</span>.exports.handler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event, context, callback</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> request = <span class="hljs-built_in">JSON</span>.parse(event);<span class="hljs-comment">// 请求内容都会存储在 event 中，JSON编码后可遍历查看具体的内容</span>
+    <span class="hljs-comment">// do sth</span>
+    <span class="hljs-keyword">var</span> msg = <span class="hljs-string">&#x27;你好，世界！&#x27;</span>;
+    <span class="hljs-comment">// 返回值格式</span>
+    <span class="hljs-keyword">var</span> responseObject = &#123;
+        isBase64Encoded: <span class="hljs-literal">false</span>,<span class="hljs-comment">//与 body 内容是否进行 base64 编码保持一致</span>
+        statusCode: <span class="hljs-number">200</span>,<span class="hljs-comment">//状态码，根据返回值自行决定适合的状态码</span>
+        headers: &#123;
+        	<span class="hljs-string">&quot;Content-type&quot;</span>: <span class="hljs-string">&quot;text/html; charset=utf-8&quot;</span><span class="hljs-comment">//根据返回值设置正确的 Content-type</span>
+        &#125;,
+        body: msg<span class="hljs-comment">//返回值</span>
+    &#125;;
+    callback(<span class="hljs-literal">null</span>, responseObject);<span class="hljs-comment">//返回结果</span>
+&#125;</code></pre></div>
+
+<h4 id="3-编辑api接口"><a href="#3-编辑api接口" class="headerlink" title="3.编辑api接口"></a>3.编辑api接口</h4><p>   /api文件夹中的文件提供服务接口,如helloworld</p>
 <ul>
-<li>本机安装docker</li>
-<li>本机安装有maven</li>
+<li>data主体: msg</li>
+<li>headers: “Content-type”: “application/json; charset=utf-8”</li>
+<li>body: msg</li>
 </ul>
-<p>登录阿里云docker镜像</p>
-<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 登录.</span>
-% docker login --username=your_name registry.cn-beijing.aliyuncs.com
-<span class="hljs-comment"># 输入服务密码.</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-built_in">module</span>.exports.handler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event, context, callback</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> request = <span class="hljs-built_in">JSON</span>.parse(event);<span class="hljs-comment">// 请求内容都会存储在 event 中，JSON编码后可遍历查看具体的内容</span>
+    <span class="hljs-comment">// do sth</span>
+    <span class="hljs-keyword">var</span> msg = &#123;
+      <span class="hljs-string">&quot;to&quot;</span>: <span class="hljs-string">&quot;世界&quot;</span>,
+      <span class="hljs-string">&quot;from&quot;</span>: <span class="hljs-string">&quot;lingchen&quot;</span>,
+      <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-string">&quot;你好啊!&quot;</span>
+    &#125;;
 
-<h4 id="2-打包微服务"><a href="#2-打包微服务" class="headerlink" title="2.打包微服务"></a>2.打包微服务</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在idea命令窗口.</span>
-% <span class="hljs-built_in">source</span> ~/.bash_profile 
-% mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>
-......
- % ls target 
-classes                                 eureka-0.0.1-SNAPSHOT.jar.original      maven-archiver
-eureka-0.0.1-SNAPSHOT.jar               generated-sources                       maven-status</code></pre></div>
+    <span class="hljs-comment">// 返回值格式</span>
+    <span class="hljs-keyword">var</span> responseObject = &#123;
+        isBase64Encoded: <span class="hljs-literal">false</span>,<span class="hljs-comment">//与 body 内容是否进行 base64 编码保持一致</span>
+        statusCode: <span class="hljs-number">200</span>,<span class="hljs-comment">//状态码，根据返回值自行决定适合的状态码</span>
+        headers: &#123;
+        	<span class="hljs-string">&quot;Content-type&quot;</span>: <span class="hljs-string">&quot;application/json; charset=utf-8&quot;</span><span class="hljs-comment">//根据返回值设置正确的 Content-type</span>
+        &#125;,
+        body: msg<span class="hljs-comment">//返回值</span>
+    &#125;;
+    callback(<span class="hljs-literal">null</span>, responseObject);<span class="hljs-comment">//返回结果</span>
+&#125;</code></pre></div>
 
-<h4 id="3-编写Dockerfile"><a href="#3-编写Dockerfile" class="headerlink" title="3.编写Dockerfile"></a>3.编写Dockerfile</h4><p>在工程根目录下创建Dockerfile文件:</p>
-<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 拉取jdk镜像.</span>
-FROM openjdk:8-alpine
+<h4 id="4-编辑index-html"><a href="#4-编辑index-html" class="headerlink" title="4.编辑index.html"></a>4.编辑index.html</h4><div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 
-<span class="hljs-comment"># 添加微服务jar,并命名为app.jar.</span>
-ADD target/*.jar app.jar
+  <span class="hljs-tag">&lt;<span class="hljs-name">article</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">em</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;to&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">em</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;message&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">address</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;from&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">address</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">article</span>&gt;</span>
 
-<span class="hljs-comment"># 暴露端口号.</span>
-EXPOSE 8761
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;</span>
+<span class="javascript">  fetch(<span class="hljs-string">&#x27;/api/helloworld&#x27;</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>&#123;</span>
+<span class="javascript">    <span class="hljs-keyword">return</span> response.json();</span>
+<span class="javascript">  &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>&#123;</span>
+<span class="javascript">    <span class="hljs-built_in">console</span>.log(msg)</span>
+<span class="javascript">    <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;#to&quot;</span>).innerText = <span class="hljs-string">&quot;美丽的: &quot;</span> + msg.to;</span>
+<span class="javascript">    <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;#message&quot;</span>).innerText = msg.data;</span>
+<span class="javascript">    <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;#from&quot;</span>).innerText = <span class="hljs-string">&quot;热爱着你的: &quot;</span> + msg.from;</span>
+  &#125;)
+  <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
 
-<span class="hljs-comment"># 运行jar.</span>
-ENTRYPOINT [<span class="hljs-string">&quot;java&quot;</span>, <span class="hljs-string">&quot;-jar&quot;</span>, <span class="hljs-string">&quot;/app.jar&quot;</span>]</code></pre></div>
+<h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5.测试"></a>5.测试</h4><p>点击 CloudIDE 侧边栏 「WB」插件，打开「测试」标签页，在「用户路径」中输入我们刚刚创建的helloworld.js的访问地址 + /helloworld</p>
+<p><code>https://test1yi9nuhejv6wza3cxh7.workbenchapi.com/helloworld</code></p>
+<div class="hljs"><pre><code class="hljs html">你好，世界！</code></pre></div>
 
-<h4 id="4-构建微服务docker镜像"><a href="#4-构建微服务docker镜像" class="headerlink" title="4.构建微服务docker镜像"></a>4.构建微服务docker镜像</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 镜像路径:registry.cn-beijing.aliyuncs.com/lcyun/</span>
-<span class="hljs-comment"># 镜像名:eureka</span>
-% docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .
-......
-Successfully tagged registry.cn-beijing.aliyuncs.com/lcyun/eureka:latest
+<p>访问地址:每次测试或者发布部署后都不一样.</p>
+<h4 id="6-部署"><a href="#6-部署" class="headerlink" title="6.部署"></a>6.部署</h4><p>部署上线前，请务必配置到 serverless.js 文件的 SAFE 列表进行保护</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">const</span> SAFE = [
+  <span class="hljs-string">&#x27;/api&#x27;</span>,
+  <span class="hljs-string">&#x27;/helloworld.js&#x27;</span>,
+  <span class="hljs-string">&#x27;/.workbench&#x27;</span>,
+  <span class="hljs-string">&#x27;/serverless.js&#x27;</span>
+];</code></pre></div>
 
-<span class="hljs-comment"># 查看该镜像.</span>
-% docker images
-REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-registry.cn-beijing.aliyuncs.com/lcyun/eureka   latest              7a8fa6abf26e        10 seconds ago      155MB</code></pre></div>
+<p>打开「WB」插件的「部署」标签页，点击「部署」，会弹出部署信息确认，点击「继续部署」开始构建部署，请耐心等待，直到部署完成.</p>
+<p><code>https://test1yi9nuhejv6wza4nran.workbenchapi.com/</code></p>
+<div class="hljs"><pre><code class="hljs html">美丽的: 世界
+你好啊!
+热爱着你的: lingchen</code></pre></div>
 
-<h4 id="5-推送镜像"><a href="#5-推送镜像" class="headerlink" title="5.推送镜像"></a>5.推送镜像</h4><div class="hljs"><pre><code class="hljs bash">% docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
-
-<p>访问阿里云镜像仓库,该镜像已推送.</p>
-<p><img src="/2020/12/11/aliyun-docker-micro/001.png" srcset="/img/loading.gif" alt="docker-registry"></p>
-<h4 id="6-编写shell脚本"><a href="#6-编写shell脚本" class="headerlink" title="6.编写shell脚本"></a>6.编写shell脚本</h4><p>在工程根目录下创建build.sh文件:</p>
-<div class="hljs"><pre><code class="hljs sh"><span class="hljs-meta">#!/usr/bin/env bash</span>
-
-mvn clean package -Dmaven.test.skip=<span class="hljs-literal">true</span>
-
-docker build -t registry.cn-beijing.aliyuncs.com/lcyun/eureka .
-
-docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
-
-<p>启动脚本,一键打包,上传微服务镜像到阿里云仓库</p>
-<div class="hljs"><pre><code class="hljs bash">% bash build.sh</code></pre></div>
-
+<h4 id="7-停止服务"><a href="#7-停止服务" class="headerlink" title="7.停止服务"></a>7.停止服务</h4><p>在应用卡片中,不用应用时,请停止服务,防止流量超过免费限制,产生费用.</p>
+<p><img src="/2020/12/18/first-serverless-program/003.png" srcset="/img/loading.gif" alt="stop-app"></p>
+<p><strong><u>PS: 本文仅为学习与记录.仅供参考!</u></strong></p>
 
             </article>
             <hr>
@@ -253,9 +294,7 @@ docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
                     
                       <a class="hover-with-bg" href="/tags/aliyun/">aliyun</a>
                     
-                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
-                    
-                      <a class="hover-with-bg" href="/tags/micro/">micro</a>
+                      <a class="hover-with-bg" href="/tags/serverless/">serverless</a>
                     
                   </div>
                 
@@ -268,18 +307,12 @@ docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/18/first-serverless-program/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">第一个serverless程序</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/12/10/vmware-mac-centos7/">
-                        <span class="hidden-mobile">Mac-vmware中Centos7网络连接</span>
+                      <a href="/2020/12/11/aliyun-docker-micro/">
+                        <span class="hidden-mobile">Docker微服务镜像推送至阿里云</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -419,7 +452,7 @@ docker push registry.cn-beijing.aliyuncs.com/lcyun/eureka</code></pre></div>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Docker微服务镜像推送至阿里云&nbsp;",
+        "第一个serverless程序&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

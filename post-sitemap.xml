@@ -8,8 +8,16 @@
     </url>
 
     <url>
+        <loc>https://lingchenbill.github.io/2021/01/03/spark-centos-started/</loc>
+        <lastmod>2021-01-03T15:12:24.214Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lingchenbill.github.io/2021/01/03/scala-idea-config/</loc>
-        <lastmod>2021-01-03T08:09:51.258Z</lastmod>
+        <lastmod>2021-01-03T12:53:18.146Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

@@ -157,6 +157,42 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/02/k8s-snap-topology/">10_应用存储和持久化数据卷：存储快照与拓扑调度</a>
+
+      <a href="/2020/10/02/k8s-snap-topology/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+10_应用存储和持久化数据卷：存储快照与拓扑调度一、基本知识存储快照产生背景在使用存储时，为了提高数据操作的容错性，我们通常有需要对线上数据进行snapshot，以及能快速restore的能力。另外，当需要对线上数据进行快速的复制以及迁移等动作，如进行环境的复制、数据开发等功能时，都可以通过存储快照来满足需求，而 K8s 中通过 CSI Snapshotter controller 来</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-02
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/snap/">snap</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/10/01/k8s-pv-pvc/">9_应用存储和持久化数据卷-核心知识</a>
 
       <a href="/2020/10/01/k8s-pv-pvc/" class="index-excerpt">
@@ -505,53 +541,6 @@ f：将标记的视频片段收藏，片段上方会出现绿色横框双击：�
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/07/03/docker-mysql-ssh/" target="_self">
-          <img src="/docker-mysql-ssh/banner.png" srcset="/img/loading.gif" alt="Docker之mysql安装">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/07/03/docker-mysql-ssh/">Docker之mysql安装</a>
-
-      <a href="/2020/07/03/docker-mysql-ssh/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Docker之mysql安装Dockerfile下载将github中的mysql的Dockerfile下载下来，地址如下：
-https://github.com/DockerPool/mysql.git
-mysql_sshd % ls
-Dockerfile		LICENSE			README.md		create_db.sh		import_sql.sh		my.cnf			mysql</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-07-03
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/mysql/">mysql</a>
-            
-              <a href="/tags/ssh/">ssh</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -716,20 +705,5 @@ Dockerfile		LICENSE			README.md		create_db.sh		import_sql.sh		my.cnf			mysql</di
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    198 字
+                    1.2k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    3
+                    19
                      分钟
                   </span>
                 
@@ -224,6 +224,187 @@ scala-2.12.11</code></pre></div>
 <div class="hljs"><pre><code class="hljs bash">Hello spark!
 Process finished with <span class="hljs-built_in">exit</span> code 0</code></pre></div>
 
+<h4 id="5-WordCount程序"><a href="#5-WordCount程序" class="headerlink" title="5.WordCount程序"></a>5.WordCount程序</h4><p>依赖pom:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>atg-classes<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.lc.bigdata<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spark-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">spark.version</span>&gt;</span>3.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">spark.version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.spark<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spark-core_2.12<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spark.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>数据准备</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># datas/1.txt</span>
+Hello World
+Hello Spark
+
+<span class="hljs-comment"># datas/2.txt</span>
+Hello World
+Hello Spark</code></pre></div>
+
+<p>程序</p>
+<div class="hljs"><pre><code class="hljs scala"><span class="hljs-keyword">package</span> com.atg.bigdata.spark.core.wc
+
+<span class="hljs-keyword">import</span> org.apache.spark.rdd.<span class="hljs-type">RDD</span>
+<span class="hljs-keyword">import</span> org.apache.spark.&#123;<span class="hljs-type">SparkConf</span>, <span class="hljs-type">SparkContext</span>&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 文字统计.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * @description:</span>
+<span class="hljs-comment"> * @author: lingchen</span>
+<span class="hljs-comment"> * @date: 2021/1/3</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Spark01_WordCount</span> </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span></span>(args: <span class="hljs-type">Array</span>[<span class="hljs-type">String</span>]): <span class="hljs-type">Unit</span> = &#123;
+
+    <span class="hljs-comment">// application.</span>
+
+    <span class="hljs-comment">// Spark框架.</span>
+    <span class="hljs-comment">// TODO 建立和Spark框架的连接.</span>
+    <span class="hljs-keyword">val</span> sparkConf = <span class="hljs-keyword">new</span> <span class="hljs-type">SparkConf</span>().setMaster(<span class="hljs-string">&quot;local&quot;</span>).setAppName(<span class="hljs-string">&quot;WordCount&quot;</span>)
+    <span class="hljs-keyword">val</span> sc = <span class="hljs-keyword">new</span> <span class="hljs-type">SparkContext</span>(sparkConf)
+
+    <span class="hljs-comment">// TODO 执行业务操作.</span>
+    <span class="hljs-comment">// 1. 读取数据文件,获取一行一行的数据.</span>
+    <span class="hljs-keyword">val</span> lines: <span class="hljs-type">RDD</span>[<span class="hljs-type">String</span>] = sc.textFile(<span class="hljs-string">&quot;datas&quot;</span>)
+
+    <span class="hljs-comment">// 2. 将一行数据进行拆分,形成一个一个的单词.</span>
+    <span class="hljs-comment">// 扁平化操作. -&gt; 将整体拆分成个体的操作.</span>
+    <span class="hljs-keyword">val</span> words: <span class="hljs-type">RDD</span>[<span class="hljs-type">String</span>] = lines.flatMap(_.split(<span class="hljs-string">&quot; &quot;</span>))
+
+    <span class="hljs-comment">// 3. 将数据根据单词进行分组,便于统计.</span>
+    <span class="hljs-keyword">val</span> wordGroup: <span class="hljs-type">RDD</span>[(<span class="hljs-type">String</span>, <span class="hljs-type">Iterable</span>[<span class="hljs-type">String</span>])] = words.groupBy(word =&gt; word)
+
+    <span class="hljs-comment">// 4. 对分组后的数据进行转换.</span>
+    <span class="hljs-keyword">val</span> wordToCount = wordGroup.map &#123;
+      <span class="hljs-keyword">case</span> (word, list) =&gt; &#123;
+        (word, list.size)
+      &#125;
+    &#125;
+
+    <span class="hljs-comment">// 5. 将转换结果采集到控制台打印出来.</span>
+    <span class="hljs-keyword">val</span> array: <span class="hljs-type">Array</span>[(<span class="hljs-type">String</span>, <span class="hljs-type">Int</span>)] = wordToCount.collect()
+
+    <span class="hljs-comment">// (Hello,4)</span>
+    <span class="hljs-comment">// (World,2)</span>
+    <span class="hljs-comment">// (Spark,2)</span>
+    array.foreach(println)
+
+    <span class="hljs-comment">// TODO 关闭连接.</span>
+    sc.stop()
+  &#125;
+&#125;</code></pre></div>
+
+<p>运行程序</p>
+<div class="hljs"><pre><code class="hljs bash">(Hello,4)
+(World,2)
+(Spark,2)</code></pre></div>
+
+<h4 id="6-Idea变量配置"><a href="#6-Idea变量配置" class="headerlink" title="6.Idea变量配置"></a>6.Idea变量配置</h4><p>在 IDEA 编写 Scala 时，使用 <code>cmd</code> + <code>option</code> + <code>v</code> 自动生成变量时，默认并不会补充变量类型</p>
+<p>cmd + option + v -&gt; setting -&gt; local definition -&gt; 勾上.</p>
+<p>在变量语句后,输入.var + enter -&gt; 自动补全变量名(包括变量类型)</p>
+<h4 id="7-WordCount优化"><a href="#7-WordCount优化" class="headerlink" title="7.WordCount优化"></a>7.WordCount优化</h4><p>Spark方法实现</p>
+<div class="hljs"><pre><code class="hljs scala"><span class="hljs-keyword">package</span> com.atg.bigdata.spark.core.wc
+
+<span class="hljs-keyword">import</span> org.apache.spark.rdd.<span class="hljs-type">RDD</span>
+<span class="hljs-keyword">import</span> org.apache.spark.&#123;<span class="hljs-type">SparkConf</span>, <span class="hljs-type">SparkContext</span>&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 文字统计(Spark优化).</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * @description:</span>
+<span class="hljs-comment"> * @author: lingchen</span>
+<span class="hljs-comment"> * @date: 2021/1/3</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Spark03_WordCount</span> </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span></span>(args: <span class="hljs-type">Array</span>[<span class="hljs-type">String</span>]): <span class="hljs-type">Unit</span> = &#123;
+
+    <span class="hljs-comment">// 建立和Spark框架的连接.</span>
+    <span class="hljs-keyword">val</span> sparkConf = <span class="hljs-keyword">new</span> <span class="hljs-type">SparkConf</span>().setMaster(<span class="hljs-string">&quot;local&quot;</span>).setAppName(<span class="hljs-string">&quot;WordCount&quot;</span>)
+    <span class="hljs-keyword">val</span> sc = <span class="hljs-keyword">new</span> <span class="hljs-type">SparkContext</span>(sparkConf)
+
+    <span class="hljs-comment">// 执行业务操作.</span>
+    <span class="hljs-comment">// 1. 读取数据文件,获取一行一行的数据.</span>
+    <span class="hljs-keyword">val</span> lines: <span class="hljs-type">RDD</span>[<span class="hljs-type">String</span>] = sc.textFile(<span class="hljs-string">&quot;datas&quot;</span>)
+
+    <span class="hljs-comment">// 2. 将一行数据进行拆分,形成一个一个的单词.</span>
+    <span class="hljs-comment">// 扁平化操作. -&gt; 将整体拆分成个体的操作.</span>
+    <span class="hljs-keyword">val</span> words: <span class="hljs-type">RDD</span>[<span class="hljs-type">String</span>] = lines.flatMap(_.split(<span class="hljs-string">&quot; &quot;</span>))
+
+    <span class="hljs-comment">// 3: 将单词次数加入.</span>
+    <span class="hljs-keyword">val</span> wordToOne = words.map(
+      word =&gt; (word, <span class="hljs-number">1</span>)
+    )
+
+    <span class="hljs-comment">// spark优化:</span>
+    <span class="hljs-comment">// 4 Spark框架提供了更多的功能,可以将分组和聚合使用一个方法实现.</span>
+    <span class="hljs-keyword">val</span> wordToCount: <span class="hljs-type">RDD</span>[(<span class="hljs-type">String</span>, <span class="hljs-type">Int</span>)] = wordToOne.reduceByKey(_ + _)
+
+    <span class="hljs-comment">// 5. 将转换结果采集到控制台打印出来.</span>
+    <span class="hljs-keyword">val</span> array: <span class="hljs-type">Array</span>[(<span class="hljs-type">String</span>, <span class="hljs-type">Int</span>)] = wordToCount.collect()
+
+    <span class="hljs-comment">// (Hello,4)</span>
+    <span class="hljs-comment">// (World,2)</span>
+    <span class="hljs-comment">// (Spark,2)</span>
+    array.foreach(println)
+
+    <span class="hljs-comment">// 关闭连接.</span>
+    sc.stop()
+  &#125;
+&#125;</code></pre></div>
+
+<p>程序运行:</p>
+<div class="hljs"><pre><code class="hljs bash">(Hello,4)
+(World,2)
+(Spark,2)</code></pre></div>
+
+<h4 id="8-日志配置"><a href="#8-日志配置" class="headerlink" title="8.日志配置"></a>8.日志配置</h4><p>为了在控制台不显示过多日志<br>配置log4j.properties</p>
+<div class="hljs"><pre><code class="hljs properties"><span class="hljs-meta">log4j.rootCategory</span>=<span class="hljs-string">ERROR, console</span>
+<span class="hljs-meta">log4j.appender.console</span>=<span class="hljs-string">org.apache.log4j.ConsoleAppender</span>
+<span class="hljs-meta">log4j.appender.console.target</span>=<span class="hljs-string">System.err</span>
+<span class="hljs-meta">log4j.appender.console.layout</span>=<span class="hljs-string">org.apache.log4j.PatternLayout</span>
+<span class="hljs-meta">log4j.appender.console.layout.ConversionPattern</span>=<span class="hljs-string">%d&#123;yy/MM/dd HH:mm:ss&#125; %p %c&#123;1&#125;: %m%n</span>
+
+<span class="hljs-comment"># Set the default spark-shell log level to ERROR. When running the spark-shell,</span>
+<span class="hljs-comment"># the log level for this class is used to overwrite the root logger&#x27;s log level, so that</span>
+<span class="hljs-comment"># the user can have different defaults for the shell and regular Spark apps.</span>
+
+<span class="hljs-meta">log4j.logger.org.apache.spark.repl.Main</span>=<span class="hljs-string">ERROR</span>
+
+<span class="hljs-comment"># Settings to quiet third party logs that are too verbose</span>
+<span class="hljs-meta">log4j.logger.org.spark_project.jetty</span>=<span class="hljs-string">ERROR</span>
+<span class="hljs-meta">log4j.logger.org.spark_project.jetty.util.component.AbstractLifeCycle</span>=<span class="hljs-string">ERROR</span>
+<span class="hljs-meta">log4j.logger.org.apache.spark.repl.SparkIMain$exprTyper</span>=<span class="hljs-string">ERROR</span>
+<span class="hljs-meta">log4j.logger.org.apache.spark.repl.SparkILoop$SparkILoopInterpreter</span>=<span class="hljs-string">ERROR</span>
+<span class="hljs-meta">log4j.logger.org.apache.parquet</span>=<span class="hljs-string">ERROR</span>
+<span class="hljs-meta">log4j.logger.parquet</span>=<span class="hljs-string">ERROR</span>
+
+<span class="hljs-comment"># SPARK-9183: Settings to avoid annoying messages when looking up nonexistent UDFs in SparkSQL with Hive support</span>
+<span class="hljs-meta">log4j.logger.org.apache.hadoop.hive.metastore.RetryingHMSHandler</span>=<span class="hljs-string">FATAL</span>
+<span class="hljs-meta">log4j.logger.org.apache.hadoop.hive.ql.exec.FunctionRegistry</span>=<span class="hljs-string">ERROR</span></code></pre></div>
+
 <p><strong><u>Ps:本文仅为学习记录,仅供学习与参考.</u></strong></p>
 
             </article>
@@ -249,6 +430,12 @@ Process finished with <span class="hljs-built_in">exit</span> code 0</code></pre
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2021/01/03/spark-centos-started/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spark的local环境安装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">
@@ -470,20 +657,5 @@ Process finished with <span class="hljs-built_in">exit</span> code 0</code></pre
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

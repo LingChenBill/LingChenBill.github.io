@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://lingchenbill.github.io/2021/01/03/scala-idea-config/</loc>
+        <lastmod>2021-01-03T08:09:51.258Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lingchenbill.github.io/2020/12/22/keycloak-getting-started/</loc>
         <lastmod>2020-12-23T14:32:29.800Z</lastmod>
         <changefreq>weekly</changefreq>

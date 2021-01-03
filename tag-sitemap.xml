@@ -3,6 +3,20 @@
 
 
     <url>
+        <loc>https://lingchenbill.github.io/tags/scala/</loc>
+        <lastmod>2021-01-03T08:09:51.258Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lingchenbill.github.io/tags/idea/</loc>
+        <lastmod>2021-01-03T08:09:51.258Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://lingchenbill.github.io/tags/keycloak/</loc>
         <lastmod>2020-12-23T14:32:29.800Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -320,13 +334,6 @@
     <url>
         <loc>https://lingchenbill.github.io/tags/dsl/</loc>
         <lastmod>2020-04-29T15:35:16.820Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://lingchenbill.github.io/tags/idea/</loc>
-        <lastmod>2020-04-29T10:10:48.700Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

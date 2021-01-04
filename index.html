@@ -157,6 +157,58 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/04/spark-standalone/">Spark的Standalone模式配置</a>
+
+      <a href="/2021/01/04/spark-standalone/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Spark的Standalone模式配置1.主机环境配置
+Linux环境3个节点
+3个节点网络互通
+3个节点均可连接外网
+
+$ vi /etc/hosts
+
+10.4.7.61 hdss7-61 hdss7-61.host.com
+10.4.7.62 hdss7-62 hdss7-62.host.com
+10.4.7.63 hdss7-63 hdss7-63.host.com
+
+
+2.</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-04
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spark/">spark</a>
+            
+              <a href="/tags/standalone/">standalone</a>
+            
+              <a href="/tags/master/">master</a>
+            
+              <a href="/tags/slave/">slave</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/03/spark-centos-started/">Spark的local环境安装</a>
 
       <a href="/2021/01/03/spark-centos-started/" class="index-excerpt">
@@ -555,50 +607,6 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/10/04/k8s-app-status/">11_可观测性_你的应用健康</a>
-
-      <a href="/2020/10/04/k8s-app-status/" class="index-excerpt">
-        
-        
-          
-        
-        <div>11_可观测性_你的应用健康一、需求来源首先来看一下，整个需求的来源：当把应用迁移到 Kubernetes 之后，要如何去保障应用的健康与稳定呢？其实很简单，可以从两个方面来进行增强： 
-
-首先是提高应用的可观测性。
-提高应用的可恢复能力。
-
-从可观测性上来讲，可以在三个方面来去做增强：
-
-首先是应用的健康状态上面，可以实时地进行观测；
-第二个是可以获取应用的资源使用情况；
-第三个是可以拿到应用的</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-10-04
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/status/">status</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -763,5 +771,20 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
 
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

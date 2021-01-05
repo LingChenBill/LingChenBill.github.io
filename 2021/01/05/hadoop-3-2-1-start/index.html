@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Hadoop-3.2.1安装 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-01-05 21:33">
+                    January 5, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    22
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="Hadoop-3-2-1安装"><a href="#Hadoop-3-2-1安装" class="headerlink" title="Hadoop-3.2.1安装"></a>Hadoop-3.2.1安装</h3><h4 id="1-前提"><a href="#1-前提" class="headerlink" title="1.前提"></a>1.前提</h4><p>配置前提</p>
+<ul>
+<li>centos7三个虚拟节点</li>
+<li>主机名配置(/etc/hosts)</li>
+<li>节点间免密登录</li>
+<li>jdk环境配置</li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">$ vi /etc/hosts
+
+10.4.7.61 hdss7-61 hdss7-61.host.com
+10.4.7.62 hdss7-62 hdss7-62.host.com
+10.4.7.63 hdss7-63 hdss7-63.host.com
+
+<span class="hljs-comment"># 节点间免密登录.</span>
+$ <span class="hljs-built_in">cd</span> ~/.ssh/
+ssh-keygen
+ssh-copy-id hdss7-61
+ssh-copy-id hdss7-62
+ssh-copy-id hdss7-63
+
+<span class="hljs-comment"># jdk环境配置.</span>
+$ /etc/profile.d/java.sh
+<span class="hljs-built_in">export</span> JAVA_HOME=/usr/<span class="hljs-built_in">local</span>/soft/jdk1.8.0_221
+<span class="hljs-built_in">export</span> CLASSPATH=.:<span class="hljs-variable">$JAVA_HOME</span>/lib/dt.jar:<span class="hljs-variable">$JAVA_HOME</span>/lib/tools.jar</code></pre></div>
+
+<h4 id="2-hadoop安装"><a href="#2-hadoop安装" class="headerlink" title="2.hadoop安装"></a>2.hadoop安装</h4><p>国内镜像节点:</p>
+<div class="hljs"><pre><code class="hljs bash">https://mirror.bit.edu.cn/apache/hadoop/common/</code></pre></div>
+
+<p>此处选择hadoop-3.2.1版本.</p>
+<div class="hljs"><pre><code class="hljs bash">tar -zxvf hadoop-3.2.1.tar.gz -C /opt/hadoop-3.2.1
+<span class="hljs-comment"># 创建软链接.</span>
+ln -s /opt/hadoop-3.2.1/ /opt/hadoop
+
+[root@hdss7-61 opt]<span class="hljs-comment"># ll</span>
+总用量 0
+lrwxrwxrwx  1 root root  18 1月   6 03:03 hadoop -&gt; /opt/hadoop-3.2.1/
+drwxr-xr-x 10 1001 1001 161 1月   6 03:47 hadoop-3.2.1</code></pre></div>
+
+<h4 id="3-环境变量配置"><a href="#3-环境变量配置" class="headerlink" title="3.环境变量配置"></a>3.环境变量配置</h4><div class="hljs"><pre><code class="hljs bash">vi /etc/profile.d/hadoop.sh
+
+<span class="hljs-built_in">export</span> HADOOP_HOME=/opt/hadoop
+<span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$HADOOP_HOME</span>/bin:<span class="hljs-variable">$HADOOP_HOME</span>/sbin
+
+<span class="hljs-built_in">export</span> HADOOP_COMMON_HOME=<span class="hljs-variable">$HADOOP_HOME</span>
+<span class="hljs-built_in">export</span> HADOOP_HDFS_HOME=<span class="hljs-variable">$HADOOP_HOME</span>
+<span class="hljs-built_in">export</span> HADOOP_MAPRED_HOME=<span class="hljs-variable">$HADOOP_HOME</span>
+<span class="hljs-built_in">export</span> HADOOP_YARN_HOME=<span class="hljs-variable">$HADOOP_HOME</span>
+
+<span class="hljs-built_in">export</span> HADOOP_INSTALL=<span class="hljs-variable">$HADOOP_HOME</span>
+<span class="hljs-built_in">export</span> HADOOP_COMMON_LIB_NATIVE_DIR=<span class="hljs-variable">$HADOOP_HOME</span>/lib/native
+<span class="hljs-built_in">export</span> HADOOP_CONF_DIR=<span class="hljs-variable">$HADOOP_HOME</span>
+<span class="hljs-built_in">export</span> HADOOP_LIBEXEC_DIR=<span class="hljs-variable">$HADOOP_HOME</span>/libexec
+<span class="hljs-built_in">export</span> JAVA_LIBRARY_PATH=<span class="hljs-variable">$HADOOP_HOME</span>/lib/native:<span class="hljs-variable">$JAVA_LIBRARY_PATH</span>
+<span class="hljs-built_in">export</span> HADOOP_CONF_DIR=<span class="hljs-variable">$HADOOP_HOME</span>/etc/hadoop
+
+<span class="hljs-built_in">export</span> HDFS_DATANODE_USER=root
+<span class="hljs-comment"># 下方注释掉.</span>
+<span class="hljs-comment"># export HDFS_DATANODE_SECURE_USER=root</span>
+<span class="hljs-built_in">export</span> HDFS_SECONDARYNAMENODE_USER=root
+<span class="hljs-built_in">export</span> HDFS_NAMENODE_USER=root
+
+<span class="hljs-built_in">export</span> YARN_RESOURCEMANAGER_USER=root
+<span class="hljs-built_in">export</span> YARN_NODEMANAGER_USER=root</code></pre></div>
+
+<p>使环境变量生效.</p>
+<div class="hljs"><pre><code class="hljs bash">$ <span class="hljs-built_in">source</span> /etc/profile</code></pre></div>
+
+<p>给hadoop建立文件夹</p>
+<div class="hljs"><pre><code class="hljs bash">$ mkdir -p /opt/datas/hadoop</code></pre></div>
+
+<h4 id="4-hadoop文件配置"><a href="#4-hadoop文件配置" class="headerlink" title="4.hadoop文件配置"></a>4.hadoop文件配置</h4><p><strong>修改<code>$HADOOP_HOME/etc/hadoop/core-site.xml</code>,</strong><br>HADOOP_HOME目录为: <code>/opt/hadoop</code></p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-meta">&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Put site-specific property overrides in this file. --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>fs.default.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdfs://hdss7-61:9000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>hadoop.tmp.dir<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>/opt/datas/hadoop/tmp<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<p><strong>修改<code>$HADOOP_HOME/etc/hadoop/hdfs-site.xml</code>，</strong><br>配置副本个数以及数据存放的路径</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-meta">&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Put site-specific property overrides in this file. --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.replication<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.namenode.name.dir<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>/opt/datas/hadoop/hdfs/name<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.namenode.data.dir<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>/opt/datas/hadoop/hdfs/data<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.namenode.http-address<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdss7-61:50070<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdss7-62:50090<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.permissions<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<p>注意: <code>/opt/datas/hadoop</code>已经创建好.</p>
+<p><strong>修改<code>$HADOOP_HOME/etc/hadoop/mapred-site.xml</code></strong><br>配置使用yarn框架执行mapreduce处理程序，与之前版本多了后面两步,<br>不配置mapreduce.application.classpath这个参数mapreduce运行时会报错： Error: Could not find or load main class org.apache.hadoop.mapreduce.v2.app.MRAppMaster</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="hljs-meta">&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Put site-specific property overrides in this file. --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.framework.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>yarn<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.application.classpath<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>
+            /opt/hadoop/etc/hadoop,
+            /opt/hadoop/share/hadoop/common/*,
+            /opt/hadoop/share/hadoop/common/lib/*,
+            /opt/hadoop/share/hadoop/hdfs/*,
+            /opt/hadoop/share/hadoop/hdfs/lib/*,
+            /opt/hadoop/share/hadoop/mapreduce/*,
+            /opt/hadoop/share/hadoop/mapreduce/lib/*,
+            /opt/hadoop/share/hadoop/yarn/*,
+            /opt/hadoop/share/hadoop/yarn/lib/*
+        <span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<p><strong>修改<code>$HADOOP_HOME/etc/hadoop/yarn-site.xml</code></strong></p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Site specific YARN configuration properties --&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.framework.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>yarn<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.application.classpath<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>
+            /opt/hadoop/etc/hadoop,
+            /opt/hadoop/share/hadoop/common/*,
+            /opt/hadoop/share/hadoop/common/lib/*,
+            /opt/hadoop/share/hadoop/hdfs/*,
+            /opt/hadoop/share/hadoop/hdfs/lib/*,
+            /opt/hadoop/share/hadoop/mapreduce/*,
+            /opt/hadoop/share/hadoop/mapreduce/lib/*,
+            /opt/hadoop/share/hadoop/yarn/*,
+            /opt/hadoop/share/hadoop/yarn/lib/*
+        <span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+
+<p>注意:上述中的<code>/opt/hadoop/</code>,是因为加了一个软链接.<br><code>ln -s /opt/hadoop-3.2.1/ /opt/hadoop</code></p>
+<p><strong>worker文件里面添加</strong></p>
+<div class="hljs"><pre><code class="hljs bash">$ vi /opt/hadoop/etc/hadoop/workers
+
+hdss7-61
+hdss7-62
+hdss7-63</code></pre></div>
+
+<h4 id="5-分发文件到节点"><a href="#5-分发文件到节点" class="headerlink" title="5.分发文件到节点"></a>5.分发文件到节点</h4><p>把环境变量文件<code>/etc/profile.d/hadoop.sh</code>，<code>/opt/hadoop-3.2.0</code>拷贝到hdss7-62和hdss7-63</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># java脚本.</span>
+$ rsync -av /etc/profile.d/java.sh hdss7-62:/etc/profile.d/java.sh
+$ rsync -av /etc/profile.d/java.sh hdss7-63:/etc/profile.d/java.sh
+
+<span class="hljs-comment"># hadoop.sh脚本.</span>
+$ rsync -av /etc/profile.d/hadoop.sh hdss7-62:/etc/profile.d/hadoop.sh
+$ rsync -av /etc/profile.d/hadoop.sh hdss7-63:/etc/profile.d/hadoop.sh
+
+<span class="hljs-comment"># hadoop文件夹.</span>
+$ rsync -av /opt/hadoop-3.2.1/ hdss7-62:/opt/hadoop-3.2.1/
+$ rsync -av /opt/hadoop-3.2.1/ hdss7-63:/opt/hadoop-3.2.1/
+
+<span class="hljs-comment"># 在hdss7-62和hdss7-63节点上使环境生效.</span>
+$ <span class="hljs-built_in">source</span> /etc/profile
+
+<span class="hljs-comment"># 在hdss7-62和hdss7-63节点上创建hadoop文件夹.</span>
+$ mkdir -p /opt/datas/hadoop</code></pre></div>
+
+<h4 id="6-启动hadoop"><a href="#6-启动hadoop" class="headerlink" title="6.启动hadoop"></a>6.启动hadoop</h4><p>初始化hadoop data</p>
+<div class="hljs"><pre><code class="hljs bash">$ hdfs namenode -format</code></pre></div>
+
+<p>启动和停止命令</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-61 opt]<span class="hljs-comment"># cd /opt/hadoop/</span>
+$ sbin/start-all.sh
+$ sbin/stop-all.sh</code></pre></div>
+
+<p>访问网址查看hadoop:</p>
+<div class="hljs"><pre><code class="hljs bash">http://10.4.7.61:50070/</code></pre></div>
+
+<img src="/2021/01/05/hadoop-3-2-1-start/001.png" srcset="/img/loading.gif" alt="Datanode-info" style="zoom:50%;">
+
+
+
+<p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/hadoop/">hadoop</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/04/spark-standalone/">
+                        <span class="hidden-mobile">Spark的Standalone模式配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hadoop-3.2.1安装&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

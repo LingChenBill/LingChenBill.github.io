@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Spark的yarn模式 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-01-08 20:32">
+                    January 8, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    984 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    18
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="Spark的yarn模式"><a href="#Spark的yarn模式" class="headerlink" title="Spark的yarn模式"></a>Spark的yarn模式</h3><h4 id="1-前提"><a href="#1-前提" class="headerlink" title="1.前提"></a>1.前提</h4><p>Spark主要是计算框架,而不是资源调度框架.<br>在Yarn环境下Spark的如何工作的(Yarn使用非常多), 需要的环境如下:</p>
+<ul>
+<li>三个虚拟节点(免密登录)</li>
+<li>hadoop-3.2.1</li>
+<li>zookeeper-3.4.14</li>
+</ul>
+<h4 id="2-安装Spark"><a href="#2-安装Spark" class="headerlink" title="2.安装Spark"></a>2.安装Spark</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-61 src]<span class="hljs-comment"># mkdir /opt/spark-yarn</span>
+[root@hdss7-61 src]<span class="hljs-comment"># tar -zxvf spark-3.0.0-bin-hadoop3.2.tgz -C /opt/spark-yarn/</span>
+[root@hdss7-61 spark-yarn]<span class="hljs-comment"># ln -s /opt/spark-yarn/spark-3.0.0-bin-hadoop3.2/ /opt/spark-yarn/spark</span></code></pre></div>
+<p>修改yarn-site.xml文件:</p>
+<p><code>vi /opt/hadoop/etc/hadoop/yarn-site.xml</code></p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Site specific YARN configuration properties --&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>yarn.nodemanager.pmem-check-enabled<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>yarn.nodemanager.vmem-check-enabled<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.framework.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>yarn<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.application.classpath<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>
+            /opt/hadoop/etc/hadoop,
+            /opt/hadoop/share/hadoop/common/*,
+            /opt/hadoop/share/hadoop/common/lib/*,
+            /opt/hadoop/share/hadoop/hdfs/*,
+            /opt/hadoop/share/hadoop/hdfs/lib/*,
+            /opt/hadoop/share/hadoop/mapreduce/*,
+            /opt/hadoop/share/hadoop/mapreduce/lib/*,
+            /opt/hadoop/share/hadoop/yarn/*,
+            /opt/hadoop/share/hadoop/yarn/lib/*
+        <span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
+<p>配置spark文件:</p>
+<div class="hljs"><pre><code class="hljs sh">$ vi /opt/spark-yarn/spark/conf/
+$ cp spark-env.sh.template spark-env.sh
+$ vi spark-env.sh
+
+<span class="hljs-comment"># 在文件末尾添加.</span>
+<span class="hljs-built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="hljs-string">&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hdss7-61:2181,hdss7-62:2181,hdss7-63:2181 -Dspark.deploy.zookeeper.dir=/spark&quot;</span>
+
+<span class="hljs-built_in">export</span> JAVA_HOME=/usr/<span class="hljs-built_in">local</span>/soft/jdk1.8.0_221
+SPARK_CONF_DIR=/opt/hadoop/etc/hadoop
+
+[root@hdss7-61 conf]<span class="hljs-comment"># cp slaves.template slaves</span>
+[root@hdss7-61 conf]<span class="hljs-comment"># vi slaves</span>
+
+<span class="hljs-comment"># localhost</span>
+hdss7-61
+hdss7-62
+hdss7-63
+</code></pre></div>
+<p>分发文件到名节点:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-61 opt]<span class="hljs-comment"># rsync -av /opt/spark-yarn/ hdss7-62:/opt/spark-yarn/</span>
+[root@hdss7-61 opt]<span class="hljs-comment"># rsync -av /opt/spark-yarn/ hdss7-63:/opt/spark-yarn/</span>
+
+[root@hdss7-61 opt]<span class="hljs-comment"># rsync -av /opt/hadoop/etc/hadoop/ hdss7-62:/opt/hadoop/etc/hadoop/</span>
+[root@hdss7-61 opt]<span class="hljs-comment"># rsync -av /opt/hadoop/etc/hadoop/ hdss7-63:/opt/hadoop/etc/hadoop/</span>
+</code></pre></div>
+<h4 id="3-启动"><a href="#3-启动" class="headerlink" title="3.启动"></a>3.启动</h4><p>hdfs与spark的yarn:</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 启动hadoop.</span>
+[root@hdss7-63 opt]<span class="hljs-comment"># cd /opt/hadoop</span>
+[root@hdss7-63 hadoop]<span class="hljs-comment"># sbin/start-yarn.sh</span>
+[root@hdss7-63 hadoop]<span class="hljs-comment"># sbin/start-dfs.sh</span>
+<span class="hljs-comment"># 启动zookeeper.</span>
+[root@hdss7-63 zookeeper]<span class="hljs-comment"># bin/zkServer.sh start</span></code></pre></div>
+<h4 id="4-提交应用"><a href="#4-提交应用" class="headerlink" title="4.提交应用"></a>4.提交应用</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-63 opt]<span class="hljs-comment"># cd /opt/spark-yarn/spark</span>
+[root@hdss7-63 spark]<span class="hljs-comment"># </span>
+bin/spark-submit \
+--class org.apache.spark.examples.SparkPi \
+--master yarn \
+./examples/jars/spark-examples_2.12-3.0.0.jar \
+10
+
+......
+2021-01-09 04:17:47,718 INFO yarn.Client: 
+         client token: N/A
+         diagnostics: AM container is launched, waiting <span class="hljs-keyword">for</span> AM container to Register with RM
+         ApplicationMaster host: N/A
+         ApplicationMaster RPC port: -1
+         queue: default
+         start time: 1610137066438
+         final status: UNDEFINED
+         tracking URL: http://hdss7-63:8088/proxy/application_1610136712974_0002/
+         user: root
+......</code></pre></div>
+<p>访问网址:</p>
+<div class="hljs"><pre><code class="hljs bash">http://10.4.7.63:8088/</code></pre></div>
+<p><img src="/2021/01/08/spark-yarn-start/001.png" srcset="/img/loading.gif" alt="hadoop"></p>
+<h4 id="5-配置历史服务器"><a href="#5-配置历史服务器" class="headerlink" title="5.配置历史服务器"></a>5.配置历史服务器</h4><div class="hljs"><pre><code class="hljs sh">[root@hdss7-63 conf]<span class="hljs-comment"># cd /opt/spark-yarn/spark/conf</span>
+[root@hdss7-63 conf]<span class="hljs-comment"># vi spark-env.sh</span>
+
+<span class="hljs-built_in">export</span> SPARK_HISTORY_OPTS=<span class="hljs-string">&quot;-Dspark.history.ui.port=18080 -Dspark.history.fs.logDirectory=hdfs://hdss7-61:9000/directory -Dspark.history.retainedApplications=30&quot;</span>
+<span class="hljs-built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="hljs-string">&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hdss7-61:2181,hdss7-62:2181,hdss7-63:2181 -Dspark.deploy.zookeeper.dir=/spark&quot;</span>
+
+<span class="hljs-built_in">export</span> JAVA_HOME=/usr/<span class="hljs-built_in">local</span>/soft/jdk1.8.0_221
+SPARK_CONF_DIR=/opt/hadoop/etc/hadoop
+
+[root@hdss7-63 conf]<span class="hljs-comment"># vi spark-env.sh</span>
+spark.yarn.historyServer.address=hdss7-61:18080
+spark.history.ui.port=18080
+
+spark.eventLog.enabled           <span class="hljs-literal">true</span>
+spark.eventLog.dir               hdfs://hdss7-61:9000/directory
+
+[root@hdss7-63 conf]<span class="hljs-comment"># rsync -av /opt/spark-yarn/spark/conf/ hdss7-61:/opt/spark-yarn/spark/conf/</span>
+[root@hdss7-63 conf]<span class="hljs-comment"># rsync -av /opt/spark-yarn/spark/conf/ hdss7-62:/opt/spark-yarn/spark/conf/</span></code></pre></div>
+<p>启动历史服务</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-63 spark]<span class="hljs-comment"># sbin/start-history-server.sh </span>
+starting org.apache.spark.deploy.history.HistoryServer, logging to /opt/spark-yarn/spark/logs/spark-root-org.apache.spark.deploy.history.HistoryServer-1-hdss7-63.host.com.out</code></pre></div>
+<p>提交应用</p>
+<div class="hljs"><pre><code class="hljs less"># 以客户端的方式来提交,会打印出<span class="hljs-selector-tag">PI</span>结果.
+<span class="hljs-selector-attr">[root@hdss7-63 spark]</span># 
+<span class="hljs-selector-tag">bin</span>/<span class="hljs-selector-tag">spark-submit</span> \
+<span class="hljs-selector-tag">--class</span> <span class="hljs-selector-tag">org</span><span class="hljs-selector-class">.apache</span><span class="hljs-selector-class">.spark</span><span class="hljs-selector-class">.examples</span><span class="hljs-selector-class">.SparkPi</span> \
+<span class="hljs-selector-tag">--master</span> <span class="hljs-selector-tag">yarn</span> \
+<span class="hljs-selector-tag">--deploy-mode</span> <span class="hljs-selector-tag">client</span> \
+./<span class="hljs-selector-tag">examples</span>/<span class="hljs-selector-tag">jars</span>/<span class="hljs-selector-tag">spark-examples_2</span><span class="hljs-selector-class">.12-3</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.jar</span> \
+<span class="hljs-selector-tag">10</span>
+
+......
+<span class="hljs-selector-tag">2021-01-09</span> <span class="hljs-selector-tag">04</span><span class="hljs-selector-pseudo">:45</span><span class="hljs-selector-pseudo">:50</span>,<span class="hljs-selector-tag">783</span> <span class="hljs-selector-tag">INFO</span> <span class="hljs-selector-tag">scheduler</span><span class="hljs-selector-class">.DAGScheduler</span>: <span class="hljs-selector-tag">Job</span> <span class="hljs-selector-tag">0</span> <span class="hljs-selector-tag">is</span> <span class="hljs-selector-tag">finished</span>. <span class="hljs-selector-tag">Cancelling</span> <span class="hljs-selector-tag">potential</span> <span class="hljs-selector-tag">speculative</span> <span class="hljs-selector-tag">or</span> <span class="hljs-selector-tag">zombie</span> <span class="hljs-selector-tag">tasks</span> <span class="hljs-selector-tag">for</span> <span class="hljs-selector-tag">this</span> <span class="hljs-selector-tag">job</span>
+<span class="hljs-selector-tag">2021-01-09</span> <span class="hljs-selector-tag">04</span><span class="hljs-selector-pseudo">:45</span><span class="hljs-selector-pseudo">:50</span>,<span class="hljs-selector-tag">792</span> <span class="hljs-selector-tag">INFO</span> <span class="hljs-selector-tag">cluster</span><span class="hljs-selector-class">.YarnScheduler</span>: <span class="hljs-selector-tag">Killing</span> <span class="hljs-keyword">all</span> <span class="hljs-selector-tag">running</span> <span class="hljs-selector-tag">tasks</span> <span class="hljs-selector-tag">in</span> <span class="hljs-selector-tag">stage</span> <span class="hljs-selector-tag">0</span>: <span class="hljs-selector-tag">Stage</span> <span class="hljs-selector-tag">finished</span>
+<span class="hljs-selector-tag">2021-01-09</span> <span class="hljs-selector-tag">04</span><span class="hljs-selector-pseudo">:45</span><span class="hljs-selector-pseudo">:50</span>,<span class="hljs-selector-tag">795</span> <span class="hljs-selector-tag">INFO</span> <span class="hljs-selector-tag">scheduler</span><span class="hljs-selector-class">.DAGScheduler</span>: <span class="hljs-selector-tag">Job</span> <span class="hljs-selector-tag">0</span> <span class="hljs-selector-tag">finished</span>: <span class="hljs-selector-tag">reduce</span> <span class="hljs-selector-tag">at</span> <span class="hljs-selector-tag">SparkPi</span><span class="hljs-selector-class">.scala</span><span class="hljs-selector-pseudo">:38</span>, <span class="hljs-selector-tag">took</span> <span class="hljs-selector-tag">2</span><span class="hljs-selector-class">.217045</span> <span class="hljs-selector-tag">s</span>
+<span class="hljs-selector-tag">Pi</span> <span class="hljs-selector-tag">is</span> <span class="hljs-selector-tag">roughly</span> <span class="hljs-selector-tag">3</span><span class="hljs-selector-class">.1424191424191426</span>
+<span class="hljs-selector-tag">2021-01-09</span> <span class="hljs-selector-tag">04</span><span class="hljs-selector-pseudo">:45</span><span class="hljs-selector-pseudo">:50</span>,<span class="hljs-selector-tag">857</span> <span class="hljs-selector-tag">INFO</span> <span class="hljs-selector-tag">server</span><span class="hljs-selector-class">.AbstractConnector</span>: <span class="hljs-selector-tag">Stopped</span> <span class="hljs-selector-tag">Spark</span>@<span class="hljs-selector-tag">615f972</span>&#123;<span class="hljs-selector-tag">HTTP</span>/<span class="hljs-selector-tag">1</span><span class="hljs-selector-class">.1</span>,<span class="hljs-selector-attr">[http/1.1]</span>&#125;&#123;<span class="hljs-selector-tag">0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-pseudo">:4040</span>&#125;
+<span class="hljs-selector-tag">2021-01-09</span> <span class="hljs-selector-tag">04</span><span class="hljs-selector-pseudo">:45</span><span class="hljs-selector-pseudo">:50</span>,<span class="hljs-selector-tag">869</span> <span class="hljs-selector-tag">INFO</span> <span class="hljs-selector-tag">ui</span><span class="hljs-selector-class">.SparkUI</span>: <span class="hljs-selector-tag">Stopped</span> <span class="hljs-selector-tag">Spark</span> <span class="hljs-selector-tag">web</span> <span class="hljs-selector-tag">UI</span> <span class="hljs-selector-tag">at</span> <span class="hljs-selector-tag">http</span>:<span class="hljs-comment">//hdss7-63:4040</span>
+......</code></pre></div>
+<p>访问网址</p>
+<p><code>http://10.4.7.63:8088/</code></p>
+<p><img src="/2021/01/08/spark-yarn-start/002.png" srcset="/img/loading.gif" alt="spark-history" style="zoom:50%;"></p>
+<p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/spark/">spark</a>
+                    
+                      <a class="hover-with-bg" href="/tags/yarn/">yarn</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/07/spark-high-availability/">
+                        <span class="hidden-mobile">Spark高可用配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Spark的yarn模式&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

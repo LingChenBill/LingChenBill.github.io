@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Flink的Standalone模式安装 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-01-17 17:36">
+                    January 17, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.1k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    19
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="Flink的Standalone模式安装"><a href="#Flink的Standalone模式安装" class="headerlink" title="Flink的Standalone模式安装"></a>Flink的Standalone模式安装</h3><h4 id="1-前提"><a href="#1-前提" class="headerlink" title="1.前提"></a>1.前提</h4><p>环境准备:</p>
+<ul>
+<li>三个虚拟节点(Host名设定, 免密登录)</li>
+<li>与主机网络互通</li>
+<li>Flink版本:flink-1.10.1-bin-scala_2.12</li>
+</ul>
+<h4 id="2-Flink安装"><a href="#2-Flink安装" class="headerlink" title="2.Flink安装"></a>2.Flink安装</h4><p>解压文件:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 src]<span class="hljs-comment"># tar -zxvf flink-1.10.1-bin-scala_2.12.tgz -C /opt/</span>
+[root@hdss7-71 src]<span class="hljs-comment"># cd /opt/</span>
+[root@hdss7-71 opt]<span class="hljs-comment"># ln -s /opt/flink-1.10.1/ /opt/flink</span>
+[root@hdss7-71 opt]<span class="hljs-comment"># ll</span>
+lrwxrwxrwx  1 root root   18 1月  17 23:44 flink -&gt; /opt/flink-1.10.1/
+drwxr-xr-x 10 root root  156 5月   7 2020 flink-1.10.1</code></pre></div>
+
+<p>修改Flink配置文件:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># vi /opt/flink/conf/flink-conf.yaml</span>
+
+<span class="hljs-comment"># jobmanager.rpc.address: localhost</span>
+jobmanager.rpc.address: hdss7-71
+</code></pre></div>
+
+<p>修改slaves文件:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># vi /opt/flink/conf/slaves</span>
+
+<span class="hljs-comment"># localhost</span>
+hdss7-72
+hdss7-73</code></pre></div>
+
+<p>分发Flink文件夹到另外两个节点:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/flink-1.10.1/ hdss7-72:/opt/flink-1.10.1/</span>
+[root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/flink-1.10.1/ hdss7-73:/opt/flink-1.10.1/</span>
+
+<span class="hljs-comment"># 建立软链接.</span>
+[root@hdss7-72 opt]<span class="hljs-comment"># ln -s /opt/flink-1.10.1/ /opt/flink</span>
+[root@hdss7-73 opt]<span class="hljs-comment"># ln -s /opt/flink-1.10.1/ /opt/flink</span></code></pre></div>
+
+<h4 id="3-启动Flink"><a href="#3-启动Flink" class="headerlink" title="3.启动Flink"></a>3.启动Flink</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># cd flink</span>
+[root@hdss7-71 flink]<span class="hljs-comment"># bin/start-cluster.sh </span>
+Starting cluster.
+Starting standalonesession daemon on host hdss7-71.host.com.
+Starting taskexecutor daemon on host hdss7-72.host.com.
+Starting taskexecutor daemon on host hdss7-73.host.com.</code></pre></div>
+
+<p>主机浏览器访问</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 设置host名.</span>
+% sudo vi /etc/hosts
+
+<span class="hljs-comment"># flink.</span>
+10.4.7.71   hdss7-71 hdss7-71.host.com
+10.4.7.72   hdss7-72 hdss7-72.host.com
+10.4.7.73   hdss7-73 hdss7-73.host.com</code></pre></div>
+
+<img src="/2021/01/17/Flink-standalone-started/001.png" srcset="/img/loading.gif" alt="Flink-web-UI" style="zoom:50%;">
+
+<h4 id="4-提交应用"><a href="#4-提交应用" class="headerlink" title="4.提交应用"></a>4.提交应用</h4><p>Flink的java版本的流处理字符统计程序:</p>
+<p>pom.xml</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.lc<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lc-flink-started<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">flink.version</span>&gt;</span>1.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">flink.version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--flink-java config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.flink<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>flink-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;flink.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!--flink streaming java config.--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.flink<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>flink-streaming-java_2.12<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;flink.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>java程序:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.wc;
+
+<span class="hljs-keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;
+<span class="hljs-keyword">import</span> org.apache.flink.api.java.utils.ParameterTool;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 流处理字符统计.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/1/17</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StreamWordCount</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">// 创建流处理执行环境.</span>
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        <span class="hljs-comment">// 设置并行度.</span>
+        <span class="hljs-comment">// env.setParallelism(4);</span>
+
+        <span class="hljs-comment">// 从文件中读取数据. -&gt; 有界流.</span>
+        <span class="hljs-comment">// String inputPath = &quot;src/main/resources/wordcount.txt&quot;;</span>
+        <span class="hljs-comment">// DataStream&lt;String&gt; inputDataStream = env.readTextFile(inputPath);</span>
+
+        <span class="hljs-comment">// 用Parameter Tool来提取host和端口.</span>
+        <span class="hljs-comment">// 在启动参数中设置: --host localhost --port 7777.</span>
+        ParameterTool parameterTool = ParameterTool.fromArgs(args);
+        String host = parameterTool.get(<span class="hljs-string">&quot;host&quot;</span>);
+        <span class="hljs-keyword">int</span> port = parameterTool.getInt(<span class="hljs-string">&quot;port&quot;</span>);
+
+        <span class="hljs-comment">// 从socket文本流读取数据. -&gt; 无界流.</span>
+        <span class="hljs-comment">// % nc -lk 7777</span>
+        <span class="hljs-comment">// DataStream&lt;String&gt; inputDataStream = env.socketTextStream(&quot;localhost&quot;, 7777);</span>
+        DataStream&lt;String&gt; inputDataStream = env.socketTextStream(host, port);
+
+        <span class="hljs-comment">// 基于数据流进行转换计算.</span>
+        DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; resultStream = inputDataStream.flatMap(<span class="hljs-keyword">new</span> WordCount.MyFlatMapper())
+                .keyBy(<span class="hljs-number">0</span>)
+                .sum(<span class="hljs-number">1</span>);
+
+        <span class="hljs-comment">// 此操作并没有执行任务.</span>
+        resultStream.print();
+
+        <span class="hljs-comment">// 执行任务.</span>
+        env.execute();
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>将程序打包成jar包:lc-flink-started-1.0-SNAPSHOT.jar</p>
+<p>提交应用:</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 启动入口类.</span>
+com.lc.wc.StreamWordCount
+
+<span class="hljs-comment"># 程序参数:host与端口.</span>
+<span class="hljs-comment"># --host localhost --port 7777</span>
+--host hdss7-71 --port 7777</code></pre></div>
+
+<p>页面提交:</p>
+<img src="/2021/01/17/Flink-standalone-started/002.png" srcset="/img/loading.gif" alt="submit-job" style="zoom:50%;">
+
+<p>在hdss7-71上设置socket端口监听:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># nc -lk 7777</span>
+Hello Flink
+Hello Spark</code></pre></div>
+
+<p>在TaskManagers中查看log:</p>
+<img src="/2021/01/17/Flink-standalone-started/003.png" srcset="/img/loading.gif" alt="Task-log" style="zoom:50%;">
+
+<h4 id="5-命令行提交应用"><a href="#5-命令行提交应用" class="headerlink" title="5.命令行提交应用"></a>5.命令行提交应用</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink run -c com.lc.wc.StreamWordCount -p 3 /opt/src/lc-flink-started-1.0-SNAPSHOT.jar --host hdss7-71 --port 7777</span>
+Job has been submitted with JobID 1525ec6847925c666bd4a816e521889d
+</code></pre></div>
+
+<p>命令行查看job</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># cd /opt/flink</span>
+<span class="hljs-comment"># 查看job列表.</span>
+[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink list</span>
+Waiting <span class="hljs-keyword">for</span> response...
+------------------ Running/Restarting Jobs -------------------
+18.01.2021 00:08:45 : ff65da7c60adf119abac48b9c6e276cf : Flink Streaming Job (RUNNING)
+18.01.2021 00:33:55 : 1525ec6847925c666bd4a816e521889d : Flink Streaming Job (RUNNING)
+--------------------------------------------------------------
+No scheduled <span class="hljs-built_in">jobs</span>.
+
+<span class="hljs-comment"># 停止job.</span>
+[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink cancel ff65da7c60adf119abac48b9c6e276cf</span>
+Cancelling job ff65da7c60adf119abac48b9c6e276cf.
+Cancelled job ff65da7c60adf119abac48b9c6e276cf.
+[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink list</span>
+Waiting <span class="hljs-keyword">for</span> response...
+------------------ Running/Restarting Jobs -------------------
+18.01.2021 00:33:55 : 1525ec6847925c666bd4a816e521889d : Flink Streaming Job (RUNNING)
+--------------------------------------------------------------
+No scheduled <span class="hljs-built_in">jobs</span>.</code></pre></div>
+
+<p>在hdss7-71上节点上输入:</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># nc -lk 7777</span>
+Hello Flink
+
+<span class="hljs-comment"># web-ui中log结果:</span>
+(Hello,1)
+(Flink,1)</code></pre></div>
+
+<h4 id="6-停止Flink"><a href="#6-停止Flink" class="headerlink" title="6.停止Flink"></a>6.停止Flink</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 flink]<span class="hljs-comment"># bin/stop-cluster.sh </span>
+Stopping taskexecutor daemon (pid: 12045) on host hdss7-72.host.com.
+Stopping taskexecutor daemon (pid: 11921) on host hdss7-73.host.com.
+Stopping standalonesession daemon (pid: 12230) on host hdss7-71.host.com.</code></pre></div>
+
+
+
+<p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考!</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Flink/">Flink</a>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/rsync/">rsync</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/08/spark-yarn-start/">
+                        <span class="hidden-mobile">Spark的yarn模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Flink的Standalone模式安装&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

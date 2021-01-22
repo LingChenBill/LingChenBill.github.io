@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    409 字
+                    594 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    7
+                    10
                      分钟
                   </span>
                 
@@ -247,7 +247,38 @@ Stopping zookeeper ... STOPPED
 73850 Jps
 </code></pre></div>
 
+<h4 id="6-问题记录"><a href="#6-问题记录" class="headerlink" title="6.问题记录"></a>6.问题记录</h4><p>启动错误</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 zookeeper]<span class="hljs-comment"># bin/zkServer.sh status</span>
+ZooKeeper JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Error contacting service. It is probably not running
 
+<span class="hljs-comment"># 日志:</span>
+[root@hdss7-71 zookeeper]<span class="hljs-comment"># vi zookeeper.out</span>
+[WorkerSender[myid=1]:QuorumCnxManager@584] - Cannot open channel to 2 at election address hdss7-72/10.4.7.72:3888
+java.net.ConnectException: 拒绝连接 (Connection refused)
+......</code></pre></div>
+
+<p>1.查看端口是否被占用</p>
+<div class="hljs"><pre><code class="hljs bash">netstat -tunlp | grep 2181
+netstat -tunlp | grep 3888</code></pre></div>
+
+<p>2.查看<code>conf/zoo.cfg</code>中是否有重复的配置项.</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 自己新加入的配置项,原文件中是否在重复.</span>
+vi conf/zoo.cfg
+
+dataDir=/opt/datas/zookeeper/data
+dataLogDir=/opt/datas/zookeeper/<span class="hljs-built_in">log</span>
+
+clientPort=2181
+server.1=hdss7-71:2888:3888
+server.2=hdss7-72:2888:3888
+server.3=hdss7-73:2888:3888
+</code></pre></div>
+
+<p>3.server.1与本机节点myid是否匹配.</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 zookeeper]<span class="hljs-comment"># cat /opt/datas/zookeeper/data/myid </span>
+1</code></pre></div>
 
 <p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考</u></strong></p>
 

@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Flink的yarn模式 - LingChen&#39;s blog</title>
+  <title>Kafka安装配置 - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -132,8 +132,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2021-01-19 22:43">
-                    January 19, 2021 pm
+                  <time datetime="2021-01-22 14:51">
+                    January 22, 2021 pm
                   </time>
                 </div>
               
@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    960 字
+                    764 字
                   </span>
                 
 
@@ -183,98 +183,145 @@
             
             <article class="markdown-body">
               <p>[TOC]</p>
-<h3 id="Flink的yarn模式"><a href="#Flink的yarn模式" class="headerlink" title="Flink的yarn模式"></a>Flink的yarn模式</h3><h4 id="1-前提"><a href="#1-前提" class="headerlink" title="1.前提"></a>1.前提</h4><p>环境准备:</p>
+<h3 id="Kafka安装配置"><a href="#Kafka安装配置" class="headerlink" title="Kafka安装配置"></a>Kafka安装配置</h3><h4 id="1-前提"><a href="#1-前提" class="headerlink" title="1.前提"></a>1.前提</h4><p>环境准备</p>
 <ul>
 <li>三个虚拟节点(Host名设定, 免密登录)</li>
 <li>与主机网络互通</li>
-<li>Flink版本:flink-1.10.1-bin-scala_2.12</li>
-<li>Hadoop版本:hadoop-3.2.1</li>
-<li>wordcount的jar包</li>
-<li>flink-shaded-hadoop-2-uber-2.8.3-10.0.jar(路径:/opt/flink/lib)</li>
+<li>Zookeeper版本:zookeeper-3.4.14</li>
+<li>Kafka版本:kafka_2.11-2.1.0</li>
 </ul>
-<h4 id="2-启动hadoop"><a href="#2-启动hadoop" class="headerlink" title="2.启动hadoop"></a>2.启动hadoop</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 hadoop]<span class="hljs-comment"># sbin/start-all.sh </span>
-Starting namenodes on [hdss7-71]
-上一次登录：三 1月 20 05:00:03 CST 2021从 10.4.7.1pts/1 上
-Starting datanodes
-上一次登录：三 1月 20 05:03:58 CST 2021pts/0 上
-Starting secondary namenodes [hdss7-72]
-上一次登录：三 1月 20 05:04:00 CST 2021pts/0 上
-Starting resourcemanager
-上一次登录：三 1月 20 05:04:04 CST 2021pts/0 上
-Starting nodemanagers
-上一次登录：三 1月 20 05:04:08 CST 2021pts/0 上
-[root@hdss7-71 hadoop]<span class="hljs-comment"># jps</span>
-6386 NameNode
-7240 NodeManager
-6555 DataNode
-7676 Jps
-7054 ResourceManager
+<h4 id="2-启动zookeeper"><a href="#2-启动zookeeper" class="headerlink" title="2.启动zookeeper"></a>2.启动zookeeper</h4><p>在三个节点上都启动zookeeper.</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># cd /opt/zookeeper</span>
+[root@hdss7-71 zookeeper]<span class="hljs-comment"># bin/zkServer.sh start</span>
 
-[root@hdss7-72 ~]<span class="hljs-comment"># jps</span>
-6552 NodeManager
-6381 SecondaryNameNode
-7037 Jps
-6222 DataNode
+<span class="hljs-comment"># 查看启动状态.</span>
+[root@hdss7-71 zookeeper]<span class="hljs-comment"># bin/zkServer.sh status</span>
+ZooKeeper JMX enabled by default
+Using config: /opt/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+</code></pre></div>
 
-[root@hdss7-73 ~]<span class="hljs-comment"># jps</span>
-7088 Jps
-6132 DataNode
-6381 NodeManager</code></pre></div>
+<h4 id="3-解压kafka"><a href="#3-解压kafka" class="headerlink" title="3.解压kafka"></a>3.解压kafka</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 解压.</span>
+[root@hdss7-71 src]<span class="hljs-comment"># tar -zxvf kafka_2.11-2.1.0.tgz -C /opt/</span>
+[root@hdss7-71 src]<span class="hljs-comment"># cd /opt/</span>
+<span class="hljs-comment"># 建立软链接.</span>
+[root@hdss7-71 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.11-2.1.0/ /opt/kafka</span>
 
-<p>web浏览器访问:</p>
-<p><code>http://hdss7-71:50070/</code></p>
-<img src="/2021/01/19/flink-yarn-started/001.png" srcset="/img/loading.gif" alt="hadoop-datanode" style="zoom:50%;">
-
-<h4 id="3-Flink的Yarn模式"><a href="#3-Flink的Yarn模式" class="headerlink" title="3.Flink的Yarn模式"></a>3.Flink的Yarn模式</h4><p>Flink 提供了两种在 yarn 上运行的模式，分别为 Session-Cluster 和 Per-Job-Cluster 模式.</p>
-<h5 id="Session-Cluster-模式"><a href="#Session-Cluster-模式" class="headerlink" title="Session-Cluster 模式"></a><strong>Session-Cluster 模式</strong></h5><p>需要先启动集群，然后再提交作业，接着会向 yarn 申请一块空间后，资源永远保持不变。<br>如果资源满了，下一个作业就无法提交，只能等到 yarn 中的其中一个作业执行完成后，释放了资源，下个作业才会正常提交。<br>所有作业共享 Dispatcher 和 ResourceManager,共享资源<br>适合规模小执行时间短的作业。</p>
-<p>在 yarn 中初始化一个 flink 集群，开辟指定的资源，以后提交任务都向这里提 交。这个 flink 集群会常驻在 yarn 集群中，除非手工停止。</p>
-<h6 id="启动yarn-session"><a href="#启动yarn-session" class="headerlink" title="启动yarn-session"></a><strong>启动yarn-session</strong></h6><div class="hljs"><pre><code class="hljs shell">[root@hdss7-71 flink]# cd /opt/flink
-[root@hdss7-71 flink]# bin/yarn-session.sh -n 2 -s 2 -jm 1024 -tm 1024 -nm test -d
+[root@hdss7-71 opt]<span class="hljs-comment"># ll</span>
 ......
-JobManager Web Interface: http://hdss7-71:40486
+lrwxrwxrwx  1 root root   22 1月  22 03:51 kafka -&gt; /opt/kafka_2.11-2.1.0/
+drwxr-xr-x  7 root root  101 1月  22 04:22 kafka_2.11-2.1.0
+......</code></pre></div>
+
+<h4 id="4-配置kafka"><a href="#4-配置kafka" class="headerlink" title="4.配置kafka"></a>4.配置kafka</h4><p><code>broker.id=1</code>在不同的节点设置不同的值.</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># cd /opt/kafka</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># vi config/server.properties</span>
+
+broker.id=1
+host.name=hdss7-71
+port=9092
+
+listeners=PLAINTEXT://hdss7-71:9092
+advertised.listeners=PLAINTEXT://hdss7-71:9092
+
+log.dirs=/opt/datas/kafka/logs
+
+num.partitions=4
+
+zookeeper.connect=hdss7-71:2181,hdss7-72:2181,hdss7-73:2181
 </code></pre></div>
 
-<p>-n(–container):TaskManager 的数量。<br>-s(–slots): 每个 TaskManager 的 slot 数量，默认一个 slot 一个 core，默认每个 taskmanager 的 slot 的个数为 1，有时可以多一些 taskmanager，做冗余。<br>-jm:JobManager 的内存(单位 MB)。<br>-tm:每个 taskmanager 的内存(单位 MB)。 -nm:yarn 的 appName(现在 yarn 的 ui 上的名字)。 -d:后台执行。</p>
-<h6 id="开启sock监听"><a href="#开启sock监听" class="headerlink" title="开启sock监听"></a><strong>开启sock监听</strong></h6><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># nc -lk 7777</span>
+<p>配置kafka的zookeeper.</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># vi config/zookeeper.properties</span>
+
+clientPort=2181
+<span class="hljs-comment"># disable the per-ip limit on the number of connections since this is a non-production config</span>
+maxClientCnxns=0
+
+dataDir=/opt/datas/zookeeper/data
 </code></pre></div>
 
-<h6 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a><strong>执行任务</strong></h6><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink run -c com.lc.wc.StreamWordCount -p 3 /opt/src/lc-flink-started-1.0-SNAPSHOT.jar --host localhost --port 7777</span>
+<p>创建日志文件</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span>
+[root@hdss7-72 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span>
+[root@hdss7-73 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span></code></pre></div>
 
-......
-2021-01-20 05:18:29,533 INFO  org.apache.flink.yarn.YarnClusterDescriptor                   - Found Web Interface hdss7-71:40486 of application <span class="hljs-string">&#x27;application_1611090252419_0001&#x27;</span>.
-Job has been submitted with JobID 551da29180b940b1e8f633bd5979f04b</code></pre></div>
+<h4 id="5-分发kafka"><a href="#5-分发kafka" class="headerlink" title="5.分发kafka"></a>5.分发kafka</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/kafka_2.11-2.1.0/ hdss7-72:/opt/kafka_2.11-2.1.0/</span>
+[root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/kafka_2.11-2.1.0/ hdss7-73:/opt/kafka_2.11-2.1.0/</span>
 
-<h6 id="查看任务状态"><a href="#查看任务状态" class="headerlink" title="查看任务状态"></a><strong>查看任务状态</strong></h6><p><code>http://hdss7-71:8088/</code></p>
-<img src="/2021/01/19/flink-yarn-started/002.png" srcset="/img/loading.gif" alt="yarn-web-ui" style="zoom:50%;">
+<span class="hljs-comment"># 建立软链接.</span>
+[root@hdss7-72 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.11-2.1.0/ /opt/kafka</span>
+[root@hdss7-73 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.11-2.1.0/ /opt/kafka</span></code></pre></div>
 
-<p>在sock端输入文字”Hello Flink”</p>
-<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># nc -lk 7777</span>
-Hello Flink
-Hello Spark
-Hello Flink
+<p>修改<code>config/server.properties</code>中的<code>broker.id=2,broker.id=3</code></p>
+<h4 id="6-启动kafka"><a href="#6-启动kafka" class="headerlink" title="6.启动kafka"></a>6.启动kafka</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在三个节点中都启动.</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh config/server.properties</span>
+[root@hdss7-72 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh config/server.properties</span>
+[root@hdss7-73 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh config/server.properties</span>
+
+<span class="hljs-comment"># 或者,在后台启动.</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh -daemon config/server.properties</span>
+
+[root@hdss7-71 kafka]<span class="hljs-comment"># jps</span>
+25522 QuorumPeerMain
+53337 Kafka
+116488 Jps</code></pre></div>
+
+<p>7.准备Flink程序,从kafka中读取数据.</p>
+<p>启动程序:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.source;
+
+<span class="hljs-keyword">import</span> org.apache.flink.api.common.serialization.SimpleStringSchema;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+
+<span class="hljs-keyword">import</span> java.util.Properties;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 从Kafka中读取数据.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/1/21</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Source3_Kafka</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">// 执行环境.</span>
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        <span class="hljs-comment">// 设置并行度.</span>
+        env.setParallelism(<span class="hljs-number">1</span>);
+
+        <span class="hljs-comment">// 从Kafka中读取数据.</span>
+        Properties properties = <span class="hljs-keyword">new</span> Properties();
+        <span class="hljs-comment">// properties.setProperty(&quot;bootstrap.servers&quot;, &quot;localhost:9092&quot;);</span>
+        properties.setProperty(<span class="hljs-string">&quot;bootstrap.servers&quot;</span>, <span class="hljs-string">&quot;hdss7-71:9092&quot;</span>);
+        properties.setProperty(<span class="hljs-string">&quot;group.id&quot;</span>, <span class="hljs-string">&quot;consumer-group&quot;</span>);
+        properties.setProperty(<span class="hljs-string">&quot;auto.offset.reset&quot;</span>, <span class="hljs-string">&quot;latest&quot;</span>);
+
+        DataStream&lt;String&gt; dataStream = env.addSource(<span class="hljs-keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(
+                <span class="hljs-string">&quot;sensor&quot;</span>, <span class="hljs-keyword">new</span> SimpleStringSchema(), properties));
+
+        <span class="hljs-comment">// 打印数据.</span>
+        dataStream.print();
+
+        <span class="hljs-comment">// 执行.</span>
+        env.execute();
+
+    &#125;
+&#125;
 </code></pre></div>
 
-<h6 id="查看统计结果"><a href="#查看统计结果" class="headerlink" title="查看统计结果"></a>查看统计结果</h6><p>在Flink的Task中的输出中可以看到字符统计结果</p>
-<img src="/2021/01/19/flink-yarn-started/003.png" srcset="/img/loading.gif" alt="flink-stdout" style="zoom:50%;">
+<p>在kafka中发送信息</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-producer.sh --broker-list hdss7-71:9092 --topic sensor</span>
+&gt;sensor_1,1547718199L,35.8
+&gt;sensor_2,1547718201L,15.4
+&gt;sensor_3,1547718202L,6.7
+&gt;sensor_4,1547718205L,38.1</code></pre></div>
 
-<p>在另一个任务的输出中可以看到其余的统计结果</p>
-<img src="/2021/01/19/flink-yarn-started/004.png" srcset="/img/loading.gif" alt="task-stdout" style="zoom:50%;">
-
-<h6 id="取消yarn-session"><a href="#取消yarn-session" class="headerlink" title="取消yarn-session"></a><strong>取消yarn-session</strong></h6><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 ~]<span class="hljs-comment"># cd /opt/hadoop</span>
-[root@hdss7-71 hadoop]<span class="hljs-comment"># ls</span>
-bin  etc  include  lib  libexec  LICENSE.txt  logs  NOTICE.txt  README.txt  sbin  share
-
-[root@hdss7-71 hadoop]<span class="hljs-comment"># bin/yarn application --kill application_1611090252419_0001</span>
-2021-01-20 05:31:02,359 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
-Killing application application_1611090252419_0001
-2021-01-20 05:31:03,003 INFO impl.YarnClientImpl: Killed application application_1611090252419_0001</code></pre></div>
-
-<h5 id="Per-Job-Cluster模式"><a href="#Per-Job-Cluster模式" class="headerlink" title="Per Job Cluster模式"></a><strong>Per Job Cluster</strong>模式</h5><p>一个 Job 会对应一个集群，每提交一个作业会根据自身的情况，都会单独向 yarn 申请资源，直到作业执行完成.<br>一个作业的失败与否并不会影响下一个作业的正常 提交和运行。<br>独享 Dispatcher 和 ResourceManager，按需接受资源申请;适合规模大长时间运行的作业。</p>
-<p>每次提交都会创建一个新的 flink 集群，任务之间互相独立，互不影响，方便管理。<br>任务执行完成之后创建的集群也会消失。</p>
-<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 hadoop]<span class="hljs-comment"># cd /opt/flink</span>
-
-[root@hdss7-71 flink]<span class="hljs-comment"># bin/flink run –m yarn-cluster -c com.lc.wc.StreamWordCount /opt/src/lc-flink-started-1.0-SNAPSHOT.jar --host lcoalhost –port 7777</span>
-</code></pre></div>
+<p>在程序输出容器中会打印出信息结果:</p>
+<img src="/2021/01/22/kafka-started/001.png" srcset="/img/loading.gif" alt="flink-console" style="zoom:50%;">
 
 
 
@@ -289,11 +336,11 @@ Killing application application_1611090252419_0001
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/yarn/">yarn</a>
+                      <a class="hover-with-bg" href="/tags/flink/">flink</a>
                     
-                      <a class="hover-with-bg" href="/tags/Flink/">Flink</a>
+                      <a class="hover-with-bg" href="/tags/zookeeper/">zookeeper</a>
                     
-                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                      <a class="hover-with-bg" href="/tags/kafka/">kafka</a>
                     
                   </div>
                 
@@ -306,18 +353,12 @@ Killing application application_1611090252419_0001
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2021/01/22/kafka-started/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Kafka安装配置</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2021/01/17/Flink-standalone-started/">
-                        <span class="hidden-mobile">Flink的Standalone模式安装</span>
+                      <a href="/2021/01/19/flink-yarn-started/">
+                        <span class="hidden-mobile">Flink的yarn模式</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -457,7 +498,7 @@ Killing application application_1611090252419_0001
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Flink的yarn模式&nbsp;",
+        "Kafka安装配置&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

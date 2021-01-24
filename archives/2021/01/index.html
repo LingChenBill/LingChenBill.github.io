@@ -149,12 +149,18 @@
                 
 
 <div class="list-group">
-  <p class="h4">76 posts in total.</p>
+  <p class="h4">77 posts in total.</p>
   <hr>
   
     
       
       <p class="h5">2021</p>
+    
+    <a href="/2021/01/24/flink-redis-started/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Flink整合Redis</span>
+      <span style="float: right;">01-24</span>
+    </a>
+  
     
     <a href="/2021/01/22/kafka-started/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">Kafka安装配置</span>
@@ -209,13 +215,19 @@
       <span style="float: right;">01-03</span>
     </a>
   
-    
-    <a href="/2021/01/03/scala-idea-config/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Idea中scala配置</span>
-      <span style="float: right;">01-03</span>
-    </a>
-  
 </div>
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/archives/2021/01/page/2/">2</a><a class="extend next" rel="next" href="/archives/2021/01/page/2/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 

@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    764 字
+                    1.5k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    13
+                    27
                      分钟
                   </span>
                 
@@ -323,6 +323,145 @@ dataDir=/opt/datas/zookeeper/data
 <p>在程序输出容器中会打印出信息结果:</p>
 <img src="/2021/01/22/kafka-started/001.png" srcset="/img/loading.gif" alt="flink-console" style="zoom:50%;">
 
+<h4 id="7-kafka消息消费"><a href="#7-kafka消息消费" class="headerlink" title="7.kafka消息消费"></a>7.kafka消息消费</h4><p>java程序:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.sink;
+
+<span class="hljs-keyword">import</span> com.lc.api.beans.SensorReading;
+<span class="hljs-keyword">import</span> org.apache.flink.api.common.serialization.SimpleStringSchema;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * sink与kafka连接.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/1/23</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sink1_Kafka</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">// 执行环境.</span>
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(<span class="hljs-number">4</span>);
+
+        <span class="hljs-comment">// 读入数据.</span>
+        DataStream&lt;String&gt; inputStream = env.readTextFile(<span class="hljs-string">&quot;src/main/resources/sensor.txt&quot;</span>);
+
+        <span class="hljs-comment">// 转换成SensorReading类型.</span>
+        DataStream&lt;String&gt; dataStream = inputStream.map(line -&gt; &#123;
+            String[] fields = line.split(<span class="hljs-string">&quot;,&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> SensorReading(fields[<span class="hljs-number">0</span>], <span class="hljs-keyword">new</span> Long(fields[<span class="hljs-number">1</span>]), <span class="hljs-keyword">new</span> Double(fields[<span class="hljs-number">2</span>])).toString();
+        &#125;);
+
+        <span class="hljs-comment">// kafka sink连接.</span>
+        dataStream.addSink(<span class="hljs-keyword">new</span> FlinkKafkaProducer&lt;String&gt;(
+                <span class="hljs-string">&quot;hdss7-71:9092&quot;</span>,
+                <span class="hljs-string">&quot;sink_kafka&quot;</span>,
+                <span class="hljs-keyword">new</span> SimpleStringSchema()
+        ));
+
+        <span class="hljs-comment">// 执行.</span>
+        env.execute();
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>kafka主题监听:</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 后台启动kafka(加上参数:-daemon).</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh -daemon config/server.properties </span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># jps</span>
+8386 Jps
+8067 Kafka
+4644 QuorumPeerMain
+
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span></code></pre></div>
+
+<p>执行java程序后,在kafka输出中会监听到消息</p>
+<div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span>
+[2021-01-23 21:30:11,561] WARN [Consumer clientId=consumer-1, groupId=console-consumer-9131] Error <span class="hljs-keyword">while</span> fetching metadata with correlation id 2 : &#123;sink_kafka=LEADER_NOT_AVAILABLE&#125; (org.apache.kafka.clients.NetworkClient)
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_3&#x27;</span>, timestamp=1547718202, temperature=6.7&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_4&#x27;</span>, timestamp=1547718205, temperature=38.1&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718199, temperature=35.8&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_2&#x27;</span>, timestamp=1547718201, temperature=15.4&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718105, temperature=36.3&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547717225, temperature=35.1&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718195, temperature=38.3&#125;
+</code></pre></div>
+
+<p>修改java程序为,在kafka中输入,并在kafka中输出,相当于kafka做了一个ETL的作用.</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.sink;
+
+<span class="hljs-keyword">import</span> com.lc.api.beans.SensorReading;
+<span class="hljs-keyword">import</span> org.apache.flink.api.common.serialization.SimpleStringSchema;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.datastream.DataStream;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+<span class="hljs-keyword">import</span> org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+
+<span class="hljs-keyword">import</span> java.util.Properties;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * sink与kafka连接, 输入与输出.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@description</span>:</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/1/23</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sink1_Kafka_InOut</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+
+        <span class="hljs-comment">// 执行环境.</span>
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(<span class="hljs-number">4</span>);
+
+        <span class="hljs-comment">// 从Kafka中读取数据.</span>
+        Properties properties = <span class="hljs-keyword">new</span> Properties();
+        <span class="hljs-comment">// properties.setProperty(&quot;bootstrap.servers&quot;, &quot;localhost:9092&quot;);</span>
+        properties.setProperty(<span class="hljs-string">&quot;bootstrap.servers&quot;</span>, <span class="hljs-string">&quot;hdss7-71:9092&quot;</span>);
+        properties.setProperty(<span class="hljs-string">&quot;group.id&quot;</span>, <span class="hljs-string">&quot;consumer-group&quot;</span>);
+        properties.setProperty(<span class="hljs-string">&quot;auto.offset.reset&quot;</span>, <span class="hljs-string">&quot;latest&quot;</span>);
+
+        DataStream&lt;String&gt; inputStream = env.addSource(<span class="hljs-keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(
+                <span class="hljs-string">&quot;sensor&quot;</span>, <span class="hljs-keyword">new</span> SimpleStringSchema(), properties));
+
+        <span class="hljs-comment">// 转换成SensorReading类型.</span>
+        DataStream&lt;String&gt; dataStream = inputStream.map(line -&gt; &#123;
+            String[] fields = line.split(<span class="hljs-string">&quot;,&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> SensorReading(fields[<span class="hljs-number">0</span>], <span class="hljs-keyword">new</span> Long(fields[<span class="hljs-number">1</span>]), <span class="hljs-keyword">new</span> Double(fields[<span class="hljs-number">2</span>])).toString();
+        &#125;);
+
+        <span class="hljs-comment">// kafka sink连接.</span>
+        dataStream.addSink(<span class="hljs-keyword">new</span> FlinkKafkaProducer&lt;String&gt;(
+                <span class="hljs-string">&quot;hdss7-71:9092&quot;</span>,
+                <span class="hljs-string">&quot;sink_kafka&quot;</span>,
+                <span class="hljs-keyword">new</span> SimpleStringSchema()
+        ));
+
+        <span class="hljs-comment">// 执行.</span>
+        env.execute();
+
+    &#125;
+&#125;</code></pre></div>
+
+<p>在kafka中发送消息主题与监听主题:</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 监听主题.</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span>
+[2021-01-23 21:30:11,561] WARN [Consumer clientId=consumer-1, groupId=console-consumer-9131] Error <span class="hljs-keyword">while</span> fetching metadata with correlation id 2 : &#123;sink_kafka=LEADER_NOT_AVAILABLE&#125; (org.apache.kafka.clients.NetworkClient)
+
+<span class="hljs-comment"># 发送消息.</span>
+[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-producer.sh --broker-list hdss7-71:9092 --topic sensor</span>
+&gt;sensor_1,1547718199,35.8
+&gt;sensor_4,1547718205,38.1
+&gt;sensor_3,1547718202,6.7
+&gt;
+
+<span class="hljs-comment"># 在监听窗口中看到结果.</span>
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718199, temperature=35.8&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_4&#x27;</span>, timestamp=1547718205, temperature=38.1&#125;
+SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_3&#x27;</span>, timestamp=1547718202, temperature=6.7&#125;</code></pre></div>
+
 
 
 <p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考!</u></strong></p>
@@ -352,6 +491,12 @@ dataDir=/opt/datas/zookeeper/data
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2021/01/24/flink-redis-started/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Flink整合Redis</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

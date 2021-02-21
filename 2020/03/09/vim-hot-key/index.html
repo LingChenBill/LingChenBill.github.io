@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.4k 字
+                    1.6k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    16
+                    18
                      分钟
                   </span>
                 
@@ -283,6 +283,10 @@ dL  // 剪切从当前行至所显示屏幕底的全部行
 
 <h5 id="至行及其下n行"><a href="#至行及其下n行" class="headerlink" title="至行及其下n行"></a>至行及其下n行</h5><div class="hljs"><pre><code class="hljs bash">nyy</code></pre></div>
 
+<p>至上几行</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 不包含当前行.</span>
+nyk</code></pre></div>
+
 <h5 id="常用复制操作"><a href="#常用复制操作" class="headerlink" title="常用复制操作"></a>常用复制操作</h5><div class="hljs"><pre><code class="hljs bash">yw       // 从光标处复制至一个单子/单词的末尾，包括空格
 ye       // 从光标处复制至一个单子/单词的末尾，不包括空格
 y$       // 从当前光标复制到行末
@@ -302,6 +306,39 @@ viwp		// 替换
 <span class="hljs-comment"># 切换单词（任意位置）</span>
 ciw
 caw</code></pre></div>
+
+<h4 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 向左缩进.</span>
+:行号&lt;
+<span class="hljs-comment"># 向右缩进.</span>
+:行号&gt;</code></pre></div>
+
+<h4 id="折叠与展开"><a href="#折叠与展开" class="headerlink" title="折叠与展开"></a>折叠与展开</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在vim中执行该命令,设置折叠.</span>
+:<span class="hljs-built_in">set</span> fdm=marker
+
+<span class="hljs-comment"># 打开所有折叠.</span>
+zR
+
+<span class="hljs-comment"># 关闭所有折叠.</span>
+zM
+
+<span class="hljs-comment"># 关闭光标下的折叠.</span>
+zc
+
+<span class="hljs-comment"># 打开光标下的折叠.</span>
+zo
+
+<span class="hljs-comment"># 关闭光标下的折叠，以及嵌套的折叠.</span>
+zC
+
+<span class="hljs-comment"># 打开光标下的折叠，以及嵌套的折叠.</span>
+zO
+
+<span class="hljs-comment"># 当光标在关闭折叠上时，打开之。在打开折叠上时，关闭之.</span>
+za</code></pre></div>
+
+<h4 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 选中当前光标所在内联块.</span>
+viB
+vib</code></pre></div>
 
 <h4 id="文本查找操作"><a href="#文本查找操作" class="headerlink" title="文本查找操作"></a>文本查找操作</h4><h5 id="向文件头部查找"><a href="#向文件头部查找" class="headerlink" title="向文件头部查找"></a>向文件头部查找</h5><div class="hljs"><pre><code class="hljs bash">?查找文本
 n 　　　　　　　 // 按n键查找上一个查找文本
@@ -578,20 +615,5 @@ ctrl + w             // 来在vim打开的多个窗口中切换
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

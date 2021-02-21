@@ -157,6 +157,53 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/07/03/docker-mysql-ssh/" target="_self">
+          <img src="/docker-mysql-ssh/banner.png" srcset="/img/loading.gif" alt="Docker之mysql安装">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2020/07/03/docker-mysql-ssh/">Docker之mysql安装</a>
+
+      <a href="/2020/07/03/docker-mysql-ssh/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Docker之mysql安装Dockerfile下载将github中的mysql的Dockerfile下载下来，地址如下：
+https://github.com/DockerPool/mysql.git
+mysql_sshd % ls
+Dockerfile		LICENSE			README.md		create_db.sh		import_sql.sh		my.cnf			mysql</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-07-03
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+              <a href="/tags/mysql/">mysql</a>
+            
+              <a href="/tags/ssh/">ssh</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2020/06/25/docker-webapp/" target="_self">
           <img src="/docker-webapp/banner.png" srcset="/img/loading.gif" alt="Docker之Web服务器与应用">
         </a>
@@ -579,50 +626,6 @@ Logstash安装学习Logstash是Elasticsearch下的一款开源软件，它能够
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/05/01/elasticsearch-cluster-node/" target="_self">
-          <img src="/elasticsearch-cluster-node/banner.png" srcset="/img/loading.gif" alt="Elasticsearch集群搭建">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/05/01/elasticsearch-cluster-node/">Elasticsearch集群搭建</a>
-
-      <a href="/2020/05/01/elasticsearch-cluster-node/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Elasticsearch集群搭建集群结构ES通常以集群方式工作，这样做不仅能够提高 ES的搜索能力还可以处理大数据搜索的能力，同时也增加了系统的容错能力及高可用，ES可以实现PB级数据的搜索。
-
-1、结点ES集群由多个服务器组成，每个服务器即为一个Node结点(该服务只部署了一个ES进程)。2、分片当我们的文档量很大时，由于内存和硬盘的限制，同时也为了提高ES的处理能力、容错能力及高</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-05-01
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/elasticsearch/">elasticsearch</a>
-            
-              <a href="/tags/cluster/">cluster</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -787,20 +790,5 @@ Elasticsearch集群搭建集群结构ES通常以集群方式工作，这样做�
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

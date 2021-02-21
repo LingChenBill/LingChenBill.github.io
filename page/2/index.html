@@ -157,6 +157,50 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/03/spark-centos-started/">Spark的local环境安装</a>
+
+      <a href="/2021/01/03/spark-centos-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>Spark的local环境安装1.环境准备前提
+
+macOS Big Sur 11.1(主机环境)
+VMware Fusion12以上版本(与macOS Big Sur 11.1兼容)
+centos7虚拟环境
+
+2.jdk安装$ tar -zxvf /opt/src/jdk-8u221-linux-x64.tar.gz -C /usr/local/soft/
+
+配置JAVA_HOME环境变量
+$ </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-03
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spark/">spark</a>
+            
+              <a href="/tags/centos/">centos</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/03/scala-idea-config/">Idea中scala配置</a>
 
       <a href="/2021/01/03/scala-idea-config/" class="index-excerpt">
@@ -555,42 +599,6 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/10/02/k8s-snap-topology/">10_应用存储和持久化数据卷：存储快照与拓扑调度</a>
-
-      <a href="/2020/10/02/k8s-snap-topology/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-10_应用存储和持久化数据卷：存储快照与拓扑调度一、基本知识存储快照产生背景在使用存储时，为了提高数据操作的容错性，我们通常有需要对线上数据进行snapshot，以及能快速restore的能力。另外，当需要对线上数据进行快速的复制以及迁移等动作，如进行环境的复制、数据开发等功能时，都可以通过存储快照来满足需求，而 K8s 中通过 CSI Snapshotter controller 来</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-10-02
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/snap/">snap</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -755,20 +763,5 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

@@ -157,6 +157,52 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/02/16/regex-started/">正则表达式学习记录</a>
+
+      <a href="/2021/02/16/regex-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+正则表达式学习记录非打印字符# 匹配一个换行符。等价于 \x0a 和 \cJ.
+\n
+
+# 匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。注意 Unicode 正则表达式会匹配全角空格符.
+\s
+
+# 匹配任何非空白字符。等价于 [^ \f\n\r\t\v].
+\S
+
+# 匹配一个制表符。等价于 \x09 和 \cI.
+\t
+
+# 匹配一个垂直制表</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-02-16
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/regex/">regex</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/24/flink-redis-started/">Flink整合Redis</a>
 
       <a href="/2021/01/24/flink-redis-started/" class="index-excerpt">
@@ -567,50 +613,6 @@ $ vi /etc/hosts
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2021/01/03/spark-centos-started/">Spark的local环境安装</a>
-
-      <a href="/2021/01/03/spark-centos-started/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Spark的local环境安装1.环境准备前提
-
-macOS Big Sur 11.1(主机环境)
-VMware Fusion12以上版本(与macOS Big Sur 11.1兼容)
-centos7虚拟环境
-
-2.jdk安装$ tar -zxvf /opt/src/jdk-8u221-linux-x64.tar.gz -C /usr/local/soft/
-
-配置JAVA_HOME环境变量
-$ </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2021-01-03
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/spark/">spark</a>
-            
-              <a href="/tags/centos/">centos</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -775,20 +777,5 @@ $ </div>
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

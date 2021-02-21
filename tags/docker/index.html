@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Tags - docker - LingChen&#39;s blog</title>
+  <title>Tags - Docker - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -149,88 +149,19 @@
                 
 
 <div class="list-group">
-<!--  <p class="h4">10 posts in total.</p>-->
+<!--  <p class="h4">1 posts in total.</p>-->
   <hr>
-  
-    
-      
-      <p class="h5">2021</p>
-    
-    <a href="/2021/01/24/flink-redis-started/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Flink整合Redis</span>
-      <span style="float: right;">01-24</span>
-    </a>
   
     
       
       <p class="h5">2020</p>
     
-    <a href="/2020/12/22/keycloak-getting-started/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Keycloak安装使用</span>
-      <span style="float: right;">12-22</span>
-    </a>
-  
-    
-    <a href="/2020/12/11/aliyun-docker-micro/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker微服务镜像推送至阿里云</span>
-      <span style="float: right;">12-11</span>
-    </a>
-  
-    
-    <a href="/2020/12/10/micro-docker/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Dockerfile微服务</span>
-      <span style="float: right;">12-10</span>
-    </a>
-  
-    
-    <a href="/2020/07/03/docker-mysql-ssh/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker之mysql安装</span>
-      <span style="float: right;">07-03</span>
-    </a>
-  
-    
-    <a href="/2020/06/25/docker-webapp/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker之Web服务器与应用</span>
-      <span style="float: right;">06-25</span>
-    </a>
-  
-    
-    <a href="/2020/06/23/docker-os/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker之操作系统学习(SSH容器搭建)</span>
-      <span style="float: right;">06-23</span>
-    </a>
-  
-    
-    <a href="/2020/06/22/docker-dockfile-nginx/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Docker之Dockfile的nginx构建</span>
-      <span style="float: right;">06-22</span>
-    </a>
-  
-    
-    <a href="/2020/03/31/mongodb-docker-install/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">MongoDB环境搭建（Docker系）</span>
-      <span style="float: right;">03-31</span>
-    </a>
-  
-    
-    <a href="/2020/03/29/jira-init/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Jira-Docker环境搭建</span>
-      <span style="float: right;">03-29</span>
+    <a href="/2020/03/20/docker-swarm/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">Docker Swarm</span>
+      <span style="float: right;">03-20</span>
     </a>
   
 </div>
-
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/tags/docker/page/2/">2</a><a class="extend next" rel="next" href="/tags/docker/page/2/"><i class="iconfont icon-arrowright"></i></a>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
-      ele.href += '#board';
-    }
-  </script>
 
 
 
@@ -255,6 +186,136 @@
     <div class="modal-content">
       <div class="modal-header text-center">
         <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Tag - Docker&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -382,20 +443,5 @@
 
 
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

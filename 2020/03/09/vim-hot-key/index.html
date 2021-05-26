@@ -185,7 +185,6 @@
               <p>[TOC]</p>
 <h3 id="vim快捷键记录"><a href="#vim快捷键记录" class="headerlink" title="vim快捷键记录"></a>vim快捷键记录</h3><h4 id="less操作"><a href="#less操作" class="headerlink" title="less操作"></a>less操作</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># less -N config.xml</span>
 // 显示文件内容，带行号</code></pre></div>
-
 <div class="hljs"><pre><code class="hljs xml">1 <span class="hljs-meta">&lt;?xml version=&#x27;1.1&#x27; encoding=&#x27;UTF-8&#x27;?&gt;</span>
       2 <span class="hljs-tag">&lt;<span class="hljs-name">hudson</span>&gt;</span>
       3   <span class="hljs-tag">&lt;<span class="hljs-name">disabledAdministrativeMonitors</span>/&gt;</span>
@@ -193,7 +192,6 @@
       5   <span class="hljs-tag">&lt;<span class="hljs-name">installStateName</span>&gt;</span>RUNNING<span class="hljs-tag">&lt;/<span class="hljs-name">installStateName</span>&gt;</span>
       6   <span class="hljs-tag">&lt;<span class="hljs-name">numExecutors</span>&gt;</span>2<span class="hljs-tag">&lt;/<span class="hljs-name">numExecutors</span>&gt;</span>
       7   <span class="hljs-tag">&lt;<span class="hljs-name">mode</span>&gt;</span>NORMAL<span class="hljs-tag">&lt;/<span class="hljs-name">mode</span>&gt;</span></code></pre></div>
-
 <h4 id="vim基本操作"><a href="#vim基本操作" class="headerlink" title="vim基本操作"></a>vim基本操作</h4><div class="hljs"><pre><code class="hljs bash">:wq       // 在命令模式下，执行存盘退出操作（:ZZ）
 :w        // 在命令模式下，执行存盘操作
 :w!       // 在命令模式下，执行强制存盘操作
@@ -202,13 +200,11 @@
 :e 文件名  // 在命令模式下，打开并编辑指定名称的文件
 :n       // 在命令模式下，如果同时打开多个文件，则继续编辑下一个文件
 :f       // 在命令模式下，用于显示当前的文件名、光标所在行的行号以及显示比例</code></pre></div>
-
 <h4 id="vim翻页"><a href="#vim翻页" class="headerlink" title="vim翻页"></a>vim翻页</h4><div class="hljs"><pre><code class="hljs awk">ctrl + f 　　　<span class="hljs-regexp">//</span> 向下（后面）翻页
 ctrl + b 　　　<span class="hljs-regexp">//</span> 向上（前面）翻页
 或者：
 ctrl+u 　　　　<span class="hljs-regexp">//</span> 向文件首翻半屏
 ctrl+d 　　　　<span class="hljs-regexp">//</span> 向文件尾翻半屏</code></pre></div>
-
 <h4 id="vim展示行号"><a href="#vim展示行号" class="headerlink" title="vim展示行号"></a>vim展示行号</h4><div class="hljs"><pre><code class="hljs bash">: <span class="hljs-built_in">set</span> nu
 
  1 &lt;?xml version=<span class="hljs-string">&#x27;1.1&#x27;</span> encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>?&gt;
@@ -218,53 +214,38 @@ ctrl+d 　　　　<span class="hljs-regexp">//</span> 向文件尾翻半屏</co
   5   &lt;installStateName&gt;RUNNING&lt;/installStateName&gt;
   6   &lt;numExecutors&gt;2&lt;/numExecutors&gt;
   7   &lt;mode&gt;NORMAL&lt;/mode&gt;</code></pre></div>
-
 <h4 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h4><div class="hljs"><pre><code class="hljs bash">a 　　// 在当前字符后添加文本
 A 　　// 在行末添加文本
 i 　　// 在当前字符前插入文本
 I 　　// 在行首插入文本
 o 　　// 在当前行后面插入一空行
 O 　　// 在当前行前面插入一空行</code></pre></div>
-
 <h4 id="vim模式切换"><a href="#vim模式切换" class="headerlink" title="vim模式切换"></a>vim模式切换</h4><p>​    在命令行模式　-&gt;  按字符选择模式</p>
 <div class="hljs"><pre><code class="hljs bash">v　　　　// 输入字符v（小写）
 或者：
 Ctrl + v</code></pre></div>
-
 <p>​    通过h、i、j、k键移动光标选择要进行复制的字符串<br>​    完成选择后按下y键进行复制，按下p执行粘贴操作</p>
 <p>​    在命令行模式　-&gt;  按行选择模式</p>
 <div class="hljs"><pre><code class="hljs bash">V　　　　// 输入字符V（大写）
 或者：
 <span class="hljs-built_in">shift</span> + v</code></pre></div>
-
 <p>​    通过h、i、j、k键移动光标选择要进行复制的行号<br>​    将光标移动到要进行粘贴的位置，按下p键进行粘贴操作</p>
 <p>​    编辑模式　-&gt;  命令模式</p>
 <div class="hljs"><pre><code class="hljs bash">Esc</code></pre></div>
-
 <h4 id="至文件的首行"><a href="#至文件的首行" class="headerlink" title="至文件的首行"></a>至文件的首行</h4><div class="hljs"><pre><code class="hljs bash">gg</code></pre></div>
-
 <h4 id="至文件的末行"><a href="#至文件的末行" class="headerlink" title="至文件的末行"></a>至文件的末行</h4><div class="hljs"><pre><code class="hljs bash">G</code></pre></div>
-
 <h4 id="至指定位置"><a href="#至指定位置" class="headerlink" title="至指定位置"></a>至指定位置</h4><p>​    到指定行的行首</p>
 <div class="hljs"><pre><code class="hljs bash">:行号</code></pre></div>
-
 <p>​    到最后一行的行首</p>
 <div class="hljs"><pre><code class="hljs bash">:$</code></pre></div>
-
 <h4 id="移动到单词"><a href="#移动到单词" class="headerlink" title="移动到单词"></a>移动到单词</h4><div class="hljs"><pre><code class="hljs bash">w			// 向前移到到单词词尾
 e			// 向前移到到单词词尾
 b			// 向后移到到单词词首</code></pre></div>
-
 <h4 id="删除字符操作"><a href="#删除字符操作" class="headerlink" title="删除字符操作"></a>删除字符操作</h4><h5 id="光标后字符"><a href="#光标后字符" class="headerlink" title="光标后字符"></a>光标后字符</h5><div class="hljs"><pre><code class="hljs bash">x // （小写）</code></pre></div>
-
 <h5 id="光标前字符"><a href="#光标前字符" class="headerlink" title="光标前字符"></a>光标前字符</h5><div class="hljs"><pre><code class="hljs bash">X // （大写）</code></pre></div>
-
 <h5 id="光标至行尾"><a href="#光标至行尾" class="headerlink" title="光标至行尾"></a>光标至行尾</h5><div class="hljs"><pre><code class="hljs bash">D</code></pre></div>
-
 <h5 id="光标行内容"><a href="#光标行内容" class="headerlink" title="光标行内容"></a>光标行内容</h5><div class="hljs"><pre><code class="hljs bash">dd</code></pre></div>
-
 <h5 id="行及其后n-1行"><a href="#行及其后n-1行" class="headerlink" title="行及其后n-1行"></a>行及其后n-1行</h5><div class="hljs"><pre><code class="hljs bash">ndd</code></pre></div>
-
 <h4 id="剪切操作"><a href="#剪切操作" class="headerlink" title="剪切操作"></a>剪切操作</h4><div class="hljs"><pre><code class="hljs bash">dd  // 剪切当前行
 ndd // n表示大于1的数字，剪切n行
 dw  // 从光标处剪切至一个单词的末尾，包括空格
@@ -278,15 +259,11 @@ dH  // 剪切从当前行至所显示屏幕顶行的全部行
 dL  // 剪切从当前行至所显示屏幕底的全部行
 
 :行号1, 行号2 m 行号3 // 剪切行号1-行号2到行号3之后</code></pre></div>
-
 <h4 id="复制－粘贴操作"><a href="#复制－粘贴操作" class="headerlink" title="复制－粘贴操作"></a>复制－粘贴操作</h4><h5 id="复制行内容"><a href="#复制行内容" class="headerlink" title="复制行内容"></a>复制行内容</h5><div class="hljs"><pre><code class="hljs bash">yy</code></pre></div>
-
 <h5 id="至行及其下n行"><a href="#至行及其下n行" class="headerlink" title="至行及其下n行"></a>至行及其下n行</h5><div class="hljs"><pre><code class="hljs bash">nyy</code></pre></div>
-
 <p>至上几行</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 不包含当前行.</span>
 nyk</code></pre></div>
-
 <h5 id="常用复制操作"><a href="#常用复制操作" class="headerlink" title="常用复制操作"></a>常用复制操作</h5><div class="hljs"><pre><code class="hljs bash">yw       // 从光标处复制至一个单子/单词的末尾，包括空格
 ye       // 从光标处复制至一个单子/单词的末尾，不包括空格
 y$       // 从当前光标复制到行末
@@ -296,22 +273,21 @@ y5G      // 将当前行（包括当前行）至第5行（不包括它）复制
 y3B      // 从当前光标位置（不包括光标位置）反向复制3个单词
 
 :行号1, 行号2 co 行号3  // 复制行号1-行号2到行号3之后</code></pre></div>
-
 <h5 id="粘贴操作"><a href="#粘贴操作" class="headerlink" title="粘贴操作"></a>粘贴操作</h5><div class="hljs"><pre><code class="hljs bash">p // （小写）粘贴到当前光标所在位置的下方
 P // （大写）粘贴到当前光标所在位置的上方</code></pre></div>
-
 <h5 id="单词的复制替换"><a href="#单词的复制替换" class="headerlink" title="单词的复制替换"></a>单词的复制替换</h5><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 复制单词（任意位置），替换到第二个单词</span>
 yiw			// 复制
 viwp		// 替换
 <span class="hljs-comment"># 切换单词（任意位置）</span>
 ciw
 caw</code></pre></div>
-
 <h4 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 向左缩进.</span>
 :行号&lt;
 <span class="hljs-comment"># 向右缩进.</span>
-:行号&gt;</code></pre></div>
+:行号&gt;
 
+<span class="hljs-comment"># 大范围整体缩进.1~20向右缩进</span>
+:1, 20 &gt;</code></pre></div>
 <h4 id="折叠与展开"><a href="#折叠与展开" class="headerlink" title="折叠与展开"></a>折叠与展开</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在vim中执行该命令,设置折叠.</span>
 :<span class="hljs-built_in">set</span> fdm=marker
 
@@ -335,28 +311,22 @@ zO
 
 <span class="hljs-comment"># 当光标在关闭折叠上时，打开之。在打开折叠上时，关闭之.</span>
 za</code></pre></div>
-
 <h4 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 选中当前光标所在内联块.</span>
 viB
 vib</code></pre></div>
-
 <h4 id="文本查找操作"><a href="#文本查找操作" class="headerlink" title="文本查找操作"></a>文本查找操作</h4><h5 id="向文件头部查找"><a href="#向文件头部查找" class="headerlink" title="向文件头部查找"></a>向文件头部查找</h5><div class="hljs"><pre><code class="hljs bash">?查找文本
 n 　　　　　　　 // 按n键查找上一个查找文本
 <span class="hljs-built_in">shift</span>　＋　n　　// 按n键查找下一个查找文本</code></pre></div>
-
 <h5 id="向文件尾部查找"><a href="#向文件尾部查找" class="headerlink" title="向文件尾部查找"></a>向文件尾部查找</h5><div class="hljs"><pre><code class="hljs bash">/查找文本
 n             // 按n键查找下个查找文本
 <span class="hljs-built_in">shift</span> ＋ n    // 按n键查找下一个查找文本</code></pre></div>
-
 <h4 id="替换操作"><a href="#替换操作" class="headerlink" title="替换操作"></a>替换操作</h4><h5 id="全局替换"><a href="#全局替换" class="headerlink" title="全局替换"></a>全局替换</h5><div class="hljs"><pre><code class="hljs bash">:% s/查找文本/替换文本/gc
 // 强制每个替换要确认</code></pre></div>
-
 <h5 id="指定行范围"><a href="#指定行范围" class="headerlink" title="指定行范围"></a>指定行范围</h5><div class="hljs"><pre><code class="hljs bash">// 强制每个替换要确认
 :行号1, 行号2 s/查找文本/替换文本/gc
 
 // 从指定行至文本末查找替换文本
 :行号, <span class="hljs-variable">$s</span>/查找文本/替换文本/gc</code></pre></div>
-
 <h4 id="多窗口操作"><a href="#多窗口操作" class="headerlink" title="多窗口操作"></a>多窗口操作</h4><div class="hljs"><pre><code class="hljs bash">:sp filename         // vim将分割出一个横向窗口，并在该窗口中打开新文件
 :vsp filename        // vim将在右边分割出一个窗口，并在该窗口中打开新文件
 
@@ -615,5 +585,20 @@ ctrl + w             // 来在vim打开的多个窗口中切换
 
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

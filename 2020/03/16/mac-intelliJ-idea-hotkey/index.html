@@ -302,7 +302,7 @@
 <li><code>⌘U</code>  ：前往当前光标所在方法的父类的方法 / 接口定义</li>
 <li><code>⌃↓ / ⌃↑</code>  ：当前光标跳转到当前文件的前一个/后一个方法名位置</li>
 <li><code>⌘\] / ⌘[</code>  ：移动光标到当前所在代码的花括号开始/结束位置</li>
-<li><code>⌘F12</code>  ：弹出当前文件结构层，可以在弹出的层上直接输入进行筛选（可用于搜索类中的方法）</li>
+<li><code>⌘F12</code>  ：<strong>弹出当前文件结构层，可以在弹出的层上直接输入进行筛选（可用于搜索类中的方法）</strong></li>
 <li>⌃H`  ：显示当前类的层次结构</li>
 <li><code>⌘⇧H</code>  ：显示方法层次结构</li>
 <li><code>⌃⌥H</code>  ：显示调用层次结构</li>
@@ -408,7 +408,7 @@
 <li>⌃0…⌃9 ：定位到对应数值的书签位置</li>
 <li>⌘F3 ：显示所有书签</li>
 <li>⌥F1 ：显示当前文件选择目标弹出层，弹出层中有很多目标可以进行选择(如在代码编辑窗口可以选择显示该文件的Finder)</li>
-<li>⌘F12 ：弹出当前文件结构层，可以在弹出的层上直接输入进行筛选（可用于搜索类中的方法）</li>
+<li><strong>⌘F12 ：弹出当前文件结构层，可以在弹出的层上直接输入进行筛选（可用于搜索类中的方法）</strong></li>
 </ul>
 <h3 id="通用"><a href="#通用" class="headerlink" title="通用"></a>通用</h3><ul>
 <li>⌃⌘F 切换全屏模式</li>
@@ -669,5 +669,20 @@
 
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

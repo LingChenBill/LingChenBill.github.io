@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Mysql_Binlog命令记录 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-05-15 11:09">
+                    May 15, 2021 am
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    21
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<p>Mysql_Binlog命令记录</p>
+<h3 id="1-Binlog的相关变量"><a href="#1-Binlog的相关变量" class="headerlink" title="1.Binlog的相关变量"></a>1.Binlog的相关变量</h3><p><code>log_bin</code> -&gt; Binlog开关.<br><code>binlog-format</code> -&gt; Binlog日志的格式.</p>
+<div class="hljs"><pre><code class="hljs mysql">mysql&gt; show variables like &#39;log_bin&#39;;
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| log_bin       | ON    |
++---------------+-------+
+1 row in set (0.04 sec)
+
+mysql&gt; show variables like &#39;binlog-format&#39;;
+Empty set (0.01 sec)</code></pre></div>
+
+<h3 id="2-管理Binlog相关的SQL语句"><a href="#2-管理Binlog相关的SQL语句" class="headerlink" title="2.管理Binlog相关的SQL语句"></a>2.管理Binlog相关的SQL语句</h3><p><code>show master logs</code>  :  查看所有Binlog的日志列表.<br><code>show master status</code>  :  查看最后一个Binlog日志的编号名称,及最后一个事件结束的位置(pos).<br><strong><code>flush logs</code></strong>  :  刷新Binlog,此刻开始产生一个新编号的Binlog日志文件. -&gt; 慎用<br>**<code>reset master</code>**  :  清空所有的Binlog日志. -&gt; 慎用.</p>
+<div class="hljs"><pre><code class="hljs mysql">mysql&gt; show master logs;
++---------------+-----------+
+| Log_name      | File_size |
++---------------+-----------+
+| binlog.000036 |       155 |
+| binlog.000037 |       155 |
+| binlog.000038 |       155 |
+| binlog.000039 |       155 |
+| binlog.000040 |      6231 |
+| binlog.000041 |       155 |
+| binlog.000042 |       155 |
++---------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql&gt; show master status;
++---------------+----------+--------------+------------------+-------------------+
+| File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++---------------+----------+--------------+------------------+-------------------+
+| binlog.000042 |      155 |              |                  |                   |
++---------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)</code></pre></div>
+
+<p><code>show binlog events</code>  :  查看第一个Binlog日志.<br><code>show binlog events in &#39;binlog.000036&#39;</code>  :  查看指定的Binlog日志.</p>
+<img src="/2021/05/15/mysql-binlog-started/001.png" srcset="/img/loading.gif" alt="binlog_events" style="zoom:50%;">
+
+<div class="hljs"><pre><code class="hljs mysql">mysql&gt; show binlog events;
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+| Log_name      | Pos | Event_type     | Server_id | End_log_pos | Info                              |
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+| binlog.000036 |   4 | Format_desc    |         1 |         124 | Server ver: 8.0.13, Binlog ver: 4 |
+| binlog.000036 | 124 | Previous_gtids |         1 |         155 |                                   |
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; show binlog events in &#39;binlog.000036&#39;;
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+| Log_name      | Pos | Event_type     | Server_id | End_log_pos | Info                              |
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+| binlog.000036 |   4 | Format_desc    |         1 |         124 | Server ver: 8.0.13, Binlog ver: 4 |
+| binlog.000036 | 124 | Previous_gtids |         1 |         155 |                                   |
++---------------+-----+----------------+-----------+-------------+-----------------------------------+
+2 rows in set (0.00 sec)</code></pre></div>
+
+<p><strong>Binlog中的Event_type:</strong></p>
+<img src="/2021/05/15/mysql-binlog-started/002.png" srcset="/img/loading.gif" alt="event_type" style="zoom:50%;">
+
+<h3 id="3-Binlog监听"><a href="#3-Binlog监听" class="headerlink" title="3.Binlog监听"></a>3.Binlog监听</h3><p>pom.xml</p>
+<div class="hljs"><pre><code class="hljs xml">   <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mysqlbinlog.version</span>&gt;</span>0.13.0<span class="hljs-tag">&lt;/<span class="hljs-name">mysqlbinlog.version</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- binlog 监听与解析: https://github.com/shyiko/mysql-binlog-connector-java. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.shyiko<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-binlog-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mysqlbinlog.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>java测试类.</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.ad.service;
+
+<span class="hljs-keyword">import</span> com.github.shyiko.mysql.binlog.BinaryLogClient;
+<span class="hljs-keyword">import</span> com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
+<span class="hljs-keyword">import</span> com.github.shyiko.mysql.binlog.event.EventData;
+<span class="hljs-keyword">import</span> com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
+<span class="hljs-keyword">import</span> com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+<span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;
+
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * BinLog使用的测试类.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/5/15</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Slf4j</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BinlogServiceTest</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+
+        <span class="hljs-comment">// BinLog客户端创建.</span>
+        BinaryLogClient client = <span class="hljs-keyword">new</span> BinaryLogClient(
+                <span class="hljs-string">&quot;127.0.0.1&quot;</span>,
+                <span class="hljs-number">3306</span>,
+                <span class="hljs-string">&quot;root&quot;</span>,
+                <span class="hljs-string">&quot;xxxxxxx&quot;</span>
+        );
+
+        <span class="hljs-comment">// 设置binlog文件.</span>
+        <span class="hljs-comment">// client.setBinlogFilename(&quot;&quot;);</span>
+        <span class="hljs-comment">// 设置binlog位置.</span>
+        <span class="hljs-comment">// client.setBinlogPosition();</span>
+
+        client.registerEventListener(event -&gt; &#123;
+            EventData data = event.getData();
+
+            <span class="hljs-comment">// 更新,添加,删除Event.</span>
+            <span class="hljs-keyword">if</span> (data <span class="hljs-keyword">instanceof</span> UpdateRowsEventData) &#123;
+                log.info(<span class="hljs-string">&quot;Update---------------------&quot;</span>);
+                log.info(data.toString());
+            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data <span class="hljs-keyword">instanceof</span> WriteRowsEventData) &#123;
+                log.info(<span class="hljs-string">&quot;Add---------------------&quot;</span>);
+                log.info(data.toString());
+            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (data <span class="hljs-keyword">instanceof</span> DeleteRowsEventData) &#123;
+                log.info(<span class="hljs-string">&quot;Delete---------------------&quot;</span>);
+                log.info(data.toString());
+            &#125;
+        &#125;);
+
+        <span class="hljs-comment">// 创建连接.</span>
+        client.connect();
+    &#125;
+&#125;</code></pre></div>
+
+<p>启动监听:</p>
+<div class="hljs"><pre><code class="hljs bash">五月 15, 2021 11:42:17 上午 com.github.shyiko.mysql.binlog.BinaryLogClient connect</code></pre></div>
+
+<p>在mysql命令窗口执行数据的增,删,改,查操作.</p>
+<div class="hljs"><pre><code class="hljs mysql">mysql&gt; desc ad_unit_keyword;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| unit_id | int(11)     | NO   |     | NULL    |                |
+| keyword | varchar(30) | NO   |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql&gt; select * from ad_unit_keyword;
+Empty set (0.01 sec)
+
+mysql&gt; insert into &#96;ad_unit_keyword&#96; (&#96;unit_id&#96;, &#96;keyword&#96;) values (10, &#39;奥迪&#39;);
+Query OK, 1 row affected (0.08 sec)
+
+mysql&gt; select * from ad_unit_keyword;
++----+---------+---------+
+| id | unit_id | keyword |
++----+---------+---------+
+| 10 |      10 | 奥迪    |
++----+---------+---------+
+1 row in set (0.00 sec)
+
+mysql&gt; update &#96;ad_unit_keyword&#96; set &#96;keyword&#96; &#x3D; &#39;奔驰&#39; where &#96;keyword&#96; &#x3D; &#39;奥迪&#39;;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql&gt; delete from &#96;ad_unit_keyword&#96; where &#96;keyword&#96; &#x3D; &#39;奔驰&#39;;
+Query OK, 1 row affected (0.03 sec)</code></pre></div>
+
+<p>控制台查看日志:</p>
+<div class="hljs"><pre><code class="hljs bash">信息: Connected to 127.0.0.1:3306 at binlog.000042/155 (sid:65535, cid:11)
+11:44:25.216 [main] INFO com.iplume.ad.service.BinlogServiceTest - Add---------------------
+11:44:25.221 [main] INFO com.iplume.ad.service.BinlogServiceTest - WriteRowsEventData&#123;tableId=72, includedColumns=&#123;0, 1, 2&#125;, rows=[
+    [10, 10, 奥迪]
+]&#125;
+11:46:20.808 [main] INFO com.iplume.ad.service.BinlogServiceTest - Update---------------------
+11:46:20.809 [main] INFO com.iplume.ad.service.BinlogServiceTest - UpdateRowsEventData&#123;tableId=72, includedColumnsBeforeUpdate=&#123;0, 1, 2&#125;, includedColumns=&#123;0, 1, 2&#125;, rows=[
+    &#123;before=[10, 10, 奥迪], after=[10, 10, 奔驰]&#125;
+]&#125;
+11:48:26.920 [main] INFO com.iplume.ad.service.BinlogServiceTest - Delete---------------------
+11:48:26.920 [main] INFO com.iplume.ad.service.BinlogServiceTest - DeleteRowsEventData&#123;tableId=72, includedColumns=&#123;0, 1, 2&#125;, rows=[
+    [10, 10, 奔驰]
+]&#125;</code></pre></div>
+
+<p>此时查看Binlog的Event的信息.</p>
+<div class="hljs"><pre><code class="hljs mysql">mysql&gt; show binlog events in &#39;binlog.000042&#39;;
++---------------+------+----------------+-----------+-------------+------------------------------------------+
+| Log_name      | Pos  | Event_type     | Server_id | End_log_pos | Info                                     |
++---------------+------+----------------+-----------+-------------+------------------------------------------+
+| binlog.000042 |    4 | Format_desc    |         1 |         124 | Server ver: 8.0.13, Binlog ver: 4        |
+| binlog.000042 |  124 | Previous_gtids |         1 |         155 |                                          |
+| binlog.000042 |  155 | Anonymous_Gtid |         1 |         230 | SET @@SESSION.GTID_NEXT&#x3D; &#39;ANONYMOUS&#39;     |
+| binlog.000042 |  230 | Query          |         1 |         312 | BEGIN                                    |
+| binlog.000042 |  312 | Table_map      |         1 |         385 | table_id: 72 (iplume_ad.ad_unit_keyword) |
+| binlog.000042 |  385 | Write_rows     |         1 |         436 | table_id: 72 flags: STMT_END_F           |
+| binlog.000042 |  436 | Xid            |         1 |         467 | COMMIT &#x2F;* xid&#x3D;35 *&#x2F;                      |
+| binlog.000042 |  467 | Anonymous_Gtid |         1 |         542 | SET @@SESSION.GTID_NEXT&#x3D; &#39;ANONYMOUS&#39;     |
+| binlog.000042 |  542 | Query          |         1 |         633 | BEGIN                                    |
+| binlog.000042 |  633 | Table_map      |         1 |         706 | table_id: 72 (iplume_ad.ad_unit_keyword) |
+| binlog.000042 |  706 | Update_rows    |         1 |         774 | table_id: 72 flags: STMT_END_F           |
+| binlog.000042 |  774 | Xid            |         1 |         805 | COMMIT &#x2F;* xid&#x3D;37 *&#x2F;                      |
+| binlog.000042 |  805 | Anonymous_Gtid |         1 |         880 | SET @@SESSION.GTID_NEXT&#x3D; &#39;ANONYMOUS&#39;     |
+| binlog.000042 |  880 | Query          |         1 |         962 | BEGIN                                    |
+| binlog.000042 |  962 | Table_map      |         1 |        1035 | table_id: 72 (iplume_ad.ad_unit_keyword) |
+| binlog.000042 | 1035 | Delete_rows    |         1 |        1086 | table_id: 72 flags: STMT_END_F           |
+| binlog.000042 | 1086 | Xid            |         1 |        1117 | COMMIT &#x2F;* xid&#x3D;40 *&#x2F;                      |
++---------------+------+----------------+-----------+-------------+------------------------------------------+
+17 rows in set (0.00 sec)</code></pre></div>
+
+<h3 id="4-表字段索引与字段位置映射"><a href="#4-表字段索引与字段位置映射" class="headerlink" title="4.表字段索引与字段位置映射"></a>4.表字段索引与字段位置映射</h3><div class="hljs"><pre><code class="hljs mysql">mysql&gt; select table_schema, table_name, column_name, ordinal_position from information_schema.columns where table_schema &#x3D; &#39;iplume_ad&#39; and table_name &#x3D; &#39;ad_unit_keyword&#39;;
++--------------+-----------------+-------------+------------------+
+| TABLE_SCHEMA | TABLE_NAME      | COLUMN_NAME | ORDINAL_POSITION |
++--------------+-----------------+-------------+------------------+
+| iplume_ad    | ad_unit_keyword | id          |                1 |
+| iplume_ad    | ad_unit_keyword | keyword     |                3 |
+| iplume_ad    | ad_unit_keyword | unit_id     |                2 |
++--------------+-----------------+-------------+------------------+
+3 rows in set (0.00 sec)</code></pre></div>
+
+
+
+<p><strong><u>PS: 本文仅为学习记录,仅供参考与学习.</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                      <a class="hover-with-bg" href="/tags/springcloud/">springcloud</a>
+                    
+                      <a class="hover-with-bg" href="/tags/binlog/">binlog</a>
+                    
+                      <a class="hover-with-bg" href="/tags/springboot/">springboot</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/29/photoshop-started/">
+                        <span class="hidden-mobile">photoshop学习快捷键记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Mysql_Binlog命令记录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

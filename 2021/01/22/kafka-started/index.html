@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.5k 字
+                    1.8k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    27
+                    32
                      分钟
                   </span>
                 
@@ -462,6 +462,57 @@ SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, tim
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_4&#x27;</span>, timestamp=1547718205, temperature=38.1&#125;
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_3&#x27;</span>, timestamp=1547718202, temperature=6.7&#125;</code></pre></div>
 
+<h4 id="8-kafka单点使用"><a href="#8-kafka单点使用" class="headerlink" title="8.kafka单点使用"></a>8.kafka单点使用</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-81 ~]<span class="hljs-comment"># cd /opt/src</span>
+<span class="hljs-comment"># 解压.</span>
+[root@hdss7-81 src]<span class="hljs-comment"># tar -zxvf kafka_2.12-2.1.0.tgz -C /opt/</span>
+<span class="hljs-comment"># 建立软链接.</span>
+[root@hdss7-81 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.12-2.1.0/ /opt/kafka</span>
+
+<span class="hljs-comment"># 配置kafka.</span>
+[root@hdss7-81 opt]<span class="hljs-comment"># cd kafka</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># vi config/server.properties </span>
+
+broker.id=1
+
+log.dirs=/usr/tmp/kafka-logs
+
+num.partitions=1
+
+<span class="hljs-comment"># 配置zookeeper.</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># vi config/zookeeper.properties </span>
+dataDir=/opt/datas/kafka/zookeeper
+
+<span class="hljs-comment"># 启动kafka自带的zookeeper.</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/zookeeper-server-start.sh -daemon config/zookeeper.properties</span>
+
+[root@hdss7-81 kafka]<span class="hljs-comment"># jps</span>
+28818 QuorumPeerMain
+28899 Jps
+
+<span class="hljs-comment"># 启动kafka(命令行方式).</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh config/server.properties </span>
+
+<span class="hljs-comment"># 后台方式启动(-daemon)</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh -daemon config/server.properties </span>
+
+<span class="hljs-comment"># 创建消息主题.</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic iplume-ad-test-01</span>
+Created topic <span class="hljs-string">&quot;iplume-ad-test-01&quot;</span>.
+
+<span class="hljs-comment"># 查看消息主题.</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-topics.sh --list --zookeeper localhost:2181</span>
+iplume-ad-test-01
+
+<span class="hljs-comment"># 发送消息.</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-console-producer.sh --broker-list localhost:9092 --topic iplume-ad-test-01 </span>
+&gt;hello kafka
+&gt;hello iplume-ad
+
+<span class="hljs-comment"># 监听消息</span>
+[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic iplume-ad-test-01 --from-beginning</span>
+hello kafka
+hello iplume-ad</code></pre></div>
+
 
 
 <p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考!</u></strong></p>
@@ -718,5 +769,20 @@ SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_3&#x27;</span>, tim
 
 
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

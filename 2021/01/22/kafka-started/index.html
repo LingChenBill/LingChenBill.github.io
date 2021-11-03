@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    2.8k 字
+                    4k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    50
+                    70
                      分钟
                   </span>
                 
@@ -200,7 +200,6 @@ ZooKeeper JMX enabled by default
 Using config: /opt/zookeeper/bin/../conf/zoo.cfg
 Mode: follower
 </code></pre></div>
-
 <h4 id="3-解压kafka"><a href="#3-解压kafka" class="headerlink" title="3.解压kafka"></a>3.解压kafka</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 解压.</span>
 [root@hdss7-71 src]<span class="hljs-comment"># tar -zxvf kafka_2.11-2.1.0.tgz -C /opt/</span>
 [root@hdss7-71 src]<span class="hljs-comment"># cd /opt/</span>
@@ -212,7 +211,6 @@ Mode: follower
 lrwxrwxrwx  1 root root   22 1月  22 03:51 kafka -&gt; /opt/kafka_2.11-2.1.0/
 drwxr-xr-x  7 root root  101 1月  22 04:22 kafka_2.11-2.1.0
 ......</code></pre></div>
-
 <h4 id="4-配置kafka"><a href="#4-配置kafka" class="headerlink" title="4.配置kafka"></a>4.配置kafka</h4><p><code>broker.id=1</code>在不同的节点设置不同的值.</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># cd /opt/kafka</span>
 [root@hdss7-71 kafka]<span class="hljs-comment"># vi config/server.properties</span>
@@ -230,7 +228,6 @@ num.partitions=4
 
 zookeeper.connect=hdss7-71:2181,hdss7-72:2181,hdss7-73:2181
 </code></pre></div>
-
 <p>配置kafka的zookeeper.</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># vi config/zookeeper.properties</span>
 
@@ -240,19 +237,16 @@ maxClientCnxns=0
 
 dataDir=/opt/datas/zookeeper/data
 </code></pre></div>
-
 <p>创建日志文件</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span>
 [root@hdss7-72 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span>
 [root@hdss7-73 kafka]<span class="hljs-comment"># mkdir -p /opt/datas/kafka/logs</span></code></pre></div>
-
 <h4 id="5-分发kafka"><a href="#5-分发kafka" class="headerlink" title="5.分发kafka"></a>5.分发kafka</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/kafka_2.11-2.1.0/ hdss7-72:/opt/kafka_2.11-2.1.0/</span>
 [root@hdss7-71 opt]<span class="hljs-comment"># rsync -av /opt/kafka_2.11-2.1.0/ hdss7-73:/opt/kafka_2.11-2.1.0/</span>
 
 <span class="hljs-comment"># 建立软链接.</span>
 [root@hdss7-72 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.11-2.1.0/ /opt/kafka</span>
 [root@hdss7-73 opt]<span class="hljs-comment"># ln -s /opt/kafka_2.11-2.1.0/ /opt/kafka</span></code></pre></div>
-
 <p>修改<code>config/server.properties</code>中的<code>broker.id=2,broker.id=3</code></p>
 <h4 id="6-启动kafka"><a href="#6-启动kafka" class="headerlink" title="6.启动kafka"></a>6.启动kafka</h4><div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 在三个节点中都启动.</span>
 [root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh config/server.properties</span>
@@ -266,7 +260,6 @@ dataDir=/opt/datas/zookeeper/data
 25522 QuorumPeerMain
 53337 Kafka
 116488 Jps</code></pre></div>
-
 <p>7.准备Flink程序,从kafka中读取数据.</p>
 <p>启动程序:</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.source;
@@ -312,17 +305,14 @@ dataDir=/opt/datas/zookeeper/data
     &#125;
 &#125;
 </code></pre></div>
-
 <p>在kafka中发送信息</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-producer.sh --broker-list hdss7-71:9092 --topic sensor</span>
 &gt;sensor_1,1547718199L,35.8
 &gt;sensor_2,1547718201L,15.4
 &gt;sensor_3,1547718202L,6.7
 &gt;sensor_4,1547718205L,38.1</code></pre></div>
-
 <p>在程序输出容器中会打印出信息结果:</p>
-<img src="/2021/01/22/kafka-started/001.png" srcset="/img/loading.gif" alt="flink-console" style="zoom:50%;">
-
+<p><img src="/2021/01/22/kafka-started/001.png" srcset="/img/loading.gif" alt="flink-console" style="zoom:50%;"></p>
 <h4 id="7-kafka消息消费"><a href="#7-kafka消息消费" class="headerlink" title="7.kafka消息消费"></a>7.kafka消息消费</h4><p>java程序:</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.sink;
 
@@ -367,7 +357,6 @@ dataDir=/opt/datas/zookeeper/data
 
     &#125;
 &#125;</code></pre></div>
-
 <p>kafka主题监听:</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 后台启动kafka(加上参数:-daemon).</span>
 [root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-server-start.sh -daemon config/server.properties </span>
@@ -377,7 +366,6 @@ dataDir=/opt/datas/zookeeper/data
 4644 QuorumPeerMain
 
 [root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span></code></pre></div>
-
 <p>执行java程序后,在kafka输出中会监听到消息</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span>
 [2021-01-23 21:30:11,561] WARN [Consumer clientId=consumer-1, groupId=console-consumer-9131] Error <span class="hljs-keyword">while</span> fetching metadata with correlation id 2 : &#123;sink_kafka=LEADER_NOT_AVAILABLE&#125; (org.apache.kafka.clients.NetworkClient)
@@ -389,7 +377,6 @@ SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, tim
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547717225, temperature=35.1&#125;
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718195, temperature=38.3&#125;
 </code></pre></div>
-
 <p>修改java程序为,在kafka中输入,并在kafka中输出,相当于kafka做了一个ETL的作用.</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lc.api.sink;
 
@@ -444,7 +431,6 @@ SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, tim
 
     &#125;
 &#125;</code></pre></div>
-
 <p>在kafka中发送消息主题与监听主题:</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 监听主题.</span>
 [root@hdss7-71 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server hdss7-71:9092 --topic sink_kafka</span>
@@ -461,7 +447,6 @@ SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, tim
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_1&#x27;</span>, timestamp=1547718199, temperature=35.8&#125;
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_4&#x27;</span>, timestamp=1547718205, temperature=38.1&#125;
 SensorReading&#123;id=<span class="hljs-string">&#x27;sensor_3&#x27;</span>, timestamp=1547718202, temperature=6.7&#125;</code></pre></div>
-
 <h4 id="8-kafka单点使用"><a href="#8-kafka单点使用" class="headerlink" title="8.kafka单点使用"></a>8.kafka单点使用</h4><div class="hljs"><pre><code class="hljs bash">[root@hdss7-81 ~]<span class="hljs-comment"># cd /opt/src</span>
 <span class="hljs-comment"># 解压.</span>
 [root@hdss7-81 src]<span class="hljs-comment"># tar -zxvf kafka_2.12-2.1.0.tgz -C /opt/</span>
@@ -529,7 +514,6 @@ hello iplume-ad
 [root@hdss7-81 kafka]<span class="hljs-comment"># jps</span>
 111428 Jps
 </code></pre></div>
-
 <h4 id="9-kafka的producer"><a href="#9-kafka的producer" class="headerlink" title="9.kafka的producer."></a>9.kafka的producer.</h4><h5 id="1-原生发送消息"><a href="#1-原生发送消息" class="headerlink" title="1) 原生发送消息"></a>1) 原生发送消息</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.kafkastudy;
 
 <span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.KafkaProducer;
@@ -581,13 +565,11 @@ hello iplume-ad
         sendMessageForgetResult();
     &#125;
 &#125;</code></pre></div>
-
 <p>执行上述程序.查看监视窗口.</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic iplume-kafka-study --from-beginning</span>
 
 ForgetResult
 </code></pre></div>
-
 <h5 id="2-同步消息"><a href="#2-同步消息" class="headerlink" title="2) 同步消息"></a>2) 同步消息</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment">  * 同步发送消息.</span>
 <span class="hljs-comment">  */</span>
@@ -612,18 +594,15 @@ ForgetResult
      <span class="hljs-comment">// sendMessageForgetResult();</span>
      sendMessageSync();
  &#125;</code></pre></div>
-
 <p>查看消费窗口</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic iplume-kafka-study --from-beginning</span>
 
 Sync
 </code></pre></div>
-
 <p>运行窗口</p>
 <div class="hljs"><pre><code class="hljs bash">iplume-kafka-study
 0
 2</code></pre></div>
-
 <h5 id="3-异步消息"><a href="#3-异步消息" class="headerlink" title="3) 异步消息"></a>3) 异步消息</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment">   * 异步发送消息.</span>
 <span class="hljs-comment">   */</span>
@@ -667,20 +646,17 @@ Sync
       <span class="hljs-comment">// sendMessageSync();</span>
       sendMessageCallback();
   &#125;</code></pre></div>
-
 <p>查看消费窗口</p>
 <div class="hljs"><pre><code class="hljs bash">[root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic iplume-kafka-study --from-beginning</span>
 ForgetResult
 ForgetResult
 Sync
 Callback</code></pre></div>
-
 <p>运行窗口</p>
 <div class="hljs"><pre><code class="hljs bash">iplume-kafka-study
 0
 3
 Coming <span class="hljs-keyword">in</span> MyProducerCallback</code></pre></div>
-
 <h5 id="4-自定义分区配置"><a href="#4-自定义分区配置" class="headerlink" title="4) 自定义分区配置"></a>4) 自定义分区配置</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.kafkastudy;
 
 <span class="hljs-keyword">import</span> org.apache.kafka.clients.producer.Partitioner;
@@ -731,7 +707,6 @@ Coming <span class="hljs-keyword">in</span> MyProducerCallback</code></pre></div
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(Map&lt;String, ?&gt; configs)</span> </span>&#123;
     &#125;
 &#125;</code></pre></div>
-
 <p>运行类修改:</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment">   * 异步发送消息.</span>
@@ -788,7 +763,6 @@ Coming <span class="hljs-keyword">in</span> MyProducerCallback</code></pre></div
   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
       sendMessageCallback();
   &#125;</code></pre></div>
-
 <p>运行程序后,消息监听窗口:</p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 设置topic的分区数为3.</span>
 [root@hdss7-81 kafka]<span class="hljs-comment"># bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic iplume-kafka-study-x</span>
@@ -798,7 +772,6 @@ Created topic <span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>.
 Callback_x
 Callback_y
 Callback</code></pre></div>
-
 <p>程序窗口:</p>
 <div class="hljs"><pre><code class="hljs bash">Topic: iplume-kafka-study-x
 Partition: 1
@@ -812,9 +785,300 @@ Topic: iplume-kafka-study-x
 Partition: 2
 Offset: 0
 Coming <span class="hljs-keyword">in</span> MyProducerCallback</code></pre></div>
+<h4 id="10-kafka的Consumer"><a href="#10-kafka的Consumer" class="headerlink" title="10.kafka的Consumer"></a>10.kafka的Consumer</h4><h5 id="1-自动提交位移"><a href="#1-自动提交位移" class="headerlink" title="1) 自动提交位移"></a>1) 自动提交位移</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.kafkastudy;
 
+<span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;
+<span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;
+<span class="hljs-keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;
 
+<span class="hljs-keyword">import</span> java.util.Collections;
+<span class="hljs-keyword">import</span> java.util.Properties;
 
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * kafka的消费类.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2021/5/28</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyConsumer</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * kafka消费者.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> KafkaConsumer&lt;String, String&gt; consumer;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 属性.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Properties properties;
+
+    <span class="hljs-keyword">static</span> &#123;
+        properties = <span class="hljs-keyword">new</span> Properties();
+        properties.put(<span class="hljs-string">&quot;bootstrap.servers&quot;</span>, <span class="hljs-string">&quot;hdss7-81:9092&quot;</span>);
+
+        <span class="hljs-comment">// key 与 value的反序列化.</span>
+        properties.put(<span class="hljs-string">&quot;key.deserializer&quot;</span>, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);
+        properties.put(<span class="hljs-string">&quot;value.deserializer&quot;</span>, <span class="hljs-string">&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;</span>);
+
+        <span class="hljs-comment">// kafka不同组也可以消费全量的消息.</span>
+        properties.put(<span class="hljs-string">&quot;group.id&quot;</span>, <span class="hljs-string">&quot;KafkaStudy&quot;</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 消息消费方式: 自动提交位移.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generalConsumerMessageAutoCommit</span><span class="hljs-params">()</span> </span>&#123;
+
+        properties.put(<span class="hljs-string">&quot;enable.auto.commit&quot;</span>, <span class="hljs-keyword">true</span>);
+        consumer = <span class="hljs-keyword">new</span> KafkaConsumer&lt;&gt;(properties);
+
+        consumer.subscribe(Collections.singleton(<span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>));
+
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+                <span class="hljs-keyword">boolean</span> flg = <span class="hljs-keyword">true</span>;
+
+                <span class="hljs-comment">// 拉取消息.</span>
+                ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="hljs-number">100</span>);
+
+                <span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;
+                    System.out.println(String.format(<span class="hljs-string">&quot;&quot;</span> +
+                            <span class="hljs-string">&quot;Topic: %s, Partition: %s, Key: %s, Value: %s&quot;</span>,
+                            record.topic(),
+                            record.partition(),
+                            record.key(),
+                            record.value()));
+
+                    <span class="hljs-keyword">if</span> (record.value().equals(<span class="hljs-string">&quot;done&quot;</span>)) &#123;
+                        flg = <span class="hljs-keyword">false</span>;
+                    &#125;
+                &#125;
+
+                <span class="hljs-keyword">if</span> (!flg) &#123;
+                    <span class="hljs-keyword">break</span>;
+                &#125;
+            &#125;
+        &#125; <span class="hljs-keyword">finally</span> &#123;
+            consumer.close();
+        &#125;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-comment">// 自动提交位移.</span>
+        generalConsumerMessageAutoCommit();
+    &#125;
+&#125;</code></pre></div>
+<p>运行消费者与生产者.查看运行窗口.</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># MyProducer.</span>
+Topic: iplume-kafka-study-x
+Partition: 1
+Offset: 1
+Coming <span class="hljs-keyword">in</span> MyProducerCallback
+Topic: iplume-kafka-study-x
+Partition: 0
+Offset: 1
+Coming <span class="hljs-keyword">in</span> MyProducerCallback
+Topic: iplume-kafka-study-x
+Partition: 2
+Offset: 1
+Coming <span class="hljs-keyword">in</span> MyProducerCallback
+
+<span class="hljs-comment"># MyConsumer.</span>
+Topic: iplume-kafka-study-x, Partition: 1, Key: name_x, Value: Callback_x
+Topic: iplume-kafka-study-x, Partition: 0, Key: name_y, Value: Callback_y
+Topic: iplume-kafka-study-x, Partition: 2, Key: name, Value: Callback</code></pre></div>
+<h5 id="2-同步提交消息"><a href="#2-同步提交消息" class="headerlink" title="2) 同步提交消息"></a>2) 同步提交消息</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 手动提交当前位移(同步提交).</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-meta">@SuppressWarnings(&quot;DuplicatedCode&quot;)</span>
+  <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generalConsumeMessageSyncCommit</span><span class="hljs-params">()</span> </span>&#123;
+
+      <span class="hljs-comment">// 设置自动提交为false.</span>
+      properties.put(<span class="hljs-string">&quot;auto.commit.offset&quot;</span>, <span class="hljs-keyword">false</span>);
+      <span class="hljs-comment">// 消费者实例化.</span>
+      consumer = <span class="hljs-keyword">new</span> KafkaConsumer&lt;&gt;(properties);
+      <span class="hljs-comment">// 订阅消息主题.</span>
+      consumer.subscribe(Collections.singleton(<span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>));
+
+      <span class="hljs-keyword">try</span> &#123;
+          <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+              <span class="hljs-keyword">boolean</span> flg = <span class="hljs-keyword">true</span>;
+              ConsumerRecords&lt;String, String&gt; recordss = consumer.poll(<span class="hljs-number">100</span>);
+
+              <span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : recordss) &#123;
+                  System.out.println(String.format(<span class="hljs-string">&quot;&quot;</span> +
+                                  <span class="hljs-string">&quot;Topic: %s, Partition: %s, Key: %s, Value: %s&quot;</span>,
+                          record.topic(),
+                          record.partition(),
+                          record.key(),
+                          record.value()));
+
+                  <span class="hljs-keyword">if</span> (record.value().equals(<span class="hljs-string">&quot;done&quot;</span>)) &#123;
+                      flg = <span class="hljs-keyword">false</span>;
+                  &#125;
+              &#125;
+
+              <span class="hljs-keyword">try</span> &#123;
+                  <span class="hljs-comment">// 同步提交发生消息堵塞.直到消费消息或者是发生异常为止.</span>
+                  consumer.commitSync();
+              &#125; <span class="hljs-keyword">catch</span> (CommitFailedException ex) &#123;
+                  System.out.println(<span class="hljs-string">&quot;Commit fail error: &quot;</span> + ex.getMessage());
+              &#125;
+
+              <span class="hljs-keyword">if</span> (!flg) &#123;
+                  <span class="hljs-keyword">break</span>;
+              &#125;
+          &#125;
+      &#125; <span class="hljs-keyword">finally</span> &#123;
+          consumer.close();
+      &#125;
+  &#125;</code></pre></div>
+<h5 id="3-异步提交消息"><a href="#3-异步提交消息" class="headerlink" title="3) 异步提交消息"></a>3) 异步提交消息</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 异步消费消息.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generalConsumerMessageAsyncCommit</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-comment">// 设置自动提交为false.</span>
+    properties.put(<span class="hljs-string">&quot;auto.commit.offset&quot;</span>, <span class="hljs-keyword">false</span>);
+    <span class="hljs-comment">// 消费者实例化.</span>
+    consumer = <span class="hljs-keyword">new</span> KafkaConsumer&lt;&gt;(properties);
+    <span class="hljs-comment">// 订阅消息主题.</span>
+    consumer.subscribe(Collections.singleton(<span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>));
+
+    <span class="hljs-keyword">try</span> &#123;
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+            <span class="hljs-keyword">boolean</span> flg = <span class="hljs-keyword">true</span>;
+            ConsumerRecords&lt;String, String&gt; recordss = consumer.poll(<span class="hljs-number">100</span>);
+
+            <span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : recordss) &#123;
+                System.out.println(String.format(<span class="hljs-string">&quot;&quot;</span> +
+                                <span class="hljs-string">&quot;Topic: %s, Partition: %s, Key: %s, Value: %s&quot;</span>,
+                        record.topic(),
+                        record.partition(),
+                        record.key(),
+                        record.value()));
+
+                <span class="hljs-keyword">if</span> (record.value().equals(<span class="hljs-string">&quot;done&quot;</span>)) &#123;
+                    flg = <span class="hljs-keyword">false</span>;
+                &#125;
+            &#125;
+
+            <span class="hljs-comment">// 异步提交消息不会发行堵塞,但不能保证能正确消费消息.</span>
+            consumer.commitAsync();
+
+            <span class="hljs-keyword">if</span> (!flg) &#123;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125; <span class="hljs-keyword">finally</span> &#123;
+        consumer.close();
+    &#125;
+&#125;</code></pre></div>
+<h5 id="4-手动异步提交消息带回调"><a href="#4-手动异步提交消息带回调" class="headerlink" title="4) 手动异步提交消息带回调"></a>4) 手动异步提交消息带回调</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 手动异步提交消息带回调.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@SuppressWarnings(&quot;AlibabaRemoveCommentedCode&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generalConsumeMessageAsyncCommitWithCallback</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-comment">// 设置自动提交为false.</span>
+    properties.put(<span class="hljs-string">&quot;auto.commit.offset&quot;</span>, <span class="hljs-keyword">false</span>);
+    <span class="hljs-comment">// 消费者实例化.</span>
+    consumer = <span class="hljs-keyword">new</span> KafkaConsumer&lt;&gt;(properties);
+    <span class="hljs-comment">// 订阅消息主题.</span>
+    consumer.subscribe(Collections.singleton(<span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>));
+
+    <span class="hljs-keyword">try</span> &#123;
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+            <span class="hljs-keyword">boolean</span> flg = <span class="hljs-keyword">true</span>;
+            ConsumerRecords&lt;String, String&gt; recordss = consumer.poll(<span class="hljs-number">100</span>);
+
+            <span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : recordss) &#123;
+                System.out.println(String.format(<span class="hljs-string">&quot;&quot;</span> +
+                                <span class="hljs-string">&quot;Topic: %s, Partition: %s, Key: %s, Value: %s&quot;</span>,
+                        record.topic(),
+                        record.partition(),
+                        record.key(),
+                        record.value()));
+
+                <span class="hljs-keyword">if</span> (record.value().equals(<span class="hljs-string">&quot;done&quot;</span>)) &#123;
+                    flg = <span class="hljs-keyword">false</span>;
+                &#125;
+            &#125;
+
+            <span class="hljs-comment">// 正常写法.</span>
+            <span class="hljs-comment">// consumer.commitAsync(new OffsetCommitCallback() &#123;</span>
+            <span class="hljs-comment">//     @Override</span>
+            <span class="hljs-comment">//     public void onComplete(Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets, Exception exception) &#123;</span>
+            <span class="hljs-comment">//         // 异步提交失败后的回调,查看错误信息.</span>
+            <span class="hljs-comment">//         if (exception != null) &#123;</span>
+            <span class="hljs-comment">//             System.out.println(&quot;Commit failed for offsets: &quot; + exception.getMessage());</span>
+            <span class="hljs-comment">//         &#125;</span>
+            <span class="hljs-comment">//     &#125;</span>
+            <span class="hljs-comment">// &#125;);</span>
+
+            <span class="hljs-comment">// lambda语法糖.</span>
+            consumer.commitAsync((offsets, exception) -&gt; &#123;
+                <span class="hljs-comment">// 异步提交失败后的回调,查看错误信息.</span>
+                <span class="hljs-keyword">if</span> (exception != <span class="hljs-keyword">null</span>) &#123;
+                    System.out.println(<span class="hljs-string">&quot;Commit failed for offsets: &quot;</span> + exception.getMessage());
+                &#125;
+            &#125;);
+
+            <span class="hljs-keyword">if</span> (!flg) &#123;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125; <span class="hljs-keyword">finally</span> &#123;
+        consumer.close();
+    &#125;
+&#125;</code></pre></div>
+<h5 id="5-混合异步与同步提交位移"><a href="#5-混合异步与同步提交位移" class="headerlink" title="5) 混合异步与同步提交位移"></a>5) 混合异步与同步提交位移</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 混合异步与同步提交位移.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@SuppressWarnings(&quot;DuplicatedCode&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mixAsyncAndSyncCommit</span><span class="hljs-params">()</span> </span>&#123;
+
+    <span class="hljs-comment">// 设置自动提交为false.</span>
+    properties.put(<span class="hljs-string">&quot;auto.commit.offset&quot;</span>, <span class="hljs-keyword">false</span>);
+    <span class="hljs-comment">// 消费者实例化.</span>
+    consumer = <span class="hljs-keyword">new</span> KafkaConsumer&lt;&gt;(properties);
+    <span class="hljs-comment">// 订阅消息主题.</span>
+    consumer.subscribe(Collections.singleton(<span class="hljs-string">&quot;iplume-kafka-study-x&quot;</span>));
+
+    <span class="hljs-keyword">try</span> &#123;
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+            <span class="hljs-keyword">boolean</span> flg = <span class="hljs-keyword">true</span>;
+            ConsumerRecords&lt;String, String&gt; recordss = consumer.poll(<span class="hljs-number">100</span>);
+
+            <span class="hljs-keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : recordss) &#123;
+                System.out.println(String.format(<span class="hljs-string">&quot;&quot;</span> +
+                                <span class="hljs-string">&quot;Topic: %s, Partition: %s, Key: %s, Value: %s&quot;</span>,
+                        record.topic(),
+                        record.partition(),
+                        record.key(),
+                        record.value()));
+
+                <span class="hljs-keyword">if</span> (record.value().equals(<span class="hljs-string">&quot;done&quot;</span>)) &#123;
+                    flg = <span class="hljs-keyword">false</span>;
+                &#125;
+            &#125;
+
+            <span class="hljs-comment">// 异步提交.</span>
+            consumer.commitAsync();
+
+            <span class="hljs-keyword">if</span> (!flg) &#123;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125; <span class="hljs-keyword">catch</span> (Exception ex) &#123;
+        System.out.println(<span class="hljs-string">&quot;Commit async error: &quot;</span> + ex.getMessage());
+    &#125; <span class="hljs-keyword">finally</span> &#123;
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-comment">// 同步提交.</span>
+            consumer.commitSync();
+        &#125; <span class="hljs-keyword">finally</span> &#123;
+            consumer.close();
+        &#125;
+    &#125;
+&#125;</code></pre></div>
 <p><strong><u>Ps: 本文仅为学习记录,仅供学习与参考!</u></strong></p>
 
             </article>

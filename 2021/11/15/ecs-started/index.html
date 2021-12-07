@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>ECS知识记录 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-11-15 14:04">
+                    November 15, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    16
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="ECS记录"><a href="#ECS记录" class="headerlink" title="ECS记录"></a>ECS记录</h3><h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h4><p>Amazon Elastic Container Service (Amazon ECS)是一项高度可扩展且快速的容器管理服务，可轻松运行、停止和管理集群上的容器.<br>借助 Amazon ECS，您可以轻松部署、管理和扩展运行应用程序、服务和批处理流程的 Docker 容器.</p>
+<p>Web 应用程序 : 可以构建可自动向上和向下扩展的 Web 应用程序，并在多个可用区之间在高可用性配置中运行该应用程序.<br>通过在 Amazon ECS 上运行，您的 Web 应用程序将受益于 AWS 的性能、规模、可靠性和可用性.<br>此外，默认情况下，您的服务还与多个 AWS 网络和安全服务集成，包括用于 Web 应用程序负载分配的 Application Load Balancer 和用于联网的 VPC.</p>
+<p>Amazon ECS是一项区域服务，可在区域内的多个可用区中以高度可用的方式简化容器的运行.<br>您可以在新的或现有的 VPC 中创建 Amazon ECS 集群.<br>在群集启动并运行后，您可以创建用于定义在群集中运行的容器映像的任务定义.<br>您的任务定义用于运行任务或创建服务。容器映像将在容器注册表中存储和提取，例如，<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/ecr">Amazon Elastic Container Registry</a>.</p>
+<p>下图演示了Amazon ECS环境运行于AWS Fargate</p>
+<img src="/2021/11/15/ecs-started/001.png" srcset="/img/loading.gif" alt="ecs-001" style="zoom:50%;margin-left: 0;">
+
+<h4 id="2-容器和映像"><a href="#2-容器和映像" class="headerlink" title="2.容器和映像"></a>2.容器和映像</h4><p>容器 : 一种软件开发的标准化单位，包含您的软件应用程序需要运行的一切，包括相关代码、运行时、系统工具和系统库.<br>从称为<em>映像</em> 的只读模板中创建容器.</p>
+<p>映像 : 映像通常由 Dockerfile 构建，后者是一个明文文件，指定了容器中包含的所有组件.<br>构建后，这些映像将存储在<em>注册表</em>在那里可以下载它们并在您的群集中运行.</p>
+<img src="/2021/11/15/ecs-started/002.png" srcset="/img/loading.gif" alt="ecs-002" style="zoom:50%;margin-left: 0;">
+
+<h4 id="3-任务定义"><a href="#3-任务定义" class="headerlink" title="3.任务定义"></a>3.任务定义</h4><p>为了准备要在上运行的应用程序Amazon ECS，您必须<u>创建<em>任务定义</em></u>.<br>任务定义是一个文本文件（JSON 格式），描述了构成应用程序的一个或多个容器（最多为 10 个）.<br>任务定义可以被视为**<u>应用程序的蓝图</u>**. 它为您的应用程序指定各种参数.<br>例如，这些参数可用于指示应使用哪些容器，应为应用程序打开哪些端口，应与任务中的容器一起使用哪些数据卷。可用于任务定义的特定参数取决于您的特定应用程序的需求.</p>
+<p>以下是指定使用 Fargate 启动运行 NGINX Web 服务器的单个容器的任务定义的示例 (Fargate) : </p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;family&quot;</span>: <span class="hljs-string">&quot;webserver&quot;</span>,
+    <span class="hljs-attr">&quot;containerDefinitions&quot;</span>: [
+        &#123;
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;web&quot;</span>,
+            <span class="hljs-attr">&quot;image&quot;</span>: <span class="hljs-string">&quot;nginx&quot;</span>,
+            <span class="hljs-attr">&quot;memory&quot;</span>: <span class="hljs-string">&quot;100&quot;</span>,
+            <span class="hljs-attr">&quot;cpu&quot;</span>: <span class="hljs-string">&quot;99&quot;</span>
+        &#125;,
+    ],
+    <span class="hljs-attr">&quot;requiresCompatibilities&quot;</span>: [
+        <span class="hljs-string">&quot;FARGATE&quot;</span>
+    ],
+    <span class="hljs-attr">&quot;networkMode&quot;</span>: <span class="hljs-string">&quot;awsvpc&quot;</span>,
+    <span class="hljs-attr">&quot;memory&quot;</span>: <span class="hljs-string">&quot;512&quot;</span>,
+    <span class="hljs-attr">&quot;cpu&quot;</span>: <span class="hljs-string">&quot;256&quot;</span>,
+&#125;</code></pre></div>
+
+<h4 id="4-任务和计划"><a href="#4-任务和计划" class="headerlink" title="4.任务和计划"></a>4.任务和计划</h4><p><em>任务</em> 是集群内的任务定义的实例化.<br>在为您的应用程序创建任务定义Amazon ECS，您可以指定要在您的群集上运行的任务数量.</p>
+<p>Amazon ECS 任务计划程序负责将任务放置到您的集群中. 有多种不同的计划选项可供选择.</p>
+<img src="/2021/11/15/ecs-started/003.png" srcset="/img/loading.gif" alt="ecs-003" style="zoom:50%;margin-left: 0;">
+
+<h4 id="5-集群-Clusters"><a href="#5-集群-Clusters" class="headerlink" title="5.集群(Clusters)"></a>5.集群(Clusters)</h4><p>Amazon ECS <em>集群</em> 是任务或服务的逻辑分组.<br>您可以注册一个或多个Amazon EC2实例（也称为<em>容器实例</em>），以便在其上运行任务.或者，您可以使用Fargate提供运行任务.</p>
+<p>当您第一次使用Amazon ECS，则会为您创建一个默认集群. 您可以在账户中创建其他集群以保持您的资源独立.</p>
+<h4 id="6-容器代理"><a href="#6-容器代理" class="headerlink" title="6.容器代理"></a>6.容器代理</h4><p>这些区域有：<em>容器代理</em>在每个容器实例上运行Amazon ECS集群.<br>代理向发送有关资源的当前正在运行的任务和资源使用率的信息Amazon ECS. 它会启动和停止任务，只要它收到来自Amazon ECS.</p>
+<img src="/2021/11/15/ecs-started/004.png" srcset="/img/loading.gif" alt="ecs-004" style="zoom:50%;margin-left: 0;">
+
+<h4 id="7-相关服务"><a href="#7-相关服务" class="headerlink" title="7.相关服务"></a>7.相关服务</h4><ul>
+<li>IAM(<strong>AWS Identity and Access Management</strong>) : 一项访问管理服务，可帮助您安全地控制对AWS资源的费用. 您可以使用 IAM 控制对哪个用户进行身份验证 (登录) 和授权 (具有权限) 以查看或执行对资源的特定操作.</li>
+<li><strong>Amazon EC2 Auto Scaling</strong> : Auto Scaling是一项服务，可用于根据用户定义的策略、运行状况检查和时间表自动扩展或扩展任务.<br>您可以对服务内的 Fargate 任务使用 Auto Scaling，从而根据多个指标进行扩展，或对 EC2 任务使用来扩展集群中的容器实例.</li>
+<li><strong>Elastic Load Balancing</strong> : Elastic Load Balancing服务在您的任务间自动分配应用程序的传入流量Amazon ECS服务.<br>它可以让您实现更高水平的应用程序<u>容错性能</u>，同时无缝提供分配应用程序流量所需的<u>负载均衡容量</u>。您可以使用 Elastic Load Balancing 创建一个使集群中的服务流量达到均衡的终端节点.</li>
+<li><strong>Amazon Elastic Container Registry</strong> : Amazon ECR 是一项托管 AWS Docker 注册表服务，安全、可扩展且可靠.<br>通过使用 IAM，Amazon ECR 支持具有基于资源的权限的私有 Docker 存储库，以便特定用户或任务可以访问存储库和映像.</li>
+<li><strong>AWS CloudFormation</strong> : AWS CloudFormation为开发人员和系统管理员提供了一种创建和管理相关AWS资源的费用.<br>更具体地说，它使资源的配置和更新更加有序和可预测. 您可以在 AWS CloudFormation 脚本中将集群、任务定义和服务定义为实体.</li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ecs/">ecs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/08/net-on-aws-started/">
+                        <span class="hidden-mobile">.net-on-aws-started</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "ECS知识记录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

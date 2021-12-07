@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>.net-on-aws-started - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-11-08 20:01">
+                    November 8, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    922 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    10
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="net-on-aws-started"><a href="#net-on-aws-started" class="headerlink" title=".net-on-aws-started"></a>.net-on-aws-started</h3><p><a target="_blank" rel="noopener" href="https://explore.skillbuilder.aws/learn/course/8913/play/29096/getting-started-with-net-on-aws-japanese">课程名称: Getting Started with .NET on AWS (Japanese)</a></p>
+<h4 id="1-AWS服务"><a href="#1-AWS服务" class="headerlink" title="1.AWS服务"></a>1.AWS服务</h4><p>如果使用无服务器计算选项，则可集中在核心应用程序上的时间变长。没有必要担心基础设施的管理和运用.</p>
+<img src="/2021/11/08/net-on-aws-started/001_1.png" srcset="/img/loading.gif" alt="net-001_1" style="zoom:50%;margin-left: 0;">
+
+<p>使用AWS的话，可以使用对应.NET应用程序的所有需求，广泛用途专用的存储和数据库解决方案.<br>强烈推荐根据应用程序所需的数据类型、访问模型、可扩展性类型选择合适的数据库.</p>
+<img src="/2021/11/08/net-on-aws-started/001_2.png" srcset="/img/loading.gif" alt="net-001_2" style="zoom:50%;margin-left: 0;">
+
+<p>使用身份服务的话，对于AWS云环境内的.NET应用，可以在适当的时机安全地给予适当的用户适当的访问.<br>使用监控和审计服务，可以获取应用程序和基础设施状态的细节，并评估定义的商业指标的性能.</p>
+<img src="/2021/11/08/net-on-aws-started/001_3.png" srcset="/img/loading.gif" alt="net-001_3" style="zoom:50%;margin-left: 0;">
+
+<h4 id="2-工具"><a href="#2-工具" class="headerlink" title="2.工具"></a>2.工具</h4><p>AWS的口号之一是“大楼的场所”「ビルダーのための場所」.<br>用户最熟悉的.NET开发工具提供扩展和整合.<br>这些工具是免费的，会定期更新。如果您有与AWS账户相关的认证信息，您可以使用这些工具.</p>
+<img src="/2021/11/08/net-on-aws-started/001.png" srcset="/img/loading.gif" alt="net-001" style="zoom:50%;margin-left: 0;">
+
+<ul>
+<li><p>AWS SDK for .NET : AWS服务的呼叫变得和调用对象的方法一样简单</p>
+</li>
+<li><p><strong><u>AWS Toolkit for Visual Studio</u></strong> : 提供若干AWS服务和一些易用向导的资源管理视图</p>
+<p>​    AWS Toolkit for Visual Studio是微软Visual Studio的扩展功能。这样一来，就可以使用AWS开发.NET应用程序，方便调试、部署.</p>
+</li>
+<li><p>AWS CDK for .NET : 允许云基础设施定义为代码</p>
+</li>
+<li><p>AWS Tools for PowerShell : 从命令行控制AWS服务</p>
+</li>
+</ul>
+<h4 id="3-实践"><a href="#3-实践" class="headerlink" title="3.实践"></a>3.实践</h4><p>使用AWS Toolkit for Visual Studio，将NET Web应用的样品抽取到AWS云端.</p>
+<p>架构图</p>
+<img src="/2021/11/08/net-on-aws-started/0002.png" srcset="/img/loading.gif" alt="net-0002" style="zoom:50%;margin-left: 0;">
+
+<h5 id="1-设置AWS"><a href="#1-设置AWS" class="headerlink" title="1.设置AWS"></a>1.设置AWS</h5><p>​        a) AWS用户, 权限, 凭证</p>
+<p>​        b)  制作Visual Studio配置文件的话，可以在Visual Studio上注册IAM用户，知道认证的方法</p>
+<img src="/2021/11/08/net-on-aws-started/002.png" srcset="/img/loading.gif" alt="net-002" style="zoom:50%;margin-left: 0;">
+
+<img src="/2021/11/08/net-on-aws-started/003.png" srcset="/img/loading.gif" alt="net-003" style="zoom:50%;margin-left: 0;">
+
+<img src="/2021/11/08/net-on-aws-started/004.png" srcset="/img/loading.gif" alt="net-004" style="zoom:50%;margin-left: 0;">
+
+<h5 id="2-设置微软VS的代码环境"><a href="#2-设置微软VS的代码环境" class="headerlink" title="2.设置微软VS的代码环境"></a>2.设置微软VS的代码环境</h5><p>​        我们提供了一种可以在这个活动中使用的名叫UrlRedirector的样品ASP.NET Core网络应用.<br>​        示例是ASP.NET Core应用程序，用于创建短URL，将用户重定向到原来的长URL.</p>
+<p>​        下载样本UrlRedirector.NET应用程序解冻，并在Visual Studio中打开</p>
+<p>​    2.创建Amazon RDS数据库实例</p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/005.png" srcset="/img/loading.gif" alt="net-005" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/007.png" srcset="/img/loading.gif" alt="net-006" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/008.png" srcset="/img/loading.gif" alt="net-008" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/009.png" srcset="/img/loading.gif" alt="net-009" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/010.png" srcset="/img/loading.gif" alt="net-010" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/011.png" srcset="/img/loading.gif" alt="net-011" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/012.png" srcset="/img/loading.gif" alt="net-012" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/013.png" srcset="/img/loading.gif" alt="net-013" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/014.png" srcset="/img/loading.gif" alt="net-014" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/015.png" srcset="/img/loading.gif" alt="net-015" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/016.png" srcset="/img/loading.gif" alt="net-016" style="zoom:50%;">    </p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/017.png" srcset="/img/loading.gif" alt="net-017" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/018.png" srcset="/img/loading.gif" alt="net-018" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/019.png" srcset="/img/loading.gif" alt="net-019" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/020.png" srcset="/img/loading.gif" alt="net-020" style="zoom:50%;"></p>
+<p>​    强烈推荐根据NET应用程序所需的数据类型、访问模型、可扩展性类型选择合适的数据库.<br>​    在AWS中，可以简单地更改数据库引擎。例如，可以使用以下代替活动中使用的微软SQL Server</p>
+<div class="hljs"><pre><code class="hljs bash">Amazon Aurora
+Aurora具有高端商务数据库的处理速度和可靠性，以及开放源数据库的简单性和成本效益.
+
+Amazon DynamoDB
+
+Amazon DynamoDB是非关系或NoSQL数据库选项，对于总是需要低延时数据访问的应用来说是理想的.
+在这个样本应用程序中，DynamoDB最适合保存URL重定向。您也可以使用全局辅助索引来保存关于每个URL重定向所有者的信息.</code></pre></div>
+
+<h4 id="3-将NET应用程序部署到AWS"><a href="#3-将NET应用程序部署到AWS" class="headerlink" title="3.将NET应用程序部署到AWS"></a>3.将NET应用程序部署到AWS</h4><p>​    <img src="/2021/11/08/net-on-aws-started/021.png" srcset="/img/loading.gif" alt="net-021" style="zoom:50%;"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/022.png" srcset="/img/loading.gif" alt="net-022" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/023.png" srcset="/img/loading.gif" alt="net-023" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/024.png" srcset="/img/loading.gif" alt="net-024" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/025.png" srcset="/img/loading.gif" alt="net-025" style="zoom:50%">    </p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/026.png" srcset="/img/loading.gif" alt="net-026" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/027.png" srcset="/img/loading.gif" alt="net-027" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/028.png" srcset="/img/loading.gif" alt="net-028" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/029.png" srcset="/img/loading.gif" alt="net-029" style="zoom:50%"></p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/030.png" srcset="/img/loading.gif" alt="net-030" style="zoom:50%"></p>
+<p>4.清理资源</p>
+<p>​    清理和删除所有资源，以避免进一步产生成本.<br>​    删除Amazon RDS数据库实例.<br>​    在Visual Studio的AWS资源管理器中，打开Amazon RDS节点，访问该实例.<br>​    右键单击实例，选择“Delete Instance”（删除实例）。这样，Amazon RDS数据库实例将从AWS云中删除.</p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/031.png" srcset="/img/loading.gif" alt="net-031" style="zoom:50%"></p>
+<p>​    删除AWS Elastic Beanstalk应用程序.<br>​    在Visual Studio的AWS资源管理器中，打开AWS Elastic Beanstalk节点访问实例.<br>​    右键单击实例，选择[Delete]（删除）。因此，Elastic Beanstalk的环境及其相关的所有资源将从AWS云中删除.</p>
+<p>​    <img src="/2021/11/08/net-on-aws-started/032.png" srcset="/img/loading.gif" alt="net-032" style="zoom:50%">    </p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/net/">net</a>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/15/ecs-started/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ECS知识记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/07/aws-elastic-beanstalk/">
+                        <span class="hidden-mobile">Aws中的Elastic-Beanstalk记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        ".net-on-aws-started&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

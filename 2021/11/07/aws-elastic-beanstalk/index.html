@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Aws中的Elastic-Beanstalk记录 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-11-07 20:13">
+                    November 7, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    16
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h3 id="Aws中的Elastic-Beanstalk记录"><a href="#Aws中的Elastic-Beanstalk记录" class="headerlink" title="Aws中的Elastic-Beanstalk记录"></a>Aws中的Elastic-Beanstalk记录</h3><h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h4><p>借助 Elastic Beanstalk，您可以在AWS云中快速部署和管理应用程序，而不必了解运行这些应用程序的基础设施.<br>Elastic Beanstalk 可降低管理的复杂性，但不会影响选择或控制。<br>您只需上传应用程序，Elastic Beanstalk 将自动处理有关容量预配置、负载均衡、扩展和应用程序运行状况监控的部署细节.</p>
+<p>Elastic Beanstalk 支持在 Go、Java、.NET、Node.js、PHP、Python 和 Ruby 中开发的应用程序.<br>在部署应用程序时，Elastic Beanstalk 会构建选定的受支持的平台版本，并预配置一个或多个AWS资源（如 Amazon EC2 实例）来运行应用程序.</p>
+<p>工具 : </p>
+<ul>
+<li>Elastic Beanstalk 控制台</li>
+<li>AWS Command Line Interface (AWS CLI) </li>
+<li><strong>eb</strong>（专为 Elastic Beanstalk 设计的高级 CLI）</li>
+</ul>
+<p>工作流程 : </p>
+<img src="/2021/11/07/aws-elastic-beanstalk/001.png" srcset="/img/loading.gif" alt="eb-001" style="zoom:50%;margin-left: 0;">
+
+<h4 id="2-开始使用-Elastic-Beanstalk"><a href="#2-开始使用-Elastic-Beanstalk" class="headerlink" title="2.开始使用 Elastic Beanstalk"></a>2.开始使用 Elastic Beanstalk</h4><p>创建示例程序时，Elastic Beanstalk 创建以下AWS资源 : </p>
+<ul>
+<li><p><strong>EC2 实例</strong> - 配置来在您选择的平台上运行 Web 应用程序的 Amazon EC2 虚拟机。</p>
+<p>各平台运行一组不同的软件、配置文件和脚本以支持特定的语言版本、框架、Web 容器或其组合。大多数平台使用 Apache 或 nginx 作为在 Web 应用程序前处理 Web 流量的反向代理，向其转发请求、提供静态资产以及生成访问和错误日志。</p>
+</li>
+<li><p><strong>实例安全组</strong> - 配置为<u>允许端口 80 上的传入流量的 Amazon EC2 安全组</u>。<br>通过此资源，HTTP 流量可以从负载均衡器到达运行您的 Web 应用程序的 EC2 实例。<br><u>默认情况下，其他端口不允许流量进入。</u></p>
+</li>
+<li><p><strong>Amazon S3 存储桶</strong> - 使用 Elastic Beanstalk 时创建的源代码、日志和其他构件的存储位置。</p>
+</li>
+<li><p><strong>Amazon CloudWatch 警报</strong> - 用于监控环境中的实例负载的两个 CloudWatch 警报，它们将在负载过高或过低时触发。警报触发后，您的 Auto Scaling 组会扩展或收缩以进行响应。</p>
+</li>
+<li><p><strong>AWS CloudFormation 堆栈</strong> – Elastic Beanstalk 使用 AWS CloudFormation 启动您环境中的资源并传播配置更改。这些资源在您可通过 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/cloudformation">AWS CloudFormation 控制台</a>查看的模板中定义。</p>
+</li>
+<li><p><strong>域名</strong> - 一个域名，它以下面的形式路由到您的 Web 应用程序：*<code>subdomain</code>.<code>region</code>.elasticbeanstalk.com*。</p>
+</li>
+</ul>
+<img src="/2021/11/07/aws-elastic-beanstalk/002.png" srcset="/img/loading.gif" alt="eb-002" style="zoom:50%;">
+
+<p>环境概述窗格显示有关您的环境的顶级信息.<br>这包括其名称、URL、当前运行状况、当前部署的应用程序版本的名称以及运行应用程序的平台版本.<br>在概述窗格的下方，您会看到最新的五个环境事件.</p>
+<ul>
+<li><strong>Configuration (配置)</strong> - 显示为此环境预配置的资源，如托管应用程序的 Amazon Elastic Compute Cloud (Amazon EC2) 实例。您可以在此页面上配置某些已预配置的资源。</li>
+<li><strong>Health (运行状况)</strong> - 显示有关运行应用程序的 Amazon EC2 实例的状态和详细运行状况信息。</li>
+<li><strong>Monitoring (监控)</strong> - 显示环境的统计数据（如平均延迟和 CPU 使用率）。可以使用此页面为所监控的指标创建警报。</li>
+<li><strong>Events (事件)</strong> - 显示来自 Elastic Beanstalk 服务以及此环境使用其资源的其他服务的信息或错误消息。</li>
+<li><strong>Tags (标签)</strong> - 显示环境标签，并允许您对其进行管理。标签是应用于您的环境的密钥值对。</li>
+</ul>
+<h4 id="3-上传新版本"><a href="#3-上传新版本" class="headerlink" title="3.上传新版本"></a>3.上传新版本</h4><ol>
+<li>打开 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/elasticbeanstalk">Elastic Beanstalk 控制台</a>，然后在 **Regions (区域)**列表中选择您的AWS区域。</li>
+<li>在导航窗格中，选择 **Environments (环境)**，然后从列表中选择环境的名称。</li>
+<li>在环境概述页面上，选择 **Upload and deploy (上传和部署)**。</li>
+</ol>
+<img src="/2021/11/07/aws-elastic-beanstalk/003.png" srcset="/img/loading.gif" alt="eb-003" style="zoom:50%; margin-left: 0;">
+
+<p>当 Elastic Beanstalk 将文件部署到 Amazon EC2 实例时，您可以在环境概述中查看部署状态.<br>应用程序版本更新时，<strong>Environment Health (环境运行状况)</strong> 状态为灰色.<br>部署完成时，Elastic Beanstalk 会执行应用程序运行状况检查.<br>当应用程序对运行状况检查进行响应时，它被视为运行状况良好，状态会变回<u><strong>绿色</strong></u>.<br>环境概述显示新的 <strong>Running Version (运行版本)</strong> - 您作为 <strong>Version label (版本标签)</strong> 提供的名称.</p>
+<p>Elastic Beanstalk 也会上传您的新应用程序版本并将其添加到应用程序版本表.<br>要查看此表，请选择导航窗格上的 <strong>getting-started-app</strong> 下的 **Application versions (应用程序版本)**。</p>
+<h4 id="4-修改配置"><a href="#4-修改配置" class="headerlink" title="4.修改配置"></a>4.修改配置</h4><ol>
+<li><p>在导航窗格中，选择 **Configuration (配置)**。</p>
+</li>
+<li><p>在 <strong>Capacity (容量)</strong> 配置类别中，选择 **Edit (编辑)**。</p>
+</li>
+<li><p>在 <strong>Auto Scaling group (Auto Scaling 组)</strong> 部分中，将 <strong>Environment type (环境类型)</strong> 更改为 **Load balanced (负载均衡)**。</p>
+</li>
+<li><p>在<strong>实例</strong>行上，将<strong>最大</strong>更改为 <code>4</code>，然后将<strong>最小</strong>更改为 **<u><code>2</code></u>**。</p>
+</li>
+<li><p>选择 <strong>Apply</strong>。</p>
+</li>
+<li><p>将显示警告信息，告诉您此更新将替换您当前的所有实例。选择 <strong>Confirm</strong>。</p>
+</li>
+<li><p>在导航窗格中，选择 <strong>Events</strong>。</p>
+<p>环境更新可能需要几分钟的时间。要确定它已完成，请在事件列表中查找事件 **Successfully deployed new configuration to environment (已成功将新配置部署到环境)**。这确认了 Auto Scaling 实例的最少数目已经设置为 2。Elastic Beanstalk 将自动启动第二个实例</p>
+</li>
+</ol>
+<p><img src="/2021/11/07/aws-elastic-beanstalk/004.png" srcset="/img/loading.gif" alt="eb-004"></p>
+<h4 id="5-验证配置更改"><a href="#5-验证配置更改" class="headerlink" title="5.验证配置更改"></a>5.验证配置更改</h4><p>启用增强型运行状况报告 : </p>
+<ol>
+<li>在导航窗格中，选择 <strong>Configuration (配置)</strong>.</li>
+<li>在 <strong>Monitoring (监控)</strong> 配置类别中，选择 <strong>Edit (编辑)</strong>.</li>
+<li>在<strong>运行状况报告</strong>下，为<strong>系统</strong>选择<strong>增强型</strong>.</li>
+</ol>
+<img src="/2021/11/07/aws-elastic-beanstalk/005.png" srcset="/img/loading.gif" alt="eb-004" style="zoom:50%;margin-left: 0;">
+
+<img src="/2021/11/07/aws-elastic-beanstalk/006.png" srcset="/img/loading.gif" alt="eb-006" style="zoom:50%;">
+
+<p>查看结果 : </p>
+<img src="/2021/11/07/aws-elastic-beanstalk/007.png" srcset="/img/loading.gif" alt="eb-007" style="zoom:50%;">
+
+<h4 id="6-清除资源"><a href="#6-清除资源" class="headerlink" title="6.清除资源"></a>6.清除资源</h4><p>已成功地将示例应用程序部署到AWS云、上传了新版本并修改了配置以添加第二个 Auto Scaling 实例.<br>为确保您不用为未使用的任何服务付费，请删除所有应用程序版本并终止环境.<br>这也会删除环境为您创建的AWS资源.</p>
+<img src="/2021/11/07/aws-elastic-beanstalk/008.png" srcset="/img/loading.gif" alt="eb-008" style="zoom:50%;">
+
+<img src="/2021/11/07/aws-elastic-beanstalk/009.png" srcset="/img/loading.gif" alt="eb-009" style="zoom:50%; margin-left: 0;">
+
+<h4 id="后续步骤"><a href="#后续步骤" class="headerlink" title="后续步骤"></a>后续步骤</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/elasticbeanstalk/latest/dg/eb-cli3-install.html">EB CLI</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/elasticbeanstalk/latest/dg/GettingStarted.Next.html"><strong>WS Toolkit for Visual Studio</strong></a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/elasticbeanstalk/latest/dg/create_deploy_NET.html"><strong>AWS Toolkit for Visual Studio</strong></a></li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/eb/">eb</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/08/net-on-aws-started/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">.net-on-aws-started</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/03/pmp-keywords-starts/">
+                        <span class="hidden-mobile">PMP-关键词记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Aws中的Elastic-Beanstalk记录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

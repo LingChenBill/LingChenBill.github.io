@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>Archives - LingChen&#39;s blog</title>
+  <title>LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -46,7 +46,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 100vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -119,7 +119,7 @@
 </nav>
 
     <div class="view intro-2" id="background" parallax=true
-         style="background: url('/img/default.png') no-repeat center center;
+         style="background: url('/img/Hippopx-index.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -132,6 +132,10 @@
           </div>
 
           
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
         </div>
       </div>
     </div>
@@ -141,57 +145,72 @@
     
       <div class="container nopadding-md">
         <div class="py-5" id="board"
-          >
+          style=margin-top:0>
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">91 posts in total.</p>
-  <hr>
-  
+
+  <div class="row mx-auto index-card">
     
-      
-      <p class="h5">2020</p>
     
-    <a href="/2020/09/30/k8s-config/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">8_应用配置管理</span>
-      <span style="float: right;">09-30</span>
-    </a>
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/03/06/hexo-github-markdown-install/">hexo-github搭建博客</a>
+
+      <a href="/2020/03/06/hexo-github-markdown-install/" class="index-excerpt">
+        
+        
+          
+        
+        <div>hexo-github搭建博客[TOC]
+下载安装npm、hexo$ npm install -g hexo
+
+​    进入hexo工作路径:
+$ cd /Users/xxx/Documents/hexo
+$ hexo init
+
+​    hexo会自动下载一些文件到这个目录，包括node_modules，目录结构如下图：
+
+配置github$ cd ~/.ssh/
+$ cat id_rsa.</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-03-06
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/hexo/">hexo</a>
+            
+              <a href="/tags/github/">github</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/9/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span>
+    </span>
+  </nav>
   
-    
-    <a href="/2020/09/29/k8s-job/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">7_应用编排与管理_Job和DaemonSet</span>
-      <span style="float: right;">09-29</span>
-    </a>
-  
-    
-    <a href="/2020/09/28/6-k8s-deployment/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">6_应用编排与管理:Deployment</span>
-      <span style="float: right;">09-28</span>
-    </a>
-  
-    
-    <a href="/2020/09/27/app-arrange-theory/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">5_应用编排与管理：核心原理</span>
-      <span style="float: right;">09-27</span>
-    </a>
-  
-    
-    <a href="/2020/09/25/k8s-pod/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">k8s_理解Pod和容器设计模式</span>
-      <span style="float: right;">09-25</span>
-    </a>
-  
-    
-    <a href="/2020/09/23/k8s-core-concepts/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Kubernetes核心概念</span>
-      <span style="float: right;">09-23</span>
-    </a>
-  
-</div>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
@@ -282,7 +301,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

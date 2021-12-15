@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.9k 字
+                    2.9k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    19
+                    32
                      分钟
                   </span>
                 
@@ -218,14 +218,16 @@
 <li>操作类型</li>
 <li>Transitions</li>
 </ul>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/02_transitions.png" srcset="/img/loading.gif" alt="02_transitions" style="zoom:50%;margin-left: 100px;"></p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/02_transitions.png" srcset="/img/loading.gif" alt="02_transitions" style="zoom:50%;margin-left: 100px;">
+
 <ul>
 <li>Artifacts</li>
 <li>源修订</li>
 </ul>
 <p>管道示例: </p>
 <p>作为开发运营管道的示例，两阶段管道可以具有名为 <strong>Source</strong> 的源阶段和名为 <strong>Prod</strong> 的第二阶段.<br>在此示例中，管道使用最新更改来更新应用程序，并持续部署最新结果. 在部署最新的应用程序之前，管道会构建并测试 Web 应用程序.<br>在此示例中，一组开发人员在名为 MyRepository 的 GitHub 存储库中，为 Web 应用程序设置了基础设施模板和源代码.</p>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/03_pipeline-sample.png" srcset="/img/loading.gif" alt="03_pipeline-sample" style="zoom:50%;margin-left: 100px"></p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/03_pipeline-sample.png" srcset="/img/loading.gif" alt="03_pipeline-sample" style="zoom:50%;margin-left: 100px">
+
 <ol>
 <li>在配置作为管道中 GitHub 源操作的存储库中维护应用程序源代码. 当开发人员将提交推送到存储库时，CodePipeline 检测推送的更改，管道执行从<strong>源阶段</strong>。</li>
 <li>GitHub 源操作成功完成（即，最新的更改已下载并存储到对该执行唯一的构件存储桶中）. GitHub 源操作生成的<em>输出构件</em>（即来自存储库的应用程序文件）随后用作<em>输入</em> 构件，由下一阶段的操作处理.</li>
@@ -234,6 +236,82 @@
 <li>单元测试的代码接下来由<strong>生产阶段</strong>中的部署操作处理，该操作将应用程序部署到生产环境. 部署操作成功完成后，阶段中的最终操作是在 CodeBuild 中创建的集成测试项目，并在管道中配置为测试操作. 测试操作调用在 Web 应用程序上安装和运行测试工具（如链接检查器）的 shell 脚本. 成功完成后，输出是一个构建 Web 应用程序和一组测试结果.</li>
 </ol>
 <p>开发人员可以向管道添加操作，以便在构建并针对每个更改测试应用程序后，对其进行部署或进一步测试.</p>
+<h4 id="5-使用前提"><a href="#5-使用前提" class="headerlink" title="5.使用前提"></a>5.使用前提</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#create-aws-account">第 1 步：创建 AWS 账户</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#create-iam-user">第 2 步：创建或使用 IAM 用户</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#assign-permissions">第 3 步：使用 IAM 托管策略将 CodePipeline 权限分配给 IAM 用户</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#install-cli">第 4 步：安装 AWS CLI</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#open-codepipeline-console">第 5 步：打开代码 Piline 的控制台</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/getting-started-codepipeline.html#next-steps">后续步骤</a></li>
+</ul>
+<p>第 2 步：创建或使用 IAM 用户<br>创建 IAM 用户或使用您的现有的 IAM 用户AWSaccount. 请确保您有一个AWS访问密钥 ID 和AWS与该 IAM 用户关联的私有访问密钥.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/04_iam_key.png" srcset="/img/loading.gif" alt="04_iam_key"></p>
+<p>第 3 步：使用 IAM 托管策略将 CodePipeline 权限分配给 IAM 用户</p>
+<p>您必须向 IAM 用户授予与代码 Piline 交互的权限。执行此操作的最快方法是将<code>AWSCodePipeline_FullAccess</code>托管策略添加到 IAM 用户.</p>
+<p><strong>要使用向 IAM 用户授予权限AWS Management Console</strong></p>
+<ol>
+<li>登录到 AWS Management Console，然后通过以下网址打开 IAM 控制台：<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/iam/">https://console.aws.amazon.com/iam/</a>.</li>
+<li>在 IAM 控制台的导航窗格中，选择<strong>策略</strong>，然后选择<code>AWSCodePipeline_FullAccess</code>托管策略.</li>
+<li>在存储库的<strong>摘要</strong>页面上，选择<strong>策略使用</strong>选项卡，然后选择<strong>Attach</strong>.</li>
+<li>在存储库的<strong>附加策略</strong>页面上，选中 IAM 用户或组旁边的复选框，然后选择<strong>附加策略</strong>.</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/04_iam_user_role.png" srcset="/img/loading.gif" alt="04_iam_user_role"></p>
+<p>第 4 步：安装 AWS CLI</p>
+<p>CodePipeline 从AWSCLI，则必须在本地开发计算机上安装AWSCLI。如果您打算仅使用本指南中的 CodePipeline 控制台步骤，则此步骤是可选的.</p>
+<p><strong>安装和配置 AWS CLI</strong></p>
+<ol>
+<li>在本地计算机上，下载并安装 AWS CLI. 这将允许您从命令行与代码 Piline 交互。有关更多信息，请参阅<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html">使用 AWS 命令行界面进行设置</a>.</li>
+</ol>
+<div class="hljs"><pre><code class="hljs bash">aws configure
+
+<span class="hljs-comment"># 输入IAM中的key和密钥</span>
+<span class="hljs-comment"># 区域: ap-northeast-1</span>
+<span class="hljs-comment"># Asia Pacific (Tokyo)	ap-northeast-1	codepipeline.ap-northeast-1.amazonaws.com	HTTPS</span>
+<span class="hljs-comment"># format: json</span></code></pre></div>
+
+<p>第 5 步：打开代码 Piline 的控制台</p>
+<p>登录到AWS Management Console，然后打开 CodePipeline 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codesuite/codepipeline/home">http://console.aws.amazon.com/codesuite/codepipeline/home</a>。</p>
+<h4 id="6-创建一个简单的管道（S3-存储桶）"><a href="#6-创建一个简单的管道（S3-存储桶）" class="headerlink" title="6.创建一个简单的管道（S3 存储桶）"></a>6.创建一个简单的管道（S3 存储桶）</h4><p>创建管道的最简单方法是使用 <strong>控制台中的</strong>创建管道AWS CodePipeline向导.<br>在本教程中，您将创建一个两阶段管道，该管道使用受版本控制的 S3 存储桶和 CodeDeploy 来发布示例应用程序.</p>
+<p>第 1 步：为您的应用程序创建 S3 存储桶</p>
+<p>您可以将源文件或应用程序存储在任何受版本控制的位置.<br>在本教程中，您将为示例应用程序创建一个 S3 存储桶，并对该存储桶启用版本控制. 启用版本控制后，您可将示例应用程序复制到该存储桶.</p>
+<ol>
+<li>登录到 AWS Management Console，然后通过以下网址打开 Amazon S3 控制台：<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/s3/%E3%80%82">https://console.aws.amazon.com/s3/。</a></li>
+<li>选择 **Create bucket (创建存储桶)**。</li>
+<li>对于 **Bucket Name (存储桶名称)**，输入您的存储桶的名称 (例如 <code>awscodepipeline-demobucket-example-date</code>).</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/05_s3_bucket.png" srcset="/img/loading.gif" alt="05_s3_bucket"></p>
+<p>若提示名称重复, 则重命名, 如: awscodepipeline-iplume-demobucket-example-date</p>
+<ol>
+<li><p>创建存储桶后，系统会显示成功横幅。选择 <strong>Go to bucket details (转到存储桶详细信息)</strong>.</p>
+</li>
+<li><p>在 <strong>Properties (属性)</strong> 选项卡上，选择 <strong>Versioning (版本控制)**。选择 **Enable versioning (启用版本控制)**，然后选择 **Save (保存)</strong>.</p>
+<p>启用版本控制后，Amazon S3 会在存储桶中存储每个对象的每个版本.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/06_s3_version.png" srcset="/img/loading.gif" alt="06_s3_version"></p>
+</li>
+<li><p>在 <strong>Permissions (权限)</strong> 选项卡上，保留默认设置. 有关 S3 存储桶和对象权限的更多信息，请参阅<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/using-with-s3-actions.html">在策略中指定权限</a>.</p>
+</li>
+<li><p>接下来，下载示例并将其保存到本地计算机上的文件夹或目录中.</p>
+<ol>
+<li><p>选择以下选项之一. 选择<code>SampleApp_Windows.zip</code>如果要对 Windows Server 实例执行本教程中的步骤，请执行.</p>
+<ul>
+<li>如果您想使用 CodeDeploy 部署到 Amazon Linux 实例，请在此处下载示例应用程序：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Linux.zip">SampleApp_Linux.zip</a>.</li>
+<li>如果您想使用 CodeDeploy 部署到 Windows Server 实例，请在此处下载示例应用程序：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Windows.zip">SampleApp_Windows.zip</a>.</li>
+</ul>
+<p>若下载失败, 则使用: dotnet-asp-v1.zip示例程序.</p>
+</li>
+<li><p>下载压缩 (zipped) 文件。不要解压缩该文件.</p>
+</li>
+</ol>
+</li>
+<li><p>在 Amazon S3 控制台中，对于您的存储桶，上传文件：</p>
+<ol>
+<li>选择 <strong>Upload</strong>.</li>
+<li>拖放文件或选择 <strong>Add files (添加文件)</strong> 并通过浏览找到该文件.</li>
+<li>选择 <strong>Upload</strong>.</li>
+</ol>
+</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/07_s3_upload.png" srcset="/img/loading.gif" alt="07_s3_upload"></p>
 
             </article>
             <hr>

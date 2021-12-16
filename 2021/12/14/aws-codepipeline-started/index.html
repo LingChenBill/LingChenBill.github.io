@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    2.9k 字
+                    5.1k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    32
+                    56
                      分钟
                   </span>
                 
@@ -272,8 +272,7 @@
 <p>第 5 步：打开代码 Piline 的控制台</p>
 <p>登录到AWS Management Console，然后打开 CodePipeline 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codesuite/codepipeline/home">http://console.aws.amazon.com/codesuite/codepipeline/home</a>。</p>
 <h4 id="6-创建一个简单的管道（S3-存储桶）"><a href="#6-创建一个简单的管道（S3-存储桶）" class="headerlink" title="6.创建一个简单的管道（S3 存储桶）"></a>6.创建一个简单的管道（S3 存储桶）</h4><p>创建管道的最简单方法是使用 <strong>控制台中的</strong>创建管道AWS CodePipeline向导.<br>在本教程中，您将创建一个两阶段管道，该管道使用受版本控制的 S3 存储桶和 CodeDeploy 来发布示例应用程序.</p>
-<p>第 1 步：为您的应用程序创建 S3 存储桶</p>
-<p>您可以将源文件或应用程序存储在任何受版本控制的位置.<br>在本教程中，您将为示例应用程序创建一个 S3 存储桶，并对该存储桶启用版本控制. 启用版本控制后，您可将示例应用程序复制到该存储桶.</p>
+<h5 id="第-1-步：为您的应用程序创建-S3-存储桶"><a href="#第-1-步：为您的应用程序创建-S3-存储桶" class="headerlink" title="第 1 步：为您的应用程序创建 S3 存储桶"></a>第 1 步：为您的应用程序创建 S3 存储桶</h5><p>您可以将源文件或应用程序存储在任何受版本控制的位置.<br>在本教程中，您将为示例应用程序创建一个 S3 存储桶，并对该存储桶启用版本控制. 启用版本控制后，您可将示例应用程序复制到该存储桶.</p>
 <ol>
 <li>登录到 AWS Management Console，然后通过以下网址打开 Amazon S3 控制台：<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/s3/%E3%80%82">https://console.aws.amazon.com/s3/。</a></li>
 <li>选择 **Create bucket (创建存储桶)**。</li>
@@ -297,7 +296,7 @@
 <li>如果您想使用 CodeDeploy 部署到 Amazon Linux 实例，请在此处下载示例应用程序：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Linux.zip">SampleApp_Linux.zip</a>.</li>
 <li>如果您想使用 CodeDeploy 部署到 Windows Server 实例，请在此处下载示例应用程序：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Windows.zip">SampleApp_Windows.zip</a>.</li>
 </ul>
-<p>若下载失败, 则使用: dotnet-asp-v1.zip示例程序.</p>
+<p>若下载失败, 则使用: dotnet-asp-v1.zip示例程序. —-<strong><u>说明应用程序不能修改, 不然部署不成功. 请先下载: SampleApp_Windows.zip</u></strong></p>
 </li>
 <li><p>下载压缩 (zipped) 文件。不要解压缩该文件.</p>
 </li>
@@ -312,6 +311,155 @@
 </li>
 </ol>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/07_s3_upload.png" srcset="/img/loading.gif" alt="07_s3_upload"></p>
+<h5 id="第-2-步：创建-Amazon-EC2-Windows-Windows-实例并安装代码"><a href="#第-2-步：创建-Amazon-EC2-Windows-Windows-实例并安装代码" class="headerlink" title="第 2 步：创建 Amazon EC2 Windows Windows 实例并安装代码"></a>第 2 步：创建 Amazon EC2 Windows Windows 实例并安装代码</h5><p><strong>创建实例角色</strong></p>
+<ol>
+<li><p>使用打开 IAM 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/iam/)%E3%80%82">https://console.aws.amazon.com/iam/)。</a></p>
+</li>
+<li><p>在控制台控制面板中，选择 **Roles (角色)**。</p>
+</li>
+<li><p>选择 <strong>Create role</strong>（创建角色）。</p>
+</li>
+<li><p>在<strong>SELECT 受信任实体的类型</strong>，选择<strong>AWS 服务</strong>. 在<strong>选择使用案例</strong>，选择<strong>EC2</strong>，然后选择**后续：Permissions (下一步：权限)**。</p>
+</li>
+<li><p>搜索并选择名为<strong>AmazonEC2RoleforAWSCodeDeploy</strong>，然后选择<strong>后续：标签</strong>。</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/08_attach_role.png" srcset="/img/loading.gif" alt="08_attach_role"></p>
+</li>
+<li><p>选择 <strong>Next:**。</strong>审核**。输入角色的名称（例如 <code>EC2InstanceRole</code>）</p>
+</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/09_role_name.png" srcset="/img/loading.gif" alt="09_role_name"></p>
+<p><strong>启动实例</strong></p>
+<ol>
+<li><p>通过以下网址打开 Amazon EC2 控制台：<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/ec2/%E3%80%82">https://console.aws.amazon.com/ec2/。</a></p>
+</li>
+<li><p>在控制台的控制面板中，选择 **Launch instance (启动实例)**，然后从弹出的选项中选择 **Launch instance (启动实例)**。</p>
+</li>
+<li><p>在存储库的<strong>第 1 步：选择一个Amazon 系统映像(AMI)**页面上，找到</strong>Microsoft Windows Server 2019 Base<strong>选项，然后选择</strong>Select**. （此 AMI 被标记为“Free tier eligible (符合条件的免费套餐)”，可在列表顶部找到。）<br><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/10_ec2_ami.png" srcset="/img/loading.gif" alt="10_ec2_ami"></p>
+</li>
+<li><p>在存储库的<strong>步骤 2: 选择一个实例类型</strong>页面上，选择符合条件的免费套餐<code>t2.micro</code>类型作为您的实例的硬件配置，然后选择<strong>后续：配置实例详细信息</strong>.</p>
+</li>
+<li><p>在存储库的<strong>步骤 3: 配置实例详细信息</strong>页面中，执行以下操作：</p>
+<ul>
+<li><p>在 <strong>Number of instances</strong> 中，输入 <code>2</code>。</p>
+</li>
+<li><p>在 <strong>Auto-assign Public IP</strong> 中，选择 <strong>Enable</strong>。</p>
+</li>
+<li><p>In<strong>IAM 角色</strong>、选择您在上一个过程中创建的 IAM 角色（例如<code>EC2InstanceRole</code>)。</p>
+ <img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/11_ec2_settings.png" srcset="/img/loading.gif" alt="11_ec2_settings" style="zoom:67%;">
+</li>
+<li><p>Expand<strong>高级详细信息</strong>，并在<strong>用户数据</strong>, 与<strong>作为文本</strong>，输入以下内容：</p>
+</li>
+</ul>
+<div class="hljs"><pre><code class="hljs shell">&lt;powershell&gt;  
+New-Item -Path c:\temp -ItemType &quot;directory&quot; -Force
+powershell.exe -Command Read-S3Object -BucketName aws-codedeploy-ap-northeast-1/latest -Key codedeploy-agent.msi -File c:\temp\codedeploy-agent.msi
+Start-Process -Wait -FilePath c:\temp\codedeploy-agent.msi -WindowStyle Hidden
+&lt;/powershell&gt;</code></pre></div>
+
+<p>将剩余的项目保留在<strong>步骤 3:</strong> <strong>配置实例详细信息</strong>页面将保持不变。选择 <strong>Next:**。</strong>添加存储**.</p>
+<ol start="6">
+<li>将<strong>步骤 4: 添加存储</strong>页面未更改，然后选择<strong>后续：添加标签</strong>.</li>
+<li>在 <strong>Add Tags (添加标签)</strong> 页面上，选择 <strong>Add Tag (添加标签)</strong>. Enter<strong>名称</strong>中的<strong>密钥</strong>字段中，输入<code>MyCodePipelineDemo</code>中的<strong>值</strong>字段，然后选择<strong>后续：配置安全组</strong>.</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/12_tags.png" srcset="/img/loading.gif" alt="12_tags"></p>
+</li>
+<li><p>在 <strong>Configure Security Group (配置安全组)</strong> 页面上，允许端口 80 通信，以便您可以访问公有实例终端节点.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/13_security.png" srcset="/img/loading.gif" alt="13_security"></p>
+</li>
+<li><p>选择 <strong>Review and Launch</strong>.</p>
+</li>
+<li><p>在 <strong>Review Instance Launch</strong> 页面上，选择 <strong>Launch</strong>。W母鸡提示输入 key pair中，选择<strong>在没有 key pair 的情况下继续</strong>.</p>
+</li>
+<li><p>选择 <strong>View Instances</strong> 以关闭确认页面并返回控制台.</p>
+</li>
+<li><p>您可以在 <strong>Instances</strong> 页面上查看启动的状态。启动实例时，其初始状态为 <code>pending</code>。实例启动后，其状态变为 <code>running</code>，并且会收到一个公有 DNS 名称.(如果 <strong>Public DNS</strong> 列不显示，请选择 <strong>Show/Hide</strong> 图标，然后选择 <strong>Public DNS</strong>。)</p>
+</li>
+<li><p>可能需要花几分钟时间，实例才能准备好让您连接到它. 检查您的实例是否通过了状态检查. 您可以在 <strong>Status Checks (状态检查)</strong> 列中查看此信息.</p>
+</li>
+</ol>
+<h5 id="第-3-步：在-CodeDeploy-中创建应用程序"><a href="#第-3-步：在-CodeDeploy-中创建应用程序" class="headerlink" title="第 3 步：在 CodeDeploy 中创建应用程序"></a>第 3 步：在 CodeDeploy 中创建应用程序</h5><p>在 CodeDeploy 中，<em>应用程序</em>是要部署的代码的标识符（以名称形式）.<br>CodeDeploy 使用此名称以确保修订、部署和部署组的正确组合，并确保在部署期间引用部署组.<br>在本教程后面创建管道时，您应选择在此步骤中创建的 CodeDeploy 应用程序的名称.</p>
+<p><strong>在 CodeDeploy 中创建应用程序</strong></p>
+<ol>
+<li>从打开 CodeDeploy 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codedeploy">https://console.aws.amazon.com/codedeploy</a>.</li>
+<li>如果<strong>应用程序</strong>页面不显示，在AWSCodeDeploy 菜单中，选择<strong>应用程序</strong>.</li>
+<li>选择 <strong>Create application</strong>。</li>
+<li>In<strong>应用程序名称</strong>，输入<code>MyDemoApplication</code>.</li>
+<li>在 <strong>Compute Platform (计算平台)</strong> 中，选择 <strong>EC2/On-premises (EC2/本地)</strong>.</li>
+<li>选择 <strong>Create application</strong>.</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/14_create_app.png" srcset="/img/loading.gif" alt="14_create_app"></p>
+<p><strong>在 CodeDeploy 中创建部署组</strong></p>
+<ol>
+<li>在显示应用程序的页面上，选择 <strong>Create deployment group (创建部署组)</strong>.</li>
+<li>在 <strong>Deployment group name (部署组名称)</strong> 中，输入 <code>MyDemoDeploymentGroup</code>.</li>
+<li>In<strong>服务角色</strong>下，选择信任的服务角色AWSCodeDeploy，至少使用中描述的信任和权限<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/getting-started-create-service-role.html">为 CodeDeploy 创建服务角色</a>. 要获得服务角色 ARN，请参阅<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/how-to-create-service-role.html#getting-started-get-service-role-console">获得服务角色 ARN（控制台）</a>.<br><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/15_arn.png" srcset="/img/loading.gif" alt="15_arn"></li>
+<li>在 <strong>Deployment type (部署类型)</strong> 下，选择 <strong>In-place (就地)</strong>.</li>
+<li>在 <strong>Environment configuration (环境配置)</strong> 下，选择 <strong>Amazon EC2 Instances (Amazon EC2 实例)**。选择</strong>名称<strong>中的</strong>密钥<strong>字段中，并在</strong>值**字段中，输入<code>MyCodePipelineDemo</code>.<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/16_create_settings.png" srcset="/img/loading.gif" alt="16_create_settings" style="zoom:67%;"></li>
+<li>在<strong>部署设置</strong>中，选择<code>CodeDeployDefault.OneAtaTime</code>.</li>
+<li>在<strong>负载均衡器</strong>，请确保<strong>启用负载均衡</strong>框未选中。您无需为此示例设置负载均衡器或选择目标组。取消选中该复选框后，不会显示负载均衡器选项.</li>
+<li>在 <strong>Advanced</strong>部分，将默认值保留.</li>
+<li>选择 <strong>Create deployment group (创建部署组)</strong>.</li>
+</ol>
+<h5 id="第-4-步：在-CodePipeline-中创建您的第一个管道"><a href="#第-4-步：在-CodePipeline-中创建您的第一个管道" class="headerlink" title="第 4 步：在 CodePipeline 中创建您的第一个管道"></a>第 4 步：在 CodePipeline 中创建您的第一个管道</h5><p>在这部分的教程中，您将创建管道。示例将自动通过管道运行.</p>
+<p><strong>创建 CodePipeline 自动发布流程</strong></p>
+<ol>
+<li><p>登录到AWS Management Console，然后打开 CodePipeline 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codesuite/codepipeline/home">http://console.aws.amazon.com/codesuite/codepipeline/home</a>.</p>
+</li>
+<li><p>在 <strong>Welcome (欢迎)</strong> 页面、<strong>Getting started (入门)</strong> 页面或 <strong>Pipelines (管道)</strong> 页面上，选择 **Create pipeline (创建管道)**。</p>
+</li>
+<li><p>In<strong>第 1 步：选择管道设置</strong>, 在**Pipeline name (管道名称)**，输入<code>MyFirstPipeline</code>.</p>
+</li>
+<li><p>在 <strong>Service role (服务角色)</strong> 中，执行下列操作之一：</p>
+<ul>
+<li>选择<strong>新服务角色</strong>以允许 CodePipeline 在 IAM 中创建新的服务角色。</li>
+<li>选择 <strong>Existing service role (现有服务角色)</strong> 以使用已在 IAM 中创建的服务角色。在<strong>Role name (角色名称)</strong> 中，从列表中选择您的服务角色。</li>
+</ul>
+</li>
+<li><p>将 <strong>Advanced settings (高级设置)</strong> 中的各项设置保留为默认值，然后选择 **Next (下一步)**。</p>
+</li>
+<li><p>In<strong>步骤 2: 添加源阶段</strong>, 在<strong>源提供商</strong>中，选择<strong>Amazon S3</strong>. 在 <strong>Bucket (存储桶)</strong> 中，输入您在<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/tutorials-simple-s3.html#s3-create-s3-bucket">第 1 步：为您的应用程序创建 S3 存储桶</a>中创建的 S3 存储桶的名称。在 <strong>S3 object key (S3 对象键)</strong> 中，输入带或不带文件路径的对象键。请记住加上文件的扩展名。例如，对于 来说为<code>SampleApp_Windows.zip</code>中，输入示例文件名，如本例中所示：</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># s3桶中文件名.</span>
+<span class="hljs-comment"># S3对象键中输入SampleApp_Windows.zip</span>
+SampleApp_Windows.zip</code></pre></div>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/17_pipeline.png" srcset="/img/loading.gif" alt="17_pipeline" style="zoom:67%;">
+
+</li>
+</ol>
+<p>在<strong>更改检测选项</strong>下面，保留默认值。这样，CodePipeline 就可以使用 Amazon CloudWatch Events 检测源存储桶中的更改.<br>选择 <strong>Next (下一步)</strong></p>
+<ol start="7">
+<li><p>In<strong>步骤 3: 添加构建阶段</strong>中，选择<strong>跳过构建阶段</strong>，然后接受警告消息，方法是选择<strong>Skipeline</strong>。选择 <strong>Next (下一步)</strong>.</p>
+</li>
+<li><p>In<strong>步骤 4: 添加部署阶段</strong>, 在<strong>部署提供程序</strong>中，选择<strong>AWS CodeDeploy</strong>. 这些区域有：<strong>区域</strong>字段默认为与您的管道相同的 AWS 区域.<br>在 <strong>Application name (应用程序名称)</strong> 中，输入 <code>MyDemoApplication</code>，或选择 <strong>Refresh (刷新)</strong> 按钮，然后从列表中选择应用程序名称.<br>在 <strong>Deployment group (部署组)</strong> 中，输入 <code>MyDemoDeploymentGroup</code> 或者从列表中选择它，然后选择 <strong>Next (下一步)</strong>.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/18_deploy.png" srcset="/img/loading.gif" alt="18_deploy" style="zoom:67%;">
+</li>
+<li><p>In<strong>第 5 步：审核</strong>，检查信息，然后选择<strong>创建管道</strong>.</p>
+</li>
+<li><p>管道开始运行。在 Codeepipeline 示例为 CodeDeploy 部署中的每个 Amazon EC2 实例部署网页时，您可以查看进度以及成功和失败消息.</p>
+</li>
+</ol>
+<h4 id="7-s3管道实验结果验证"><a href="#7-s3管道实验结果验证" class="headerlink" title="7.s3管道实验结果验证"></a>7.s3管道实验结果验证</h4><p>恭喜您！您刚刚在 CodePipeline 中创建了一个简单的管道。管道具有两个阶段：</p>
+<ul>
+<li>一个名为 <strong>Source</strong> 的源阶段，此阶段会检测存储在 S3 存储桶中的受版本控制的示例应用程序中的更改，并将这些更改提取到管道中.</li>
+<li><strong>部署</strong>阶段，该阶段使用 CodeDeploy 将这些更改部署到 EC2 实例.</li>
+</ul>
+<p>现在，验证结果.</p>
+<p><strong>验证您的管道是否已成功运行</strong></p>
+<ol>
+<li><p>查看管道的初始进度。每个阶段的状态将从<strong>还没有任何执行</strong>变为<strong>正在进行</strong>，然后变为 <strong>成功</strong>或<strong>失败</strong>。管道将在几分钟内完成首次运行。</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/19_%20myFirstPipeline.png" srcset="/img/loading.gif" alt="19_ myFirstPipeline" style="zoom:67%;">
+</li>
+<li><p>操作状态显示 <strong>Succeeded (成功)</strong> 之后，在 <strong>Deploy (部署)</strong> 阶段的状态区域中，选择 **Details (详细信息)**。此操作将打开 AWS CodeDeploy 控制台.</p>
+</li>
+<li><p>在<strong>部署组</strong>选项卡，在<strong>部署生命周期事件</strong>中，选择一个返回实例 ID。此操作将打开 EC2 控制台.<br><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/20_ec2_console.png" srcset="/img/loading.gif" alt="20_ec2_console"></p>
+</li>
+<li><p>在 <strong>Description (描述)</strong> 选项卡上的 <strong>Public DNS (公有 DNS)</strong> 中，复制地址，然后将其粘贴到 Web 浏览器的地址栏中。查看上传到 S3 存储桶的示例应用程序的索引页面.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/21_ec2_public_dns.png" srcset="/img/loading.gif" alt="21_ec2_public_dns"></p>
+<p>以下页面是您上传到 S3 存储桶的示例应用程序.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-started/22_codedeploy_status.png" srcset="/img/loading.gif" alt="22_codedeploy_status"></p>
+</li>
+</ol>
+<p><strong><u>PS: 本文仅为学习记录, 仅供学习与参与.</u></strong></p>
 
             </article>
             <hr>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>aws-管道-CodeCommit 存储库 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-12-19 20:02">
+                    December 19, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.9k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    47
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="aws-管道-CodeCommit-存储库"><a href="#aws-管道-CodeCommit-存储库" class="headerlink" title="aws-管道-CodeCommit 存储库"></a>aws-管道-CodeCommit 存储库</h3><h4 id="1-目标"><a href="#1-目标" class="headerlink" title="1.目标"></a>1.目标</h4><p>使用 CodeCommit 存储库中维护的代码部署到单个 Amazon EC2 实例. 将更改推送到 CodeCommit 存储库时会触发管道.<br>管道使用 CodeDeploy 作为部署服务，将您的更改部署到 Amazon EC2 实例.</p>
+<p>管道具有两个阶段：</p>
+<ul>
+<li>源阶段 (<strong>源</strong>）为您的 CodeCommit 源操作.</li>
+<li>部署阶段 (<strong>部署</strong>），用于您的 CodeDeploy 部署操作.</li>
+</ul>
+<h4 id="2-权限"><a href="#2-权限" class="headerlink" title="2.权限"></a>2.权限</h4><p>在IAM中设置权限</p>
+<ol>
+<li><p>登录 AWS Management Console，打开 IAM 控制台 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/iam/%E3%80%82">https://console.aws.amazon.com/iam/。</a></p>
+</li>
+<li><p>在 IAM 控制台的导航窗格中，选择<strong>用户</strong>，然后选择要配置为 CodeCommit 访问的 IAM 用户。</p>
+</li>
+<li><p>在 <strong>Permissions</strong> 选项卡上，选择 <strong>Add Permissions</strong>。</p>
+</li>
+<li><p>在 <strong>Grant permissions (授予权限)</strong> 中，选择 **Attach existing policies directly (直接附加现有策略)**。</p>
+</li>
+<li><p>从策略列表中，选择<strong>AWSCodeCommitPowerUser</strong>或另一个用于 CodeCommit 访问的托管策略。有关更多信息，请参阅<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codecommit/latest/userguide/security-iam-awsmanpol.html">AWSCodeCommit 的托管策略</a>。</p>
+<p>选择要附加的策略后，选择<strong>后续：审核</strong>以审核要附加到 IAM 用户的策略列表。如果列表正确，选择 <strong>Add permissions</strong>。</p>
+</li>
+</ol>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/01_aws_code_permission.png" srcset="/img/loading.gif" alt="01_aws_code_permission" style="zoom:67%;">
+
+<p>运行此命令以验证用于的 CodeCommit 命令AWS CLI已安装。</p>
+<div class="hljs"><pre><code class="hljs bash">aws codecommit <span class="hljs-built_in">help</span></code></pre></div>
+
+<h4 id="3-操作"><a href="#3-操作" class="headerlink" title="3.操作"></a>3.操作</h4><h5 id="第-1-步：创建-CodeCommit-存储库"><a href="#第-1-步：创建-CodeCommit-存储库" class="headerlink" title="第 1 步：创建 CodeCommit 存储库"></a>第 1 步：创建 CodeCommit 存储库</h5><p>首先，在 CodeCommit 中创建存储库. 您的管道在运行时将从该存储库获取源代码.<br>您还应创建一个本地存储库，您可以先在该存储库中维护和更新代码，然后再将其推送到 CodeCommit 存储库.</p>
+<p><strong>创建 CodeCommit 存储库</strong></p>
+<ol>
+<li>从打开 CodeCommit 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codecommit/">https://console.aws.amazon.com/codecommit/</a>.</li>
+<li>在区域选择器中，选择要创建存储库和管道的 AWS 区域. 有关更多信息，请参阅 。<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/general/latest/gr/rande.html">AWS 区域和终端节点</a>.</li>
+<li>在<strong>存储库</strong>页面上，选择<strong>创建存储库</strong>. </li>
+<li>在 <strong>Create repository (创建存储库)</strong> 页面上的 **Repository name (存储库名称)**中，输入存储库的名称（例如，<code>MyDemoRepo</code>）.</li>
+<li>选择<strong>创建</strong>.</li>
+</ol>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/02_create_repo.png" srcset="/img/loading.gif" alt="02_create_repo" style="zoom:67%;">
+
+<p><strong>设置本地存储库</strong></p>
+<p>在此步骤中，设置一个本地存储库，连接到您的远程 CodeCommit 存储库.</p>
+<ol>
+<li>在控制台中打开您的新存储库，选择页面右上角的 <strong>Clone URL (克隆 URL)**，然后选择 **Clone SSH (克隆 SSH)</strong>.<br>用于克隆 Git 存储库的地址复制到您的剪贴板.</li>
+<li>在您的终端窗口或命令行中，导航到您要用来存储本地存储库的本地目录. 在本教程中，我们使用 <code>/tmp</code>.</li>
+<li>运行以下命令以克隆存储库，使用您在上一步中复制的地址替换 SSH 地址. 此命令创建一个名为 <code>MyDemoRepo</code> 的目录. 您将示例应用程序复制到此目录.</li>
+</ol>
+<p>在克隆之前, 先生成针对 AWS CodeCommit 的 HTTPS Git 凭证.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/04_git_credential.png" srcset="/img/loading.gif" alt="04_git_credential" style="zoom:67%;">
+
+<p>克隆储存库:</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/03_git_clone.png" srcset="/img/loading.gif" alt="03_git_clone"></p>
+<p>生成本地文件:</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/05_local_repo.png" srcset="/img/loading.gif" alt="05_local_repo" style="zoom:67%; margin-left: 0;">
+
+<h5 id="第-2-步：向-CodeCommit-存储库添加示例代码"><a href="#第-2-步：向-CodeCommit-存储库添加示例代码" class="headerlink" title="第 2 步：向 CodeCommit 存储库添加示例代码"></a>第 2 步：向 CodeCommit 存储库添加示例代码</h5><p>在此步骤中，您下载为 CodeDeploy 示例演练创建的示例应用程序的代码，并将其添加到您的 CodeCommit 存储库.</p>
+<ol>
+<li><p>下载以下文件：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Linux.zip">SampleApp_Linux.zip</a></p>
+</li>
+<li><p>将 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/samples/SampleApp_Linux.zip">SampleApp_Linux.zip</a> 中的文件解压缩到您之前创建的本地目录中（例如，<code>/tmp/MyDemoRepo</code> 或 <code>c:\temp\MyDemoRepo</code>）。</p>
+<p>务必将文件直接放到本地存储库中。不要包括 <code>SampleApp_Linux</code> 文件夹.<br>例如，在您的本地 Linux、macOS 或 Unix 计算机上，您的目录和文件层次结构应如下所示：</p>
+</li>
+</ol>
+<div class="hljs"><pre><code class="hljs bash">/repo
+   └-- MyDemoRepo
+       │-- appspec.yml
+       │-- index.html
+       │-- LICENSE.txt
+       └-- scripts
+           │-- install_dependencies
+           │-- start_server
+           └-- stop_server</code></pre></div>
+
+<p>使用 git 命令上传文件：</p>
+<div class="hljs"><pre><code class="hljs bash">% git add -A
+% git commit -m <span class="hljs-string">&quot;Add sample application files&quot;</span>
+[master (root-commit) d35b3a1] Add sample application files
+ 6 files changed, 266 insertions(+)
+ create mode 100644 LICENSE.txt
+ create mode 100644 appspec.yml
+ create mode 100644 index.html
+ create mode 100644 scripts/install_dependencies
+ create mode 100644 scripts/start_server
+ create mode 100644 scripts/stop_server
+
+% git push
+git: <span class="hljs-string">&#x27;credential-manager&#x27;</span> is not a git <span class="hljs-built_in">command</span>. See <span class="hljs-string">&#x27;git --help&#x27;</span>.
+Counting objects: 9, <span class="hljs-keyword">done</span>.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (7/7), <span class="hljs-keyword">done</span>.
+Writing objects: 100% (9/9), 5.02 KiB | 5.02 MiB/s, <span class="hljs-keyword">done</span>.
+Total 9 (delta 0), reused 0 (delta 0)
+To https://xxxxxx.com/v1/repos/MyDemoRepo
+ * [new branch]      master -&gt; master</code></pre></div>
+
+<h5 id="第-3-步：创建-EC2-Linux-实例并安装-CodeDeploy-代理"><a href="#第-3-步：创建-EC2-Linux-实例并安装-CodeDeploy-代理" class="headerlink" title="第 3 步：创建 EC2 Linux 实例并安装 CodeDeploy 代理"></a>第 3 步：创建 EC2 Linux 实例并安装 CodeDeploy 代理</h5><p>在此步骤中，您将创建要在其中部署示例应用程序的 EC2 实例.<br>在此过程中，您在 EC2 实例上安装 CodeDeploy 代理.<br>CodeDeploy 代理是一个支持在 CodeDeploy 部署中使用实例的软件包. 您还将 IAM 角色附加到实例（称为<em>实例角色</em>），以允许它提取 CodeDeploy 代理用来部署应用程序的文件.</p>
+<p><strong>创建实例角色</strong></p>
+<ol>
+<li><p>使用打开 IAM 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/iam/">https://console.aws.amazon.com/iam/</a>).</p>
+</li>
+<li><p>在控制台控制面板中，选择 <strong>Roles (角色)</strong>.</p>
+</li>
+<li><p>选择 <strong>Create role</strong>（创建角色）.</p>
+</li>
+<li><p>UDER<strong>选择受信任实体的类型</strong>中，选择<strong>AWS 服务</strong>. UDER<strong>选择使用案例</strong>中，选择<strong>EC2</strong>. UDER<strong>选择您的使用案例</strong>中，选择<strong>EC2</strong>. C软管<strong>后续：Permissions (下一步：权限)</strong>.</p>
+</li>
+<li><p>搜索并选择名为<strong>AmazonEC2RoleforAWSCodeDeploy</strong>，然后选择<strong>后续：标签</strong>.</p>
+</li>
+<li><p>选择 <strong>Next:**。</strong>审核**。输入角色的名称（例如 <code>EC2InstanceRole</code>）.</p>
+<p><strong>注意</strong></p>
+<p>记下您的角色名称以便在下一步中使用。在创建实例时选择此角色.</p>
+<p>选择 <strong>Create role</strong>（创建角色）.</p>
+</li>
+</ol>
+<p><strong>启动实例</strong></p>
+<ol>
+<li>通过以下网址打开 Amazon EC2 控制台：<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/ec2/%E3%80%82">https://console.aws.amazon.com/ec2/。</a></li>
+<li>在控制台的控制面板中，选择 **Launch instance (启动实例)**，然后从弹出的选项中选择 **Launch instance (启动实例)**。</li>
+<li>在 上<strong>第 1 步：选择一个Amazon 系统映像(AMI)**，找到</strong>亚马逊 Linux 2 AMI (HVM)，SSD Volume Type<strong>，然后选择</strong>Select**. （此 AMI 被标记为“Free tier eligible (符合条件的免费套餐)”，可在列表顶部找到。）</li>
+<li>在存储库的<strong>步骤 2: 选择一个实例类型</strong>页面上，选择符合条件的免费套餐<code>t2.micro</code>类型作为实例的硬件配置，然后选择<strong>后续：配置实例详细信息</strong>.</li>
+<li>在存储库的<strong>步骤 3: 配置实例详细信息</strong>页面中，执行以下操作：<ul>
+<li>在 <strong>Number of instances</strong> 中，输入 <code>1</code>。</li>
+<li>在 <strong>Auto-assign Public IP</strong> 中，选择 <strong>Enable</strong>。</li>
+<li>在 <strong>IAM role (IAM 角色)</strong> 中，选择您在上一个过程中创建的 IAM 角色（例如 <code>EC2InstanceRole</code>）。</li>
+<li>展开 <strong>Advanced Details (高级详细信息)**，然后在 **User data (用户数据)</strong> 字段中输入以下内容：</li>
+</ul>
+</li>
+</ol>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
+yum -y update
+yum install -y ruby
+yum install -y aws-cli
+<span class="hljs-built_in">cd</span> /home/ec2-user
+wget https://aws-codedeploy-ap-northeast-1.s3.ap-northeast-1.amazonaws.com/latest/install
+chmod +x ./install
+./install auto</code></pre></div>
+
+<p>​             此代码在创建实例时在实例上安装 CodeDeploy 代理. 将其他项目保留在<strong>步骤 3:</strong> <strong>配置实例详细信息</strong>页面将保持不变。选择 <strong>Next:**。</strong>添加存储**.</p>
+<ol start="6">
+<li><p>L弯曲<strong>步骤 4: 添加存储</strong>页面将保持不变，然后选择<strong>后续：添加标签</strong>.</p>
+</li>
+<li><p>选择 <strong>Add Tag</strong>. 在 <strong>Key (键)</strong> 中输入 <code>Name</code>，在 <strong>Value (值)</strong> 中输入 <code>MyCodePipelineDemo</code>. 选择 <strong>Next:**。</strong>配置安全组**. 稍后，您将创建一个 CodeDeploy 应用程序，它将示例应用程序部署到此实例. CodeDeploy 基于附加到实例的标签来选择要部署的实例.</p>
+</li>
+<li><p>在存储库的<strong>步骤 6：配置安全组</strong>页面中，执行以下操作：</p>
+<ul>
+<li>在 <strong>Assign a security group (分配安全组)</strong> 旁边，选择 <strong>Create a new security group (创建新安全组)</strong>.</li>
+<li>在 <strong>SSH</strong> 对应的行中，于 <strong>Source (源)</strong> 下，选择 <strong>My IP (我的 IP)</strong>.</li>
+<li>选择 <strong>Add Rule (添加规则)**，选择 **HTTP</strong>，然后在 <strong>Source (源)</strong> 下选择 <strong>My IP (我的 IP)</strong>.</li>
+</ul>
+</li>
+<li><p>选择 <strong>Review and Launch</strong>.</p>
+</li>
+<li><p>在 <strong>Review Instance Launch</strong> 页面上，选择 <strong>Launch</strong>. 当系统提示您输入 key pair 时，请选择<strong>在没有 key pair 的情况下继续</strong>(也可以生成新的key).</p>
+</li>
+<li><p>准备就绪后，选择确认复选框，然后选择<strong>启动实例</strong>.</p>
+</li>
+<li><p>选择 <strong>View Instances</strong> 以关闭确认页面并返回控制台.</p>
+</li>
+<li><p>您可以在 <strong>Instances</strong> 页面上查看启动的状态。启动实例时，其初始状态为 <code>pending</code>.<br>实例启动后，其状态变为 <code>running</code>，并且会收到一个公有 DNS 名称. (如果 <strong>Public DNS</strong> 列不显示，请选择 <strong>Show/Hide</strong> 图标，然后选择 <strong>Public DNS</strong>。)</p>
+<p>可能需要花几分钟时间，实例才能准备好让您连接到它. 查看 <strong>Status Checks (状态检查)</strong> 列中的信息，以便了解您的实例是否通过了状态检查.</p>
+</li>
+</ol>
+<h5 id="第-4-步：在-CodeDeploy-中创建应用程序"><a href="#第-4-步：在-CodeDeploy-中创建应用程序" class="headerlink" title="第 4 步：在 CodeDeploy 中创建应用程序"></a>第 4 步：在 CodeDeploy 中创建应用程序</h5><p>在 CodeDeploy 中，<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/applications.html"><em>应用程序</em></a>是包含要部署的软件应用程序的资源.<br>稍后，您将将使用此应用程序与 CodePipeline，以便将示例应用程序自动部署到您的 Amazon EC2 实例.</p>
+<p>首先，您需要创建一个角色来允许 CodeDeploy 执行部署. 然后，您创建一个 CodeDeploy 应用程序.</p>
+<p><strong>创建 CodeDeploy 服务角色</strong></p>
+<ol>
+<li>使用打开 IAM 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/iam/)%E3%80%82">https://console.aws.amazon.com/iam/)。</a></li>
+<li>在控制台控制面板中，选择 **Roles (角色)**。</li>
+<li>选择 <strong>Create role</strong>（创建角色）。</li>
+<li>UDER<strong>选择受信任实体的类型</strong>中，选择<strong>AWS 服务</strong>. 在 <strong>Choose a use case (选择使用案例)</strong> 下，选择 <strong>CodeDeploy</strong>. UDER<strong>选择您的使用案例</strong>中，选择<strong>CodeDeploy</strong>. C软管<strong>后续：**</strong>Permissions (下一步：权限)**。<code>AWSCodeDeployRole</code> 托管策略已附加到角色.</li>
+<li>选择 <strong>Next:**。</strong>标签**, 和<strong>后续：**</strong>审核**.</li>
+<li>输入角色的名称（例如 <code>CodeDeployRole</code>），然后选择 <strong>Create role (创建角色)</strong>.</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/06_codecommit_role.png" srcset="/img/loading.gif" alt="06_codecommit_role"></p>
+<p><strong>在 CodeDeploy 中创建应用程序</strong></p>
+<ol>
+<li>从打开 CodeDeploy 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codedeploy">https://console.aws.amazon.com/codedeploy</a>.</li>
+<li>如果<strong>应用程序</strong>页面不显示，请在AWSCodeDeploy 菜单中，选择<strong>应用程序</strong>.</li>
+<li>选择 <strong>Create application</strong>。</li>
+<li>In<strong>应用程序名称</strong>，输入<code>MyDemoApplication</code>.</li>
+<li>在 <strong>Compute Platform (计算平台)</strong> 中，选择 **EC2/On-premises (EC2/本地)**。</li>
+<li>选择 <strong>Create application</strong>。</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/07_create_app.png" srcset="/img/loading.gif" alt="07_create_app"></p>
+<p><strong>在 CodeDeploy 中创建部署组</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups.html"><em>部署组</em></a>是定义了部署相关设置（例如，要部署到哪些实例以及部署它们的速度有多快）的资源.</p>
+<ol>
+<li>在显示应用程序的页面上，选择 <strong>Create deployment group (创建部署组)</strong>.</li>
+<li>在 <strong>Deployment group name (部署组名称)</strong> 中，输入 <code>MyDemoDeploymentGroup</code>.</li>
+<li>在 <strong>Service Role (服务角色)</strong> 中，选择您之前创建的服务角色（例如，<code>CodeDeployRole</code>）.</li>
+<li>在 <strong>Deployment type (部署类型)</strong> 下，选择 <strong>In-place (就地)</strong>.</li>
+<li>在 <strong>Environment configuration (环境配置)</strong> 下，选择 <strong>Amazon EC2 Instances (Amazon EC2 实例)**。在</strong>密钥<strong>字段中，输入<code>Name</code>. 在</strong>值**字段中，输入您用于标记实例的名称（例如，<code>MyCodePipelineDemo</code>).</li>
+<li>在 <strong>Deployment configuration (部署配置)</strong> 中，选择 <code>CodeDeployDefault.OneAtaTime</code>.</li>
+<li>UDER<strong>负载均衡器</strong>，请确保<strong>启用负载均衡</strong>未选中。您无需为此示例设置负载均衡器或选择目标组.</li>
+<li>展开 <strong>Advanced (高级)</strong> 部分。在<strong>警报</strong>下，如果列出了任何警报，请选择<strong>忽略警报配置</strong>.</li>
+<li>选择 <strong>Create deployment group (创建部署组)</strong>.</li>
+</ol>
+<h5 id="第-5-步：在-CodePipeline-中创建您的第一个管道"><a href="#第-5-步：在-CodePipeline-中创建您的第一个管道" class="headerlink" title="第 5 步：在 CodePipeline 中创建您的第一个管道"></a>第 5 步：在 CodePipeline 中创建您的第一个管道</h5><p>现在您已经可以创建并运行您的第一个管道. 在此步骤中，您将创建一个在代码推送到 CodeCommit 存储库时自动运行的管道.</p>
+<p><strong>创建 CodePipeline 道</strong></p>
+<ol>
+<li><p>登录到AWS Management Console，然后打开 CodePipeline 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codesuite/codepipeline/home">http://console.aws.amazon.com/codesuite/codepipeline/home</a>.</p>
+<p>从打开 CodePipeline 控制台<a target="_blank" rel="noopener" href="https://console.aws.amazon.com/codepipeline/">https://console.aws.amazon.com/codepipeline/</a>.</p>
+</li>
+<li><p>选择 **Create pipeline (创建管道)**。</p>
+</li>
+<li><p>In<strong>第 1 步：选择管道设置</strong>, 在**Pipeline name (管道名称)**，输入<code>MyFirstPipeline</code>.</p>
+</li>
+<li><p>In<strong>服务角色</strong>中，选择<strong>新服务角色</strong>以允许 CodePipeline 在 IAM 中创建服务角色.</p>
+</li>
+<li><p>将 <strong>Advanced settings (高级设置)</strong> 中的各项设置保留为默认值，然后选择 <strong>Next (下一步)</strong>.</p>
+</li>
+<li><p>In<strong>步骤 2: 添加源阶段</strong>, 在<strong>源提供商</strong>中，选择<strong>AWS CodeCommit</strong>. In<strong>存储库名称</strong>中，选择 CodeCommit 存储库的名称<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/tutorials-simple-codecommit.html#codecommit-create-repository">第 1 步：创建 CodeCommit 存储库</a>. 在 <strong>Branch name (分支名称)</strong> 中，选择 <code>main</code>，然后选择 <strong>Next step (下一步)</strong>.</p>
+</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/08_source.png" srcset="/img/loading.gif" alt="08_source"></p>
+<p>​    在选择存储库名称和分支后，将出现一条消息，其中显示为该管道创建的 Amazon CloudWatch Events 规则.<br>​    在<strong>更改检测选项</strong>下面，保留默认值。这样，就 CodePipeline 使用 Amazon CloudWatch Events 检测源存储库中的更改.<br>​    选择 <strong>Next (下一步)</strong>.</p>
+<ol start="7">
+<li><p>In<strong>步骤 3: 添加构建阶段</strong>中，选择<strong>跳过构建阶段</strong>，然后通过从选择<strong>跳过</strong>。选择 <strong>Next (下一步)</strong>.</p>
+</li>
+<li><p>In<strong>步骤 4: 添加部署阶段</strong>, 在<strong>部署提供程序</strong>中，选择<strong>AWS CodeDeploy</strong>. 在 <strong>Application name (应用程序名称)</strong> 中，输入 <code>MyDemoApplication</code>.<br>在 <strong>Deployment group (部署组)</strong> 中，选择 <code>MyDemoDeploymentGroup</code>，然后选择 <strong>Next step (下一步)</strong>.</p>
+</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/09_deploy.png" srcset="/img/loading.gif" alt="09_deploy"></p>
+<ol start="9">
+<li>In<strong>第 5 步：审核</strong>，检查信息，然后选择<strong>创建管道</strong>.</li>
+<li>创建管道后它会开始运行. 它从您的 CodeCommit 存储库下载代码，并在 EC2 实例中创建一个 CodeDeploy 部署.<br>在 CodePipeline 示例将网页部署至 CodeDeploy 部署中的 Amazon EC2 实例时，您可以查看进度以及成功和失败消息.</li>
+</ol>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/10_pipeline.png" srcset="/img/loading.gif" alt="10_pipeline" style="zoom:67%; margin-left: 0;">
+
+<h4 id="4-验证"><a href="#4-验证" class="headerlink" title="4.验证"></a>4.验证</h4><p>恭喜您！您刚在 CodePipeline 中创建了一个简单的管道。</p>
+<p>接下来，您将验证结果.</p>
+<p><strong>验证您的管道是否成功运行</strong></p>
+<ol>
+<li><p>查看管道的初始进度。每个阶段的状态将从<strong>还没有任何执行</strong>变为<strong>正在进行</strong>，然后变为 <strong>成功</strong>或<strong>失败</strong>。管道将在几分钟内完成首次运行。</p>
+</li>
+<li><p>晚于<strong>Succeeded</strong>将显示管道状态，在管道状态 (状态)<strong>部署</strong>阶段，选择<strong>AWS CodeDeploy</strong>. 此操作将打开 CodeDeploy 控制台。如果未显示 **Succeeded (成功)**，请参阅 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/codepipeline/latest/userguide/troubleshooting.html">排除 CodePipeline</a>.</p>
+</li>
+<li><p>在存储库的<strong>部署s</strong>选项卡，选择部署 ID。在部署的页面上，UDER<strong>部署生命周期事件</strong>下，选择实例 ID。此操作将打开 EC2 控制台.</p>
+</li>
+<li><p>在 <strong>Description (描述)</strong> 选项卡上的 <strong>Public DNS (公有 DNS)</strong> 中，复制地址（例如，<code>ec2-192-0-2-1.us-west-2.compute.amazonaws.com</code>），然后将其粘贴到 Web 浏览器的地址栏中.</p>
+<p>这是您下载并推送到 CodeCommit 存储库的示例应用程序.</p>
+</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/11_web.png" srcset="/img/loading.gif" alt="11_web"></p>
+<h5 id="修改-CodeCommit-存储库中的代码"><a href="#修改-CodeCommit-存储库中的代码" class="headerlink" title="修改 CodeCommit 存储库中的代码"></a>修改 CodeCommit 存储库中的代码</h5><p>您的管道配置为每次对 CodeCommit 存储库中的代码进行更改时运行.<br>在此步骤中，您将更改作为 CodeCommit 存储库中的示例 CodeDeploy 应用程序的一部分的 HTML 文件。当您推送这些更改时，您的管道会再次运行，并且您作出的更改将在您之前访问的网址中显示.</p>
+<ol>
+<li>修订 <code>index.html</code> 文件的内容，以更改网页的背景颜色和一些文本，然后保存该文件.</li>
+</ol>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Updated Sample Deployment<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span>
+    body &#123;
+<span class="css">      <span class="hljs-selector-tag">color</span>: <span class="hljs-selector-id">#000000</span>;</span>
+<span class="css">      <span class="hljs-selector-tag">background-color</span>: <span class="hljs-selector-id">#CCFFCC</span>;</span>
+      font-family: Arial, sans-serif;  
+<span class="css">      <span class="hljs-selector-tag">font-size</span><span class="hljs-selector-pseudo">:14px</span>;</span>
+    &#125;
+        
+    h1 &#123;
+      font-size: 250%;
+      font-weight: normal;
+      margin-bottom: 0;
+    &#125;
+    
+    h2 &#123;
+      font-size: 175%;
+      font-weight: normal;
+      margin-bottom: 0;
+    &#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Updated Sample Deployment<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>This application was updated using CodePipeline, CodeCommit, and CodeDeploy.<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Learn more:<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://docs.aws.amazon.com/codepipeline/latest/userguide/&quot;</span>&gt;</span>CodePipeline User Guide<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://docs.aws.amazon.com/codecommit/latest/userguide/&quot;</span>&gt;</span>CodeCommit User Guide<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://docs.aws.amazon.com/codedeploy/latest/userguide/&quot;</span>&gt;</span>CodeDeploy User Guide<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<ol start="2">
+<li>通过一次运行以下一条命令的方式，将您的更改提交并推送到您的 CodeCommit 存储库中。</li>
+</ol>
+<div class="hljs"><pre><code class="hljs bash">% git commit -am <span class="hljs-string">&quot;Updated sample application files&quot;</span>
+
+% git push</code></pre></div>
+
+<p><strong>验证您的管道是否已成功运行</strong></p>
+<ol>
+<li>查看管道的初始进度。每个阶段的状态将从<strong>还没有任何执行</strong>变为<strong>正在进行</strong>，然后变为 <strong>成功</strong>或<strong>失败</strong>. 管道应在几分钟内完成运行.</li>
+</ol>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/12_reload_deploy.png" srcset="/img/loading.gif" alt="12_reload_deploy" style="zoom:67%; margin-left: 0;">
+
+<ol start="2">
+<li>操作状态显示 <strong>Succeeded (成功)</strong> 之后，请刷新您之前在浏览器中访问的演示页面.<br>此时将显示更新后的网页：</li>
+</ol>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-codepipeline-codecommit/13_reload_web.png" srcset="/img/loading.gif" alt="13_reload_web"></p>
+<p><strong><u>PS: 本文仅为学习记录, 仅供学习与参考!</u></strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pipeline/">pipeline</a>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/codecommit/">codecommit</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/14/aws-codepipeline-started/">
+                        <span class="hidden-mobile">aws-codepipeline学习一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "aws-管道-CodeCommit 存储库&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

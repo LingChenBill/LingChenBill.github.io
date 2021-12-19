@@ -157,6 +157,55 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/07/spark-high-availability/">Spark高可用配置</a>
+
+      <a href="/2021/01/07/spark-high-availability/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Spark高可用配置1.前提准备环境
+
+三个节点虚拟机(免密登录)
+安装hadoop-3.2.1
+安装spark-3.0.0
+安装zookeeper-3.4.14
+
+2.集群规划
+
+3.修改配置文件$ vi /opt/spark-standalone/spark-3.0.0-bin-hadoop3.2/conf/spark-env.sh
+
+export SPARK_HISTORY_OP</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-07
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spark/">spark</a>
+            
+              <a href="/tags/hadoop/">hadoop</a>
+            
+              <a href="/tags/zookeeper/">zookeeper</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/07/zookeeper-started/">Zookeeper集群配置</a>
 
       <a href="/2021/01/07/zookeeper-started/" class="index-excerpt">
@@ -555,54 +604,6 @@ Docker微服务镜像推送至阿里云1.登录阿里云Docker Registry前提:
               <a href="/tags/docker/">docker</a>
             
               <a href="/tags/micro/">micro</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/12/10/vmware-mac-centos7/">Mac-vmware中Centos7网络连接</a>
-
-      <a href="/2020/12/10/vmware-mac-centos7/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[toc]
-Mac-vmware中Centos7网络连接1.虚拟机安装前提
-
-VMware Fusion安装
-Centos7虚拟镜像
-
-导入Centos7虚拟镜像,
-右击 -&gt; 网络适配器 -&gt; 连接网络适配器 -&gt; 与我的Mac共享
-启动Centos7
-# 用户名与密码.
-% root
-root
-
-2.设置主机名% hostnamectl set-hostname hdss7-</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-12-10
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vmware/">vmware</a>
-            
-              <a href="/tags/centos7/">centos7</a>
             
           </div>
         

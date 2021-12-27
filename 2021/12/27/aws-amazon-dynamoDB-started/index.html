@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>aws-amazon-dynamoDB-学习一 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-12-27 20:35">
+                    December 27, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    43
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="aws-amazon-dynamoDB-学习一"><a href="#aws-amazon-dynamoDB-学习一" class="headerlink" title="aws-amazon-dynamoDB-学习一"></a>aws-amazon-dynamoDB-学习一</h3><h4 id="一-什么是-Amazon-DynamoDB"><a href="#一-什么是-Amazon-DynamoDB" class="headerlink" title="一. 什么是 Amazon DynamoDB"></a>一. 什么是 Amazon DynamoDB</h4><p>Amazon DynamoDB 是一种完全托管的 NoSQL 数据库服务，提供快速而可预测的性能，能够实现无缝扩展.<br>DynamoDB 可以免除操作和扩展分布式数据库的管理工作负担，因而无需担心硬件预置、设置和配置、复制、软件修补或集群扩展等问题.<br>此外，DynamoDB 提供了加密静态，这可以消除在保护敏感数据时涉及的操作负担和复杂性.</p>
+<p>您可以使用 DynamoDB 创建一个数据库表来存储和检索任意量级的数据，并支持任何级别的请求流量.<br>您可以在不停机或性能下降的情况下扩展或缩小表的吞吐容量. 可以使用 AWS Management Console 监控资源利用率和性能指标.</p>
+<p>DynamoDB 提供了按需备份功能. 它允许您创建表的完整备份以进行长期保留和存档，从而满足监管合规性需求.<br>DynamoDB 允许您自动从表中删除过期项目，以帮助您减少存储使用量和存储不再相关数据的成本.</p>
+<h4 id="二-核心组件"><a href="#二-核心组件" class="headerlink" title="二. 核心组件"></a>二. 核心组件</h4><h5 id="表-项目-属性"><a href="#表-项目-属性" class="headerlink" title="表, 项目, 属性"></a>表, 项目, 属性</h5><p>在 DynamoDB 中，表、项目和属性是您使用的核心组件. <u><strong>表是项目的集合</strong></u>，而每个<u><strong>项目是属性的集合</strong></u>.<br>DynamoDB 使用主键来唯一标识表中的每个项目，并使用二级索引来提供更具灵活性的查询.<br>您可以使用 DynamoDB Streams 捕获 DynamoDB 表中的数据修改事件.</p>
+<ul>
+<li><strong>表</strong> – 类似于其他数据库系统，DynamoDB 将数据存储在表中. 表是数据的集合.<br>例如，请参阅名为 <em>People</em> 的示例表，该表可用于存储有关好友、家人或关注的任何其他人的个人联系信息.<br>您也可以建立一个 <em>Cars</em> 表，存储有关人们所驾驶的车辆的信息.</li>
+<li><strong>项目</strong> – 每个表包含零个或更多个项目. 项目是一组属性，具有不同于所有其他项目的唯一标识.<br>在 <em>People</em> 表中，每个项目表示一位人员. 在 <em>Cars</em> 表中，每个项目代表一种车.<br>DynamoDB 中的项目在很多方面都类似于其他数据库系统中的行、记录或元组. 在 DynamoDB 中，对表中可存储的项目数没有限制.</li>
+<li><strong>属性</strong> – 每个项目包含一个或多个属性. 属性是基础的数据元素，无需进一步分解.<br>例如，<em>People</em> 表中的一个项目包含名为 <em>PersonID</em>、<em>LastName</em>、<em>FirstName</em> 等的属性.<br>对于 <em>Department</em> 表，项目可能包含 <em>DepartmentID</em>、<em>Name</em>、<em>Manager</em> 等属性. DynamoDB 中的属性在很多方面都类似于其他数据库系统中的字段或列.</li>
+</ul>
+<p>下图是一个名为 <em>People</em> 的表，其中显示了一些示例项目和属性: </p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/001_people_table.png" srcset="/img/loading.gif" alt="001_people_table" style="zoom:67%; margin-left: 0;">
+
+<ul>
+<li>表中的每个项目都有一个唯一的标识符或主键，用于将项目与表中的所有其他内容区分开来. 在 <em>People</em> 表中，主键包含一个属性 (<em>PersonID</em>).</li>
+<li>与主键不同，<em>People</em> 表是无架构的，这表示属性及其数据类型都不需要预先定义. 每个项目都能拥有其自己的独特属性.</li>
+<li>大多数属性是<u><strong>标量</strong></u>类型的，这表示它们只能具有一个值. 字符串和数字是标量的常见示例.</li>
+<li>某些项目具有嵌套属性 (<em>Address</em>). DynamoDB 支持高达 32 级深度的嵌套属性.</li>
+</ul>
+<h5 id="主键"><a href="#主键" class="headerlink" title="主键"></a>主键</h5><p>创建表时，除表名称外，您还必须指定表的主键. 主键唯一标识表中的每个项目，因此，任意两个项目的主键都不相同.</p>
+<p><strong>分区键</strong> – 由一个称为<em>分区键</em>的属性构成的简单主键.</p>
+<p><strong>分区键和排序键</strong> – 称为复合主键，此类型的键由两个属性组成。第一个属性是分区键，第二个属性是排序键.</p>
+<p>在查询数据时，复合主键可让您获得额外的灵活性.</p>
+<h5 id="二级索引"><a href="#二级索引" class="headerlink" title="二级索引"></a>二级索引</h5><p>您可以在一个表上创建一个或多个二级索引. 利用二级索引，除了可对主键进行查询外，还可使用替代键查询表中的数据.<br>DynamoDB 不需要使用索引，为应用程序提供数据查询方面的更大的灵活性. 在表中创建二级索引后，您可以从索引中读取数据，方法与从表中读取数据大体相同.</p>
+<ul>
+<li>全局二级索引 – 分区键和排序键可与基表中的这些键不同的索引.</li>
+<li>本地二级索引 – 分区键与基表相同但排序键不同的索引.</li>
+</ul>
+<p>DynamoDB 中的每个表具有 20 个全局二级索引（默认配额）和 5 个本地二级索引的配额.</p>
+<h5 id="DynamoDB-Streams"><a href="#DynamoDB-Streams" class="headerlink" title="DynamoDB Streams"></a>DynamoDB Streams</h5><p>DynamoDB Streams 是一项可选功能，用于捕获 DynamoDB 表中的数据修改事件. 有关这些事件的数据将以事件发生的顺序近乎实时地出现在流中.<br>每个事件由一条<u>流记录</u>表示。如果您对表启用流，则每当以下事件之一发生时，DynamoDB Streams 都会写入一条流记录：</p>
+<ul>
+<li>向表中添加了新项目：流将捕获整个项目的映像，包括其所有属性.</li>
+<li>更新了项目：流将捕获项目中已修改的任何属性的“之前”和“之后”映像.</li>
+<li>从表中删除了项目：流将在整个项目被删除前捕获其映像.</li>
+</ul>
+<p>每条流记录还包含表的名称、事件时间戳和其他元数据. 流记录具有 24 个小时的生命周期；在此时间过后，它们将从流中自动删除.</p>
+<h4 id="三-DynamoDB-API"><a href="#三-DynamoDB-API" class="headerlink" title="三. DynamoDB API"></a>三. DynamoDB API</h4><h5 id="控制层面"><a href="#控制层面" class="headerlink" title="控制层面"></a>控制层面</h5><p>控制层面 操作可让您可以创建和管理 DynamoDB 表.它们还可让您使用依赖于表的索引、流和其他对象.</p>
+<ul>
+<li><code>CreateTable</code> – 创建新表. 或者，您也可以创建一个或多个二级索引并为表启用 DynamoDB Streams.</li>
+<li><code>DescribeTable</code>– 返回有关表的信息，例如，表的主键架构、吞吐量设置和索引信息.</li>
+<li><code>ListTables</code> – 返回列表中您的所有表的名称.</li>
+<li><code>UpdateTable</code> – 修改表或其索引的设置、创建或删除表上的新索引或修改表的 DynamoDB Streams 设置.</li>
+<li><code>DeleteTable</code> – 从 DynamoDB 中删除表及其所有依赖对象.</li>
+</ul>
+<h5 id="数据层面"><a href="#数据层面" class="headerlink" title="数据层面"></a>数据层面</h5><p>数据层面 操作可让您对表中的数据执行创建、读取、更新和删除（也称为 <em>CRUD</em>）操作. 某些数据层面操作还可从二级索引读取数据.<br>您可以使用<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/ql-reference.html">PartiQL - 用于 Amazon DynamoDB 的 SQL 兼容语言</a>来执行这些 CRUD 操作，<br>也可以使用 DynamoDB 的经典 CRUD API，将每个操作分离为不同的 API 调用.</p>
+<h4 id="四-命名规则和数据类型"><a href="#四-命名规则和数据类型" class="headerlink" title="四. 命名规则和数据类型"></a>四. 命名规则和数据类型</h4><h5 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h5><p>DynamoDB 中的表、属性和其他对象必须具有名称. 名称应该简明扼要，例如，<em>Products</em>、<em>Books</em> 和 <em>Authors</em> 之类的名称是都是不言而喻的.</p>
+<p>下面是 DynamoDB 的命名规则：</p>
+<ul>
+<li><p>所有名称都必须使用 UTF-8 进行编码，并且区分大小写.</p>
+</li>
+<li><p>表名称和索引名称的长度必须介于 3 到 255 个字符之间，而且只能包含以下字符：</p>
+<ul>
+<li><code>a-z</code></li>
+<li><code>A-Z</code></li>
+<li><code>0-9</code></li>
+<li><code>_</code> (下划线)</li>
+<li><code>-</code> (短划线)</li>
+<li><code>.</code> (圆点)</li>
+</ul>
+</li>
+<li><p>属性名称的长度必须至少为 1 个字符，但不得超过 64 KB.</p>
+<p>存在以下例外。这些属性名称的长度不得超过 255 个字符：</p>
+<ul>
+<li>二级索引分区键名称.</li>
+<li>二级索引排序键名称.</li>
+<li>任意用户指定的投影属性的名称（仅适用于本地二级索引）.</li>
+</ul>
+</li>
+</ul>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p>DynamoDB 对表中的属性支持很多不同的数据类型. 可按以下方式为属性分类：</p>
+<ul>
+<li><strong>标量类型</strong> - 标量类型可准确地表示一个值. 标量类型包括数字、字符串、二进制、布尔值和 null.</li>
+<li><strong>文档类型</strong> - 文档类型可表示具有嵌套属性的复杂结构，例如您将在 JSON 文档中找到的结构。文档类型包括列表和映射.</li>
+<li><strong>集类型</strong> - 集类型可表示多个标量值. 集类型包括字符串集、数字集和二进制集.</li>
+</ul>
+<p>当您创建表或二级索引时，您必须指定每个主键属性（分区键和排序键）的名称和数据类型. 此外，每个主键属性必须定义为字符串、数字或二进制类型.<br>DynamoDB 是 <u><strong>NoSQL 数据库并且无架构</strong></u>. 这意味着，与主键属性不同，您无需在创建表时定义任何属性或数据类型.<br>与此相对，关系数据库要求您在创建表时定义每个列的名称和数据类型.</p>
+<h4 id="五-从-SQL-到-NoSQL"><a href="#五-从-SQL-到-NoSQL" class="headerlink" title="五.从 SQL 到 NoSQL"></a>五.从 SQL 到 NoSQL</h4><p>如果您是应用程序开发人员，则可能在使用关系数据库管理系统 (RDBMS) 和结构化查询语言 (SQL) 方面有一些经验.<br>在您开始使用 Amazon DynamoDB 时，您既会遇到许多相似之处，也会遇到许多不同之处.<br>本节介绍常见数据库任务，并将 SQL 语句与其等效 DynamoDB 操作进行比较和对比.</p>
+<p><em>NoSQL</em> 是一个术语，用于描述高度<strong>可用的、可扩展的并且已针对高性能进行优化的非关系数据库系统</strong>.<br>有别于关系模型，NoSQL 数据库（如 DynamoDB）使用替代模型进行数据管理，例如键-值对或文档存储.</p>
+<h5 id="关系-SQL-还是-NoSQL"><a href="#关系-SQL-还是-NoSQL" class="headerlink" title="关系 (SQL) 还是 NoSQL"></a>关系 (SQL) 还是 NoSQL</h5><p>如今，应用程序的要求比以往更严苛.<br>例如，在线游戏一开始时只有几个用户和极少数据. 但是，如果游戏获得成功，则可以轻松超过基础数据库管理系统的资源.<br>基于 Web 的应用程序拥有数百、数千或数百万并发用户，并且每天生成数 TB 或更多新数据，这并不少见.<br>此类应用程序的数据库必须每秒处理数万或数十万次读取和写入.</p>
+<p>Amazon DynamoDB 非常适合这些类型的工作负载.<br>作为开发人员，您首先可以使用较低的使用率，然后随着应用程序变得越来越受欢迎而逐渐增加使用率. DynamoDB 无缝扩展以处理大量数据和大量用户.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/002_rds_dynamodb.png" srcset="/img/loading.gif" alt="002_rds_dynamodb"></p>
+<h5 id="数据库的特点"><a href="#数据库的特点" class="headerlink" title="数据库的特点"></a>数据库的特点</h5><p>要让您的应用程序能够访问数据库，其必须经过<em>身份验证</em>，以确保该应用程序能够使用数据库.<br>此外，您的应用程序还必须获得<em>授权</em>，以使该应用程序只能执行它有权执行的操作.</p>
+<p>下图说明客户端与关系数据库和 Amazon DynamoDB 之间的交互 : </p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/003_dynamodb_interactive.png" srcset="/img/loading.gif" alt="003_dynamodb_interactive" style="zoom:67%; margin-left: 0;">
+
+<p>下表包含有关客户端交互任务的更多详细信息 : </p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/004_dynamodb_tbls.png" srcset="/img/loading.gif" alt="004_dynamodb_tbls" style="zoom:67%;">
+
+<h4 id="六-本地部署"><a href="#六-本地部署" class="headerlink" title="六. 本地部署"></a>六. 本地部署</h4><h5 id="Docker版本"><a href="#Docker版本" class="headerlink" title="Docker版本"></a>Docker版本</h5><p>下载并安装 <a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop">Docker Desktop</a><br>将以下代码复制到文件中并将其保存为 <code>docker-compose.yml</code></p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.8&#x27;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">dynamodb-local:</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">&quot;-jar DynamoDBLocal.jar -sharedDb -dbPath ./data&quot;</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;amazon/dynamodb-local:latest&quot;</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">dynamodb-local</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8000:8000&quot;</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;./docker/dynamodb:/home/dynamodblocal/data&quot;</span>
+    <span class="hljs-attr">working_dir:</span> <span class="hljs-string">/home/dynamodblocal</span></code></pre></div>
+
+<p>运行命令 : </p>
+<div class="hljs"><pre><code class="hljs bash">docker-compose up</code></pre></div>
+
+<h5 id="设置本地终端节点"><a href="#设置本地终端节点" class="headerlink" title="设置本地终端节点"></a>设置本地终端节点</h5><p>默认情况下，AWS SDK 和工具使用 Amazon DynamoDB Web 服务的终端节点。要将 SDK 和工具用于 DynamoDB 下载版本，您必须指定本地终端节点：</p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>localhost:<span class="hljs-number">8000</span></code></pre></div>
+
+<h5 id="AWS-Command-Line-Interface"><a href="#AWS-Command-Line-Interface" class="headerlink" title="AWS Command Line Interface"></a>AWS Command Line Interface</h5><p>您可使用 AWS Command Line Interface (AWS CLI) 与可下载的 DynamoDB 交互.<br>例如，您可以使用它执行<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/SampleData.html">为 DynamoDB 中的代码示例创建表和加载数据</a>中的所有步骤.</p>
+<p>要访问本地运行的 DynamoDB，请使用 <code>--endpoint-url</code> 参数。以下是使用 AWS CLI 列出计算机上的 DynamoDB 中的表的示例.</p>
+<div class="hljs"><pre><code class="hljs dsconfig"><span class="hljs-string">aws </span><span class="hljs-string">dynamodb </span><span class="hljs-built_in">list-tables</span> <span class="hljs-built_in">--endpoint-url</span> <span class="hljs-string">http:</span>//<span class="hljs-string">localhost:8000</span></code></pre></div>
+
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/005_docker_dynamodb.png" srcset="/img/loading.gif" alt="005_docker_dynamodb"></p>
+<h5 id="使用-Amazon-DynamoDB-Web-服务"><a href="#使用-Amazon-DynamoDB-Web-服务" class="headerlink" title="使用 Amazon DynamoDB Web 服务"></a>使用 Amazon DynamoDB Web 服务</h5><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/SettingUp.DynamoWebService.html#SettingUp.DynamoWebService.SignUpForAWS">注册AWS</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/SettingUp.DynamoWebService.html#SettingUp.DynamoWebService.GetCredentials">获取 AWS 访问密钥</a>（用于以编程方式访问 DynamoDB）</li>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/SettingUp.DynamoWebService.html#SettingUp.DynamoWebService.ConfigureCredentials">配置您的凭证</a>（用于以编程方式访问 DynamoDB）</li>
+</ol>
+<h4 id="七-访问DynamoDB"><a href="#七-访问DynamoDB" class="headerlink" title="七. 访问DynamoDB"></a>七. 访问DynamoDB</h4><h5 id="使用控制台"><a href="#使用控制台" class="headerlink" title="使用控制台"></a>使用控制台</h5><p>您可以访问 AWS Management Console 了解 Amazon DynamoDB，地址 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/dynamodb/home">https://console.aws.amazon.com/dynamodb/home</a></p>
+<h5 id="使用-AWS-CLI"><a href="#使用-AWS-CLI" class="headerlink" title="使用 AWS CLI"></a>使用 AWS CLI</h5><p>您可以使用 AWS Command Line Interface (AWS CLI) 从命令行管理多个 AWS 服务并通过脚本自动执行这些服务.<br>您可以使用 AWS CLI 进行临时操作，如创建表. 您还可以使用它在实用工具脚本中嵌入 Amazon DynamoDB 操作.<br>您必须先获取<u>访问密钥 ID</u> 和<u>秘密访问密钥</u>，然后才能将 AWS CLI 与 DynamoDB 结合使用.</p>
+<h5 id="将-AWS-CLI-与-DynamoDB-结合使用"><a href="#将-AWS-CLI-与-DynamoDB-结合使用" class="headerlink" title="将 AWS CLI 与 DynamoDB 结合使用"></a>将 AWS CLI 与 DynamoDB 结合使用</h5><p>命令行格式包含 DynamoDB 操作名称，后跟该操作的参数. AWS CLI 支持参数值的速记语法以及 JSON.</p>
+<p>例如，以下命令可创建一个名为 <em>Music</em> 的表。分区键为 <em>Artist</em>，排序键为 <em>SongTitle</em>。（为便于阅读，本部分中的长命令分行显示。）</p>
+<div class="hljs"><pre><code class="hljs bash">aws dynamodb create-table \
+    --table-name Music \
+    --attribute-definitions \
+        AttributeName=Artist,AttributeType=S \
+        AttributeName=SongTitle,AttributeType=S \
+    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --endpoint-url http://localhost:8000</code></pre></div>
+
+<p>以下命令可将新项目添加到表。这些示例使用速记语法和 JSON 的组合.</p>
+<div class="hljs"><pre><code class="hljs bash">aws dynamodb put-item \
+    --table-name Music \
+    --item \
+        <span class="hljs-string">&#x27;&#123;&quot;Artist&quot;: &#123;&quot;S&quot;: &quot;No One You Know&quot;&#125;, &quot;SongTitle&quot;: &#123;&quot;S&quot;: &quot;Call Me Today&quot;&#125;, &quot;AlbumTitle&quot;: &#123;&quot;S&quot;: &quot;Somewhat Famous&quot;&#125;&#125;&#x27;</span> \
+    --return-consumed-capacity TOTAL \
+    --endpoint-url http://localhost:8000</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">aws dynamodb put-item \
+    --table-name Music \
+    --item \
+        <span class="hljs-string">&#x27;&#123;&quot;Artist&quot;: &#123;&quot;S&quot;: &quot;Acme Band&quot;&#125;, &quot;SongTitle&quot;: &#123;&quot;S&quot;: &quot;Happy Day&quot;&#125;, &quot;AlbumTitle&quot;: &#123;&quot;S&quot;: &quot;Songs About Life&quot;&#125;&#125;&#x27;</span> \
+    --return-consumed-capacity TOTAL \
+    --endpoint-url http://localhost:8000</code></pre></div>
+
+<p>在命令行上，难以编写有效的 JSON。然而，AWS CLI 可以读取 JSON 文件.<br>例如，请考虑以下 JSON 代码段，它存储在一个名为 <em>key-conditions.json</em> 的文件中.</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;Artist&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;AttributeValueList&quot;</span>: [
+            &#123;   
+                <span class="hljs-attr">&quot;S&quot;</span>: <span class="hljs-string">&quot;No One You Know&quot;</span>
+            &#125;   
+        ],  
+        <span class="hljs-attr">&quot;ComparisonOperator&quot;</span>: <span class="hljs-string">&quot;EQ&quot;</span>
+    &#125;,  
+    <span class="hljs-attr">&quot;SongTitle&quot;</span>: &#123;
+        <span class="hljs-attr">&quot;AttributeValueList&quot;</span>: [
+            &#123;   
+                <span class="hljs-attr">&quot;S&quot;</span>: <span class="hljs-string">&quot;Call Me Today&quot;</span>
+            &#125;   
+        ],  
+        <span class="hljs-attr">&quot;ComparisonOperator&quot;</span>: <span class="hljs-string">&quot;EQ&quot;</span>
+    &#125;
+&#125;</code></pre></div>
+
+<p>可以使用 AWS CLI 发出 <code>Query</code> 请求。在该示例中，<em>key-conditions.json</em> 文件的内容用于 <code>--key-conditions</code> 参数</p>
+<div class="hljs"><pre><code class="hljs bash">aws dynamodb query --table-name Music --key-conditions file://key-conditions.json --endpoint-url http://localhost:8000</code></pre></div>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/006_select_key.png" srcset="/img/loading.gif" alt="006_select_key" style="zoom:67%;">
+
+<h5 id="将-AWS-CLI-与可下载的-DynamoDB-结合使用"><a href="#将-AWS-CLI-与可下载的-DynamoDB-结合使用" class="headerlink" title="将 AWS CLI 与可下载的 DynamoDB 结合使用"></a>将 AWS CLI 与可下载的 DynamoDB 结合使用</h5><p>AWS CLI 也可与在您的计算机上运行的 DynamoDB（可下载版本）交互。要启用此功能，请向每个命令添加以下参数：</p>
+<div class="hljs"><pre><code class="hljs bash">--endpoint-url http://localhost:8000</code></pre></div>
+
+<p>下面的示例使用 AWS CLI 列出本地数据库中的表</p>
+<div class="hljs"><pre><code class="hljs bash">aws dynamodb list-tables --endpoint-url http://localhost:8000</code></pre></div>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/007_list_tables.png" srcset="/img/loading.gif" alt="007_list_tables" style="zoom:67%;">
+
+<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><div class="hljs"><pre><code class="hljs bash">aws dynamodb delete-table --table-name Music --endpoint-url http://localhost:8000</code></pre></div>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amazon-dynamoDB-started/008_delete_table.png" srcset="/img/loading.gif" alt="008_delete_table" style="zoom:67%;">
+
+<p>说明 : AWS CLI 无法将可下载版本的 DynamoDB 作为默认端点。因此，您<u><strong>必须对每个命令指定</strong></u> <code>--endpoint-url</code>.</p>
+<h4 id="八-IP-地址范围"><a href="#八-IP-地址范围" class="headerlink" title="八. IP 地址范围"></a>八. IP 地址范围</h4><p>Amazon Web Services (AWS) 以 JSON 格式发布其当前 IP 地址范围。要查看当前范围，请下载 <a target="_blank" rel="noopener" href="https://ip-ranges.amazonaws.com/ip-ranges.json">ip-ranges.json</a>.<br>有关更多信息，请参阅 AWS 一般参考中的 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">AWS IP地址范围</a>.</p>
+<p>要查找可用于<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Operations_Amazon_DynamoDB.html">访问 DynamoDB 表和索引</a>的 IP 地址范围，请在 ip-ranges.json 文件中搜索以下字符串：<code>&quot;service&quot;: &quot;DYNAMODB&quot;</code>.</p>
+<p><u><strong>PS: 本文为学习记录, 仅供学习与参考!</strong></u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/dynamodb/">dynamodb</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/dynamodb/">dynamodb</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/25/chrome-vimium-started/">
+                        <span class="hidden-mobile">chrome-vimium插件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "aws-amazon-dynamoDB-学习一&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

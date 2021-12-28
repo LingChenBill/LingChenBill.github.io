@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Aws-dynamoDB-python-sdk-学习一 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-12-28 20:35">
+                    December 28, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    824 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    10
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="Aws-dynamoDB-python-sdk-学习一"><a href="#Aws-dynamoDB-python-sdk-学习一" class="headerlink" title="Aws-dynamoDB-python-sdk-学习一"></a>Aws-dynamoDB-python-sdk-学习一</h3><h4 id="1-工作流程"><a href="#1-工作流程" class="headerlink" title="1.工作流程"></a>1.工作流程</h4><p>高度概述了使用 AWS SDK 编程 Amazon DynamoDB 应用程序.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/001-sdk-dynamodb.png" srcset="/img/loading.gif" alt="001-sdk-dynamodb" style="zoom:67%; margin-left: 0;">
+
+<ol>
+<li>使用适用于您的编程语言的 AWS SDK 编写一个应用程序.</li>
+<li>每个 AWS 开发工具包提供一个或多个编程接口，用于使用 DynamoDB. 可用的具体接口取决于您使用的编程语言和 AWS SDK.</li>
+<li>AWS SDK 构造 HTTP(S) 请求，以便与低级 DynamoDB API 一起使用.</li>
+<li>AWS SDK 将请求发送到 DynamoDB 终端节点.</li>
+<li>DynamoDB 运行请求. 如果请求成功，则 DynamoDB 将返回 HTTP 200 响应代码（确定）.<br>如果请求不成功，DynamoDB 将返回 HTTP 错误代码和错误消息.</li>
+<li>AWS SDK 处理响应并将其传播回您的应用程序.</li>
+</ol>
+<p>每个 AWS SDK 为您的应用程序提供重要服务，包括以下内容：</p>
+<ul>
+<li>设置 HTTP(S) 请求格式和序列化请求参数.</li>
+<li>为每个请求生成加密签名.</li>
+<li>将请求转发到 DynamoDB 端点并接收来自 DynamoDB 的响应.</li>
+<li>从这些响应中提取结果.</li>
+<li>在出现错误时实现基本重试逻辑.</li>
+</ul>
+<h4 id="2-安装AWS-Toolkit-for-JetBrains"><a href="#2-安装AWS-Toolkit-for-JetBrains" class="headerlink" title="2.安装AWS Toolkit for JetBrains"></a>2.安装AWS Toolkit for JetBrains</h4><p><strong>安装和配置适用于 JetBrains 的 AWS 工具包</strong></p>
+<ol>
+<li>确保<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh_cn/toolkit-for-jetbrains/latest/userguide/welcome.html#supported-ides">AWS 工具包支持的 JetBrains IDE</a>已安装并正在运行.</li>
+<li>打开 <strong>Settings (设置)</strong>/<strong>Preferences (首选项)</strong>.</li>
+<li>选择 <strong>Plugins (插件)</strong>.</li>
+<li>在存储库的<strong>Marketplace</strong>选项卡，在<strong>在商城中搜索插件</strong>，开始输入<em>AWS Toolkit</em>.  <strong>Amazon Web Services</strong>，然后选择它.</li>
+</ol>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/002-ide-plugin.png" srcset="/img/loading.gif" alt="002-ide-plugin" style="zoom:67%;">
+
+<h5 id="访问凭证文件"><a href="#访问凭证文件" class="headerlink" title="访问凭证文件"></a>访问凭证文件</h5><p>AWS 安全凭证 — 创建了<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">访问密钥</a>（其中包含<em>访问密钥 ID</em>值和<em>私有访问密钥</em>值），或 AWS 账户根用户（我们强烈建议这样做）.<br>如果您没有 IAM 中用户的访问密钥，请<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey">创建一个</a>.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/003-ide-access-key.png" srcset="/img/loading.gif" alt="003-ide-access-key" style="zoom:80%; margin-left: 0;">
+
+<h4 id="3-适用于-Python-的-AWS-开发工具包-Boto3"><a href="#3-适用于-Python-的-AWS-开发工具包-Boto3" class="headerlink" title="3.适用于 Python 的 AWS 开发工具包 (Boto3)"></a>3.适用于 Python 的 AWS 开发工具包 (Boto3)</h4><h5 id="安装Boto3"><a href="#安装Boto3" class="headerlink" title="安装Boto3"></a>安装Boto3</h5><div class="hljs"><pre><code class="hljs bash">pip install boto3</code></pre></div>
+
+<h5 id="操作s3"><a href="#操作s3" class="headerlink" title="操作s3"></a>操作<code>s3</code></h5><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> boto3
+
+s3 = boto3.resource(<span class="hljs-string">&#x27;s3&#x27;</span>)
+
+<span class="hljs-keyword">for</span> bucket <span class="hljs-keyword">in</span> s3.buckets.<span class="hljs-built_in">all</span>():
+    print(bucket.name)</code></pre></div>
+
+<p>运行结果 : </p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/005-run-s3.png" srcset="/img/loading.gif" alt="005-run-s3"></p>
+<p>查看<code>s3</code>的控制台, 查看结果是否正确: </p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/004-py-s3.png" srcset="/img/loading.gif" alt="004-py-s3" style="zoom:67%;">
+
+<p>上传图片 : </p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 上传图片.</span>
+data = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../data/001_test.png&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>)
+s3.Bucket(<span class="hljs-string">&#x27;awscodepipeline-iplume-demobucket-example-date&#x27;</span>).put_object(Key=<span class="hljs-string">&#x27;001_test.png&#x27;</span>, Body=data)</code></pre></div>
+
+<p>查看结果 : </p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/006-s3-upload-img.png" srcset="/img/loading.gif" alt="006-s3-upload-img"></p>
+<h3 id="4-操作DynamoDB"><a href="#4-操作DynamoDB" class="headerlink" title="4.操作DynamoDB"></a>4.操作DynamoDB</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment">#! /usr/bin/python3</span>
+<span class="hljs-comment"># -*- coding:utf-8 -*-</span>
+<span class="hljs-comment"># @Prescription:</span>
+<span class="hljs-comment"># 通过遵循本指南，您将学习如何使用DynamoDB.</span>
+<span class="hljs-comment"># ServiceResource和DynamoDB. 表资源，以便创建表、将项写入表、修改现有项、检索项以及查询/筛选表中的项.</span>
+<span class="hljs-keyword">import</span> boto3
+
+<span class="hljs-comment"># 获取DynamoDB服务.</span>
+dynamodb = boto3.resource(<span class="hljs-string">&#x27;dynamodb&#x27;</span>)
+
+<span class="hljs-comment"># 创建DynamoDB表.</span>
+table = dynamodb.create_table(
+    TableName=<span class="hljs-string">&#x27;users&#x27;</span>,
+    KeySchema=[
+        &#123;
+            <span class="hljs-string">&#x27;AttributeName&#x27;</span>: <span class="hljs-string">&#x27;username&#x27;</span>,
+            <span class="hljs-string">&#x27;KeyType&#x27;</span>: <span class="hljs-string">&#x27;HASH&#x27;</span>
+        &#125;,
+        &#123;
+            <span class="hljs-string">&#x27;AttributeName&#x27;</span>: <span class="hljs-string">&#x27;last_name&#x27;</span>,
+            <span class="hljs-string">&#x27;KeyType&#x27;</span>: <span class="hljs-string">&#x27;RANGE&#x27;</span>
+        &#125;
+    ],
+    AttributeDefinitions=[
+        &#123;
+            <span class="hljs-string">&#x27;AttributeName&#x27;</span>: <span class="hljs-string">&#x27;username&#x27;</span>,
+            <span class="hljs-string">&#x27;AttributeType&#x27;</span>: <span class="hljs-string">&#x27;S&#x27;</span>
+        &#125;,
+        &#123;
+            <span class="hljs-string">&#x27;AttributeName&#x27;</span>: <span class="hljs-string">&#x27;last_name&#x27;</span>,
+            <span class="hljs-string">&#x27;AttributeType&#x27;</span>: <span class="hljs-string">&#x27;S&#x27;</span>
+        &#125;
+    ],
+    ProvisionedThroughput=&#123;
+        <span class="hljs-string">&#x27;ReadCapacityUnits&#x27;</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-string">&#x27;WriteCapacityUnits&#x27;</span>: <span class="hljs-number">5</span>
+    &#125;
+)
+
+<span class="hljs-comment"># 等待直到table存在.</span>
+table.meta.client.get_waiter(<span class="hljs-string">&#x27;table_exists&#x27;</span>).wait(TableName=<span class="hljs-string">&#x27;users&#x27;</span>)
+<span class="hljs-comment"># 查看表中的数据.</span>
+print(table.item_count)
+
+<span class="hljs-comment"># 这将创建一个名为users的表，该表分别具有哈希主键username和range主键last_name.</span>
+<span class="hljs-comment"># 此方法将返回DynamoDB. 表资源来调用所创建表上的其他方法.</span></code></pre></div>
+
+<p>出错 : </p>
+<div class="hljs"><pre><code class="hljs bash">Read timeout on endpoint URL: <span class="hljs-string">&quot;https://dynamodb.ap-northeast-1.amazonaws.com/&quot;</span></code></pre></div>
+
+<p>可以是自己网络访问不了国外站点.</p>
+<p>运行结果 : </p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/007-run-dynamodb.png" srcset="/img/loading.gif" alt="007-run-dynamodb"></p>
+<p>在控制台查看结果 : </p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/008-console-dynamodb.png" srcset="/img/loading.gif" alt="008-console-dynamodb"></p>
+<p><u><strong>PS: 本文为学习记录, 仅供学习与参与!</strong></u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/sdk/">sdk</a>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/sdk/dynamoDB/">dynamoDB</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/sdk/">sdk</a>
+                    
+                      <a class="hover-with-bg" href="/tags/dynamoDB/">dynamoDB</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/27/aws-amazon-dynamoDB-started/">
+                        <span class="hidden-mobile">aws-amazon-dynamoDB-学习一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Aws-dynamoDB-python-sdk-学习一&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

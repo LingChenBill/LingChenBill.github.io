@@ -184,8 +184,7 @@
             <article class="markdown-body">
               <p>[TOC]</p>
 <h3 id="Aws-dynamoDB-python-sdk-学习一"><a href="#Aws-dynamoDB-python-sdk-学习一" class="headerlink" title="Aws-dynamoDB-python-sdk-学习一"></a>Aws-dynamoDB-python-sdk-学习一</h3><h4 id="1-工作流程"><a href="#1-工作流程" class="headerlink" title="1.工作流程"></a>1.工作流程</h4><p>高度概述了使用 AWS SDK 编程 Amazon DynamoDB 应用程序.</p>
-<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/001-sdk-dynamodb.png" srcset="/img/loading.gif" alt="001-sdk-dynamodb" style="zoom:67%; margin-left: 0;">
-
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/001-sdk-dynamodb.png" srcset="/img/loading.gif" alt="001-sdk-dynamodb" style="zoom:67%; margin-left: 0;"></p>
 <ol>
 <li>使用适用于您的编程语言的 AWS SDK 编写一个应用程序.</li>
 <li>每个 AWS 开发工具包提供一个或多个编程接口，用于使用 DynamoDB. 可用的具体接口取决于您使用的编程语言和 AWS SDK.</li>
@@ -209,33 +208,27 @@
 <li>选择 <strong>Plugins (插件)</strong>.</li>
 <li>在存储库的<strong>Marketplace</strong>选项卡，在<strong>在商城中搜索插件</strong>，开始输入<em>AWS Toolkit</em>.  <strong>Amazon Web Services</strong>，然后选择它.</li>
 </ol>
-<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/002-ide-plugin.png" srcset="/img/loading.gif" alt="002-ide-plugin" style="zoom:67%;">
-
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/002-ide-plugin.png" srcset="/img/loading.gif" alt="002-ide-plugin" style="zoom:67%;"></p>
 <h5 id="访问凭证文件"><a href="#访问凭证文件" class="headerlink" title="访问凭证文件"></a>访问凭证文件</h5><p>AWS 安全凭证 — 创建了<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">访问密钥</a>（其中包含<em>访问密钥 ID</em>值和<em>私有访问密钥</em>值），或 AWS 账户根用户（我们强烈建议这样做）.<br>如果您没有 IAM 中用户的访问密钥，请<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey">创建一个</a>.</p>
-<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/003-ide-access-key.png" srcset="/img/loading.gif" alt="003-ide-access-key" style="zoom:80%; margin-left: 0;">
-
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/003-ide-access-key.png" srcset="/img/loading.gif" alt="003-ide-access-key" style="zoom:80%; margin-left: 0;"></p>
 <h4 id="3-适用于-Python-的-AWS-开发工具包-Boto3"><a href="#3-适用于-Python-的-AWS-开发工具包-Boto3" class="headerlink" title="3.适用于 Python 的 AWS 开发工具包 (Boto3)"></a>3.适用于 Python 的 AWS 开发工具包 (Boto3)</h4><h5 id="安装Boto3"><a href="#安装Boto3" class="headerlink" title="安装Boto3"></a>安装Boto3</h5><div class="hljs"><pre><code class="hljs bash">pip install boto3</code></pre></div>
-
 <h5 id="操作s3"><a href="#操作s3" class="headerlink" title="操作s3"></a>操作<code>s3</code></h5><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> boto3
 
 s3 = boto3.resource(<span class="hljs-string">&#x27;s3&#x27;</span>)
 
 <span class="hljs-keyword">for</span> bucket <span class="hljs-keyword">in</span> s3.buckets.<span class="hljs-built_in">all</span>():
     print(bucket.name)</code></pre></div>
-
 <p>运行结果 : </p>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/005-run-s3.png" srcset="/img/loading.gif" alt="005-run-s3"></p>
 <p>查看<code>s3</code>的控制台, 查看结果是否正确: </p>
-<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/004-py-s3.png" srcset="/img/loading.gif" alt="004-py-s3" style="zoom:67%;">
-
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/004-py-s3.png" srcset="/img/loading.gif" alt="004-py-s3" style="zoom:67%;"></p>
 <p>上传图片 : </p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 上传图片.</span>
 data = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../data/001_test.png&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>)
 s3.Bucket(<span class="hljs-string">&#x27;awscodepipeline-iplume-demobucket-example-date&#x27;</span>).put_object(Key=<span class="hljs-string">&#x27;001_test.png&#x27;</span>, Body=data)</code></pre></div>
-
 <p>查看结果 : </p>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/006-s3-upload-img.png" srcset="/img/loading.gif" alt="006-s3-upload-img"></p>
-<h3 id="4-操作DynamoDB"><a href="#4-操作DynamoDB" class="headerlink" title="4.操作DynamoDB"></a>4.操作DynamoDB</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment">#! /usr/bin/python3</span>
+<h4 id="4-操作DynamoDB"><a href="#4-操作DynamoDB" class="headerlink" title="4.操作DynamoDB"></a>4.操作DynamoDB</h4><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment">#! /usr/bin/python3</span>
 <span class="hljs-comment"># -*- coding:utf-8 -*-</span>
 <span class="hljs-comment"># @Prescription:</span>
 <span class="hljs-comment"># 通过遵循本指南，您将学习如何使用DynamoDB.</span>
@@ -281,10 +274,8 @@ print(table.item_count)
 
 <span class="hljs-comment"># 这将创建一个名为users的表，该表分别具有哈希主键username和range主键last_name.</span>
 <span class="hljs-comment"># 此方法将返回DynamoDB. 表资源来调用所创建表上的其他方法.</span></code></pre></div>
-
 <p>出错 : </p>
 <div class="hljs"><pre><code class="hljs bash">Read timeout on endpoint URL: <span class="hljs-string">&quot;https://dynamodb.ap-northeast-1.amazonaws.com/&quot;</span></code></pre></div>
-
 <p>可以是自己网络访问不了国外站点.</p>
 <p>运行结果 : </p>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-dynamoDB-sdk-started/007-run-dynamodb.png" srcset="/img/loading.gif" alt="007-run-dynamodb"></p>

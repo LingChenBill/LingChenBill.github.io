@@ -157,6 +157,142 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/02/16/regex-started/">正则表达式学习记录</a>
+
+      <a href="/2021/02/16/regex-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+正则表达式学习记录非打印字符# 匹配一个换行符。等价于 \x0a 和 \cJ.
+\n
+
+# 匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。注意 Unicode 正则表达式会匹配全角空格符.
+\s
+
+# 匹配任何非空白字符。等价于 [^ \f\n\r\t\v].
+\S
+
+# 匹配一个制表符。等价于 \x09 和 \cI.
+\t
+
+# 匹配一个垂直制表</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-02-16
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/regex/">regex</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/24/flink-redis-started/">Flink整合Redis</a>
+
+      <a href="/2021/01/24/flink-redis-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Flink整合Redis1.安装Redis# docker环境安装redis.
+# docker run -d -p 6379:6379 redis:6.0.9
+
+# 查看已经存在的images
+% docker images
+REPOSITORY                                          TAG                 IMAGE ID</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-24
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+              <a href="/tags/flink/">flink</a>
+            
+              <a href="/tags/redis/">redis</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/22/kafka-started/">Kafka安装配置</a>
+
+      <a href="/2021/01/22/kafka-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Kafka安装配置1.前提环境准备
+
+三个虚拟节点(Host名设定, 免密登录)
+与主机网络互通
+Zookeeper版本:zookeeper-3.4.14
+Kafka版本:kafka_2.11-2.1.0
+
+2.启动zookeeper在三个节点上都启动zookeeper.
+[root@hdss7-71 opt]# cd /opt/zookeeper
+[root@hdss7-71 zoo</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-22
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/flink/">flink</a>
+            
+              <a href="/tags/zookeeper/">zookeeper</a>
+            
+              <a href="/tags/kafka/">kafka</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/19/flink-yarn-started/">Flink的yarn模式</a>
 
       <a href="/2021/01/19/flink-yarn-started/" class="index-excerpt">
@@ -470,134 +606,6 @@ $ vi /etc/hosts
               <a href="/tags/master/">master</a>
             
               <a href="/tags/slave/">slave</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2021/01/03/spark-centos-started/">Spark的local环境安装</a>
-
-      <a href="/2021/01/03/spark-centos-started/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Spark的local环境安装1.环境准备前提
-
-macOS Big Sur 11.1(主机环境)
-VMware Fusion12以上版本(与macOS Big Sur 11.1兼容)
-centos7虚拟环境
-
-2.jdk安装$ tar -zxvf /opt/src/jdk-8u221-linux-x64.tar.gz -C /usr/local/soft/
-
-配置JAVA_HOME环境变量
-$ </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2021-01-03
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/spark/">spark</a>
-            
-              <a href="/tags/centos/">centos</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2021/01/03/scala-idea-config/">Idea中scala配置</a>
-
-      <a href="/2021/01/03/scala-idea-config/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Idea中scala配置1.scala下载访问官网下载
-https://www.scala-lang.org/download/all.html
-
-以版本:scala-2.12.11为例
-解压到指定文件夹.
-tar xf scala-2.12.11.tgz -C ~/Documents/software
-% cd ~/Documents/software
-% ls
-scala-2.12.11
-
-2</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2021-01-03
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/idea/">idea</a>
-            
-              <a href="/tags/scala/">scala</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/12/22/keycloak-getting-started/">Keycloak安装使用</a>
-
-      <a href="/2020/12/22/keycloak-getting-started/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Keycloak安装使用1.docker安装% docker run -p 8180:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:12.0.1
-
-% docker ps
-CONTAINER ID        IMAGE                         </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-12-22
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/keycloak/">keycloak</a>
             
           </div>
         

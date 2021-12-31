@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>aws-amplify部署应用程序 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-12-31 21:31">
+                    December 31, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    37
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="aws-amplify部署应用程序"><a href="#aws-amplify部署应用程序" class="headerlink" title="aws-amplify部署应用程序"></a>aws-amplify部署应用程序</h3><p>我们将引导您使用 AWS Amplify 部署 Web 应用程序. Amplify 是包含一组工具和服务的框架，可帮助您构建由 AWS 服务提供支持的可扩展、全堆栈应用程序.</p>
+<p>AWS Amplify 是一组既可组合使用也可单独使用的<strong>工具和服务</strong>，能够帮助前端 Web 和移动开发人员构建可扩展的<strong>全栈式应用程序</strong>，由 AWS 提供支持.<br>借助 Amplify，您可以在几分钟内配置应用程序后端并连接应用程序，单击几下即可部署静态 Web 应用程序，并在 AWS 控制台外轻松管理应用程序内容.</p>
+<ul>
+<li>创建第一个 Amplify 项目.</li>
+<li>使用 Amplify CLI 向您的应用程序添加身份验证、数据库和自定义域.</li>
+<li>使用 AWS Amplify 部署 Web 应用程序.</li>
+</ul>
+<p>前提 : </p>
+<ul>
+<li>一个 AWS 账户：如果您还没有遵循<a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/getting-started/guides/setup-environment/"><strong>设置环境</strong></a>入门指南中的说明获取快速概览.</li>
+<li>熟悉 git 和 <a target="_blank" rel="noopener" href="https://github.com/">Github</a> 账户.</li>
+</ul>
+<h4 id="1-新建-Amplify-项目"><a href="#1-新建-Amplify-项目" class="headerlink" title="1.新建 Amplify 项目"></a>1.新建 Amplify 项目</h4><p>在本模块中，您将使用 <a target="_blank" rel="noopener" href="https://reactjs.org/">React</a> (用于构建用户界面的 JavaScript 库) 新建一个 Web 应用程序，同时了解如何为第一个项目配置 AWS Amplify.</p>
+<ul>
+<li>新建 Web 应用程序.</li>
+<li>在您的项目上设置 Amplify.</li>
+</ul>
+<h5 id="检查环境"><a href="#检查环境" class="headerlink" title="检查环境"></a>检查环境</h5><div class="hljs"><pre><code class="hljs bash">% node -v
+v16.3.0
+
+% npm -v
+7.15.1</code></pre></div>
+<p>Amplify 命令行界面 (CLI) 是一个统一的工具链，可用于为您的应用程序创建 AWS 云服务. 让我们继续安装 Amplify CLI.</p>
+<div class="hljs"><pre><code class="hljs bash">% sudo npm install -g @aws-amplify/cli</code></pre></div>
+<p>安装完成后，通过运行以下命令配置 Amplify</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify configure</code></pre></div>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/005-amplify-configure.png" srcset="/img/loading.gif" alt="005-amplify-configure"></p>
+<h5 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h5><div class="hljs"><pre><code class="hljs bash">% amplify init</code></pre></div>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/006-amplify-init.png" srcset="/img/loading.gif" alt="006-amplify-init" style="zoom:67%;margin-left: 0;"></p>
+<p><strong>您刚刚创建了什么？</strong></p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/007-amplify-app.png" srcset="/img/loading.gif" alt="007-amplify-app" style="zoom:80%; margin-left: 0;"></p>
+<p>运行 <strong>amplify init</strong> 以初始化一个新项目时，Amplify 将：</p>
+<ul>
+<li>分析您的项目并确认上述的项目设置，包括将使用哪个 AWS 配置文件来配置应用程序所需的云资源.</li>
+<li>在项目目录中创建名为 <strong>amplify</strong> 的文件夹. 此文件夹包含应用程序的后端配置.</li>
+<li>在项目目录中创建名为 <strong>src/aws-exports.js</strong> 的文件. 此文件包含 Amplify 在您向应用程序添加更多功能时所预置服务的配置.</li>
+<li>在 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/amplify"><strong>AWS Amplify 控制台</strong></a>中为您的应用程序创建一个云项目，您可以在其中查看和管理自己的 Amplify 项目.</li>
+</ul>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/008-amplify-console.png" srcset="/img/loading.gif" alt="008-amplify-console" style="zoom:80%;margin-left: 0;"></p>
+<h4 id="2-构建前端并连接-API"><a href="#2-构建前端并连接-API" class="headerlink" title="2.构建前端并连接 API"></a>2.构建前端并连接 API</h4><p>在本模块中，您将为自己的 Web 应用程序构建前端并使用 <strong><a target="_blank" rel="noopener" href="https://graphql.org/">GraphQL</a></strong> API 连接到 API (应用程序编程接口).<br>GraphQL 是一种 API 查询语言，可帮助您检索和更新应用程序上的数据.</p>
+<ul>
+<li>创建基本的 React 前端应用程序.</li>
+<li>从您的应用程序调用 GraphQL API.</li>
+<li>从应用程序的前端调用 API.</li>
+</ul>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p>您需要安装 Amplify React 库 <strong>@aws-amplify/ui-react</strong> (包含 React UI 组件).</p>
+<div class="hljs"><pre><code class="hljs bash">% npm install @aws-amplify/ui-react</code></pre></div>
+<p>修改<code>src/App.js</code> 文件 : </p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; withAuthenticator, AmplifySignOut &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-amplify/ui-react&#x27;</span>;
+<span class="hljs-keyword">import</span> Amplify <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;aws-amplify&#x27;</span>;
+<span class="hljs-keyword">import</span> awsExports <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./aws-exports&#x27;</span>;
+
+Amplify.configure(awsExports);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h1&gt;Notes App&lt;/h1&gt;
+      &lt;AmplifySignOut /&gt;
+    &lt;/div&gt;
+  );
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> withAuthenticator(App);</code></pre></div>
+<h5 id="测试应用程序"><a href="#测试应用程序" class="headerlink" title="测试应用程序"></a>测试应用程序</h5><div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
+<p>错误: </p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> <span class="hljs-string">&#x27;AmplifySignOut&#x27;</span> (imported as <span class="hljs-string">&#x27;AmplifySignOut&#x27;</span>) was not found <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;@aws-amplify/ui-react&#x27;</span></code></pre></div>
+<p>排查 : </p>
+<p>查看安装包版本 : </p>
+<div class="hljs"><pre><code class="hljs bash">% npm list --depth=0
+amplify-app@0.1.0 /Users/xxxxxx/Documents/aws/cdk/amplify/amplify-app
+├── @aws-amplify/ui-react@2.1.5
+├── @testing-library/jest-dom@5.16.1
+├── @testing-library/react@12.1.2
+├── @testing-library/user-event@13.5.0
+├── react-dom@17.0.2
+├── react-scripts@5.0.0
+├── react@17.0.2
+└── web-vitals@2.1.2</code></pre></div>
+<p>删除不合版本的包 :</p>
+<div class="hljs"><pre><code class="hljs bash">% npm remove @aws-amplify/ui-react</code></pre></div>
+<p>安装指定版本的包 : </p>
+<div class="hljs"><pre><code class="hljs angelscript">% npm install @aws-amplify/ui-<span class="hljs-symbol">react@</span><span class="hljs-number">1.2</span><span class="hljs-number">.25</span></code></pre></div>
+<p>执行 : </p>
+<div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
+<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/009-login.png" srcset="/img/loading.gif" alt="009-login" style="zoom:50%;margin-left: 0;"></p>
+<p>错误 : </p>
+<div class="hljs"><pre><code class="hljs bash">Error: Amplify has not been configured correctly.</code></pre></div>
+<p>执行查新</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify add auth
+% amplify push
+% npm start</code></pre></div>
+<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
+<h5 id="使用-Amplify-添加-GraphQL-API"><a href="#使用-Amplify-添加-GraphQL-API" class="headerlink" title="使用 Amplify 添加 GraphQL API"></a>使用 Amplify 添加 GraphQL API</h5><p>您现在将向应用程序添加 API。Amplify 使用 <a target="_blank" rel="noopener" href="https://aws.amazon.com/appsync/"><strong>AWS AppSync</strong></a> 和 <a target="_blank" rel="noopener" href="https://aws.amazon.com/dynamodb/"><strong>Amazon DynamoDB</strong></a> 来支持 GraphQL API.<br>AppSync 是托管的 GraphQL 服务，它将负责处理我们的 AP；而 Amazon DynamoDB 是 NoSQL 数据库，它存储我们的 API 将使用的数据.</p>
+<p>要添加 API，请运行 <strong>amplify add api</strong>，然后为问题选择以下选项 (行以 &gt; 符号开头) - 在此步骤中，它将询问有关授权提供商的问题，此信息将在以后的指南中使用</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify add api
+
+(base) username@MacBook-Pro amplify-app % amplify add api
+? Select from one of the below mentioned services: GraphQL
+? Here is the GraphQL API that we will create. Select a setting to edit or <span class="hljs-built_in">continue</span> Authorization modes: API key (default, expiration time: 7 days from now)
+? Choose the default authorization <span class="hljs-built_in">type</span> <span class="hljs-keyword">for</span> the API Amazon Cognito User Pool
+Use a Cognito user pool configured as a part of this project.
+? Configure additional auth types? No
+? Here is the GraphQL API that we will create. Select a setting to edit or <span class="hljs-built_in">continue</span> Continue
+? Choose a schema template: Single object with fields (e.g., “Todo” with ID, name, description)
+
+⚠️  WARNING: Some types <span class="hljs-keyword">do</span> not have authorization rules configured. That means all create, <span class="hljs-built_in">read</span>, update, and delete operations are denied on these types:
+	 - Todo
+Learn more about <span class="hljs-string">&quot;@auth&quot;</span> authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+GraphQL schema compiled successfully.
+
+Edit your schema at /Users/xxxxxx/Documents/aws/cdk/amplify/amplify-app/amplify/backend/api/amplifyapp/schema.graphql or place .graphql files <span class="hljs-keyword">in</span> a directory at /Users/xxxxx/Documents/aws/cdk/amplify/amplify-app/amplify/backend/api/amplifyapp/schema
+✔ Do you want to edit the schema now? (Y/n) · yes
+✅ Successfully added resource amplifyapp locally
+
+✅ Some next steps:
+<span class="hljs-string">&quot;amplify push&quot;</span> will build all your <span class="hljs-built_in">local</span> backend resources and provision it <span class="hljs-keyword">in</span> the cloud
+<span class="hljs-string">&quot;amplify publish&quot;</span> will build all your <span class="hljs-built_in">local</span> backend and frontend resources (<span class="hljs-keyword">if</span> you have hosting category added) and provision it <span class="hljs-keyword">in</span> the cloud</code></pre></div>
+<h5 id="创建-GraphQL-架构"><a href="#创建-GraphQL-架构" class="headerlink" title="创建 GraphQL 架构"></a>创建 GraphQL 架构</h5><div class="hljs"><pre><code class="hljs bash">% vi amplify/backend/api/amplifyapp/schema.graphql</code></pre></div>
+<p>替换文件内容:</p>
+<div class="hljs"><pre><code class="hljs sql">type Note @model @auth(rules: [&#123; allow: owner &#125;]) &#123;
+  id: ID!
+  text: String!
+&#125;</code></pre></div>
+<p>此架构定义了一个以 id 和文本作为必填字段的备注类型。它还包含若干指令，这些指令属于 Amplify 的 GraphQL 转换库：</p>
+<p><strong>@model</strong>：以 <strong>@model</strong> 注释的类型存储在 DynamoDB 中，系统自动为其创建 CRUDL (创建、读取、更新、删除、列表) 操作.</p>
+<p><strong>@auth</strong>：以 <strong>@auth</strong> 注释的类型受一组授权规则的保护. 在这里，我们使用拥有者授权来确保只有备注的拥有者才能访问和修改.</p>
+<h5 id="部署应用程序"><a href="#部署应用程序" class="headerlink" title="部署应用程序"></a>部署应用程序</h5><p>您现在准备好通过运行 <strong>amplify push</strong> 来部署自己的 Amplify Web 应用程序.<br>这会将您的应用程序上传到自己的 AWS 账户，而 Amplify 将向您显示正在部署的更改，并要求确认部署.</p>
+<p>确认后，根据提示选择后续问题的原定设置值:</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify push
+
+? Are you sure you want to <span class="hljs-built_in">continue</span>? Yes
+
+? Do you want to generate code <span class="hljs-keyword">for</span> your newly created GraphQL API Yes
+? Choose the code generation language target javascript
+? Enter the file name pattern of graphql queries, mutations and subscriptions src/graphql/**/*.js
+? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions Yes
+? Enter maximum statement depth [increase from default <span class="hljs-keyword">if</span> your schema is deeply nested] 2</code></pre></div>
+<p>这将需要几分钟的时间来完成部署，期间将看到正在创建的资源列表。Amplify 执行以下操作：</p>
+<ul>
+<li>创建一个由 AWS AppSync 提供支持的 GraphQL API，其中包含所有三种类型的 GraphQL 操作 (查询、突变和订阅).</li>
+<li>使用创建、检索和更新<strong>备注</strong>所需的 GraphQL 操作在 <strong>src/graphql/</strong> 文件夹中生成代码.</li>
+<li>创建 DynamoDB 表来存储使用应用程序创建的任何<strong>备注</strong>.</li>
+</ul>
+<p>替换<code>src/App.js</code></p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; Component &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;
+<span class="hljs-keyword">import</span> Amplify, &#123; API, graphqlOperation &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;aws-amplify&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; createNote, deleteNote &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./graphql/mutations&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; listNotes &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./graphql/queries&#x27;</span>;
+
+<span class="hljs-keyword">import</span> &#123; withAuthenticator, AmplifySignOut &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-amplify/ui-react&#x27;</span>;
+<span class="hljs-keyword">import</span> awsExports <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./aws-exports&#x27;</span>;
+
+Amplify.configure(awsExports);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddNote</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
+    <span class="hljs-built_in">super</span>(props);
+    <span class="hljs-built_in">this</span>.state = &#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;&#x27;</span> &#125;;
+  &#125;
+
+  handleChange = <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;
+    <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">text</span>: event.target.value &#125;);
+  &#125;
+
+  handleClick = <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-built_in">this</span>.props.addNote(<span class="hljs-built_in">this</span>.state);
+    <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;&#x27;</span> &#125;);
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">return</span> (
+      &lt;div style=&#123;styles.form&#125;&gt;
+        &lt;input
+          value=&#123;<span class="hljs-built_in">this</span>.state.text&#125;
+          onChange=&#123;<span class="hljs-built_in">this</span>.handleChange&#125;
+          placeholder=<span class="hljs-string">&quot;New Note&quot;</span>
+          style=&#123;styles.input&#125;
+        /&gt;
+        &lt;button onClick=&#123;<span class="hljs-built_in">this</span>.handleClick&#125; style=&#123;styles.addButton&#125;&gt;Add Note&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  &#125;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NotesList</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">return</span> (
+      &lt;div&gt;
+        &#123;<span class="hljs-built_in">this</span>.props.notes.map(<span class="hljs-function"><span class="hljs-params">note</span> =&gt;</span>
+          &lt;div key=&#123;note.id&#125; style=&#123;styles.note&#125;&gt;
+            &lt;p&gt;&#123;note.text&#125;&lt;/p&gt;
+            &lt;button onClick=&#123;<span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-built_in">this</span>.props.deleteNote(note) &#125;&#125; style=&#123;styles.deleteButton&#125;&gt;x&lt;/button&gt;
+          &lt;/div&gt;
+        )&#125;
+      &lt;/div&gt;
+    );
+  &#125;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">props</span>)</span> &#123;
+    <span class="hljs-built_in">super</span>(props);
+    <span class="hljs-built_in">this</span>.state = &#123; <span class="hljs-attr">notes</span>: [] &#125;;
+  &#125;
+
+  <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">componentDidMount</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">await</span> API.graphql(graphqlOperation(listNotes));
+    <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">notes</span>: result.data.listNotes.items &#125;);
+  &#125;
+
+  deleteNote = <span class="hljs-keyword">async</span> (note) =&gt; &#123;
+    <span class="hljs-keyword">const</span> id = &#123;
+      id: note.id
+    &#125;;
+    <span class="hljs-keyword">await</span> API.graphql(graphqlOperation(deleteNote, &#123; <span class="hljs-attr">input</span>: id &#125;));
+    <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">notes</span>: <span class="hljs-built_in">this</span>.state.notes.filter(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item.id !== note.id) &#125;);
+  &#125;
+
+  addNote = <span class="hljs-keyword">async</span> (note) =&gt; &#123;
+    <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">await</span> API.graphql(graphqlOperation(createNote, &#123; <span class="hljs-attr">input</span>: note &#125;));
+    <span class="hljs-built_in">this</span>.state.notes.push(result.data.createNote);
+    <span class="hljs-built_in">this</span>.setState(&#123; <span class="hljs-attr">notes</span>: <span class="hljs-built_in">this</span>.state.notes &#125;);
+  &#125;
+
+  <span class="hljs-function"><span class="hljs-title">render</span>(<span class="hljs-params"></span>)</span> &#123;
+    <span class="hljs-keyword">return</span> (
+      &lt;div style=&#123;styles.container&#125;&gt;
+        &lt;h1&gt;Notes App&lt;/h1&gt;
+        &lt;AddNote addNote=&#123;<span class="hljs-built_in">this</span>.addNote&#125; /&gt;
+        &lt;NotesList notes=&#123;<span class="hljs-built_in">this</span>.state.notes&#125; deleteNote=&#123;<span class="hljs-built_in">this</span>.deleteNote&#125; /&gt;
+        &lt;AmplifySignOut /&gt;
+      &lt;/div&gt;
+    );
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> withAuthenticator(App);
+
+<span class="hljs-keyword">const</span> styles = &#123;
+  container: &#123; <span class="hljs-attr">width</span>: <span class="hljs-number">480</span>, <span class="hljs-attr">margin</span>: <span class="hljs-string">&#x27;0 auto&#x27;</span>, <span class="hljs-attr">padding</span>: <span class="hljs-number">20</span> &#125;,
+  form: &#123; <span class="hljs-attr">display</span>: <span class="hljs-string">&#x27;flex&#x27;</span>, <span class="hljs-attr">marginBottom</span>: <span class="hljs-number">15</span> &#125;,
+  input: &#123; <span class="hljs-attr">flexGrow</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">border</span>: <span class="hljs-string">&#x27;none&#x27;</span>, <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;#ddd&#x27;</span>, <span class="hljs-attr">padding</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">fontSize</span>: <span class="hljs-number">18</span> &#125;,
+  addButton: &#123; <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;white&#x27;</span>, <span class="hljs-attr">outline</span>: <span class="hljs-string">&#x27;none&#x27;</span>, <span class="hljs-attr">padding</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">fontSize</span>: <span class="hljs-number">18</span> &#125;,
+  note: &#123; <span class="hljs-attr">display</span>: <span class="hljs-string">&#x27;flex&#x27;</span>, <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&#x27;space-between&#x27;</span>, <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&#x27;center&#x27;</span>, <span class="hljs-attr">fontSize</span>: <span class="hljs-number">22</span>, <span class="hljs-attr">marginBottom</span>: <span class="hljs-number">15</span> &#125;,
+  deleteButton: &#123; <span class="hljs-attr">fontSize</span>: <span class="hljs-number">18</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&#x27;bold&#x27;</span> &#125;
+&#125;</code></pre></div>
+<p>重新运行</p>
+<div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/010-app-input.png" srcset="/img/loading.gif" alt="010-app-input" style="zoom:67%;margin-left: 0;"></p>
+<p>添加到DynamoDB中的数据.可以在控制台查看</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/011-dynamodb.png" srcset="/img/loading.gif" alt="011-dynamodb"></p>
+<p><u><strong>PS: 本文为记录, 仅供学习与参考!</strong></u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/amplify/">amplify</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/amplify/">amplify</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/31/aws-cdk-started/">
+                        <span class="hidden-mobile">aws-cdk-学习一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "aws-amplify部署应用程序&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

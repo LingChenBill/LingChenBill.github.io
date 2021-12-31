@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>aws-cdk-学习一 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2021-12-31 17:20">
+                    December 31, 2021 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    21
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="aws-cdk-学习一"><a href="#aws-cdk-学习一" class="headerlink" title="aws-cdk-学习一"></a>aws-cdk-学习一</h3><h4 id="1-安装cdk"><a href="#1-安装cdk" class="headerlink" title="1.安装cdk"></a>1.安装cdk</h4><div class="hljs"><pre><code class="hljs bash">% npm install -g aws-cdk</code></pre></div>
+<p>验证 : </p>
+<div class="hljs"><pre><code class="hljs bash">% cdk --version
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                                                                                          !!
+!!  Node v14.4.0 is not supported. Early releases a node major often lack essential features of that line.  !!
+!!  You may to encounter runtime issues, and should switch to a supported release.                          !!
+!!                                                                                                          !!
+!!  As of the current release, supported versions of node are:                                              !!
+!!  - ^12.7.0                                                                                               !!
+!!  - ^14.5.0                                                                                               !!
+!!  - ^16.3.0                                                                                               !!
+!!                                                                                                          !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</code></pre></div>
+<p>解决<u>版本差异</u>, 升级到指定版本: 16.3.0</p>
+<div class="hljs"><pre><code class="hljs bash">% npm cache
+% npm cache clean -f
+% sudo npm install -g n
+% sudo n 16.3.0
+
+% node -v
+v16.3.0
+
+% cdk --version
+2.3.0 (build beaa5b2)</code></pre></div>
+<h4 id="2-引导启动AWS账户"><a href="#2-引导启动AWS账户" class="headerlink" title="2.引导启动AWS账户"></a>2.引导启动AWS账户</h4><p>您将要部署的许多 AWS CDK 堆栈会包括资产以及与堆栈一起部署的外部文件，例如 AWS Lambda 函数或 Docker 镜像.<br>CDK 将这些资产上传到 Amazon S3 存储桶或其他容器，以便它们在部署期间可供 AWS CloudFormation 使用.<br>部署工作要求 AWS 账户和所要部署到的区域中已经存在这些容器. 创建这些容器的过程称为引导启动。要引导启动您的 AWS 账户 (和给定<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions"><strong>区域</strong></a>).</p>
+<div class="hljs"><pre><code class="hljs bash">% aws sts get-caller-identity</code></pre></div>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-cdk-started/001-aws-get-caller.png" srcset="/img/loading.gif" alt="001-aws-get-caller"></p>
+<div class="hljs"><pre><code class="hljs bash">% cdk bootstrap aws://ACCOUNT-NUMBER/REGION</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash">ap-northeast-1</code></pre></div>
+<h4 id="3-创建第一个CDK项目"><a href="#3-创建第一个CDK项目" class="headerlink" title="3.创建第一个CDK项目"></a>3.创建第一个CDK项目</h4><ul>
+<li>使用 TypeScript 新建 CDK 项目.</li>
+<li>在 CDK (VPC) 中编写一个简单的资源.</li>
+<li>将您的 CDK 代码合成为 CloudFormation 模板.</li>
+<li>将基础设施部署到您的 AWS 账户中.</li>
+</ul>
+<h5 id="初始项目"><a href="#初始项目" class="headerlink" title="初始项目"></a>初始项目</h5><p>要新建 CDK 项目，我们将使用 CDK CLI.<br>首先，在您的系统上创建一个空目录并更改到该目录位置。现在我们将使用 <strong>cdk init</strong> 新建一个 TypeScript CDK 项目.</p>
+<div class="hljs"><pre><code class="hljs bash">cdk % <span class="hljs-built_in">cd</span> cdk-demo
+cdk-demo % ls
+cdk-demo % cdk init --language typescript
+Applying project template app <span class="hljs-keyword">for</span> typescript
+<span class="hljs-comment"># Welcome to your CDK TypeScript project!</span>
+
+This is a blank project <span class="hljs-keyword">for</span> TypeScript development with CDK.
+
+The `cdk.json` file tells the CDK Toolkit how to execute your app.
+
+<span class="hljs-comment">## Useful commands</span>
+
+ * `npm run build`   compile typescript to js
+ * `npm run watch`   watch <span class="hljs-keyword">for</span> changes and compile
+ * `npm run <span class="hljs-built_in">test</span>`    perform the jest unit tests
+ * `cdk deploy`      deploy this stack to your default AWS account/region
+ * `cdk diff`        compare deployed stack with current state
+ * `cdk synth`       emits the synthesized CloudFormation template
+
+Initializing a new git repository...
+Executing npm install...
+npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated sane@4.1.0: some dependency vulnerabilities fixed, support <span class="hljs-keyword">for</span> node &lt; 10 dropped, and newer ECMAScript syntax/features added
+✅ All <span class="hljs-keyword">done</span>!</code></pre></div>
+<p>要开始构建项目，常见的起点是创建一个所定义的逻辑隔离虚拟网络，称为 <a target="_blank" rel="noopener" href="https://aws.amazon.com/vpc"><strong>Amazon Virtual Private Cloud</strong></a> (VPC).<br>在创建第一个 VPC 之前，我们需要了解 <strong>cdk init</strong> 命令创建的文件.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-cdk-started/002-cdk-file.png" srcset="/img/loading.gif" alt="002-cdk-file"></p>
+<p>以下是一些重要文件及其用途：</p>
+<ul>
+<li><strong>bin/cdk-project.ts</strong> - 这是 CDK 应用程序的入口点. 这将加载/创建我们在 <strong>lib/*</strong> 下定义的所有堆栈.</li>
+<li><strong>lib/cdk-project-stack.ts</strong> - 在此文件中定义主要的 CDK 应用程序堆栈. 您的资源及其属性可以放在此文件中.</li>
+<li><strong>package.json</strong> - 在此文件中定义项目依赖项以及一些附加信息和构建脚本 (<strong>npm build</strong>、<strong>npm test</strong>、<strong>npm watch</strong>).</li>
+<li><strong>cdk.json</strong> - 此文件告诉工具包如何运行您的应用程序以及一些与 CDK 和项目相关的附加设置和参数.</li>
+</ul>
+<p>对于本指南，我们将重点关注 <strong>lib/cdk-demo.ts</strong> 和 <strong>bin/cdk-demo.ts</strong> 文件来创建我们的基础设施. 接下来添加一些代码.</p>
+<h5 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h5><p>在主堆栈中定义我们的 VPC 之前，我们需要确保部署到正确的账户和区域.<br>虽然 CDK 将从您的本地 <strong>aws cli</strong> 配置中提取此信息，但最好在 CDK 代码中手动配置，以避免在该配置更改时出现错误值.<br>对于本指南，由于我们将在 VPC 中定义一些设置，因此这是必需的信息.<br>如果您不指定此信息，堆栈将与环境无关，但某些功能和上下文查找将不起作用。有关更多信息，请参阅文档中的<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/cdk/latest/guide/environments.html"><strong>环境</strong></a>.</p>
+<p>修改您的 <strong>bin/cdk-demo.ts</strong> 堆栈，使其看起来类似于如下.<br>务必使用正确的编号替换您的 AWS 账户 ID，同时选择正确的区域。我们建议为本指南选择 <strong>us-east-1</strong> 或 <strong>eu-west-1</strong></p>
+<div class="hljs"><pre><code class="hljs typescript"><span class="hljs-meta">#!/usr/bin/env node</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;source-map-support/register&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> cdk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-cdk/core&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; CdkDemoStack &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../lib/cdk-demo-stack&#x27;</span>;
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> cdk.App();
+<span class="hljs-keyword">new</span> CdkDemoStack(app, <span class="hljs-string">&#x27;CdkDemoStack&#x27;</span>, &#123;
+  <span class="hljs-comment">// env: &#123; account: &#x27;123456789012&#x27;, region: &#x27;eu-west-1&#x27; &#125;,</span>
+  env: &#123; <span class="hljs-attr">account</span>: <span class="hljs-string">&#x27;096897338309&#x27;</span>, <span class="hljs-attr">region</span>: <span class="hljs-string">&#x27;ap-northeast-1&#x27;</span> &#125;,
+
+&#125;);</code></pre></div>
+<h5 id="配置vpc"><a href="#配置vpc" class="headerlink" title="配置vpc"></a>配置vpc</h5><p>我们将创建一个 VPC，它带有两个面向公众的子网，分布在两个可用区中.<br>在深入探讨代码的编写之前，我们需要解释和安装<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html"><strong>构造库**</strong>模块**</a>.<br>将不同的服务打包到各个模块中，这样就可仅添加正在预置的基础设施所需的依赖项.<br>模块可以用于单个服务，例如 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-amplify-readme.html"><strong>AWS Amplify</strong></a>；也可用于多个服务，例如 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html"><strong>Amazon EC2</strong></a>.<br>对于本指南，我们将需要 Amazon EC2 模块，该模块中还包括对 AWS VPC 的支持.</p>
+<div class="hljs"><pre><code class="hljs bash">% npm install @aws-cdk/aws-ec2</code></pre></div>
+<p>这将安装我们使用的所有必要模块. 如果查看您的 <strong>package.json</strong>，就会看到该文件也添加到此处.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-cdk-started/003-cdk-package.png" srcset="/img/loading.gif" alt="003-cdk-package" style="zoom:67%;margin-left: 0;"></p>
+<p>现在，我们已准备好创建自己的 VPC. 打开 <strong>lib/cdk-demo.ts</strong> 中的堆栈定义.</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> cdk <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-cdk/core&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; Vpc, SubnetType &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-cdk/aws-ec2&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CdkDemoStack</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">cdk</span>.<span class="hljs-title">Stack</span> </span>&#123;
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">scope: cdk.Construct, id: string, props?: cdk.StackProps</span>)</span> &#123;
+    <span class="hljs-built_in">super</span>(scope, id, props);
+
+    <span class="hljs-comment">// The code that defines your stack goes here</span>
+    <span class="hljs-comment">// CHANGE: We have created the vpc object from the Vpc class.</span>
+    <span class="hljs-keyword">const</span> vpc = <span class="hljs-keyword">new</span> Vpc(<span class="hljs-built_in">this</span>, <span class="hljs-string">&#x27;MainVpc&#x27;</span>,&#123;
+
+    <span class="hljs-comment">// CHANGE: this is where we define how many AZs to use</span>
+    maxAzs: <span class="hljs-number">2</span>,
+
+   <span class="hljs-comment">// CHANGE: We define a single subnet configuration per AZ.</span>
+      subnetConfiguration:  [
+        &#123;
+          <span class="hljs-comment">// CHANGE: this is it&#x27;s CIDR mask so 255.255.255.0</span>
+          cidrMask: <span class="hljs-number">24</span>,
+
+          <span class="hljs-comment">// CHANGE: a name for each of these subnets</span>
+          name: <span class="hljs-string">&#x27;public-subnet&#x27;</span>,
+
+          <span class="hljs-comment">// CHANGE: and the subnet type to be used - here we will have</span>
+          <span class="hljs-comment">// a public subnet. There are other options available here.</span>
+          subnetType: SubnetType.PUBLIC
+        &#125;,
+      ]
+    &#125;);
+  &#125;
+&#125;</code></pre></div>
+<h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><div class="hljs"><pre><code class="hljs bash">% npm run build</code></pre></div>
+<h5 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h5><div class="hljs"><pre><code class="hljs bash">% cdk deploy
+CdkDemoStack: deploying...
+CdkDemoStack: creating CloudFormation changeset...
+
+
+ ✅  CdkDemoStack
+
+Stack ARN:
+arn:aws:cloudformation:ap-northeast-1:xxxxx:stack/CdkDemoStack/cba08ea0-6a39-11ec-a484-064a0xxxxxx</code></pre></div>
+<p>控制台查看 : </p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-cdk-started/004-vpc.png" srcset="/img/loading.gif" alt="004-vpc"></p>
+<h5 id="清理资源"><a href="#清理资源" class="headerlink" title="清理资源"></a>清理资源</h5><div class="hljs"><pre><code class="hljs bash">% cdk destroy
+Are you sure you want to delete: CdkDemoStack (y/n)? y
+CdkDemoStack: destroying...
+
+
+ ✅  CdkDemoStack: destroyed</code></pre></div>
+<p><u><strong>PS: 本文为记录, 仅供学习与参考!</strong></u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/categories/aws/cdk/">cdk</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/aws/">aws</a>
+                    
+                      <a class="hover-with-bg" href="/tags/cdk/">cdk</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/31/aws-amplify-started/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">aws-amplify部署应用程序</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/31/mit-projects-started/">
+                        <span class="hidden-mobile">开源项目记录一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "aws-cdk-学习一&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

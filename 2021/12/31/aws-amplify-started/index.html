@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    2.6k 字
+                    3.4k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    37
+                    46
                      分钟
                   </span>
                 
@@ -205,15 +205,21 @@ v16.3.0
 
 % npm -v
 7.15.1</code></pre></div>
+
 <p>Amplify 命令行界面 (CLI) 是一个统一的工具链，可用于为您的应用程序创建 AWS 云服务. 让我们继续安装 Amplify CLI.</p>
 <div class="hljs"><pre><code class="hljs bash">% sudo npm install -g @aws-amplify/cli</code></pre></div>
+
 <p>安装完成后，通过运行以下命令配置 Amplify</p>
 <div class="hljs"><pre><code class="hljs bash">% amplify configure</code></pre></div>
+
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/005-amplify-configure.png" srcset="/img/loading.gif" alt="005-amplify-configure"></p>
 <h5 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h5><div class="hljs"><pre><code class="hljs bash">% amplify init</code></pre></div>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/006-amplify-init.png" srcset="/img/loading.gif" alt="006-amplify-init" style="zoom:67%;margin-left: 0;"></p>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/006-amplify-init.png" srcset="/img/loading.gif" alt="006-amplify-init" style="zoom:67%;margin-left: 0;">
+
 <p><strong>您刚刚创建了什么？</strong></p>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/007-amplify-app.png" srcset="/img/loading.gif" alt="007-amplify-app" style="zoom:80%; margin-left: 0;"></p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/007-amplify-app.png" srcset="/img/loading.gif" alt="007-amplify-app" style="zoom:80%; margin-left: 0;">
+
 <p>运行 <strong>amplify init</strong> 以初始化一个新项目时，Amplify 将：</p>
 <ul>
 <li>分析您的项目并确认上述的项目设置，包括将使用哪个 AWS 配置文件来配置应用程序所需的云资源.</li>
@@ -221,7 +227,8 @@ v16.3.0
 <li>在项目目录中创建名为 <strong>src/aws-exports.js</strong> 的文件. 此文件包含 Amplify 在您向应用程序添加更多功能时所预置服务的配置.</li>
 <li>在 <a target="_blank" rel="noopener" href="https://console.aws.amazon.com/amplify"><strong>AWS Amplify 控制台</strong></a>中为您的应用程序创建一个云项目，您可以在其中查看和管理自己的 Amplify 项目.</li>
 </ul>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/008-amplify-console.png" srcset="/img/loading.gif" alt="008-amplify-console" style="zoom:80%;margin-left: 0;"></p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/008-amplify-console.png" srcset="/img/loading.gif" alt="008-amplify-console" style="zoom:80%;margin-left: 0;">
+
 <h4 id="2-构建前端并连接-API"><a href="#2-构建前端并连接-API" class="headerlink" title="2.构建前端并连接 API"></a>2.构建前端并连接 API</h4><p>在本模块中，您将为自己的 Web 应用程序构建前端并使用 <strong><a target="_blank" rel="noopener" href="https://graphql.org/">GraphQL</a></strong> API 连接到 API (应用程序编程接口).<br>GraphQL 是一种 API 查询语言，可帮助您检索和更新应用程序上的数据.</p>
 <ul>
 <li>创建基本的 React 前端应用程序.</li>
@@ -230,6 +237,7 @@ v16.3.0
 </ul>
 <h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p>您需要安装 Amplify React 库 <strong>@aws-amplify/ui-react</strong> (包含 React UI 组件).</p>
 <div class="hljs"><pre><code class="hljs bash">% npm install @aws-amplify/ui-react</code></pre></div>
+
 <p>修改<code>src/App.js</code> 文件 : </p>
 <div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; withAuthenticator, AmplifySignOut &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@aws-amplify/ui-react&#x27;</span>;
 <span class="hljs-keyword">import</span> Amplify <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;aws-amplify&#x27;</span>;
@@ -247,9 +255,12 @@ Amplify.configure(awsExports);
 &#125;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> withAuthenticator(App);</code></pre></div>
+
 <h5 id="测试应用程序"><a href="#测试应用程序" class="headerlink" title="测试应用程序"></a>测试应用程序</h5><div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
+
 <p>错误: </p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> <span class="hljs-string">&#x27;AmplifySignOut&#x27;</span> (imported as <span class="hljs-string">&#x27;AmplifySignOut&#x27;</span>) was not found <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;@aws-amplify/ui-react&#x27;</span></code></pre></div>
+
 <p>排查 : </p>
 <p>查看安装包版本 : </p>
 <div class="hljs"><pre><code class="hljs bash">% npm list --depth=0
@@ -262,21 +273,28 @@ amplify-app@0.1.0 /Users/xxxxxx/Documents/aws/cdk/amplify/amplify-app
 ├── react-scripts@5.0.0
 ├── react@17.0.2
 └── web-vitals@2.1.2</code></pre></div>
+
 <p>删除不合版本的包 :</p>
 <div class="hljs"><pre><code class="hljs bash">% npm remove @aws-amplify/ui-react</code></pre></div>
+
 <p>安装指定版本的包 : </p>
 <div class="hljs"><pre><code class="hljs angelscript">% npm install @aws-amplify/ui-<span class="hljs-symbol">react@</span><span class="hljs-number">1.2</span><span class="hljs-number">.25</span></code></pre></div>
+
 <p>执行 : </p>
 <div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
-<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/009-login.png" srcset="/img/loading.gif" alt="009-login" style="zoom:50%;margin-left: 0;"></p>
+
+<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000/">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/009-login.png" srcset="/img/loading.gif" alt="009-login" style="zoom:50%;margin-left: 0;">
+
 <p>错误 : </p>
 <div class="hljs"><pre><code class="hljs bash">Error: Amplify has not been configured correctly.</code></pre></div>
+
 <p>执行查新</p>
 <div class="hljs"><pre><code class="hljs bash">% amplify add auth
 % amplify push
 % npm start</code></pre></div>
-<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
+
+<p>这将在 <strong><a target="_blank" rel="noopener" href="http://localhost:3000/">http://localhost:3000</a></strong> 上启动开发服务器并在浏览器中打开页面.<br>在可以使用该服务之前，系统会提示您注册 - 此数据存储在您项目的 Congnito 数据库中，只有您有权访问它.<br>登录后，该应用程序将仅显示带有 <strong>Notes App</strong> 的标题和<strong>登录</strong>按钮，这是因为您尚未向其中添加任何内容.<br>接下来，您将向应用程序添加 API. 您可以使用 <strong>ctrl + c</strong> 再次停止服务器.</p>
 <h5 id="使用-Amplify-添加-GraphQL-API"><a href="#使用-Amplify-添加-GraphQL-API" class="headerlink" title="使用 Amplify 添加 GraphQL API"></a>使用 Amplify 添加 GraphQL API</h5><p>您现在将向应用程序添加 API。Amplify 使用 <a target="_blank" rel="noopener" href="https://aws.amazon.com/appsync/"><strong>AWS AppSync</strong></a> 和 <a target="_blank" rel="noopener" href="https://aws.amazon.com/dynamodb/"><strong>Amazon DynamoDB</strong></a> 来支持 GraphQL API.<br>AppSync 是托管的 GraphQL 服务，它将负责处理我们的 AP；而 Amazon DynamoDB 是 NoSQL 数据库，它存储我们的 API 将使用的数据.</p>
 <p>要添加 API，请运行 <strong>amplify add api</strong>，然后为问题选择以下选项 (行以 &gt; 符号开头) - 在此步骤中，它将询问有关授权提供商的问题，此信息将在以后的指南中使用</p>
 <div class="hljs"><pre><code class="hljs bash">% amplify add api
@@ -302,12 +320,15 @@ Edit your schema at /Users/xxxxxx/Documents/aws/cdk/amplify/amplify-app/amplify/
 ✅ Some next steps:
 <span class="hljs-string">&quot;amplify push&quot;</span> will build all your <span class="hljs-built_in">local</span> backend resources and provision it <span class="hljs-keyword">in</span> the cloud
 <span class="hljs-string">&quot;amplify publish&quot;</span> will build all your <span class="hljs-built_in">local</span> backend and frontend resources (<span class="hljs-keyword">if</span> you have hosting category added) and provision it <span class="hljs-keyword">in</span> the cloud</code></pre></div>
+
 <h5 id="创建-GraphQL-架构"><a href="#创建-GraphQL-架构" class="headerlink" title="创建 GraphQL 架构"></a>创建 GraphQL 架构</h5><div class="hljs"><pre><code class="hljs bash">% vi amplify/backend/api/amplifyapp/schema.graphql</code></pre></div>
+
 <p>替换文件内容:</p>
 <div class="hljs"><pre><code class="hljs sql">type Note @model @auth(rules: [&#123; allow: owner &#125;]) &#123;
   id: ID!
   text: String!
 &#125;</code></pre></div>
+
 <p>此架构定义了一个以 id 和文本作为必填字段的备注类型。它还包含若干指令，这些指令属于 Amplify 的 GraphQL 转换库：</p>
 <p><strong>@model</strong>：以 <strong>@model</strong> 注释的类型存储在 DynamoDB 中，系统自动为其创建 CRUDL (创建、读取、更新、删除、列表) 操作.</p>
 <p><strong>@auth</strong>：以 <strong>@auth</strong> 注释的类型受一组授权规则的保护. 在这里，我们使用拥有者授权来确保只有备注的拥有者才能访问和修改.</p>
@@ -322,6 +343,7 @@ Edit your schema at /Users/xxxxxx/Documents/aws/cdk/amplify/amplify-app/amplify/
 ? Enter the file name pattern of graphql queries, mutations and subscriptions src/graphql/**/*.js
 ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions Yes
 ? Enter maximum statement depth [increase from default <span class="hljs-keyword">if</span> your schema is deeply nested] 2</code></pre></div>
+
 <p>这将需要几分钟的时间来完成部署，期间将看到正在创建的资源列表。Amplify 执行以下操作：</p>
 <ul>
 <li>创建一个由 AWS AppSync 提供支持的 GraphQL API，其中包含所有三种类型的 GraphQL 操作 (查询、突变和订阅).</li>
@@ -431,11 +453,48 @@ Amplify.configure(awsExports);
   note: &#123; <span class="hljs-attr">display</span>: <span class="hljs-string">&#x27;flex&#x27;</span>, <span class="hljs-attr">justifyContent</span>: <span class="hljs-string">&#x27;space-between&#x27;</span>, <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&#x27;center&#x27;</span>, <span class="hljs-attr">fontSize</span>: <span class="hljs-number">22</span>, <span class="hljs-attr">marginBottom</span>: <span class="hljs-number">15</span> &#125;,
   deleteButton: &#123; <span class="hljs-attr">fontSize</span>: <span class="hljs-number">18</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&#x27;bold&#x27;</span> &#125;
 &#125;</code></pre></div>
+
 <p>重新运行</p>
 <div class="hljs"><pre><code class="hljs bash">% npm start</code></pre></div>
-<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/010-app-input.png" srcset="/img/loading.gif" alt="010-app-input" style="zoom:67%;margin-left: 0;"></p>
+
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/010-app-input.png" srcset="/img/loading.gif" alt="010-app-input" style="zoom:67%;margin-left: 0;">
+
 <p>添加到DynamoDB中的数据.可以在控制台查看</p>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/011-dynamodb.png" srcset="/img/loading.gif" alt="011-dynamodb"></p>
+<h4 id="3-自动化部署"><a href="#3-自动化部署" class="headerlink" title="3.自动化部署"></a>3.自动化部署</h4><p>您将应用程序存储在 GitHub 存储库 (简称存储库) 上，然后使用 Amplify 控制台设置持续部署.</p>
+<ul>
+<li>将 Github 存储库连接到 Amplify.</li>
+<li>使用 Amplify 设置持续部署.</li>
+</ul>
+<h5 id="在-Github-上存储项目"><a href="#在-Github-上存储项目" class="headerlink" title="在 Github 上存储项目"></a>在 Github 上存储项目</h5><p>在设置项目以自动部署更新之前，您需要将项目托管在某个位置.<br>本指南假设您熟悉 GitHub、拥有相应的账户并知悉如何创建新的私有存储库. 请创建一个私有存储库，并且将迄今为止创建的代码推送到该存储库.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/012-github.png" srcset="/img/loading.gif" alt="012-github"></p>
+<h5 id="设置持续部署"><a href="#设置持续部署" class="headerlink" title="设置持续部署"></a>设置持续部署</h5><p>要配置 Amplify 以部署您的代码，您需要将其与自己的 GitHub 账户连接.<br>通过 AWS 控制台完成此连接，因为它需要生成一个 GitHub 令牌来访问您的私有存储库，并将其存储在您的 AWS 账户中.<br>为此，请从 <strong>amplify-app</strong> 目录运行 <strong>amplify add hosting</strong>. Amplify 将显示有关托管的问题列表，请选择如下所示的选项：</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify add hosting</code></pre></div>
+
+<p>这将在您的浏览器中开启新窗口，并打开 Amplify 控制台，以便您在项目上配置托管.<br>在 Amplify 控制台上的应用程序页面上，单击<strong>前端环境</strong>选项卡，选择 <strong>GitHub</strong> 并单击<strong>连接分支</strong>按钮.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/013-github-setting.png" srcset="/img/loading.gif" alt="013-github-setting"></p>
+<p>下一步是为您的应用程序配置构建设置。您将需要一个 IAM 服务角色，该角色可让 Amplify 访问您账户内的 AWS 资源以自动部署.<br>在“配置构建设置”页面上，单击蓝色框内的<strong>新建角色</strong>按钮.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/014-create-amplify-role.png" srcset="/img/loading.gif" alt="014-create-amplify-role"></p>
+<p>这将在新选项卡上打开 IAM 控制台并将填充所需的值，在其中单击<strong>创建角色</strong>：</p>
+<ul>
+<li>受信任实体的类型：AWS 服务</li>
+<li>服务：Amplify</li>
+<li>使用案例：Amplify - 后端部署</li>
+<li>权限策略：AdministratorAccess-Amplify</li>
+</ul>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/015-amplify-role.png" srcset="/img/loading.gif" alt="015-amplify-role" style="zoom:67%; margin-left: 0;">
+
+<p>完成创建之后，您可以在浏览器中关闭此选项卡，然后返回“配置构建设置”页面，单击“刷新现有角色”，接下来从下拉菜单中选择刚刚创建的角色.<br>然后，从“环境”下拉菜单中选择 <strong>dev</strong> - 这是您在运行 <strong>amplify init</strong> 后于项目上配置 Amplify 时创建的环境.</p>
+<img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/016-select-role.png" srcset="/img/loading.gif" alt="016-select-role" style="zoom:67%;">
+
+<p>审查配置的值，然后单击<strong>保存和部署</strong>. Amplify 现在将开始在源存储库更改时自动部署您的 React 应用程序.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/aws-amplify-started/017-deploy.png" srcset="/img/loading.gif" alt="017-deploy"></p>
+<p>部署完成后，它将在打印显示的 URL 中提供，任何人都可以通过此 URL 访问您的应用程序.</p>
+<p>在本模块中，您学习了如何将私有 GitHub 存储库与 Web 应用程序的代码连接起来，以使用 Amplify 设置自动部署.<br>在下一个模块中，您将学习如何删除刚刚部署的应用程序以及为其创建的所有 AWS 资源.</p>
+<h4 id="4-清理资源"><a href="#4-清理资源" class="headerlink" title="4.清理资源"></a>4.清理资源</h4><p>您现在已完成本指南，但仍需要清理在本指南中创建的资源. 如果您的账户仍在使用免费套餐，则不会产生任何月度费用.<br>在免费套餐范围之外，如果不进行 API 调用，则不会产生任何费用，仅当使用该应用程序时才会产生费用. 请参阅 <a target="_blank" rel="noopener" href="https://aws.amazon.com/appsync/pricing/">AWS AppSync 定价页面</a>以获取详细信息.<br>您现在将删除应用程序以及在 AWS 上为其创建的所有资源.</p>
+<div class="hljs"><pre><code class="hljs bash">% amplify delete</code></pre></div>
+
+<p>看到项目在云中被删除时，即表示您的所有资源都已得到删除.</p>
 <p><u><strong>PS: 本文为记录, 仅供学习与参考!</strong></u></p>
 
             </article>

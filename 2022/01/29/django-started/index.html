@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    4.7k 字
+                    4.8k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    77
+                    79
                      分钟
                   </span>
                 
@@ -793,6 +793,7 @@ path(<span class="hljs-string">&#x27;&lt;int:question_id&gt;/vote/&#x27;</span>,
 <p><code>polls/views.py</code></p>
 <p>我们在这里使用两个通用视图：<code>ListView</code>和<code>DetailView</code>.</p>
 <p>这两个视图分别抽象了<code>显示对象列表</code>和<code>显示特定类型对象的详细信息页面</code>的概念.<br>每个通用视图都需要知道它将作用于什么模型. 这是使用<code>model</code>属性提供的.<br><code>DetailView</code>泛型视图希望从URL捕获的主键值被称为<code>pk</code>，因此我们将泛型视图的<code>question_id</code>更改为<code>pk</code>.</p>
+<p>默认情况下，DetailView通用视图使用名为<code>&lt;app name&gt;/&lt;model name&gt;_ detail.html</code>.<br>在我们的例子中，它将使用模板<code>polls/question_detail.html</code>.<br><code>template_name</code>属性用于告诉<code>Django</code>使用特定的模板名称，而不是自动生成的默认模板名称.<br>我们还为结果列表视图指定模板名称，这确保了结果视图和细节视图在渲染时具有不同的外观，即使它们都是幕后的细节视图.</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
 <span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponse, Http404, HttpResponseRedirect
 <span class="hljs-keyword">from</span> django.template <span class="hljs-keyword">import</span> loader
@@ -877,7 +878,7 @@ path(<span class="hljs-string">&#x27;&lt;int:question_id&gt;/vote/&#x27;</span>,
         <span class="hljs-string">&quot;&quot;&quot;</span>
 <span class="hljs-string">        返回最后五个已发布的问题.</span>
 <span class="hljs-string">        &quot;&quot;&quot;</span>
-        <span class="hljs-keyword">return</span> Question.objects.order_by(<span class="hljs-string">&#x27;_pub_date&#x27;</span>)[:<span class="hljs-number">5</span>]
+        <span class="hljs-keyword">return</span> Question.objects.order_by(<span class="hljs-string">&#x27;-pub_date&#x27;</span>)[:<span class="hljs-number">5</span>]
 
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DetailView</span>(<span class="hljs-params">generic.DetailView</span>):</span>

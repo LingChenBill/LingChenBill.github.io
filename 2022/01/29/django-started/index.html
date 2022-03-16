@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    3k 字
+                    4.7k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    49
+                    77
                      分钟
                   </span>
                 
@@ -657,6 +657,264 @@ urlpatterns = [
 &#123;% endif %&#125;
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+<h4 id="六-Form"><a href="#六-Form" class="headerlink" title="六.Form"></a>六.Form</h4><h5 id="1-html"><a href="#1-html" class="headerlink" title="1.html"></a>1.html</h5><p>让我们更新上一个教程中的投票详细信息模板<code>（polls/detail.html）</code>，以便该模板包含一个<code>html&lt;form&gt;</code>元素：</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>详细页面<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;&#123;% url &#x27;polls:vote&#x27; question.id %&#125;&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span>&gt;</span>
+    &#123;% crsf_token %&#125;
+    <span class="hljs-tag">&lt;<span class="hljs-name">fieldset</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">legend</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;&#123; question.question_text &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">legend</span>&gt;</span>
+      &#123;% if error_message %&#125;
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;&#123; error_message &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      &#123;% endif %&#125;
+      &#123;% for choice in question.choice_set.all %&#125;
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;radio&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;choice&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;&#123;&#123; choice.id &#125;&#125;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot;</span>&gt;</span>&#123;&#123; choice.choice_text &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
+      &#123;% endfor %&#125;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fieldset</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Vote&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+<p>上面的模板为每个问题选择显示一个单选按钮.<br>每个单选按钮的值是相关问题选择的ID. 每个单选按钮的名称是”选择”.<br>这意味着，当某人选择其中一个单选按钮并提交表单时，它将发送<code>POST data choice=#其中#是所选选项的ID</code>.<br>这是<code>HTML</code>表单的基本概念. 我们将表单的操作设置为<code>&#123;%url'polls:vote'question.id%&#125;</code>，并设置<code>method=&quot;post&quot;</code>.<br>使用<code>method=&quot;post&quot;（而不是method=&quot;get&quot;）</code>非常重要，因为提交此表单的行为将改变服务器端的数据.<br>无论何时创建改变服务器端数据的表单，请使用<code>method=&quot;post&quot;</code>.<br>这个技巧不是Django特有的；一般来说，这是很好的web开发实践. </p>
+<p><code>forloop.counter</code>指示<code>for</code>标记经过其循环的次数.</p>
+<p>由于我们正在创建一个<code>POST</code>表单（它可能具有修改数据的效果），我们需要担心<code>Cross Site Request Forgeries</code>.<br>谢天谢地，你不必太担心，因为<code>Django</code>提供了一个有用的系统来抵御它.<br>简而言之，所有针对内部<code>URL</code>的帖子表单都应该使用<code>&#123;%csrf_token%&#125;</code>模板标记.</p>
+<h5 id="2-urls"><a href="#2-urls" class="headerlink" title="2.urls"></a>2.urls</h5><p><code>polls/urls.py</code></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># ex: /polls/1/vote/</span>
+path(<span class="hljs-string">&#x27;&lt;int:question_id&gt;/vote/&#x27;</span>, views.vote, name=<span class="hljs-string">&#x27;vote&#x27;</span>),</code></pre></div>
+<h5 id="3-views"><a href="#3-views" class="headerlink" title="3.views"></a>3.views</h5><p><code>polls/views.py</code></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponse, Http404, HttpResponseRedirect
+<span class="hljs-keyword">from</span> django.template <span class="hljs-keyword">import</span> loader
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render, get_object_or_404
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> reverse
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Question
+
+<span class="hljs-comment"># Create your views here.</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>(<span class="hljs-params">request</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    问题列表页面.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    latest_question_list = Question.objects.order_by(<span class="hljs-string">&#x27;-pub_date&#x27;</span>)[:<span class="hljs-number">5</span>]
+    context = &#123;
+        <span class="hljs-string">&#x27;latest_question_list&#x27;</span>: latest_question_list
+    &#125;
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;polls/index.html&#x27;</span>, context)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">detail</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    详细页面.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># try:</span>
+    <span class="hljs-comment">#     question = Question.objects.get(pk=question_id)</span>
+    <span class="hljs-comment"># except Question.DoesNotExist:</span>
+    <span class="hljs-comment">#     raise Http404(&quot;Question does not exist&quot;)</span>
+    question = get_object_or_404(Question, pk=question_id)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;polls/detail.html&#x27;</span>, &#123;<span class="hljs-string">&#x27;question&#x27;</span>: question&#125;)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">results</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    结果页面.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    response = <span class="hljs-string">&quot;You&#x27;re looking at the results of question %s.&quot;</span>
+    <span class="hljs-keyword">return</span> HttpResponse(response % question_id)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">vote</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    投票.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    question = get_object_or_404(Question, pk=question_id)
+    <span class="hljs-keyword">try</span>:
+        select_choice = question.choice_set.get(pk=request.POST[<span class="hljs-string">&#x27;choice&#x27;</span>])
+    <span class="hljs-keyword">except</span> (KeyError, Choice.DoesNotExist):
+        <span class="hljs-keyword">return</span> render(
+            request
+            , <span class="hljs-string">&#x27;polls/detail.html&#x27;</span>
+            , &#123;
+                <span class="hljs-string">&#x27;question&#x27;</span>: question,
+                <span class="hljs-string">&#x27;error_message&#x27;</span>: <span class="hljs-string">&quot;You didn&#x27;t select a choice.&quot;</span>
+            &#125;
+        )
+    <span class="hljs-keyword">else</span>:
+        select_choice.votes += <span class="hljs-number">1</span>
+        select_choice.save()
+        <span class="hljs-keyword">return</span> HttpResponseRedirect(reverse(<span class="hljs-string">&#x27;polls:results&#x27;</span>, args=(question.<span class="hljs-built_in">id</span>,)))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">results</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    结果页面.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    question = get_object_or_404(Question, pk=question_id)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;polls/results.html&#x27;</span>, &#123;<span class="hljs-string">&#x27;question&#x27;</span>: question&#125;)</code></pre></div>
+<p><code>polls/results.html</code></p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>结果<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;&#123; question.question_text &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    &#123;% for choice in question.choice_set.all %&#125;
+      <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+        &#123;&#123; choice.choice_text &#125;&#125; -- &#123;&#123; choice.votes &#125;&#125; vote&#123;&#123; choice.votes|pluralize &#125;&#125;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    &#123;% endfor %&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&#123;% url &#x27;polls:detail&#x27; question.id %&#125;&quot;</span>&gt;</span>Vote again?<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/django-started/016.png" srcset="/img/loading.gif" alt="016" style="zoom:67%;margin-left: 0;"></p>
+<h5 id="4-Less-code"><a href="#4-Less-code" class="headerlink" title="4.Less code"></a>4.Less code</h5><p>让我们将投票应用程序转换为使用通用视图系统，这样我们就可以删除一些自己的代码.<br>我们必须采取一些步骤来进行转换。我们将： </p>
+<ul>
+<li>转换URLconf.</li>
+<li>删除一些旧的、不需要的视图.</li>
+<li>基于Django的通用视图引入新视图.</li>
+</ul>
+<p><code>polls/views.py</code></p>
+<p>我们在这里使用两个通用视图：<code>ListView</code>和<code>DetailView</code>.</p>
+<p>这两个视图分别抽象了<code>显示对象列表</code>和<code>显示特定类型对象的详细信息页面</code>的概念.<br>每个通用视图都需要知道它将作用于什么模型. 这是使用<code>model</code>属性提供的.<br><code>DetailView</code>泛型视图希望从URL捕获的主键值被称为<code>pk</code>，因此我们将泛型视图的<code>question_id</code>更改为<code>pk</code>.</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponse, Http404, HttpResponseRedirect
+<span class="hljs-keyword">from</span> django.template <span class="hljs-keyword">import</span> loader
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render, get_object_or_404
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> reverse
+<span class="hljs-keyword">from</span> django.views <span class="hljs-keyword">import</span> generic
+
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Question, Choice
+
+<span class="hljs-comment"># Create your views here.</span>
+
+
+<span class="hljs-comment"># def index(request):</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     问题列表页面.</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     latest_question_list = Question.objects.order_by(&#x27;-pub_date&#x27;)[:5]</span>
+<span class="hljs-comment">#     context = &#123;</span>
+<span class="hljs-comment">#         &#x27;latest_question_list&#x27;: latest_question_list</span>
+<span class="hljs-comment">#     &#125;</span>
+<span class="hljs-comment">#     return render(request, &#x27;polls/index.html&#x27;, context)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># def detail(request, question_id):</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     详细页面.</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     # try:</span>
+<span class="hljs-comment">#     #     question = Question.objects.get(pk=question_id)</span>
+<span class="hljs-comment">#     # except Question.DoesNotExist:</span>
+<span class="hljs-comment">#     #     raise Http404(&quot;Question does not exist&quot;)</span>
+<span class="hljs-comment">#     question = get_object_or_404(Question, pk=question_id)</span>
+<span class="hljs-comment">#     return render(request, &#x27;polls/detail.html&#x27;, &#123;&#x27;question&#x27;: question&#125;)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># def results(request, question_id):</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     结果页面.</span>
+<span class="hljs-comment">#     &quot;&quot;&quot;</span>
+<span class="hljs-comment">#     response = &quot;You&#x27;re looking at the results of question %s.&quot;</span>
+<span class="hljs-comment">#     return HttpResponse(response % question_id)</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">vote</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    投票.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    question = get_object_or_404(Question, pk=question_id)
+    <span class="hljs-keyword">try</span>:
+        select_choice = question.choice_set.get(pk=request.POST[<span class="hljs-string">&#x27;choice&#x27;</span>])
+    <span class="hljs-keyword">except</span> (KeyError, Choice.DoesNotExist):
+        <span class="hljs-keyword">return</span> render(
+            request
+            , <span class="hljs-string">&#x27;polls/detail.html&#x27;</span>
+            , &#123;
+                <span class="hljs-string">&#x27;question&#x27;</span>: question,
+                <span class="hljs-string">&#x27;error_message&#x27;</span>: <span class="hljs-string">&quot;You didn&#x27;t select a choice.&quot;</span>
+            &#125;
+        )
+    <span class="hljs-keyword">else</span>:
+        select_choice.votes += <span class="hljs-number">1</span>
+        select_choice.save()
+        <span class="hljs-keyword">return</span> HttpResponseRedirect(reverse(<span class="hljs-string">&#x27;polls:results&#x27;</span>, args=(question.<span class="hljs-built_in">id</span>,)))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">results</span>(<span class="hljs-params">request, question_id</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    结果页面.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    question = get_object_or_404(Question, pk=question_id)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;polls/results.html&#x27;</span>, &#123;<span class="hljs-string">&#x27;question&#x27;</span>: question&#125;)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IndexView</span>(<span class="hljs-params">generic.ListView</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    简化Index.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    template_name = <span class="hljs-string">&#x27;polls/index.html&#x27;</span>
+    context_object_name = <span class="hljs-string">&#x27;latest_question_list&#x27;</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_queryset</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">        返回最后五个已发布的问题.</span>
+<span class="hljs-string">        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> Question.objects.order_by(<span class="hljs-string">&#x27;_pub_date&#x27;</span>)[:<span class="hljs-number">5</span>]
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DetailView</span>(<span class="hljs-params">generic.DetailView</span>):</span>
+    model = Question
+    template_name = <span class="hljs-string">&#x27;polls/detail.html&#x27;</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResultsView</span>(<span class="hljs-params">generic.DetailView</span>):</span>
+    model = Question
+    template_name = <span class="hljs-string">&#x27;polls/results.html&#x27;</span>
+</code></pre></div>
+<p><code>polls/urls.py</code></p>
+<p>请注意，第二个和第三个模式的路径字符串中匹配模式的名称已从<code>&lt;question_id&gt;</code>更改为<code>&lt;pk&gt;</code>.</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment">#! /usr/bin/python3</span>
+<span class="hljs-comment"># -*- coding:utf-8 -*-</span>
+<span class="hljs-comment"># @Time: 2022/3/4</span>
+<span class="hljs-comment"># @Author: Lingchen</span>
+<span class="hljs-comment"># @Prescription:</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> views
+
+app_name = <span class="hljs-string">&#x27;polls&#x27;</span>
+urlpatterns = [
+    <span class="hljs-comment"># # ex: /polls/</span>
+    <span class="hljs-comment"># path(&#x27;&#x27;, views.index, name=&#x27;index&#x27;),</span>
+    <span class="hljs-comment"># # ex: /polls/1</span>
+    <span class="hljs-comment"># path(&#x27;&lt;int:question_id&gt;/&#x27;, views.detail, name=&#x27;detail&#x27;),</span>
+    <span class="hljs-comment"># # ex: /polls/1/results/</span>
+    <span class="hljs-comment"># path(&#x27;&lt;int:question_id&gt;/results/&#x27;, views.results, name=&#x27;results&#x27;),</span>
+    <span class="hljs-comment"># # ex: /polls/1/vote/</span>
+    <span class="hljs-comment"># path(&#x27;&lt;int:question_id&gt;/vote/&#x27;, views.vote, name=&#x27;vote&#x27;),</span>
+
+    path(<span class="hljs-string">&#x27;&#x27;</span>, views.IndexView.as_view(), name=<span class="hljs-string">&#x27;index&#x27;</span>),
+    path(<span class="hljs-string">&#x27;&lt;int:pk&gt;/&#x27;</span>, views.DetailView.as_view(), name=<span class="hljs-string">&#x27;detail&#x27;</span>),
+    path(<span class="hljs-string">&#x27;&lt;int:pk&gt;/results/&#x27;</span>, views.ResultsView.as_view(), name=<span class="hljs-string">&#x27;results&#x27;</span>),
+    path(<span class="hljs-string">&#x27;&lt;int:question_id&gt;/vote/&#x27;</span>, views.vote, name=<span class="hljs-string">&#x27;vote&#x27;</span>)
+]</code></pre></div>
 <p><u><strong>PS: 本文为操作记录, 仅供学习与参与!</strong></u></p>
 
             </article>

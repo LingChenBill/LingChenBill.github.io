@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="LingChenBill">
   <meta name="keywords" content="">
-  <title>weasyprint-pdf-started - LingChen&#39;s blog</title>
+  <title>Python的weasyprint的PDF导出 - LingChen&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -185,21 +185,28 @@
               <p>[TOC]</p>
 <h3 id="Python的weasyprint的PDF导出"><a href="#Python的weasyprint的PDF导出" class="headerlink" title="Python的weasyprint的PDF导出"></a>Python的weasyprint的PDF导出</h3><h4 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1.安装依赖"></a>1.安装依赖</h4><p>安装指南, 查看官网:</p>
 <div class="hljs"><pre><code class="hljs bash">https://doc.courtbouillon.org/weasyprint/stable/first_steps.html</code></pre></div>
+
 <p>安装依赖:</p>
 <div class="hljs"><pre><code class="hljs bash">pip install weasyprint</code></pre></div>
+
 <p><strong>错误一</strong>: 安装后, <code>import weasyprint</code>后, 启动django时, </p>
 <div class="hljs"><pre><code class="hljs bash">OSError: cannot load library <span class="hljs-string">&#x27;gobject-2.0-0&#x27;</span>: dlopen(gobject-2.0-0, 0x0002): tried: <span class="hljs-string">&#x27;gobject-2.0-0&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/lib/gobject-2.0-0&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/lib/gobject-2.0-0&#x27;</span> (no such file), <span class="hljs-string">&#x27;/Users/zhuyangze/Documents/fork/django/todjango3/chapter08/myshop/gobject-2.0-0&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/lib/gobject-2.0-0&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/lib/gobject-2.0-0&#x27;</span> (no such file).  Additionally, ctypes.util.find_library() did not manage to locate a library called <span class="hljs-string">&#x27;gobject-2.0-0&#x27;</span></code></pre></div>
+
 <p>要安装依赖:</p>
 <div class="hljs"><pre><code class="hljs bash">brew install pango libffi</code></pre></div>
+
 <p><strong>错误二</strong>:</p>
 <div class="hljs"><pre><code class="hljs bash">Error: pango: undefined method `cellar<span class="hljs-string">&#x27; for #&lt;BottleSpecification:0x00007fdf649e52c8&gt;</span></code></pre></div>
+
 <p>解决策:</p>
 <div class="hljs"><pre><code class="hljs bash">rm -fr $(brew --repo homebrew/core)
 
 brew tap homebrew/core
 
 brew install pango libffi</code></pre></div>
+
 <h4 id="2-安装pdf导出依赖"><a href="#2-安装pdf导出依赖" class="headerlink" title="2.安装pdf导出依赖"></a>2.安装pdf导出依赖</h4><div class="hljs"><pre><code class="hljs bash">pip install WeasyPrint</code></pre></div>
+
 <h4 id="3-创建pdf的templates"><a href="#3-创建pdf的templates" class="headerlink" title="3.创建pdf的templates"></a>3.创建pdf的templates</h4><p> <code>chapter08/myshop/orders/templates/orders/order/pdf.html</code>:</p>
 <div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
@@ -255,6 +262,7 @@ brew install pango libffi</code></pre></div>
   <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
 <h4 id="4-编写view"><a href="#4-编写view" class="headerlink" title="4.编写view"></a>4.编写view</h4><p> <code>chapter08/myshop/orders/views.py</code>:</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> weasyprint
 
@@ -287,6 +295,7 @@ brew install pango libffi</code></pre></div>
                                            stylesheets=[weasyprint.CSS(
                                                settings.STATIC_ROOT + <span class="hljs-string">&#x27;css/pdf.css&#x27;</span>)])
     <span class="hljs-keyword">return</span> response</code></pre></div>
+
 <h4 id="5-创建pdf的css"><a href="#5-创建pdf的css" class="headerlink" title="5.创建pdf的css"></a>5.创建pdf的css</h4><p><code>chapter08/myshop/shop/static/css/pdf.css</code>:</p>
 <div class="hljs"><pre><code class="hljs css"><span class="hljs-selector-tag">body</span> &#123;
     <span class="hljs-attribute">font-family</span>:Helvetica, sans-serif;
@@ -348,14 +357,18 @@ brew install pango libffi</code></pre></div>
     <span class="hljs-attribute">color</span>:<span class="hljs-number">#a82d2d</span>;
     <span class="hljs-attribute">border</span>:<span class="hljs-number">4px</span> solid <span class="hljs-number">#a82d2d</span>;
 &#125;</code></pre></div>
+
 <h4 id="6-配置静态文件路径"><a href="#6-配置静态文件路径" class="headerlink" title="6.配置静态文件路径"></a>6.配置静态文件路径</h4><p><code>settings.py</code>:</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># PDF conf.</span>
 STATIC_ROOT = os.path.join(BASE_DIR, <span class="hljs-string">&#x27;static/&#x27;</span>)</code></pre></div>
+
 <p>生成相关静态文件:</p>
 <div class="hljs"><pre><code class="hljs bash">python manage.py collectstatic</code></pre></div>
+
 <h4 id="7-配置URL"><a href="#7-配置URL" class="headerlink" title="7.配置URL"></a>7.配置URL</h4><p><code>chapter08/myshop/orders/urls.py</code>:</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># pdf导出.</span>
 path(<span class="hljs-string">&#x27;admin/order/&lt;int:order_id&gt;/pdf/&#x27;</span>, views.admin_order_pdf, name=<span class="hljs-string">&#x27;admin_order_pdf&#x27;</span>),</code></pre></div>
+
 <h4 id="8-将功能加入管理页面"><a href="#8-将功能加入管理页面" class="headerlink" title="8.将功能加入管理页面"></a>8.将功能加入管理页面</h4><p> <code>chapter08/myshop/orders/admin.py</code>:</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">order_pdf</span>(<span class="hljs-params">obj</span>):</span>
     <span class="hljs-string">&quot;&quot;&quot;</span>
@@ -373,8 +386,10 @@ order_pdf.short_description = <span class="hljs-string">&#x27;Invoice&#x27;</spa
                     <span class="hljs-string">&#x27;city&#x27;</span>, <span class="hljs-string">&#x27;paid&#x27;</span>, <span class="hljs-string">&#x27;created&#x27;</span>, <span class="hljs-string">&#x27;updated&#x27;</span>,
                     order_detail,
                     order_pdf]</code></pre></div>
+
 <h4 id="9-在页面验证"><a href="#9-在页面验证" class="headerlink" title="9.在页面验证"></a>9.在页面验证</h4><div class="hljs"><pre><code class="hljs bash">python manage.py runserver</code></pre></div>
 <div class="hljs"><pre><code class="hljs text">http://127.0.0.1:8000/admin/orders/order/</code></pre></div>
+
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/weasyprint-pdf-started/001.png" srcset="/img/loading.gif" alt="001"></p>
 <p>生成PDF:</p>
 <p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/weasyprint-pdf-started/002.png" srcset="/img/loading.gif" alt="002"></p>
@@ -557,7 +572,7 @@ order_pdf.short_description = <span class="hljs-string">&#x27;Invoice&#x27;</spa
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "weasyprint-pdf-started&nbsp;",
+        "Python的weasyprint的PDF导出&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

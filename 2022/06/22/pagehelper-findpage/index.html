@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>spring-boot之分页请求封装 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2022-06-22 23:10">
+                    June 22, 2022 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    4.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    88
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="spring-boot之分页请求封装"><a href="#spring-boot之分页请求封装" class="headerlink" title="spring-boot之分页请求封装"></a>spring-boot之分页请求封装</h3><h4 id="1-工程结构"><a href="#1-工程结构" class="headerlink" title="1.工程结构"></a>1.工程结构</h4><ul>
+<li>mango-platform : 主工程包.</li>
+<li>mango-admin : 后台管理模块，包含用户、角色、菜单管理等.</li>
+<li>mango-common : 公共代码模块，主要放置一些工具类.</li>
+<li>mango-core : 核心业务代码模块，主要封装公共业务模块.</li>
+</ul>
+<p>参与的github地址:</p>
+<div class="hljs"><pre><code class="hljs bash">https://github.com/LingChenBill/mango-platform.git</code></pre></div>
+
+<h4 id="2-POM文件"><a href="#2-POM文件" class="headerlink" title="2.POM文件"></a>2.POM文件</h4><p>mango-platform的<code>pom.xml</code>:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+	
+	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-platform<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">packaging</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">packaging</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mango-platform<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Mango platform project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!--modules config.--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modules</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>mango-admin<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>mango-common<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">module</span>&gt;</span>mango-core<span class="hljs-tag">&lt;/<span class="hljs-name">module</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">modules</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>mango-admin之<code>pom.xml</code>:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-admin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mango-admin<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>mango-admin project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.1.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">swagger.version</span>&gt;</span>2.9.2<span class="hljs-tag">&lt;/<span class="hljs-name">swagger.version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">mybatis.version</span>&gt;</span>1.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">mybatis.version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">druid.version</span>&gt;</span>1.1.10<span class="hljs-tag">&lt;/<span class="hljs-name">druid.version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">log4j.version</span>&gt;</span>1.2.17<span class="hljs-tag">&lt;/<span class="hljs-name">log4j.version</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!-- swagger --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;swagger.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;swagger.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!-- mybatis --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mybatis.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!-- mysql --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!-- druid --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;druid.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+		<span class="hljs-comment">&lt;!-- log4j --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;log4j.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!--mango core.--&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+
+		<span class="hljs-comment">&lt;!--打包时复制Mybatis的映射文件.--&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">directory</span>&gt;</span>src/main/java<span class="hljs-tag">&lt;/<span class="hljs-name">directory</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">includes</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">include</span>&gt;</span>**/sqlmap/*.xml<span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">includes</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">filtering</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">filtering</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">directory</span>&gt;</span>src/main/resources<span class="hljs-tag">&lt;/<span class="hljs-name">directory</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">includes</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">include</span>&gt;</span>**/*.*<span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">includes</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">filtering</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">filtering</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>mango-common之<code>pom.xml</code>:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-common<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mango-common<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Demo project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<p>mango-core之<code>pom.xml</code>:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mango-core<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Mango core project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">pagehelper.version</span>&gt;</span>1.2.5<span class="hljs-tag">&lt;/<span class="hljs-name">pagehelper.version</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+		<span class="hljs-comment">&lt;!-- pagehelper --&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;pagehelper.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.iplume<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mango-common<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>$&#123;java.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre></div>
+
+<h4 id="3-通用CURD接口"><a href="#3-通用CURD接口" class="headerlink" title="3.通用CURD接口"></a>3.通用CURD接口</h4><p>CurdService 是对通用增、删、改、查接口的封装，统一定义了包含保存、删除、批量删除、根据 DD 查询和分页查询方法，<br>一般的业务 Service 接口会继承此接口，提供基础增、删、改、查服务，这几个接口能满足大部分基础 CURD 业务的需求.</p>
+<p><code>com/iplume/core/service/CurdService.java</code> : </p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.service;
+
+<span class="hljs-keyword">import</span> com.iplume.core.page.PageResult;
+<span class="hljs-keyword">import</span> com.iplume.core.page.PageRequest;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 通用CURD接口.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CurdService</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 保存操作.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">save</span><span class="hljs-params">(T record)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 删除操作.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">delete</span><span class="hljs-params">(T record)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 批量删除操作.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> records</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">delete</span><span class="hljs-params">(List&lt;T&gt; records)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 根据ID查询.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">T <span class="hljs-title">findById</span><span class="hljs-params">(Long id)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询.</span>
+<span class="hljs-comment">     * 这里统一封装了分页请求和结果，避免直接引入具体框架的分页对象, 如MyBatis或JPA的分页对象.</span>
+<span class="hljs-comment">     * 从而避免因为替换ORM框架而导致服务层、控制层的分页接口也需要变动的情况，替换ORM框架也不会.</span>
+<span class="hljs-comment">     * 影响服务层以上的分页接口，起到了解耦的作用.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest 自定义，统一分页查询请求.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> PageResult 自定义，统一分页查询结果.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">PageResult <span class="hljs-title">findPage</span><span class="hljs-params">(PageRequest pageRequest)</span></span>;
+&#125;</code></pre></div>
+
+<h4 id="4-分页请求封装"><a href="#4-分页请求封装" class="headerlink" title="4.分页请求封装"></a>4.分页请求封装</h4><p><code>com/iplume/core/page/PageRequest.java</code> : </p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.page;
+
+<span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 分页请求.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageRequest</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 当前页码.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> pageNum = <span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 每页数量.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> pageSize = <span class="hljs-number">10</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 查询参数.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; params = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPageNum</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> pageNum;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPageNum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pageNum)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.pageNum = pageNum;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPageSize</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> pageSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPageSize</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pageSize)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.pageSize = pageSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title">getParams</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> params;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setParams</span><span class="hljs-params">(Map&lt;String, Object&gt; params)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.params = params;
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="5-分页结果封装"><a href="#5-分页结果封装" class="headerlink" title="5.分页结果封装"></a>5.分页结果封装</h4><p><code>com/iplume/core/page/PageResult.java</code> :</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.page;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 分页返回结果.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageResult</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 当前页码.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> pageNum;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 每页数量.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> pageSize;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 记录总数.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> totalSize;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 页码总数.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> totalPages;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页数据.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> List&lt;?&gt; content;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPageNum</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> pageNum;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPageNum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pageNum)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.pageNum = pageNum;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPageSize</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> pageSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPageSize</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pageSize)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.pageSize = pageSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">getTotalSize</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> totalSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTotalSize</span><span class="hljs-params">(<span class="hljs-keyword">long</span> totalSize)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.totalSize = totalSize;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getTotalPages</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> totalPages;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTotalPages</span><span class="hljs-params">(<span class="hljs-keyword">int</span> totalPages)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.totalPages = totalPages;
+    &#125;
+
+    <span class="hljs-keyword">public</span> List&lt;?&gt; getContent() &#123;
+        <span class="hljs-keyword">return</span> content;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setContent</span><span class="hljs-params">(List&lt;?&gt; content)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.content = content;
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="6-分页助手封装"><a href="#6-分页助手封装" class="headerlink" title="6.分页助手封装"></a>6.分页助手封装</h4><p><code>com/iplume/core/page/MybatisPageHelper.java</code> :</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.page;
+
+<span class="hljs-keyword">import</span> com.github.pagehelper.PageHelper;
+<span class="hljs-keyword">import</span> com.github.pagehelper.PageInfo;
+<span class="hljs-keyword">import</span> com.iplume.mango.common.utils.ReflectionUtils;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * MyBatis 分页查询助手.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MybatisPageHelper</span> </span>&#123;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String FIND_PAGE = <span class="hljs-string">&quot;findPage&quot;</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询, 约定查询方法名为 &quot;findPage&quot;.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest 分页请求.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> mapper      Dao对象，MyBatis的 Mapper.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> PageResult <span class="hljs-title">findPage</span><span class="hljs-params">(PageRequest pageRequest, Object mapper)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> findPage(pageRequest, mapper, FIND_PAGE);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 调用分页插件进行分页查询.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest     分页请求.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> mapper          Dao对象，MyBatis的 Mapper.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> queryMethodName 要分页的查询方法名.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args            方法参数.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> PageResult <span class="hljs-title">findPage</span><span class="hljs-params">(PageRequest pageRequest, Object mapper,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                      String queryMethodName, Object... args)</span> </span>&#123;
+        <span class="hljs-comment">// 设置分页参数.</span>
+        <span class="hljs-keyword">int</span> pageNum = pageRequest.getPageNum();
+        <span class="hljs-keyword">int</span> pageSize = pageRequest.getPageSize();
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        <span class="hljs-comment">// 利用反射调用查询方法.</span>
+        Object result = ReflectionUtils.invoke(mapper, queryMethodName, args);
+
+        <span class="hljs-keyword">return</span> getPageResult(pageRequest, <span class="hljs-keyword">new</span> PageInfo((List) result));
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 将分页信息封装到统一的接口.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageInfo</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> PageResult <span class="hljs-title">getPageResult</span><span class="hljs-params">(PageRequest pageRequest, PageInfo&lt;?&gt; pageInfo)</span> </span>&#123;
+        PageResult pageResult = <span class="hljs-keyword">new</span> PageResult();
+        <span class="hljs-comment">// 当前页码.</span>
+        pageResult.setPageNum(pageInfo.getPageNum());
+        <span class="hljs-comment">// 每页数量.</span>
+        pageResult.setPageSize(pageInfo.getPageSize());
+        <span class="hljs-comment">// 记录总数.</span>
+        pageResult.setTotalSize(pageInfo.getTotal());
+        <span class="hljs-comment">// 页码总数.</span>
+        pageResult.setTotalPages(pageInfo.getPages());
+        <span class="hljs-comment">// 分页数据.</span>
+        pageResult.setContent(pageInfo.getList());
+
+        <span class="hljs-keyword">return</span> pageResult;
+    &#125;
+&#125;</code></pre></div>
+
+<p><code>com/iplume/mango/common/utils/ReflectionUtils.java</code> :</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.mango.common.utils;
+
+<span class="hljs-keyword">import</span> java.lang.reflect.InvocationTargetException;
+<span class="hljs-keyword">import</span> java.lang.reflect.Method;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 反射相关辅助方法.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReflectionUtils</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 根据方法名调用指定对象的方法.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> object 要调用方法的对象.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> method 要调用的方法名.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args   参数对象数组.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Object <span class="hljs-title">invoke</span><span class="hljs-params">(Object object, String method, Object... args)</span> </span>&#123;
+        Object result = <span class="hljs-keyword">null</span>;
+        Class&lt;? extends Object&gt; clazz = object.getClass();
+        Method queryMethod = getMethod(clazz, method, args);
+        <span class="hljs-keyword">if</span> (queryMethod != <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                result = queryMethod.invoke(object, args);
+            &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
+                e.printStackTrace();
+            &#125; <span class="hljs-keyword">catch</span> (IllegalArgumentException e) &#123;
+                e.printStackTrace();
+            &#125; <span class="hljs-keyword">catch</span> (InvocationTargetException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NoSuchMethodException(clazz.getName() + <span class="hljs-string">&quot; 类中没有找到 &quot;</span> + method + <span class="hljs-string">&quot; 方法。&quot;</span>);
+            &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 根据方法名和参数对象查找方法.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> clazz</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> name</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args  参数实例数据.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Method <span class="hljs-title">getMethod</span><span class="hljs-params">(Class&lt;? extends Object&gt; clazz, String name, Object[] args)</span> </span>&#123;
+        Method queryMethod = <span class="hljs-keyword">null</span>;
+        Method[] methods = clazz.getMethods();
+        <span class="hljs-keyword">for</span> (Method method : methods) &#123;
+            <span class="hljs-keyword">if</span> (method.getName().equals(name)) &#123;
+                Class&lt;?&gt;[] parameterTypes = method.getParameterTypes();
+                <span class="hljs-keyword">if</span> (parameterTypes.length == args.length) &#123;
+                    <span class="hljs-keyword">boolean</span> isSameMethod = <span class="hljs-keyword">true</span>;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; parameterTypes.length; i++) &#123;
+                        Object arg = args[i];
+                        <span class="hljs-keyword">if</span> (arg == <span class="hljs-keyword">null</span>) &#123;
+                            arg = <span class="hljs-string">&quot;&quot;</span>;
+                        &#125;
+                        <span class="hljs-keyword">if</span> (!parameterTypes[i].equals(args[i].getClass())) &#123;
+                            isSameMethod = <span class="hljs-keyword">false</span>;
+                        &#125;
+                    &#125;
+                    <span class="hljs-keyword">if</span> (isSameMethod) &#123;
+                        queryMethod = method;
+                        <span class="hljs-keyword">break</span>;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> queryMethod;
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="7-HTTP结果封装"><a href="#7-HTTP结果封装" class="headerlink" title="7.HTTP结果封装"></a>7.HTTP结果封装</h4><p><code>com/iplume/core/http/HttpResult.java</code> :</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.http;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * HTTP结果封装.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HttpResult</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 状态码.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> code = <span class="hljs-number">200</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 错误信息.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> String msg;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 数据.</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Object data;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">error</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> error(HttpStatus.SC_INTERNAL_SERVER_ERROR, <span class="hljs-string">&quot;未知异常，请联系管理员&quot;</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">error</span><span class="hljs-params">(String msg)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">error</span><span class="hljs-params">(<span class="hljs-keyword">int</span> code, String msg)</span> </span>&#123;
+        HttpResult r = <span class="hljs-keyword">new</span> HttpResult();
+        r.setCode(code);
+        r.setMsg(msg);
+        <span class="hljs-keyword">return</span> r;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">ok</span><span class="hljs-params">(String msg)</span> </span>&#123;
+        HttpResult r = <span class="hljs-keyword">new</span> HttpResult();
+        r.setMsg(msg);
+        <span class="hljs-keyword">return</span> r;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">ok</span><span class="hljs-params">(Object data)</span> </span>&#123;
+        HttpResult r = <span class="hljs-keyword">new</span> HttpResult();
+        r.setData(data);
+        <span class="hljs-keyword">return</span> r;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HttpResult <span class="hljs-title">ok</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HttpResult();
+    &#125;
+
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getCode</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> code;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setCode</span><span class="hljs-params">(<span class="hljs-keyword">int</span> code)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.code = code;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getMsg</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> msg;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setMsg</span><span class="hljs-params">(String msg)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.msg = msg;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getData</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> data;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setData</span><span class="hljs-params">(Object data)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.data = data;
+    &#125;
+&#125;</code></pre></div>
+
+<p><code>com/iplume/core/http/HttpStatus.java</code> :</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.core.http;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * HTTP结果状态.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/20</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">HttpStatus</span> </span>&#123;
+
+    <span class="hljs-comment">// --- 1xx Informational ---</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 100 Continue&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_CONTINUE = <span class="hljs-number">100</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 101 Switching Protocols&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_SWITCHING_PROTOCOLS = <span class="hljs-number">101</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 102 Processing&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_PROCESSING = <span class="hljs-number">102</span>;
+
+    <span class="hljs-comment">// --- 2xx Success ---</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 200 OK&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_OK = <span class="hljs-number">200</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 201 Created&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_CREATED = <span class="hljs-number">201</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 202 Accepted&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_ACCEPTED = <span class="hljs-number">202</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 203 Non Authoritative Information&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NON_AUTHORITATIVE_INFORMATION = <span class="hljs-number">203</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 204 No Content&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NO_CONTENT = <span class="hljs-number">204</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 205 Reset Content&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_RESET_CONTENT = <span class="hljs-number">205</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 206 Partial Content&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_PARTIAL_CONTENT = <span class="hljs-number">206</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 207 Multi-Status&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     * or</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 207 Partial Update OK&#125; (HTTP/1.1 - draft-ietf-http-v11-spec-rev-01?)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_MULTI_STATUS = <span class="hljs-number">207</span>;
+
+    <span class="hljs-comment">// --- 3xx Redirection ---</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 300 Mutliple Choices&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_MULTIPLE_CHOICES = <span class="hljs-number">300</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 301 Moved Permanently&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_MOVED_PERMANENTLY = <span class="hljs-number">301</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 302 Moved Temporarily&#125; (Sometimes &#123;<span class="hljs-doctag">@code</span> Found&#125;) (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_MOVED_TEMPORARILY = <span class="hljs-number">302</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 303 See Other&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_SEE_OTHER = <span class="hljs-number">303</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 304 Not Modified&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NOT_MODIFIED = <span class="hljs-number">304</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 305 Use Proxy&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_USE_PROXY = <span class="hljs-number">305</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 307 Temporary Redirect&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_TEMPORARY_REDIRECT = <span class="hljs-number">307</span>;
+
+    <span class="hljs-comment">// --- 4xx Client Error ---</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 400 Bad Request&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_BAD_REQUEST = <span class="hljs-number">400</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 401 Unauthorized&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_UNAUTHORIZED = <span class="hljs-number">401</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 402 Payment Required&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_PAYMENT_REQUIRED = <span class="hljs-number">402</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 403 Forbidden&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_FORBIDDEN = <span class="hljs-number">403</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 404 Not Found&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NOT_FOUND = <span class="hljs-number">404</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 405 Method Not Allowed&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_METHOD_NOT_ALLOWED = <span class="hljs-number">405</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 406 Not Acceptable&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NOT_ACCEPTABLE = <span class="hljs-number">406</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 407 Proxy Authentication Required&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_PROXY_AUTHENTICATION_REQUIRED = <span class="hljs-number">407</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 408 Request Timeout&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_REQUEST_TIMEOUT = <span class="hljs-number">408</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 409 Conflict&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_CONFLICT = <span class="hljs-number">409</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 410 Gone&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_GONE = <span class="hljs-number">410</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 411 Length Required&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_LENGTH_REQUIRED = <span class="hljs-number">411</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 412 Precondition Failed&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_PRECONDITION_FAILED = <span class="hljs-number">412</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 413 Request Entity Too Large&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_REQUEST_TOO_LONG = <span class="hljs-number">413</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 414 Request-URI Too Long&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_REQUEST_URI_TOO_LONG = <span class="hljs-number">414</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 415 Unsupported Media Type&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_UNSUPPORTED_MEDIA_TYPE = <span class="hljs-number">415</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 416 Requested Range Not Satisfiable&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_REQUESTED_RANGE_NOT_SATISFIABLE = <span class="hljs-number">416</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 417 Expectation Failed&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_EXPECTATION_FAILED = <span class="hljs-number">417</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Static constant for a 418 error.</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 418 Unprocessable Entity&#125; (WebDAV drafts?)</span>
+<span class="hljs-comment">     * or &#123;<span class="hljs-doctag">@code</span> 418 Reauthentication Required&#125; (HTTP/1.1 drafts?)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-comment">// not used</span>
+    <span class="hljs-comment">// public static final int SC_UNPROCESSABLE_ENTITY = 418;</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Static constant for a 419 error.</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 419 Insufficient Space on Resource&#125;</span>
+<span class="hljs-comment">     * (WebDAV - draft-ietf-webdav-protocol-05?)</span>
+<span class="hljs-comment">     * or &#123;<span class="hljs-doctag">@code</span> 419 Proxy Reauthentication Required&#125;</span>
+<span class="hljs-comment">     * (HTTP/1.1 drafts?)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_INSUFFICIENT_SPACE_ON_RESOURCE = <span class="hljs-number">419</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Static constant for a 420 error.</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 420 Method Failure&#125;</span>
+<span class="hljs-comment">     * (WebDAV - draft-ietf-webdav-protocol-05?)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_METHOD_FAILURE = <span class="hljs-number">420</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 422 Unprocessable Entity&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_UNPROCESSABLE_ENTITY = <span class="hljs-number">422</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 423 Locked&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_LOCKED = <span class="hljs-number">423</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 424 Failed Dependency&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_FAILED_DEPENDENCY = <span class="hljs-number">424</span>;
+
+    <span class="hljs-comment">// --- 5xx Server Error ---</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 500 Server Error&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_INTERNAL_SERVER_ERROR = <span class="hljs-number">500</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 501 Not Implemented&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_NOT_IMPLEMENTED = <span class="hljs-number">501</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 502 Bad Gateway&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_BAD_GATEWAY = <span class="hljs-number">502</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 503 Service Unavailable&#125; (HTTP/1.0 - RFC 1945)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_SERVICE_UNAVAILABLE = <span class="hljs-number">503</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 504 Gateway Timeout&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_GATEWAY_TIMEOUT = <span class="hljs-number">504</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 505 HTTP Version Not Supported&#125; (HTTP/1.1 - RFC 2616)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_HTTP_VERSION_NOT_SUPPORTED = <span class="hljs-number">505</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@code</span> 507 Insufficient Storage&#125; (WebDAV - RFC 2518)</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> SC_INSUFFICIENT_STORAGE = <span class="hljs-number">507</span>;
+&#125;</code></pre></div>
+
+<h4 id="8-MyBatis分页查询"><a href="#8-MyBatis分页查询" class="headerlink" title="8.MyBatis分页查询"></a>8.MyBatis分页查询</h4><p>添加依赖:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">pagehelper.version</span>&gt;</span>1.2.5<span class="hljs-tag">&lt;/<span class="hljs-name">pagehelper.version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- pagehelper --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.pagehelper<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>pagehelper-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;pagehelper.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>添加配置:</p>
+<p><code>src/main/resources/application.yml</code> :</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-comment"># pagehelper.</span>
+<span class="hljs-attr">pagehelper:</span>
+  <span class="hljs-attr">helper-dialect:</span> <span class="hljs-string">mysql</span>
+  <span class="hljs-attr">reasonable:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">support-methods-arguments:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">params:</span> <span class="hljs-string">count=countSql</span></code></pre></div>
+
+<h4 id="9-分页代码"><a href="#9-分页代码" class="headerlink" title="9.分页代码"></a>9.分页代码</h4><p><code>com/iplume/mango/admin/dao/SysUserMapper.java</code>:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.mango.admin.dao;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.model.SysUser;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * SysUserMapper.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/19</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">SysUserMapper</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 按主键删除.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">deleteByPrimaryKey</span><span class="hljs-params">(Long id)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 插入操作.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">insert</span><span class="hljs-params">(SysUser record)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 插入操作.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">insertSelective</span><span class="hljs-params">(SysUser record)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 按id查询数据.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">SysUser <span class="hljs-title">selectByPrimaryKey</span><span class="hljs-params">(Long id)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 更新数据.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">updateByPrimaryKeySelective</span><span class="hljs-params">(SysUser record)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 更新数据.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> record</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">updateByPrimaryKey</span><span class="hljs-params">(SysUser record)</span></span>;
+    
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 查询全部用户信息.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">List&lt;SysUser&gt; <span class="hljs-title">findAll</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">List&lt;SysUser&gt; <span class="hljs-title">findPage</span><span class="hljs-params">()</span></span>;
+&#125;</code></pre></div>
+
+<p><code>com/iplume/mango/admin/sqlmap/SysUserMapper.xml</code>:</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">mapper</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.iplume.mango.admin.dao.SysUserMapper&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.iplume.mango.admin.model.SysUser&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;BIGINT&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;name&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;nick_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;nickName&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;avatar&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;avatar&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;password&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;salt&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;salt&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;email&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;mobile&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;mobile&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TINYINT&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;status&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;dept_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;BIGINT&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deptId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;create_by&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;createBy&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;create_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;createTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;last_update_by&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;lastUpdateBy&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;last_update_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;lastUpdateTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;del_flag&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TINYINT&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;delFlag&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">sql</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;Base_Column_List&quot;</span>&gt;</span>
+    id, name, nick_name, avatar, password, salt, email, mobile, status, dept_id, create_by, 
+    create_time, last_update_by, last_update_time, del_flag
+  <span class="hljs-tag">&lt;/<span class="hljs-name">sql</span>&gt;</span>
+
+  ...
+  
+  <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findAll&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span>&gt;</span>
+    select 
+    <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;Base_Column_List&quot;</span> /&gt;</span>
+    from sys_user
+  <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findPage&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span>&gt;</span>
+    select
+    <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;Base_Column_List&quot;</span> /&gt;</span>
+    from sys_user
+  <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span></code></pre></div>
+
+<p><code>com/iplume/mango/admin/service/SysUserService.java</code>:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.mango.admin.service;
+
+<span class="hljs-keyword">import</span> com.iplume.core.service.CurdService;
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.model.SysUser;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户服务接口.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/19</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">SysUserService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">CurdService</span>&lt;<span class="hljs-title">SysUser</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 查找所有用户.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">List&lt;SysUser&gt; <span class="hljs-title">findAll</span><span class="hljs-params">()</span></span>;
+&#125;</code></pre></div>
+
+<p><code>com/iplume/mango/admin/service/impl/SysUserServiceImpl.java</code>:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.mango.admin.service.impl;
+
+<span class="hljs-keyword">import</span> com.iplume.core.page.MybatisPageHelper;
+<span class="hljs-keyword">import</span> com.iplume.core.page.PageRequest;
+<span class="hljs-keyword">import</span> com.iplume.core.page.PageResult;
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.dao.SysUserMapper;
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.service.SysUserService;
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.model.SysUser;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户服务实现类.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/19</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SysUserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">SysUserService</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> SysUserMapper sysUserMapper;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;SysUser&gt; <span class="hljs-title">findAll</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> sysUserMapper.findAll();
+    &#125;
+
+......
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询SysUser.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest 自定义，统一分页查询请求.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> PageResult <span class="hljs-title">findPage</span><span class="hljs-params">(PageRequest pageRequest)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> MybatisPageHelper.findPage(pageRequest, sysUserMapper);
+    &#125;
+&#125;</code></pre></div>
+
+<p>编写分页查询接口:</p>
+<p><code>com/iplume/mango/admin/controller/SysUserController.java</code>:</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.iplume.mango.admin.controller;
+
+<span class="hljs-keyword">import</span> com.iplume.core.http.HttpResult;
+<span class="hljs-keyword">import</span> com.iplume.core.page.PageRequest;
+<span class="hljs-keyword">import</span> com.iplume.mango.admin.service.SysUserService;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户控制类.</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span>: lingchen</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@date</span>: 2022/6/19</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;user&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SysUserController</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> SysUserService sysUserService;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">SysUserController</span><span class="hljs-params">(SysUserService sysUserService)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.sysUserService = sysUserService;
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(value = &quot;/findAll&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">findAll</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> sysUserService.findAll();
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 分页查询用户信息.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> pageRequest</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@PostMapping(value = &quot;/findPage&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> HttpResult <span class="hljs-title">findPage</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> PageRequest pageRequest)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> HttpResult.ok(sysUserService.findPage(pageRequest));
+    &#125;
+
+&#125;</code></pre></div>
+
+<h4 id="10-分页查询接口测试"><a href="#10-分页查询接口测试" class="headerlink" title="10.分页查询接口测试"></a>10.分页查询接口测试</h4><p>访问swagger-ui接口, 进行测试:</p>
+<div class="hljs"><pre><code class="hljs bash">http://localhost:8001/swagger-ui.html</code></pre></div>
+
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pagehelper-findpage/01-swagger-ui.png" srcset="/img/loading.gif" alt="01-swagger-ui"></p>
+<p>查询结果:</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pagehelper-findpage/02-swagger-ui-pagehelper-result.png" srcset="/img/loading.gif" alt="02-swagger-ui-pagehelper-result"></p>
+<p><strong>PS: 本文仅为学习记录, 仅供参与!</strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/springboot/">springboot</a>
+                    
+                      <a class="hover-with-bg" href="/categories/springboot/pagehelper/">pagehelper</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pagehelper/">pagehelper</a>
+                    
+                      <a class="hover-with-bg" href="/tags/springboot/">springboot</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/20/weasyprint-pdf-started/">
+                        <span class="hidden-mobile">Python的weasyprint的PDF导出</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "spring-boot之分页请求封装&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

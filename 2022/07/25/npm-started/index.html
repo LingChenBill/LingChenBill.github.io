@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>Npm学习一 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2022-07-25 21:21">
+                    July 25, 2022 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    61
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="1-npm安装"><a href="#1-npm安装" class="headerlink" title="1. npm安装"></a>1. npm安装</h3><p>安装NodeJS, 下载地址:<code>http://nodejs.cn/download</code></p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 查看版本</span>
+node -v
+<span class="hljs-comment"># 选择已经安装好的node版本:</span>
+n
+
+<span class="hljs-comment"># 选择安装指定版本的node:</span>
+sudo n 15</code></pre></div>
+
+<p>mac或linux系统升级命令:</p>
+<div class="hljs"><pre><code class="hljs bash">sudo npm install npm -g</code></pre></div>
+
+<p>查看npm版本:</p>
+<div class="hljs"><pre><code class="hljs bash">npm -v</code></pre></div>
+
+<h3 id="2-安装webpack"><a href="#2-安装webpack" class="headerlink" title="2. 安装webpack"></a>2. 安装webpack</h3><p>安装打包工具webpack:</p>
+<div class="hljs"><pre><code class="hljs bash">sudo npm install webpack -g</code></pre></div>
+
+<h3 id="3-安装vue-cli"><a href="#3-安装vue-cli" class="headerlink" title="3. 安装vue-cli"></a>3. 安装vue-cli</h3><div class="hljs"><pre><code class="hljs bash">sudo npm install vue-cli -g
+
+sudo npm i -g @vue/cli-init
+
+卸载电脑中的vue-cli旧的版本:
+sudo npm uninstall -g @vue/cli
+sudo npm uninstall -g vue-cli
+
+安装:
+sudo npm install -g @vue/cli</code></pre></div>
+
+<p>安装淘宝镜像:</p>
+<div class="hljs"><pre><code class="hljs bash">npm install -g cnpm --registry=https://registry.npm.taobao.org</code></pre></div>
+
+<h3 id="4-安装Yarn"><a href="#4-安装Yarn" class="headerlink" title="4. 安装Yarn"></a>4. 安装Yarn</h3><div class="hljs"><pre><code class="hljs bash">sudo npm i yarn -g -verbose</code></pre></div>
+
+<p>将yarn切换成淘宝镜像:</p>
+<div class="hljs"><pre><code class="hljs bash">yarn config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org</code></pre></div>
+
+<p>Yarn命令:</p>
+<div class="hljs"><pre><code class="hljs bash">npm install
+-&gt;
+yarn install
+
+npm install --save [package]
+-&gt;
+yarn add [package]
+
+npm install --save-dev [package]
+-&gt;
+yarn add [package] --dev
+
+npm install --global [package]
+-&gt;
+yarn global add [package]
+
+npm uninstall --save [package]
+-&gt;
+yarn remove [package]
+
+npm uninstall --save-dev [package]
+-&gt;
+yarn remove [package]</code></pre></div>
+
+<h3 id="5-生成项目"><a href="#5-生成项目" class="headerlink" title="5. 生成项目"></a>5. 生成项目</h3><div class="hljs"><pre><code class="hljs bash">% vue init webpack mango-ui
+
+? Project name mango-ui
+? Project description mango ui
+? Author lingchen
+? Vue build standalone
+? Install vue-router? Yes
+? Use ESLint to lint your code? No
+? Set up unit tests No
+? Setup e2e tests with Nightwatch? No
+? Should we run `npm install` <span class="hljs-keyword">for</span> you after the project has been created? (recommended) yarn
+
+   vue-cli · Generated <span class="hljs-string">&quot;mango-ui&quot;</span>.
+
+% <span class="hljs-built_in">cd</span> mango-ui
+% yarn install
+yarn install v1.22.18
+[1/5] 🔍  Validating package.json...
+[2/5] 🔍  Resolving packages...
+success Already up-to-date.
+✨  Done <span class="hljs-keyword">in</span> 0.65s.</code></pre></div>
+
+<p>启动项目:</p>
+<div class="hljs"><pre><code class="hljs bash">npm run dev</code></pre></div>
+
+<h3 id="6-安装Element-ui"><a href="#6-安装Element-ui" class="headerlink" title="6. 安装Element-ui"></a>6. 安装Element-ui</h3><div class="hljs"><pre><code class="hljs bash">% yarn add element-ui</code></pre></div>
+
+<p>在<code>main.js</code>引入Element-ui</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> ElementUI <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;element-ui&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>
+
+Vue.config.productionTip = <span class="hljs-literal">false</span>
+
+Vue.use(ElementUI)</code></pre></div>
+
+<h3 id="7-安装SCSS"><a href="#7-安装SCSS" class="headerlink" title="7. 安装SCSS"></a>7. 安装SCSS</h3><div class="hljs"><pre><code class="hljs bash">yarn add sass-loader node-sass --dev
+注意版本:
+
+`<span class="hljs-string">&quot;sass-loader&quot;</span>: <span class="hljs-string">&quot;^7.1.0&quot;</span>,`
+
+`<span class="hljs-string">&quot;node-sass&quot;</span>: <span class="hljs-string">&quot;^4.11.0&quot;</span>,`</code></pre></div>
+
+<p>在build文件夹的<code>webpack.base.conf.js</code>的rules标签下添加配置:</p>
+<div class="hljs"><pre><code class="hljs javascript">rules: [
+  <span class="hljs-comment">// 配置scss.</span>
+  &#123;
+    test: <span class="hljs-regexp">/\.scss$/</span>,
+    loaders: [<span class="hljs-string">&#x27;style&#x27;</span>, <span class="hljs-string">&#x27;css&#x27;</span>, <span class="hljs-string">&#x27;sass&#x27;</span>]
+  &#125;,
+  ...
+]</code></pre></div>
+
+<p>在页面代码的<code>style</code>标签中把lang设置成scss, 即可:</p>
+<div class="hljs"><pre><code class="hljs vue">&lt;style lang&#x3D;&quot;sass&quot; scoped&gt;
+
+&lt;&#x2F;style&gt;</code></pre></div>
+
+<p><strong>错误</strong>: mac系统:安装sass-loader node-sass</p>
+<p><code>&quot;sass-loader&quot;: &quot;^7.1.0&quot;,</code></p>
+<p><code>&quot;node-sass&quot;: &quot;^4.11.0&quot;,</code></p>
+<div class="hljs"><pre><code class="hljs bash">gyp verb download using dist-url https://npmmirror.com/mirrors/node
+gyp verb check python checking <span class="hljs-keyword">for</span> Python executable <span class="hljs-string">&quot;python2&quot;</span> <span class="hljs-keyword">in</span> the PATH
+.......
+
+<span class="hljs-comment"># 安装python2, 到官网上下载python2</span>
+https://www.python.org/downloads/macos/
+
+下载:python-2.7.13-macosx10.6.pkg
+安装好, 配置path:
+vi ~/.bash_profile
+<span class="hljs-built_in">export</span> PYTHON2=/Library/Frameworks/Python.framework/Versions/2.7/bin
+<span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$PYTHON2</span>:<span class="hljs-variable">$PATH</span>
+<span class="hljs-built_in">source</span> ~/.bash_profile
+
+vi ~/.zshrc
+<span class="hljs-built_in">alias</span> python2=/Library/Frameworks/Python.framework/Versions/2.7/bin/python2
+<span class="hljs-built_in">source</span> ~/.zshrc
+
+sudo rm -rf $(xcode-select -p)
+sudo xcode-select --install
+
+再次运行:
+yarn install
+
+错误:
+node.js - error: no template named ‘remove_cv_t’ <span class="hljs-keyword">in</span> namespace ‘std’; did you mean ‘remove_cv’
+本机的node过高, node 版本要降级:15
+
+node -v
+v16.3.0
+
+降低版本:
+sudo n 15
+安装好, 查看node版本:
+node -v
+v15.14.0
+
+再次运行:
+yarn install
+能够安装好依赖!
+
+npm run dev
+启动工程, sass能够生效!</code></pre></div>
+
+<h3 id="8-安装axios"><a href="#8-安装axios" class="headerlink" title="8. 安装axios"></a>8. 安装axios</h3><div class="hljs"><pre><code class="hljs bash">yarn add axios@0.18.0</code></pre></div>
+
+<h3 id="9-安装mockjs"><a href="#9-安装mockjs" class="headerlink" title="9. 安装mockjs"></a>9. 安装mockjs</h3><div class="hljs"><pre><code class="hljs bash">yarn add mockjs@1.0.1-beta3 --dev</code></pre></div>
+
+<p>在<code>src</code>文件夹中新建一个<code>mock/mock.js</code></p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Mock <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mockjs&#x27;</span>
+
+Mock.mock(<span class="hljs-string">&#x27;http://localhost:8080/user&#x27;</span>, &#123;
+  <span class="hljs-comment">// 随机生成姓名.</span>
+  <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;@name&#x27;</span>,
+  <span class="hljs-comment">// 随机生成邮箱.</span>
+  <span class="hljs-string">&#x27;email&#x27;</span>: <span class="hljs-string">&#x27;@email&#x27;</span>,
+  <span class="hljs-comment">// 年龄在1~10岁之间.</span>
+  <span class="hljs-string">&#x27;age|1-10&#x27;</span>: <span class="hljs-number">5</span>,
+&#125;)
+
+Mock.mock(<span class="hljs-string">&#x27;http://localhost:8080/menu&#x27;</span>, &#123;
+  <span class="hljs-comment">// id自增.</span>
+  <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-string">&#x27;@increment&#x27;</span>,
+  <span class="hljs-comment">// 名称为menu.</span>
+  <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;menu&#x27;</span>,
+  <span class="hljs-comment">// 排序在1~20之间.</span>
+  <span class="hljs-string">&#x27;order|1-20&#x27;</span>: <span class="hljs-number">5</span>,
+&#125;)</code></pre></div>
+
+<p>在<code>Home.vue</code>中访问mock接口:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-title">getUser</span>(<span class="hljs-params"></span>)</span> &#123;
+  axios.get(<span class="hljs-string">&#x27;http://localhost:8080/user&#x27;</span>).then(
+    res =&gt; &#123;
+      alert(<span class="hljs-built_in">JSON</span>.stringify(res.data))
+    &#125;
+  )
+&#125;,
+<span class="hljs-function"><span class="hljs-title">getMenu</span>(<span class="hljs-params"></span>)</span> &#123;
+  axios.get(<span class="hljs-string">&#x27;http://localhost:8080/menu&#x27;</span>).then(
+    res =&gt; &#123;
+      alert(<span class="hljs-built_in">JSON</span>.stringify(res.data))
+    &#125;
+  )
+&#125;</code></pre></div>
+
+<p>mock会根据请求url拦截对应请求并返回模拟数据.</p>
+<h3 id="10-封装axios模块"><a href="#10-封装axios模块" class="headerlink" title="10. 封装axios模块"></a>10. 封装axios模块</h3><ul>
+<li>统一url配置.</li>
+<li>统一 api请求.</li>
+<li>request（请求）拦截器. 例如：带上token 等，设置请求头.</li>
+<li>response（响应）拦截器. 例如：统一错误处理，页面重定向等.</li>
+<li>根据需要，结合 vuex 做全局的loading 动画，或者错误处理.</li>
+<li>将axios 封装成 Vue 插件使用.</li>
+</ul>
+<p>安装<code>js-cookie</code>:</p>
+<div class="hljs"><pre><code class="hljs bash">yarn add js-cookie@2.2.0</code></pre></div>
+
+<p><code>src/utils/global.js</code>:</p>
+<p>全局的配置, 常量和方法放置在此文件中.</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 全局常量、方法封装模块.</span>
+<span class="hljs-comment"> * 通过原型挂载到Vue属性.</span>
+<span class="hljs-comment"> * 通过 this.Global 调用.</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">// 后台管理系统服务器地址.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> baseUrl = <span class="hljs-string">&#x27;http://localhost:8001&#x27;</span>
+<span class="hljs-comment">// 系统数据备份还原服务器地址.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> backupBaseUrl = <span class="hljs-string">&#x27;http://localhost:8002&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  baseUrl,
+  backupBaseUrl
+&#125;</code></pre></div>
+
+<h4 id="1-config-js"><a href="#1-config-js" class="headerlink" title="(1) .config.js"></a>(1) .config.js</h4><p>axios默认配置, 包含基础路径等信息.</p>
+<p><code>src/http/config.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; baseUrl &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/global&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  method: <span class="hljs-string">&#x27;get&#x27;</span>,
+  <span class="hljs-comment">// 基础url前缀.</span>
+  baseUrl: baseUrl,
+  <span class="hljs-comment">// 请求头信息.</span>
+  headers: &#123;
+    <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json;charset=UTF-8&#x27;</span>
+  &#125;,
+  <span class="hljs-comment">// 参数.</span>
+  data: &#123;&#125;,
+  <span class="hljs-comment">// 设置超时时间.</span>
+  timeout: <span class="hljs-number">10000</span>,
+  <span class="hljs-comment">// 携带凭证.</span>
+  withCredentials: <span class="hljs-literal">true</span>,
+  <span class="hljs-comment">// 返回数据类型.</span>
+  responseType: <span class="hljs-string">&#x27;json&#x27;</span>
+&#125;</code></pre></div>
+
+<h4 id="2-axios-js"><a href="#2-axios-js" class="headerlink" title="(2). axios.js"></a>(2). axios.js</h4><p>二次封装axios模块, 包含拦截器等信息.</p>
+<p><code>src/http/axios.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>
+<span class="hljs-keyword">import</span> config <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./config&#x27;</span>
+<span class="hljs-keyword">import</span> Cookies <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;js-cookie&#x27;</span>
+<span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/router&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">$axios</span>(<span class="hljs-params">options</span>) </span>&#123;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> instance = axios.create(&#123;
+      baseURL: config.baseUrl,
+      headers: config.headers,
+      timeout: config.timeout,
+      withCredentials: config.withCredentials
+    &#125;)
+
+    <span class="hljs-comment">// request请求拦截器.</span>
+    instance.interceptors.request.use(
+      config =&gt; &#123;
+        <span class="hljs-keyword">let</span> token = Cookies.get(<span class="hljs-string">&#x27;token&#x27;</span>)
+        <span class="hljs-keyword">if</span> (token) &#123;
+          <span class="hljs-comment">// 发送请求时携带token.</span>
+          config.headers.token = token
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          <span class="hljs-comment">// 重定向到登录页面.</span>
+          router.push(<span class="hljs-string">&#x27;/login&#x27;</span>)
+        &#125;
+
+        <span class="hljs-keyword">return</span> config
+      &#125;,
+      error =&gt; &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.reject(error)
+      &#125;
+    )
+
+    <span class="hljs-comment">// response响应拦截器.</span>
+    instance.interceptors.response.use(
+      response =&gt; &#123;
+        <span class="hljs-keyword">return</span> response.data
+      &#125;,
+      err =&gt; &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.reject(err)
+      &#125;
+    )
+
+    <span class="hljs-comment">// 请求处理.</span>
+    instance(options).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+      resolve(res)
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    &#125;).catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;
+      reject(error)
+    &#125;)
+  &#125;)
+&#125;</code></pre></div>
+
+<h4 id="3-api-js"><a href="#3-api-js" class="headerlink" title="(3). api.js"></a>(3). api.js</h4><p>请求接口汇总模块, 聚合所有模块API.</p>
+<p><code>src/http/api.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/*</span>
+<span class="hljs-comment"> * 接口统一集成模块.</span>
+<span class="hljs-comment"> * 此模块是一个聚合模块, 汇合modules目录下所有子模块的API.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> login  <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/login&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  login,
+&#125;</code></pre></div>
+
+<h4 id="4-index-js"><a href="#4-index-js" class="headerlink" title="(4). index.js"></a>(4). index.js</h4><p>将axios封装成插件, 按插件方式引入.</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// 导入所有接口.</span>
+<span class="hljs-keyword">import</span> api <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./api&#x27;</span>
+
+<span class="hljs-keyword">const</span> install = <span class="hljs-function"><span class="hljs-params">Vue</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (install.installed) &#123;
+    <span class="hljs-keyword">return</span>;
+  &#125;
+
+  install.instanlled = <span class="hljs-literal">true</span>
+  <span class="hljs-built_in">Object</span>.defineProperties(Vue.prototype, &#123;
+    <span class="hljs-comment">// 注意, 此处挂载在Vue原型的$api对象上.</span>
+    $api: &#123;
+      <span class="hljs-function"><span class="hljs-title">get</span>(<span class="hljs-params"></span>)</span> &#123;
+        <span class="hljs-keyword">return</span> api;
+      &#125;
+    &#125;
+  &#125;)
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> install</code></pre></div>
+
+<h4 id="5-modules文件夹"><a href="#5-modules文件夹" class="headerlink" title="(5). modules文件夹"></a>(5). modules文件夹</h4><p>用户管理, 菜单管理等子模块API.</p>
+<p><code>src/http/modules/login.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../axios&#x27;</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 系统登录模块.</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">// 登录</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> login = <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;login&#x27;</span>,
+    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data
+  &#125;)
+&#125;
+
+<span class="hljs-comment">// 登出.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> logout = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;logout&#x27;</span>,
+    method: <span class="hljs-string">&#x27;get&#x27;</span>
+  &#125;)
+&#125;</code></pre></div>
+
+<h4 id="6-main-js"><a href="#6-main-js" class="headerlink" title="(6). main.js"></a>(6). main.js</h4><p>修改<code>src/main.js</code>, 导入API模块, 并通过Vue.use(api)语句进行使用注册, 这样可以通过<code>this.$api.子模块.方法</code>的方式来调用后台接口了.</p>
+<p>引入<code>global</code>模块, 并通过<code>Vue.prototype.global = global</code>进行挂载, 可以通过<code>this.global.xxx</code>来获取全局配置了.</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// The Vue build version to load with the `import` command</span>
+<span class="hljs-comment">// (runtime-only or standalone) has been set in webpack.base.conf with an alias.</span>
+<span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App&#x27;</span>
+<span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./router&#x27;</span>
+<span class="hljs-keyword">import</span> api <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./http&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-built_in">global</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/global&#x27;</span>
+<span class="hljs-keyword">import</span> ElementUI <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;element-ui&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>
+
+<span class="hljs-comment">// 注册使用Element.</span>
+Vue.use(ElementUI)
+<span class="hljs-comment">// 注册使用API模块.</span>
+Vue.use(api)
+
+<span class="hljs-comment">// Vue.config.productionTip = false</span>
+<span class="hljs-comment">// 挂载全局配置模块.</span>
+Vue.prototype.global = <span class="hljs-built_in">global</span>
+
+<span class="hljs-comment">/* eslint-disable no-new */</span>
+<span class="hljs-keyword">new</span> Vue(&#123;
+  el: <span class="hljs-string">&#x27;#app&#x27;</span>,
+  router,
+  render: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> h(App)
+  <span class="hljs-comment">// components: &#123; App &#125;,</span>
+  <span class="hljs-comment">// template: &#x27;&lt;App/&gt;&#x27;</span>
+&#125;)</code></pre></div>
+
+<h3 id="11-封装mock模块"><a href="#11-封装mock模块" class="headerlink" title="11. 封装mock模块"></a>11. 封装mock模块</h3><p><code>index.js</code>是聚合模块, 统一导入所有子模块并通过调用mock进行数据模拟.</p>
+<p><code>src/mock/index.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Mock <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mockjs&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; baseUrl &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/global&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> login <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/login&#x27;</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> user <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/user&#x27;</span>
+
+<span class="hljs-comment">// 1.开启/关闭[所有模块]拦截, 通过调用[openMock参数]设置.</span>
+<span class="hljs-comment">// 2.开启/关闭[业务模块]拦截, 通过调用fnCreate方法[isOpen参数]设置.</span>
+<span class="hljs-comment">// 3.开启/关闭[业务模块中某个请求]拦截, 通过函数返回对象中的[isOpen属性]设置.</span>
+<span class="hljs-keyword">let</span> openMock = <span class="hljs-literal">true</span>
+<span class="hljs-comment">// let openMock = false</span>
+fnCreate(login, openMock)
+fnCreate(user, openMock)
+
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 创建mock模拟数据.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> </span>mod 模块.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;*&#125;</span> </span>isOpen 是否开启?</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fnCreate</span>(<span class="hljs-params">mod, isOpen = <span class="hljs-literal">true</span></span>) </span>&#123;
+  <span class="hljs-keyword">if</span> (isOpen) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> mod) &#123;
+      (<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;
+        <span class="hljs-keyword">if</span> (res.isOpen !== <span class="hljs-literal">false</span>) &#123;
+          <span class="hljs-keyword">let</span> url = baseUrl
+          <span class="hljs-keyword">if</span> (!url.endsWith(<span class="hljs-string">&#x27;/&#x27;</span>)) &#123;
+            url = url + <span class="hljs-string">&#x27;/&#x27;</span>
+          &#125;
+
+          url = url + res.url
+          Mock.mock(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(url), res.type, <span class="hljs-function">(<span class="hljs-params">opts</span>) =&gt;</span> &#123;
+            opts[<span class="hljs-string">&#x27;data&#x27;</span>] = opts.body ? <span class="hljs-built_in">JSON</span>.parse(opts.body) : <span class="hljs-literal">null</span>
+            <span class="hljs-keyword">delete</span> opts.body
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;\n&#x27;</span>)
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;%cmock拦截, 请求: &#x27;</span>, <span class="hljs-string">&#x27;color:blue&#x27;</span>, opts)
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;%cmock拦截, 响应: &#x27;</span>, <span class="hljs-string">&#x27;color:blue&#x27;</span>, res.data)
+            <span class="hljs-keyword">return</span> res.data
+          &#125;)
+        &#125;
+      &#125;)(mod[key]() || &#123;&#125;)
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<p><code>user.js</code>: mock的用户管理模块, 格式跟后台接口保持一致.</p>
+<p><code>src/mock/modules/user.js</code></p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户管理模块.</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">// 查询用户.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findUser</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">const</span> userFindData = &#123;
+    <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&quot;data&quot;</span>: &#123;
+      <span class="hljs-comment">// 随机生成姓名.</span>
+      <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;name&#x27;</span>,
+      <span class="hljs-comment">// 随机生成邮箱.</span>
+      <span class="hljs-string">&#x27;email&#x27;</span>: <span class="hljs-string">&#x27;email&#x27;</span>,
+      <span class="hljs-comment">// 年龄在1~10岁之间.</span>
+      <span class="hljs-string">&#x27;age&#x27;</span>: <span class="hljs-number">5</span>
+    &#125;
+  &#125;
+
+  <span class="hljs-keyword">return</span> &#123;
+    url: <span class="hljs-string">&#x27;user/find&#x27;</span>,
+    type: <span class="hljs-string">&#x27;get&#x27;</span>,
+    data: userFindData
+  &#125;
+&#125;
+
+<span class="hljs-comment">// 保存.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">save</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> &#123;
+    url: <span class="hljs-string">&#x27;user/save&#x27;</span>,
+    type: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data: &#123;
+      <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-number">1</span>
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-comment">// 批量删除.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">batchDelete</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> &#123;
+    url: <span class="hljs-string">&#x27;user/delete&#x27;</span>,
+    type: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data: &#123;
+      <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
+      <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">null</span>,
+      <span class="hljs-string">&quot;data&quot;</span>: <span class="hljs-number">1</span>
+    &#125;
+
+  &#125;
+&#125;
+
+<span class="hljs-comment">// 分页查询.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findPage</span>(<span class="hljs-params">params</span>) </span>&#123;
+  <span class="hljs-keyword">let</span> findPageData = &#123;
+    <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&quot;data&quot;</span>: &#123;&#125;
+  &#125;
+
+  <span class="hljs-keyword">let</span> pageNum = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">let</span> pageSize = <span class="hljs-number">8</span>
+
+  <span class="hljs-keyword">if</span> (params !== <span class="hljs-literal">null</span>) &#123;
+    <span class="hljs-comment">// pageNum = params.pageNum</span>
+  &#125;
+  <span class="hljs-keyword">if</span> (params !== <span class="hljs-literal">null</span>) &#123;
+    <span class="hljs-comment">// pageSize = params.pageSize</span>
+  &#125;
+
+  <span class="hljs-keyword">let</span> content = <span class="hljs-built_in">this</span>.getContent(pageNum, pageSize)
+  findPageData.data.pageNum = pageNum
+  findPageData.data.pageSize = pageSize
+  findPageData.data.totalSize = <span class="hljs-number">50</span>
+  findPageData.data.content = content
+
+  <span class="hljs-keyword">return</span> &#123;
+    url: <span class="hljs-string">&#x27;user/findPage&#x27;</span>,
+    type: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data: findPageData
+  &#125;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getContent</span>(<span class="hljs-params">pageNum, pageSize</span>) </span>&#123;
+  <span class="hljs-keyword">let</span> content = []
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; pageSize; i++) &#123;
+    <span class="hljs-keyword">let</span> obj = &#123;&#125;
+    <span class="hljs-keyword">let</span> index = ((pageNum - <span class="hljs-number">1</span>) * pageSize) + i + <span class="hljs-number">1</span>
+    obj.id = index
+    obj.name = <span class="hljs-string">&#x27;mango&#x27;</span> + index
+    obj.password = <span class="hljs-string">&#x27;9ec9750e709431dad22365cabc5c625482e574c74adaebba7dd02f1129e4ce1d&#x27;</span>
+    obj.salt = <span class="hljs-string">&#x27;YzcmCZNvbXocrsz9dm8e&#x27;</span>
+    obj.email = <span class="hljs-string">&#x27;mango&#x27;</span> + index + <span class="hljs-string">&#x27;@123.com&#x27;</span>
+    obj.mobile = <span class="hljs-string">&#x27;18688982323&#x27;</span>
+    obj.status = <span class="hljs-number">1</span>
+    obj.deptId = <span class="hljs-number">12</span>
+    obj.deptName = <span class="hljs-string">&#x27;技术部&#x27;</span>
+    <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>) &#123;
+      obj.deptId = <span class="hljs-number">13</span>
+      obj.deptName = <span class="hljs-string">&#x27;市场部&#x27;</span>
+    &#125;
+    obj.createBy= <span class="hljs-string">&#x27;admin&#x27;</span>
+    obj.createTime= <span class="hljs-string">&#x27;2018-08-14 11:11:11&#x27;</span>
+    obj.createBy= <span class="hljs-string">&#x27;admin&#x27;</span>
+    obj.createTime= <span class="hljs-string">&#x27;2018-09-14 12:12:12&#x27;</span>
+
+    content.push(obj)
+  &#125;
+
+  <span class="hljs-keyword">return</span> content
+&#125;
+
+<span class="hljs-comment">// 查找用户的菜单权限标识集合.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findPermissions</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">let</span> permsData = &#123;
+    <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>,
+    <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&quot;data&quot;</span>: [
+      <span class="hljs-literal">null</span>,
+      <span class="hljs-string">&quot;sys:user:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:menu:delete&quot;</span>,
+      <span class="hljs-string">&quot;sys:dept:edit&quot;</span>,
+      <span class="hljs-string">&quot;sys:dict:edit&quot;</span>,
+      <span class="hljs-string">&quot;sys:dict:delete&quot;</span>,
+      <span class="hljs-string">&quot;sys:menu:add&quot;</span>,
+      <span class="hljs-string">&quot;sys:user:add&quot;</span>,
+      <span class="hljs-string">&quot;sys:log:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:dept:delete&quot;</span>,
+      <span class="hljs-string">&quot;sys:role:edit&quot;</span>,
+      <span class="hljs-string">&quot;sys:role:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:dict:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:user:edit&quot;</span>,
+      <span class="hljs-string">&quot;sys:user:delete&quot;</span>,
+      <span class="hljs-string">&quot;sys:dept:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:dept:add&quot;</span>,
+      <span class="hljs-string">&quot;sys:role:delete&quot;</span>,
+      <span class="hljs-string">&quot;sys:menu:view&quot;</span>,
+      <span class="hljs-string">&quot;sys:menu:edit&quot;</span>,
+      <span class="hljs-string">&quot;sys:dict:add&quot;</span>,
+      <span class="hljs-string">&quot;sys:role:add&quot;</span>
+    ]
+  &#125;
+
+  <span class="hljs-keyword">return</span> &#123;
+    url: <span class="hljs-string">&#x27;user/findPermissions&#x27;</span>,
+    type: <span class="hljs-string">&#x27;get&#x27;</span>,
+    data: permsData
+  &#125;
+&#125;</code></pre></div>
+
+<p>前台访问接口:</p>
+<p><code>src/http/modules/user.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../axios&#x27;</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户管理模块.</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">// 查询用户.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> findUser = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;/user/find&#x27;</span>,
+    method: <span class="hljs-string">&#x27;get&#x27;</span>
+  &#125;)
+&#125;
+
+<span class="hljs-comment">// 保存.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> save = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;/user/save&#x27;</span>,
+    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data
+  &#125;)
+&#125;
+
+<span class="hljs-comment">// 删除.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> batchDelete = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;/user/delete&#x27;</span>,
+    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data
+  &#125;)
+&#125;
+
+<span class="hljs-comment">// 分页查询.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> findPage = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;/user/findPage&#x27;</span>,
+    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+    data
+  &#125;)
+&#125;
+
+<span class="hljs-comment">// 查找用户的菜单权限标识集合.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> findPermissions = <span class="hljs-function">(<span class="hljs-params">params</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">return</span> axios(&#123;
+    url: <span class="hljs-string">&#x27;/user/findPermissions&#x27;</span>,
+    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+    params
+  &#125;)
+&#125;</code></pre></div>
+
+<p><code>src/http/api.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/*</span>
+<span class="hljs-comment"> * 接口统一集成模块.</span>
+<span class="hljs-comment"> * 此模块是一个聚合模块, 汇合modules目录下所有子模块的API.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> login  <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/login&#x27;</span>
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> user <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/user&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  login,
+  user,
+&#125;</code></pre></div>
+
+<p>前台访问方式:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>
+<span class="hljs-comment">// import mock from &#x27;@/mock/mock.js&#x27;</span>
+<span class="hljs-keyword">import</span> mock <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/mock/index.js&#x27;</span>
+<span class="hljs-keyword">import</span> &#123; findUser &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../http/modules/user&#x27;</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  name: <span class="hljs-string">&#x27;Home&#x27;</span>,
+  methods: &#123;
+    <span class="hljs-function"><span class="hljs-title">getUser</span>(<span class="hljs-params"></span>)</span> &#123;
+      <span class="hljs-built_in">this</span>.$api.user.findUser().then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+        alert(<span class="hljs-built_in">JSON</span>.stringify(res.data))
+      &#125;)
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<h3 id="12-安装第三方图标库"><a href="#12-安装第三方图标库" class="headerlink" title="12. 安装第三方图标库"></a>12. 安装第三方图标库</h3><p>Font Awesome提供了可缩放的矢量图标.</p>
+<p>安装依赖:</p>
+<div class="hljs"><pre><code class="hljs bash">yarn add font-awesome@4.7.0</code></pre></div>
+
+<p>项目引入:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;font-awesome/css/font-awesome.min.css&#x27;</span></code></pre></div>
+
+<p>页面引入:</p>
+<div class="hljs"><pre><code class="hljs vue">&lt;li class&#x3D;&quot;fa fa-home fa-lg&quot;&gt;&lt;&#x2F;li&gt;</code></pre></div>
+
+<h3 id="13-多语言国际化"><a href="#13-多语言国际化" class="headerlink" title="13. 多语言国际化"></a>13. 多语言国际化</h3><p>安装依赖:</p>
+<div class="hljs"><pre><code class="hljs javascript">yarn add vue-i18n@<span class="hljs-number">8.7</span><span class="hljs-number">.0</span></code></pre></div>
+
+<p>添加配置:</p>
+<p><code>src/i18n/index.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>
+<span class="hljs-keyword">import</span> VueI18n <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue-i18n&#x27;</span>
+
+Vue.use(VueI18n)
+
+<span class="hljs-comment">// 注册i18n实例并引入语言文件, 文件格式等一下解析.</span>
+<span class="hljs-keyword">const</span> i18n = <span class="hljs-keyword">new</span> VueI18n(&#123;
+  locale: <span class="hljs-string">&#x27;zh_cn&#x27;</span>,
+  messages: &#123;
+    <span class="hljs-string">&#x27;zh_cn&#x27;</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@/assets/languages/zh_cn.json&#x27;</span>),
+    <span class="hljs-string">&#x27;en_us&#x27;</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@/assets/languages/en_us.json&#x27;</span>)
+  &#125;
+&#125;)
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> i18n</code></pre></div>
+
+<p>添加静态国际化文件:</p>
+<p><code>src/assets/languages/en_us.json</code>:</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;common&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;home&quot;</span>: <span class="hljs-string">&quot;Home&quot;</span>,
+    <span class="hljs-attr">&quot;login&quot;</span>: <span class="hljs-string">&quot;Login&quot;</span>,
+    <span class="hljs-attr">&quot;logout&quot;</span>: <span class="hljs-string">&quot;Logout&quot;</span>,
+    <span class="hljs-attr">&quot;doc&quot;</span>: <span class="hljs-string">&quot;Document&quot;</span>,
+    <span class="hljs-attr">&quot;blog&quot;</span>: <span class="hljs-string">&quot;Blog&quot;</span>,
+    <span class="hljs-attr">&quot;projectRepo&quot;</span>: <span class="hljs-string">&quot;Project&quot;</span>,
+    <span class="hljs-attr">&quot;myMsg&quot;</span>: <span class="hljs-string">&quot;My Message&quot;</span>,
+    <span class="hljs-attr">&quot;config&quot;</span>: <span class="hljs-string">&quot;Config&quot;</span>,
+    <span class="hljs-attr">&quot;backup&quot;</span>: <span class="hljs-string">&quot;Backup&quot;</span>,
+    <span class="hljs-attr">&quot;restore&quot;</span>: <span class="hljs-string">&quot;Restore&quot;</span>,
+    <span class="hljs-attr">&quot;backupRestore&quot;</span>: <span class="hljs-string">&quot;Backup Restore&quot;</span>,
+    <span class="hljs-attr">&quot;versionName&quot;</span>: <span class="hljs-string">&quot;Version&quot;</span>,
+    <span class="hljs-attr">&quot;exit&quot;</span>: <span class="hljs-string">&quot;Exit&quot;</span>
+  &#125;,
+  <span class="hljs-attr">&quot;action&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;operation&quot;</span>: <span class="hljs-string">&quot;Operation&quot;</span>,
+    <span class="hljs-attr">&quot;add&quot;</span>: <span class="hljs-string">&quot;Add&quot;</span>,
+    <span class="hljs-attr">&quot;edit&quot;</span>: <span class="hljs-string">&quot;Edit&quot;</span>,
+    <span class="hljs-attr">&quot;delete&quot;</span>: <span class="hljs-string">&quot;Delete&quot;</span>,
+    <span class="hljs-attr">&quot;batchDelete&quot;</span>: <span class="hljs-string">&quot;Batch Delete&quot;</span>,
+    <span class="hljs-attr">&quot;search&quot;</span>: <span class="hljs-string">&quot;Search&quot;</span>,
+    <span class="hljs-attr">&quot;loading&quot;</span>: <span class="hljs-string">&quot;loading&quot;</span>,
+    <span class="hljs-attr">&quot;submit&quot;</span>: <span class="hljs-string">&quot;Submit&quot;</span>,
+    <span class="hljs-attr">&quot;comfirm&quot;</span>: <span class="hljs-string">&quot;Comfirm&quot;</span>,
+    <span class="hljs-attr">&quot;cancel&quot;</span>: <span class="hljs-string">&quot;Cancel&quot;</span>,
+    <span class="hljs-attr">&quot;reset&quot;</span>: <span class="hljs-string">&quot;Reset&quot;</span>
+  &#125;
+&#125;</code></pre></div>
+
+<p><code>src/assets/languages/zh_cn.json</code>:</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;common&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;home&quot;</span>: <span class="hljs-string">&quot;首页&quot;</span>,
+    <span class="hljs-attr">&quot;login&quot;</span>: <span class="hljs-string">&quot;登录&quot;</span>,
+    <span class="hljs-attr">&quot;logout&quot;</span>: <span class="hljs-string">&quot;退出登录&quot;</span>,
+    <span class="hljs-attr">&quot;doc&quot;</span>: <span class="hljs-string">&quot;文档&quot;</span>,
+    <span class="hljs-attr">&quot;blog&quot;</span>: <span class="hljs-string">&quot;博客&quot;</span>,
+    <span class="hljs-attr">&quot;projectRepo&quot;</span>: <span class="hljs-string">&quot;项目&quot;</span>,
+    <span class="hljs-attr">&quot;myMsg&quot;</span>: <span class="hljs-string">&quot;我的消息&quot;</span>,
+    <span class="hljs-attr">&quot;config&quot;</span>: <span class="hljs-string">&quot;系统配置&quot;</span>,
+    <span class="hljs-attr">&quot;backup&quot;</span>: <span class="hljs-string">&quot;备份&quot;</span>,
+    <span class="hljs-attr">&quot;restore&quot;</span>: <span class="hljs-string">&quot;还原&quot;</span>,
+    <span class="hljs-attr">&quot;backupRestore&quot;</span>: <span class="hljs-string">&quot;备份还原&quot;</span>,
+    <span class="hljs-attr">&quot;versionName&quot;</span>: <span class="hljs-string">&quot;版本名称&quot;</span>,
+    <span class="hljs-attr">&quot;exit&quot;</span>: <span class="hljs-string">&quot;退出&quot;</span>
+  &#125;,
+  <span class="hljs-attr">&quot;action&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;operation&quot;</span>: <span class="hljs-string">&quot;操作&quot;</span>,
+    <span class="hljs-attr">&quot;add&quot;</span>: <span class="hljs-string">&quot;新增&quot;</span>,
+    <span class="hljs-attr">&quot;edit&quot;</span>: <span class="hljs-string">&quot;编辑&quot;</span>,
+    <span class="hljs-attr">&quot;delete&quot;</span>: <span class="hljs-string">&quot;删除&quot;</span>,
+    <span class="hljs-attr">&quot;batchDelete&quot;</span>: <span class="hljs-string">&quot;批量删除&quot;</span>,
+    <span class="hljs-attr">&quot;search&quot;</span>: <span class="hljs-string">&quot;查询&quot;</span>,
+    <span class="hljs-attr">&quot;loading&quot;</span>: <span class="hljs-string">&quot;拼命加载中&quot;</span>,
+    <span class="hljs-attr">&quot;submit&quot;</span>: <span class="hljs-string">&quot;提交&quot;</span>,
+    <span class="hljs-attr">&quot;comfirm&quot;</span>: <span class="hljs-string">&quot;确定&quot;</span>,
+    <span class="hljs-attr">&quot;cancel&quot;</span>: <span class="hljs-string">&quot;取消&quot;</span>,
+    <span class="hljs-attr">&quot;reset&quot;</span>: <span class="hljs-string">&quot;重置&quot;</span>
+  &#125;
+&#125;</code></pre></div>
+
+<p>在main.js中引入i18n:</p>
+<p><code>src/main.js</code>:</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> i18n <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./i18n&#x27;</span>
+
+<span class="hljs-keyword">new</span> Vue(&#123;
+  el: <span class="hljs-string">&#x27;#app&#x27;</span>,
+  i18n,
+  router,
+  render: <span class="hljs-function"><span class="hljs-params">h</span> =&gt;</span> h(App)
+  <span class="hljs-comment">// components: &#123; App &#125;,</span>
+  <span class="hljs-comment">// template: &#x27;&lt;App/&gt;&#x27;</span>
+&#125;)</code></pre></div>
+
+<p>字符引用</p>
+<p><code>src/views/Home.vue</code>:</p>
+<p>通过<code>this.$i18n.locale = lang</code>方式就可以全局切换语言, Vue框架会根据locale的值ygbc</p>
+<div class="hljs"><pre><code class="hljs vue">&lt;template&gt;
+  &lt;div class&#x3D;&quot;page&quot;&gt;
+    &lt;h2&gt;Home Page&lt;&#x2F;h2&gt;
+
+    &lt;h3&gt;&#123;&#123;$t(&#39;common.doc&#39;)&#125;&#125;&lt;&#x2F;h3&gt;
+    &lt;el-button type&#x3D;&quot;success&quot; @click&#x3D;&quot;changeLanguage(&#39;zh_cn&#39;)&quot;&gt;简体中文&lt;&#x2F;el-button&gt;
+    &lt;el-button type&#x3D;&quot;success&quot; @click&#x3D;&quot;changeLanguage(&#39;en_us&#39;)&quot;&gt;English&lt;&#x2F;el-button&gt;
+
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;template&gt;
+
+    &#x2F;&#x2F; 语言切换.
+    changeLanguage(lang) &#123;
+      lang &#x3D;&#x3D;&#x3D; &#39;&#39; ? &#39;zh_cn&#39; : lang
+      this.$i18n.locale &#x3D; lang
+      this.langVisible &#x3D; false
+    &#125;</code></pre></div>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/npm/">npm</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/npm/">npm</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/13/pmp-sprint/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">pmp-冲刺</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/10/spring-security-inited/">
+                        <span class="hidden-mobile">spring-security学习记录一</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Npm学习一&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

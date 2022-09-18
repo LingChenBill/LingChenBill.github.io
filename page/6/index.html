@@ -157,6 +157,87 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
+
+      <a href="/2020/09/29/k8s-job/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+7_应用编排与管理_Job和DaemonSet一、Job需求来源Job 背景问题首先我们来看一下 Job 的需求来源。我们知道 K8s 里面，最小的调度单元是 Pod，我们可以直接通过 Pod 来运行任务进程。这样做将会产生以下几种问题：
+
+我们如何保证 Pod 内进程正确的结束？
+如何保证进程运行失败后重试？
+如何管理多个任务，且任务之间有依赖关系？
+如何并行地运行任务，并管理任务的</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-09-29
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/job/">job</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/09/28/6-k8s-deployment/">6_应用编排与管理:Deployment</a>
+
+      <a href="/2020/09/28/6-k8s-deployment/" class="index-excerpt">
+        
+        
+          
+        
+        <div>6_应用编排与管理:Deployment一、需求来源背景问题首先，我们来看一下背景问题。如下图所示：如果我们直接管理集群中所有的 Pod，应用 A、B、C 的 Pod，其实是散乱地分布在集群中。
+
+现在有以下的问题： 
+
+首先，如何保证集群内可用 Pod 的数量？也就是说我们应用 A 四个 Pod 如果出现了一些宿主机故障，或者一些网络问题，如何能保证它可用的数量？
+如何为所有 Pod 更新镜像版</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-09-28
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/deployment/">deployment</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/09/27/app-arrange-theory/">5_应用编排与管理：核心原理</a>
 
       <a href="/2020/09/27/app-arrange-theory/" class="index-excerpt">
@@ -477,107 +558,6 @@ latest: Pulling from library/busybo</div>
               <a href="/tags/ssh/">ssh</a>
             
               <a href="/tags/os/">os</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/22/docker-dockfile-nginx/" target="_self">
-          <img src="/docker-dockfile-nginx/banner.png" srcset="/img/loading.gif" alt="Docker之Dockfile的nginx构建">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/22/docker-dockfile-nginx/">Docker之Dockfile的nginx构建</a>
-
-      <a href="/2020/06/22/docker-dockfile-nginx/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Docker之Dockfile的nginx构建
-Dockerfile由一行行命令语句组成，并且支持以#开头的注释行。Dockerfile分为四个部分：
-
-基础镜像信息
-维护者信息
-镜像操作指令
-容器启动时执行指令
-
-指令指令的一般格式是INSTRUCTION arguments
-1、FROM
-格式为FROM &lt;image&gt;或 FROM &lt;image&gt;:&lt;tag&gt;</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-22
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/dockerfile/">dockerfile</a>
-            
-              <a href="/tags/nginx/">nginx</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/04/net-mvc-webapp/" target="_self">
-          <img src="/net-mvc-webapp/banner.png" srcset="/img/loading.gif" alt="创建MVC的WebApp">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/04/net-mvc-webapp/">创建MVC的WebApp</a>
-
-      <a href="/2020/06/04/net-mvc-webapp/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-创建MVC的WebApp１、MVC新規
-OK ー＞　MVC　－＞　次へ、工程自動生成成功。起動工程（F5），可能會報錯如下：
-&#x27;/&#x27; アプリケーションでサーバー エラーが発生しました。
-
-ファイルまたはアセンブリ &#x27;Newtonsoft.Json&#x27;、またはその依存関係の 1 つが読み込めませんでした。見つかったアセンブリのマニフェスト定義はアセン</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-04
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/webapp/">webapp</a>
-            
-              <a href="/tags/mvc/">mvc</a>
-            
-              <a href="/tags/net/">net</a>
             
           </div>
         

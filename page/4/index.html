@@ -157,6 +157,99 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/19/flink-yarn-started/">Flink的yarn模式</a>
+
+      <a href="/2021/01/19/flink-yarn-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Flink的yarn模式1.前提环境准备:
+
+三个虚拟节点(Host名设定, 免密登录)
+与主机网络互通
+Flink版本:flink-1.10.1-bin-scala_2.12
+Hadoop版本:hadoop-3.2.1
+wordcount的jar包
+flink-shaded-hadoop-2-uber-2.8.3-10.0.jar(路径:/opt/flink/lib)
+
+2.启动ha</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-19
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/yarn/">yarn</a>
+            
+              <a href="/tags/Flink/">Flink</a>
+            
+              <a href="/tags/linux/">linux</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/17/Flink-standalone-started/">Flink的Standalone模式安装</a>
+
+      <a href="/2021/01/17/Flink-standalone-started/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Flink的Standalone模式安装1.前提环境准备:
+
+三个虚拟节点(Host名设定, 免密登录)
+与主机网络互通
+Flink版本:flink-1.10.1-bin-scala_2.12
+
+2.Flink安装解压文件:
+[root@hdss7-71 src]# tar -zxvf flink-1.10.1-bin-scala_2.12.tgz -C /opt/
+[root@hds</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-17
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Flink/">Flink</a>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/rsync/">rsync</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/08/spark-yarn-start/">Spark的yarn模式</a>
 
       <a href="/2021/01/08/spark-yarn-start/" class="index-excerpt">
@@ -505,99 +598,6 @@ CONTAINER ID        IMAGE                         </div>
               <a href="/tags/docker/">docker</a>
             
               <a href="/tags/keycloak/">keycloak</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/12/21/graylog-install/">Graylog安装</a>
-
-      <a href="/2020/12/21/graylog-install/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Graylog安装1.使用Docker安装Graylog安装mongodb:
-% docker run --name mongo -d mongo:4.2
-安装elasticsearch:
-% docker run --name elasticsearch \
-    -e &quot;http.host=0.0.0.0&quot; \
-    -e &quot;discovery.t</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-12-21
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/graylog/">graylog</a>
-            
-              <a href="/tags/mongodb/">mongodb</a>
-            
-              <a href="/tags/es/">es</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/12/18/first-serverless-program/" target="_self">
-          <img src="/first-serverless-program/banner.png" srcset="/img/loading.gif" alt="第一个serverless程序">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/12/18/first-serverless-program/">第一个serverless程序</a>
-
-      <a href="/2020/12/18/first-serverless-program/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-第一个serverless程序1.注册用户进入阿里云云开发平台,登录用户.
-https://workbench.aliyun.com
-
-创建空白应用,本例以NodeJs和FC计算服务为例.
-
-点击应用卡片上的开发部署按钮,进入云端CloudIDE.
-
-2.编辑程序查看readme.md,查看帮助编辑helloworld.js
-module.exports.handler = funct</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-12-18
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/aliyun/">aliyun</a>
-            
-              <a href="/tags/serverless/">serverless</a>
             
           </div>
         

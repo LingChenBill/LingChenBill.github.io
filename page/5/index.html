@@ -157,6 +157,99 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/21/graylog-install/">Graylog安装</a>
+
+      <a href="/2020/12/21/graylog-install/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Graylog安装1.使用Docker安装Graylog安装mongodb:
+% docker run --name mongo -d mongo:4.2
+安装elasticsearch:
+% docker run --name elasticsearch \
+    -e &quot;http.host=0.0.0.0&quot; \
+    -e &quot;discovery.t</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-21
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/graylog/">graylog</a>
+            
+              <a href="/tags/mongodb/">mongodb</a>
+            
+              <a href="/tags/es/">es</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/12/18/first-serverless-program/" target="_self">
+          <img src="/first-serverless-program/banner.png" srcset="/img/loading.gif" alt="第一个serverless程序">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2020/12/18/first-serverless-program/">第一个serverless程序</a>
+
+      <a href="/2020/12/18/first-serverless-program/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+第一个serverless程序1.注册用户进入阿里云云开发平台,登录用户.
+https://workbench.aliyun.com
+
+创建空白应用,本例以NodeJs和FC计算服务为例.
+
+点击应用卡片上的开发部署按钮,进入云端CloudIDE.
+
+2.编辑程序查看readme.md,查看帮助编辑helloworld.js
+module.exports.handler = funct</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-18
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/aliyun/">aliyun</a>
+            
+              <a href="/tags/serverless/">serverless</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/12/11/aliyun-docker-micro/">Docker微服务镜像推送至阿里云</a>
 
       <a href="/2020/12/11/aliyun-docker-micro/" class="index-excerpt">
@@ -488,87 +581,6 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
               <a href="/tags/k8s/">k8s</a>
             
               <a href="/tags/config/">config</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
-
-      <a href="/2020/09/29/k8s-job/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-7_应用编排与管理_Job和DaemonSet一、Job需求来源Job 背景问题首先我们来看一下 Job 的需求来源。我们知道 K8s 里面，最小的调度单元是 Pod，我们可以直接通过 Pod 来运行任务进程。这样做将会产生以下几种问题：
-
-我们如何保证 Pod 内进程正确的结束？
-如何保证进程运行失败后重试？
-如何管理多个任务，且任务之间有依赖关系？
-如何并行地运行任务，并管理任务的</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-29
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/job/">job</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/28/6-k8s-deployment/">6_应用编排与管理:Deployment</a>
-
-      <a href="/2020/09/28/6-k8s-deployment/" class="index-excerpt">
-        
-        
-          
-        
-        <div>6_应用编排与管理:Deployment一、需求来源背景问题首先，我们来看一下背景问题。如下图所示：如果我们直接管理集群中所有的 Pod，应用 A、B、C 的 Pod，其实是散乱地分布在集群中。
-
-现在有以下的问题： 
-
-首先，如何保证集群内可用 Pod 的数量？也就是说我们应用 A 四个 Pod 如果出现了一些宿主机故障，或者一些网络问题，如何能保证它可用的数量？
-如何为所有 Pod 更新镜像版</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-28
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/deployment/">deployment</a>
             
           </div>
         

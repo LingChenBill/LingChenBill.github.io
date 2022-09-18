@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>re-正则表达式-01</title>
+      <link href="2022/09/18/re-sample-01/"/>
+      <url>2022/09/18/re-sample-01/</url>
+      
+        <content type="html"><![CDATA[<p>[TOC]</p><h3 id="re-正则表达式-01"><a href="#re-正则表达式-01" class="headerlink" title="re-正则表达式-01"></a>re-正则表达式-01</h3><h4 id="1-分隔空格"><a href="#1-分隔空格" class="headerlink" title="1.分隔空格,;"></a>1.分隔空格,;</h4><pre><code class="hljs python">asdf fjdk; afed, fjek,asdf, foo</code></pre><p>匹配符:</p><pre><code class="hljs bash">[;,\s]\s*</code></pre><p>匹配结果:</p><pre><code class="hljs python">line = <span class="hljs-string">&#x27;asdf fjdk; afed, fjek,asdf, foo&#x27;</span>s = re.split(<span class="hljs-string">r&#x27;[;,\s]\s*&#x27;</span>, line)print(<span class="hljs-string">&#x27;re split: &#x27;</span>, s)结果:re split:  [<span class="hljs-string">&#x27;asdf&#x27;</span>, <span class="hljs-string">&#x27;fjdk&#x27;</span>, <span class="hljs-string">&#x27;afed&#x27;</span>, <span class="hljs-string">&#x27;fjek&#x27;</span>, <span class="hljs-string">&#x27;asdf&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>]</code></pre><p>函数 re.split() 是非常实用的，因为它允许你为分隔符指定多个正则模式.<br>比如， 在上面的例子中，分隔符可以是逗号，分号或者是空格，并且后面紧跟着任意个的空格.<br>只要这个模式被找到，那么匹配的分隔符两边的实体都会被当成是结果中的元素返回.</p><h4 id="2-括号捕获分组"><a href="#2-括号捕获分组" class="headerlink" title="2.括号捕获分组"></a>2.括号捕获分组</h4><p>使用 re.split() 函数时候，需要特别注意的是正则表达式中是否包含一个括号捕获分组.<br>如果使用了捕获分组，那么被匹配的文本也将出现在结果列表中.</p><p>匹配符:</p><pre><code class="hljs bash">(;|,|\s)\s*</code></pre><p>匹配结果:</p><pre><code class="hljs python">line = <span class="hljs-string">&#x27;asdf fjdk; afed, fjek,asdf, foo&#x27;</span>fields = re.split(<span class="hljs-string">r&#x27;(;|,|\s)\s*&#x27;</span>, line)print(<span class="hljs-string">&#x27;re split (): &#x27;</span>, fields)结果:re split ():  [<span class="hljs-string">&#x27;asdf&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;fjdk&#x27;</span>, <span class="hljs-string">&#x27;;&#x27;</span>, <span class="hljs-string">&#x27;afed&#x27;</span>, <span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;fjek&#x27;</span>, <span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;asdf&#x27;</span>, <span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>]</code></pre><h4 id="3-非捕获分组"><a href="#3-非捕获分组" class="headerlink" title="3.非捕获分组"></a>3.非捕获分组</h4><p>不想保留分割字符串到结果列表中去，但仍然需要使用到括号来分组正则表达式的话，<br>确保你的分组是<u><strong>非捕获分组</strong></u>，形如 <code>(?:...)</code></p><p>匹配符:</p><pre><code class="hljs bash">(;|,|\s)\s*</code></pre><p>匹配结果:</p><pre><code class="hljs python">line = <span class="hljs-string">&#x27;asdf fjdk; afed, fjek,asdf, foo&#x27;</span>a = re.split(<span class="hljs-string">r&#x27;(?:,|;|\s)\s*&#x27;</span>, line)print(<span class="hljs-string">&#x27;re split ?: &#x27;</span>, a)结果:re split ?:  [&#x27;asdf&#x27;, &#x27;fjdk&#x27;, &#x27;afed&#x27;, &#x27;fjek&#x27;, &#x27;asdf&#x27;, &#x27;foo&#x27;]</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> framework </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> framework </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>架构-01</title>
+      <link href="2022/09/15/framework-01/"/>
+      <url>2022/09/15/framework-01/</url>
+      
+        <content type="html"><![CDATA[<p>[TOC]</p><p><u><strong>PS: 本文为学习记录, 仅供参考使用.</strong></u></p><h3 id="架构-01"><a href="#架构-01" class="headerlink" title="架构-01"></a>架构-01</h3><h4 id="1-学习方针"><a href="#1-学习方针" class="headerlink" title="1. 学习方针"></a>1. 学习方针</h4><ul><li>空杯心态</li><li>坚持学习</li><li>深度思考, 刻意练习</li><li>35岁之前靠智力, 35岁之后靠体力</li></ul><h4 id="2-知识目标"><a href="#2-知识目标" class="headerlink" title="2. 知识目标"></a>2. 知识目标</h4><ul><li>互联网三高架构演进之道</li><li>单体架构设计与实践</li><li>面向服务架构设计与实践</li><li>水平分层架构设计与实践</li><li>微服务架构设计与实践</li><li>服务网络架构设计与实践</li><li>大中台化架构设计与实践</li><li>云原生架构设计与实践</li><li>线上真实案例演进实践</li></ul><h3 id="3-架构"><a href="#3-架构" class="headerlink" title="3. 架构"></a>3. 架构</h3><p>架构:</p><ul><li>对业务场景抽象后得出的支撑骨架<ul><li>业务复杂度 / 数据规模大小 / 人员技术研发能力 / 时间成本 / 运维能力</li></ul></li><li>最适合”架构都是各方面折中(Balance)”的结果<ul><li>降本增效</li></ul></li></ul><p>一切脱离业务场景谈架构, 都是耍流氓</p><p>一切脱离场景谈架构, 都是耍流氓</p><p>场景驱动架构不断演进</p><p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/framework-01/001.png" alt="001"></p><p><code>1:22</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> framework </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> framework </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>pmp-冲刺</title>
       <link href="2022/08/13/pmp-sprint/"/>
       <url>2022/08/13/pmp-sprint/</url>

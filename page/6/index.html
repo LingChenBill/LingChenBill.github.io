@@ -157,6 +157,167 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/04/k8s-app-status/">11_可观测性_你的应用健康</a>
+
+      <a href="/2020/10/04/k8s-app-status/" class="index-excerpt">
+        
+        
+          
+        
+        <div>11_可观测性_你的应用健康一、需求来源首先来看一下，整个需求的来源：当把应用迁移到 Kubernetes 之后，要如何去保障应用的健康与稳定呢？其实很简单，可以从两个方面来进行增强： 
+
+首先是提高应用的可观测性。
+提高应用的可恢复能力。
+
+从可观测性上来讲，可以在三个方面来去做增强：
+
+首先是应用的健康状态上面，可以实时地进行观测；
+第二个是可以获取应用的资源使用情况；
+第三个是可以拿到应用的</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-04
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/status/">status</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/02/k8s-snap-topology/">10_应用存储和持久化数据卷：存储快照与拓扑调度</a>
+
+      <a href="/2020/10/02/k8s-snap-topology/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+10_应用存储和持久化数据卷：存储快照与拓扑调度一、基本知识存储快照产生背景在使用存储时，为了提高数据操作的容错性，我们通常有需要对线上数据进行snapshot，以及能快速restore的能力。另外，当需要对线上数据进行快速的复制以及迁移等动作，如进行环境的复制、数据开发等功能时，都可以通过存储快照来满足需求，而 K8s 中通过 CSI Snapshotter controller 来</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-02
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/snap/">snap</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/01/k8s-pv-pvc/">9_应用存储和持久化数据卷-核心知识</a>
+
+      <a href="/2020/10/01/k8s-pv-pvc/" class="index-excerpt">
+        
+        
+          
+        
+        <div>9_应用存储和持久化数据卷-核心知识一、Volumes 介绍Pod Volumes首先来看一下 Pod Volumes 的使用场景： 
+
+场景一：如果 pod 中的某一个容器在运行时异常退出，被 kubelet 重新拉起之后，如何保证之前容器产生的重要数据没有丢失？
+场景二：如果同一个 pod 中的多个容器想要共享数据，应该如何去做？ 
+
+以上两个场景，其实都可以借助 Volumes 来很好地解决</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-01
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/pv/">pv</a>
+            
+              <a href="/tags/pvc/">pvc</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/09/30/k8s-config/">8_应用配置管理</a>
+
+      <a href="/2020/09/30/k8s-config/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+8_应用配置管理一、需求来源背景问题首先一起来看一下需求来源。大家应该都有过这样的经验，就是用一个容器镜像来启动一个 container。要启动这个容器，其实有很多需要配套的问题待解决： 
+
+第一，比如说一些可变的配置。因为我们不可能把一些可变的配置写到镜像里面，当这个配置需要变化的时候，可能需要我们重新编译一次镜像，这个肯定是不能接受的；
+第二就是一些敏感信息的存储和使用。比如说应用</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-09-30
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/config/">config</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
 
       <a href="/2020/09/29/k8s-job/" class="index-excerpt">
@@ -378,186 +539,6 @@ Jquery选择器1、基本选择器*					：	$(&quot;*&quot;)					所有元素
               <a href="/tags/jquery/">jquery</a>
             
               <a href="/tags/selector/">selector</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/07/26/finalcut-hotkey/">Finalcut-Pro快捷键记录</a>
-
-      <a href="/2020/07/26/finalcut-hotkey/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Finalcut-Pro快捷键记录1、播放j：后退（连续按，几倍速后退）k：暂停l：前进（连续按，几倍速前进）
-2、编辑i：入口点o：出口点
-使用i、l 和 o 将视频中的片段标记好后，该片段会被黄色框起来。
-f：将标记的视频片段收藏，片段上方会出现绿色横框双击：用鼠标双击收藏好的绿线，可以选中该收藏视频片段del/back：拒绝选中的视频，选择工具栏中的[所有片段] -&gt; [隐</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-07-26
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/finalcut/">finalcut</a>
-            
-              <a href="/tags/hotkey/">hotkey</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/07/03/docker-mysql-ssh/" target="_self">
-          <img src="/docker-mysql-ssh/banner.png" srcset="/img/loading.gif" alt="Docker之mysql安装">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/07/03/docker-mysql-ssh/">Docker之mysql安装</a>
-
-      <a href="/2020/07/03/docker-mysql-ssh/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Docker之mysql安装Dockerfile下载将github中的mysql的Dockerfile下载下来，地址如下：
-https://github.com/DockerPool/mysql.git
-mysql_sshd % ls
-Dockerfile		LICENSE			README.md		create_db.sh		import_sql.sh		my.cnf			mysql</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-07-03
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/mysql/">mysql</a>
-            
-              <a href="/tags/ssh/">ssh</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/25/docker-webapp/" target="_self">
-          <img src="/docker-webapp/banner.png" srcset="/img/loading.gif" alt="Docker之Web服务器与应用">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/25/docker-webapp/">Docker之Web服务器与应用</a>
-
-      <a href="/2020/06/25/docker-webapp/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Docker之Web服务器与应用1、Apache服务搭建使用Dockerfile来创建带apache服务的Docker镜像的容器
-xxx@localhost docker % mkdir apache_ubuntu
-xxx@localhost docker % cd apache_ubuntu 
-xxx@localhost apache_ubuntu % ls
-xxx@localhos</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-25
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/webapp/">webapp</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/23/docker-os/" target="_self">
-          <img src="/docker-os/banner.png" srcset="/img/loading.gif" alt="Docker之操作系统学习(SSH容器搭建)">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/23/docker-os/">Docker之操作系统学习(SSH容器搭建)</a>
-
-      <a href="/2020/06/23/docker-os/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Docker之操作系统学习1、BusyBoxBusybox是一个集成了一百多个最常用的Linux命令和工具的软件工具箱，它在单一的可执行文件中提供了精简的Unix的工具集。
-% docker search busybox
-% docker pull busybox
-Using default tag: latest
-latest: Pulling from library/busybo</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-23
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/ssh/">ssh</a>
-            
-              <a href="/tags/os/">os</a>
             
           </div>
         

@@ -157,6 +157,280 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/21/graylog-install/">Graylog安装</a>
+
+      <a href="/2020/12/21/graylog-install/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Graylog安装1.使用Docker安装Graylog安装mongodb:
+% docker run --name mongo -d mongo:4.2
+安装elasticsearch:
+% docker run --name elasticsearch \
+    -e &quot;http.host=0.0.0.0&quot; \
+    -e &quot;discovery.t</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-21
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/graylog/">graylog</a>
+            
+              <a href="/tags/mongodb/">mongodb</a>
+            
+              <a href="/tags/es/">es</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/12/18/first-serverless-program/" target="_self">
+          <img src="/first-serverless-program/banner.png" srcset="/img/loading.gif" alt="第一个serverless程序">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2020/12/18/first-serverless-program/">第一个serverless程序</a>
+
+      <a href="/2020/12/18/first-serverless-program/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+第一个serverless程序1.注册用户进入阿里云云开发平台,登录用户.
+https://workbench.aliyun.com
+
+创建空白应用,本例以NodeJs和FC计算服务为例.
+
+点击应用卡片上的开发部署按钮,进入云端CloudIDE.
+
+2.编辑程序查看readme.md,查看帮助编辑helloworld.js
+module.exports.handler = funct</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-18
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/aliyun/">aliyun</a>
+            
+              <a href="/tags/serverless/">serverless</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/11/aliyun-docker-micro/">Docker微服务镜像推送至阿里云</a>
+
+      <a href="/2020/12/11/aliyun-docker-micro/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[toc]
+Docker微服务镜像推送至阿里云1.登录阿里云Docker Registry前提:
+
+本机安装docker
+本机安装有maven
+
+登录阿里云docker镜像
+# 登录.
+% docker login --username=your_name registry.cn-beijing.aliyuncs.com
+# 输入服务密码.
+
+2.打包微服务# 在idea命令窗口.
+% sourc</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-11
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/aliyun/">aliyun</a>
+            
+              <a href="/tags/docker/">docker</a>
+            
+              <a href="/tags/micro/">micro</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/10/vmware-mac-centos7/">Mac-vmware中Centos7网络连接</a>
+
+      <a href="/2020/12/10/vmware-mac-centos7/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[toc]
+Mac-vmware中Centos7网络连接1.虚拟机安装前提
+
+VMware Fusion安装
+Centos7虚拟镜像
+
+导入Centos7虚拟镜像,
+右击 -&gt; 网络适配器 -&gt; 连接网络适配器 -&gt; 与我的Mac共享
+启动Centos7
+# 用户名与密码.
+% root
+root
+
+2.设置主机名% hostnamectl set-hostname hdss7-</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-10
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/vmware/">vmware</a>
+            
+              <a href="/tags/centos7/">centos7</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/10/micro-docker/">Dockerfile微服务</a>
+
+      <a href="/2020/12/10/micro-docker/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven进入工程, 这里以微服务: eureka为例.
+# 在idea命令行窗口中使maven命令生效.
+% source ~/.bash_profile
+
+# 打包微服务eureka.
+% mvn clean package -Dmaven.test.skip=true
+
+# 查看生成的jar.
+% ls t</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-10
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker/">docker</a>
+            
+              <a href="/tags/dockerfile/">dockerfile</a>
+            
+              <a href="/tags/springcloud/">springcloud</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/10/05/mac-python-virtualenv/">Python_virtualenv_安装虚拟环境</a>
+
+      <a href="/2020/10/05/mac-python-virtualenv/" class="index-excerpt">
+        
+        
+          
+        
+        <div>Python virtualenv 安装虚拟环境virtualenv安装主要是为了解决在同一个系统中存在多个项目的情况， 采用虚拟的方式，为每个项目创建各自的环境，使各个项目不会相互干扰
+
+正常情况下，我们 pip 和 python 命令所执行的命令都是在系统环境下执行，修改的也是系统下的 python，导致每次的修改都是全局性的
+当一个系统中存在多个项目时，而每个项目的配置需要又不一样，对全局的</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-10-05
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/virtualenv/">virtualenv</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/10/04/k8s-app-status/">11_可观测性_你的应用健康</a>
 
       <a href="/2020/10/04/k8s-app-status/" class="index-excerpt">
@@ -314,243 +588,11 @@
     </div>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
-
-      <a href="/2020/09/29/k8s-job/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-7_应用编排与管理_Job和DaemonSet一、Job需求来源Job 背景问题首先我们来看一下 Job 的需求来源。我们知道 K8s 里面，最小的调度单元是 Pod，我们可以直接通过 Pod 来运行任务进程。这样做将会产生以下几种问题：
-
-我们如何保证 Pod 内进程正确的结束？
-如何保证进程运行失败后重试？
-如何管理多个任务，且任务之间有依赖关系？
-如何并行地运行任务，并管理任务的</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-29
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/job/">job</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/28/6-k8s-deployment/">6_应用编排与管理:Deployment</a>
-
-      <a href="/2020/09/28/6-k8s-deployment/" class="index-excerpt">
-        
-        
-          
-        
-        <div>6_应用编排与管理:Deployment一、需求来源背景问题首先，我们来看一下背景问题。如下图所示：如果我们直接管理集群中所有的 Pod，应用 A、B、C 的 Pod，其实是散乱地分布在集群中。
-
-现在有以下的问题： 
-
-首先，如何保证集群内可用 Pod 的数量？也就是说我们应用 A 四个 Pod 如果出现了一些宿主机故障，或者一些网络问题，如何能保证它可用的数量？
-如何为所有 Pod 更新镜像版</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-28
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/deployment/">deployment</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/27/app-arrange-theory/">5_应用编排与管理：核心原理</a>
-
-      <a href="/2020/09/27/app-arrange-theory/" class="index-excerpt">
-        
-        
-          
-        
-        <div>5_应用编排与管理：核心原理一、资源元信息1. Kubernetes 资源对象首先，我们来回顾一下 Kubernetes 的资源对象组成：主要包括了 Spec、Status 两部分。其中 Spec 部分用来描述期望的状态，Status 部分用来描述观测到的状态。
-今天我们将为大家介绍 K8s 的另外一个部分，即元数据部分。该部分主要包括了用来识别资源的标签：Labels， 用来描述资源的注解；An</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-27
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/theroy/">theroy</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/25/k8s-pod/">k8s_理解Pod和容器设计模式</a>
-
-      <a href="/2020/09/25/k8s-pod/" class="index-excerpt">
-        
-        
-          
-        
-        <div>k8s_理解Pod和容器设计模式一、为什么需要 Pod容器的基本概念现在来看第一个问题：为什么需要 Pod？我们知道 Pod 是 Kubernetes 项目里面一个非常重要的概念，也是非常重要的一个原子调度单位，但是为什么我们会需要这样一个概念呢？我们在使用容器 Docker 的时候，也没有这个说法。其实如果要理解 Pod，我们首先要理解容器，所以首先来回顾一下容器的概念：
-容器的本质实际上是一个</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-25
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/pod/">pod</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/23/k8s-core-concepts/">Kubernetes核心概念</a>
-
-      <a href="/2020/09/23/k8s-core-concepts/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Kubernetes核心概念一、什么是 Kubernetes Kubernetes，从官方网站上可以看到，它是一个工业级的容器编排平台。Kubernetes 这个单词是希腊语，它的中文翻译是“舵手”或者“飞行员”。在一些常见的资料中也会看到“ks”这个词，也就是“k8s”，它是通过将8个字母“ubernete ”替换为“8”而导致的一个缩写。
-Kubernetes 为什么要用“舵手”来命名呢？大家</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-23
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/08/16/jquery-selector/" target="_self">
-          <img src="/jquery-selector/banner.png" srcset="/img/loading.gif" alt="Jquery选择器">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/08/16/jquery-selector/">Jquery选择器</a>
-
-      <a href="/2020/08/16/jquery-selector/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-Jquery选择器1、基本选择器*					：	$(&quot;*&quot;)					所有元素
-#id					：	$(&quot;#lastname&quot;)			id=&quot;lastname&quot; 的元素
-.class				：	$(&quot;.intro&quot;)				class=&quot;intro&quot; 的所有元素
-												</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-08-16
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/jquery/">jquery</a>
-            
-              <a href="/tags/selector/">selector</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

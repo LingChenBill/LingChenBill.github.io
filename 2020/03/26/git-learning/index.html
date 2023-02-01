@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    4.2k 字
+                    4.3k 字
                   </span>
                 
 
@@ -361,6 +361,9 @@ $ git cherry-pick C5 C4 C3 C2
 $ git branch -f three C2</code></pre></div>
 
 <p><img src="/2020/03/26/git-learning/5.png" srcset="/img/loading.gif" alt="git-branch"></p>
+<h3 id="查看本地连接的库"><a href="#查看本地连接的库" class="headerlink" title="查看本地连接的库"></a>查看本地连接的库</h3><div class="hljs"><pre><code class="hljs bash">git remove -v</code></pre></div>
+
+<p>若本地连接的库是旧的库的, 就先<u><strong>删除</strong></u>本地<code>.git</code>文件夹, 再重新关联新的<code>git</code>库地址.</p>
 <h3 id="错误一"><a href="#错误一" class="headerlink" title="错误一"></a>错误一</h3><p>代码提交时, 出现错误:</p>
 <div class="hljs"><pre><code class="hljs bash">fatal: unable to access <span class="hljs-string">&#x27;https://github.com/xxxx/xxxx.git/&#x27;</span>: error:02FFF036:system library:func(4095):Connection reset by peer</code></pre></div>
 

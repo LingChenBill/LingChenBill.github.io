@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>数据分析-excel - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2023-03-04 10:30">
+                    March 4, 2023 am
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    2.1k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    23
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="数据分析-excel"><a href="#数据分析-excel" class="headerlink" title="数据分析-excel"></a>数据分析-excel</h3><h4 id="1-Excel-电子表格"><a href="#1-Excel-电子表格" class="headerlink" title="1.Excel-电子表格"></a>1.Excel-电子表格</h4><p>预处理数据样本: 清洗, 提取, 整合</p>
+<p>Excel - 电子表格</p>
+<ul>
+<li>存储形式, 通过电子设备存储</li>
+<li>增删改查</li>
+<li>可视化图表</li>
+<li>透视表, 自动化报表</li>
+<li>打印, 数据自动填充</li>
+</ul>
+<h4 id="2-常用功能"><a href="#2-常用功能" class="headerlink" title="2.常用功能"></a>2.常用功能</h4><p>预处理:</p>
+<ul>
+<li>文本函数</li>
+<li>重复数据的处理</li>
+<li>拆分列数据</li>
+<li>数据排序与筛选</li>
+</ul>
+<p>统计与分析:</p>
+<ul>
+<li>数学函数: SUM, AVERAGE</li>
+<li>逻辑函数: OR, NOT</li>
+<li>条件聚合函数: COUNTIF, SUMIF</li>
+<li>LOOKUP 引用函数</li>
+</ul>
+<p>数据透视表: Pivot Table<br>认识图表类型<br>制作要视化图表</p>
+<h4 id="3-文本函数"><a href="#3-文本函数" class="headerlink" title="3.文本函数"></a>3.文本函数</h4><p>函数: 输入输出关系函数.</p>
+<p>文本函数: 对文本进行提取, 查找, 转换, 更新的函数.</p>
+<p>文本合并函数: CONCATENATE<br>文本提取函数: MID</p>
+<div class="hljs"><pre><code class="hljs bash">=MID(E2,3,6)</code></pre></div>
+
+<p>文本替换: SUBSTITUTE</p>
+<div class="hljs"><pre><code class="hljs bash">=SUBSTITUTE(G2,1,<span class="hljs-string">&quot;本科及以上&quot;</span>)</code></pre></div>
+
+<p>数据验证: FIND, ISNUM</p>
+<div class="hljs"><pre><code class="hljs bash">=ISNUMBER(FIND(<span class="hljs-string">&quot;数据分析&quot;</span>,J2,1))</code></pre></div>
+
+<h4 id="4-数学函数"><a href="#4-数学函数" class="headerlink" title="4.数学函数"></a>4.数学函数</h4><p>数值                -&gt;                数学函数            统计计算</p>
+<p>数学函数: 是对数值类型数据进行计算, 数学换算, 统计, 类型转换.</p>
+<p>基本换算:</p>
+<ul>
+<li><p>平方根</p>
+<div class="hljs"><pre><code class="hljs bash">=sqrt()</code></pre></div>
+</li>
+<li><p>幂运算</p>
+<div class="hljs"><pre><code class="hljs bash">=power</code></pre></div>
+</li>
+<li><p>总和</p>
+<div class="hljs"><pre><code class="hljs bash">=sum</code></pre></div>
+</li>
+<li><p>平均值</p>
+<div class="hljs"><pre><code class="hljs bash">=average</code></pre></div>
+</li>
+<li><p>求整</p>
+<div class="hljs"><pre><code class="hljs bash">=int</code></pre></div>
+</li>
+<li><p>求最近的偶数</p>
+<div class="hljs"><pre><code class="hljs bash">=even</code></pre></div>
+
+</li>
+</ul>
+<p>集中趋势指标:</p>
+<p>平均值: 总和/数据项个数.</p>
+<div class="hljs"><pre><code class="hljs bash">=AVERAGE(H3:H14)</code></pre></div>
+
+<p>中位数: 从小到大排序后位于中间的数.</p>
+<div class="hljs"><pre><code class="hljs bash">=MEDIAN(H3:H14)</code></pre></div>
+
+<p>众数: 出现次数最多的数据项.</p>
+<div class="hljs"><pre><code class="hljs bash">=MODE(H3:H14)</code></pre></div>
+
+<p>离散趋势指标:</p>
+<p>极差: 最大值 - 最小值</p>
+<div class="hljs"><pre><code class="hljs bash">=MAX(H3:H14)-MIN(H3:H14)</code></pre></div>
+
+<p>平均差: 每个数据项与平均值差异程度的总和 / 数据项个数.</p>
+<div class="hljs"><pre><code class="hljs bash">=AVEDEV(H3:H14)</code></pre></div>
+
+<p>标准差: 每个数据项与平均值差异程度的总和的平方 / 数据项个数.</p>
+<div class="hljs"><pre><code class="hljs bash">=STDEV(H3:H14)</code></pre></div>
+
+<h4 id="5-处理重复数据"><a href="#5-处理重复数据" class="headerlink" title="5.处理重复数据"></a>5.处理重复数据</h4><p>数据预处理的重要性: 清洗, 格式化, 去重, 排序, 基础计算.<br>数据准确性<br>统计结果与结论</p>
+<p>数据预处理的内容: 数据的清理            -&gt;        数据的合并与汇总</p>
+<p>缺失值<br>离群值/异常值                -&gt;                 删除, 均值填充<br>重复值</p>
+<div class="hljs"><pre><code class="hljs html">去重:
+全选数据 &gt; 数据Tab &gt; 删除重复项 &gt; 点击「删除重复项」</code></pre></div>
+
+<h4 id="6-拆分列数据"><a href="#6-拆分列数据" class="headerlink" title="6.拆分列数据"></a>6.拆分列数据</h4><ul>
+<li>对现有数据进行拆分</li>
+<li>导入数据时进行拆分</li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">拆分列数据:
+全选数据 &gt; 数据Tab &gt; 分列</code></pre></div>
+
+<p>导入数据时拆分<code>csv</code>文件, 最常用的数据格式, 可读性, 便利性.<br>爬虫最常用的存储方式 - <code>csv</code>.</p>
+<p>拆分列数据<br>对拆分后的数据去重<br>统计标签个数</p>
+<h4 id="7-数据排序"><a href="#7-数据排序" class="headerlink" title="7.数据排序"></a>7.数据排序</h4><p>排序: 形成更直观的认识.</p>
+<p>筛选: 快速提取数据且不影响原有数据.</p>
+<div class="hljs"><pre><code class="hljs bash">排序:
+选中列数据 &gt; 数据Tab &gt; 排序 &gt; 扩展选定区域 &gt; 选中列
+对<span class="hljs-string">&quot;不符合排序规则&quot;</span>的数据可以替换成规则的数据.
+
+筛选:
+选中列数据 &gt; 数据Tab &gt; 筛选 &gt; 筛选器中输入要筛选的选项</code></pre></div>
+
+<h4 id="8-逻辑函数"><a href="#8-逻辑函数" class="headerlink" title="8.逻辑函数"></a>8.逻辑函数</h4><p>能明确用「是否」或「真假」逻辑来回答.</p>
+<p>逻辑运算: 与, 或, 非.</p>
+<div class="hljs"><pre><code class="hljs bash">FALSE: 返回逻辑值FALSE
+TRUE: 返回逻辑值TRUE
+IF: 判断真假并返回对应值
+AND: 交集运算
+OR: 并集运算
+NOT: 求反运算</code></pre></div>
+
+<p>逻辑函数对推论进行真假判断的函数.</p>
+<p>IF函数            &gt;            对不同的判断结果进行数值匹配.</p>
+<div class="hljs"><pre><code class="hljs bash">对时间列(如:10:23) 进行规则判断:
+
+=IF(INT(LEFT(K3, 2)) &lt; 10, <span class="hljs-string">&quot;早上&quot;</span>, IF(INT(LEFT(K3, 2)) &lt; 12, <span class="hljs-string">&quot;上午&quot;</span>, <span class="hljs-string">&quot;下午&quot;</span>))
+
+判断岗位是否为数据分析师, 是 - 输出<span class="hljs-string">&quot;目标岗位&quot;</span>, 否 - 输出空值
+
+=IF(C25=<span class="hljs-string">&quot;数据分析师&quot;</span>,<span class="hljs-string">&quot;目标岗位&quot;</span>,<span class="hljs-string">&quot;&quot;</span>)</code></pre></div>
+
+<h4 id="9-条件聚合函数"><a href="#9-条件聚合函数" class="headerlink" title="9.条件聚合函数"></a>9.条件聚合函数</h4><p>在符合特定条件下的数据项进行统计: 数学函数 + 逻辑函数</p>
+<p>SUMIF(S): 针对符合条件的数据项<u>**”求和”**</u>.</p>
+<p>COUNTIF(S): 针对符合条件的数据项<u>**”计次”**</u>.</p>
+<p>总数                &gt;                SUM函数</p>
+<p>SUM函数: 点选符合条件的项目, 太慢, 每次都需要点选</p>
+<p>SUMIF函数: 条件聚合函数<br>在公式中写死条件, 原始数据顺序随意.</p>
+<div class="hljs"><pre><code class="hljs bash">统计地区的个数:
+=COUNTIF(C:C, D2)
+
+筛选一线城市的个数:
+=SUM(SUMIFS(E:E,D:D,&#123;<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;上海&quot;</span>,<span class="hljs-string">&quot;广州&quot;</span>,<span class="hljs-string">&quot;深圳&quot;</span>&#125;))
+
+统计总职位数:
+=COUNTIF(I:I, <span class="hljs-string">&quot;*&quot;</span>) - 1
+
+统计<span class="hljs-string">&quot;*&quot;</span>开发工程师:
+=COUNTIF(I:I,<span class="hljs-string">&quot;*开发工程师&quot;</span>)</code></pre></div>
+
+<h4 id="10-查找与引用函数"><a href="#10-查找与引用函数" class="headerlink" title="10.查找与引用函数"></a>10.查找与引用函数</h4><p>从含有某个目标关系关系链的数据样本中, 提取对应关系的数据项.</p>
+<p>字典表                &lt;-&gt;                        查找填充</p>
+<p>VLOOKUP函数</p>
+<p>查找区域: 你根据什么条件找<br>关系表: 提供关系链的样本<br>目标列: 目标值在关系表的第几列<br>是否模糊查找: 0是 1 否</p>
+<div class="hljs"><pre><code class="hljs bash">查找城市划分:
+=VLOOKUP(D2,H:I,2,0)</code></pre></div>
+
+<h4 id="11-数据透视表"><a href="#11-数据透视表" class="headerlink" title="11.数据透视表"></a>11.数据透视表</h4><p>自动化的报表功能: 汇总, 统计, 排序, 数据的实时刷新. </p>
+<p>通过托拉拽            -&gt;            图形化界面<br>耗时几分钟<br>自动化数据汇总</p>
+<p>处理表格时间     &gt;  1小时            -&gt;        数据透视表</p>
+<p>全选数据区域    -&gt;    插入Tab    -&gt;    数据透视表    -&gt;    选择要存放的位置    -&gt;    选择对统计的行, 列, 统计列<br>为了方便统计结果, 可以选择列:    开始Tab    -&gt;    条件格式    -&gt;    数据条    -&gt;    选择样式</p>
+<p>更改数据原数据内容后, 单击数据透视表后, 在数据透视表分析Tab中, 点击<u><strong>刷新</strong></u>按钮, 即可刷新最新的数据.</p>
+<p>针对行标签中的日期类型的数据, 可以更改日期筛选频率, 点击行标签中的行, 右击选择<u><strong>组合</strong></u>, 更改 分组 中的设置即可.</p>
+<h4 id="12-图表类型"><a href="#12-图表类型" class="headerlink" title="12.图表类型"></a>12.图表类型</h4><p>对比分析: 数据项之间的大小关系.                -&gt;            比较型图表<br>变量A随着变量B增加: 正相关.                      -&gt;            关系型图表<br>数据分布的密集程度.                                    -&gt;            分布型图表<br>基于时间的变化.                                           -&gt;            拆线图<br>比较类别数据的大小.                                    -&gt;            直方图<br>变量间的相关性.                                           -&gt;            散点图<br>部分与整体的比例关系.                                -&gt;            饼图, 堆积图</p>
+<h4 id="13-制作可视化图表"><a href="#13-制作可视化图表" class="headerlink" title="13.制作可视化图表"></a>13.制作可视化图表</h4><p>确定分析维度:</p>
+<ul>
+<li>宏观上: 大数据职位需求量</li>
+<li>外部需求: 职位类型: 技能, 经验, 学历</li>
+<li>内部需求: 薪资: 职位类型, 学历, 经验, 行业</li>
+</ul>
+<p>制作什么样的图表:</p>
+<p>职位需求趋势:</p>
+<ul>
+<li>职位类型</li>
+<li>发布量</li>
+<li>发布年月</li>
+</ul>
+<p>拆线图: 插入折线图后, 要根据需要调整数据区域(并注意行列切换数据).<br>直方图</p>
+<p>具体的职位需求:</p>
+<ul>
+<li>技能</li>
+<li>经验</li>
+<li>学历</li>
+</ul>
+<p>饼图<br>雷达图</p>
+<p>薪资水平:</p>
+<ul>
+<li>职位类型</li>
+<li>学历</li>
+<li>工作经验</li>
+<li>所属行业</li>
+</ul>
+<p>散点图(相关性)<br>横向条件图(数据项比较)</p>
+<h4 id="14-大数据人材需求分析报告"><a href="#14-大数据人材需求分析报告" class="headerlink" title="14.大数据人材需求分析报告"></a>14.大数据人材需求分析报告</h4><h5 id="1-背景与目的"><a href="#1-背景与目的" class="headerlink" title="1) 背景与目的"></a>1) 背景与目的</h5><p>随着互联网的发展, 每天都在产生越来越多的数据, 而对于各个岗位来说, 尤其是互联网行来说, 数据分析技能都成为了必备的工作能力.</p>
+<p>出于转行数据类岗位的需求, 对近5年的相关招聘信息进行分析, 主要想了解, 大数据类岗位有哪些细分职位, 以及它们所要求的技能有哪些.</p>
+<p>基于以上背景和目的, 抓取或者提取某网站招聘信息数据进行处理和分析.</p>
+<h5 id="2-设计思路-分析思路"><a href="#2-设计思路-分析思路" class="headerlink" title="2) 设计思路, 分析思路"></a>2) 设计思路, 分析思路</h5><p>数据分析维度主要三个方向: 职位需求量, 职位要求, 薪酬水平.</p>
+<p>职位需求量</p>
+<p>将统计近5年的大数据类职位发布总量.<br>需要提炼的字段.<br>截图, 图表显示.</p>
+<p>职位要求, 技能需求, 背景要求<br>图表展示.</p>
+<p>薪酬水平<br>图表展示.</p>
+<h5 id="3-详细的分析"><a href="#3-详细的分析" class="headerlink" title="3) 详细的分析"></a>3) 详细的分析</h5><p>基于分析思路的三个分析维度以及获取到的数据, 将以此进行图表可视化的工作, 并对可视化后的数据进行解读.</p>
+<p>职位需求量</p>
+<p>职位要求, 技能需求, 背景要求</p>
+<p>薪酬水平</p>
+<h5 id="4-规律总结与建议-提出解决方案"><a href="#4-规律总结与建议-提出解决方案" class="headerlink" title="4)规律总结与建议, 提出解决方案"></a>4)规律总结与建议, 提出解决方案</h5><p>针对图表, 来分析现象, 原因, 得出什么结论.<br>说明什么问题, 如何解决, 提出解决方案等.</p>
+<p><u><strong>PS: 本文为学习记录, 仅供参考!</strong></u></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/data-analysis/">data-analysis</a>
+                    
+                      <a class="hover-with-bg" href="/categories/data-analysis/excel/">excel</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/data-analysis/">data-analysis</a>
+                    
+                      <a class="hover-with-bg" href="/tags/excel/">excel</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/08/pms-exam-questions-01/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">pms-错题集-01</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/03/data-analysis-set-01/">
+                        <span class="hidden-mobile">数据分析记录-01</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "数据分析-excel&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    3.6k 字
+                    4k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    61
+                    68
                      分钟
                   </span>
                 
@@ -186,11 +186,19 @@
 <h3 id="1-npm安装"><a href="#1-npm安装" class="headerlink" title="1. npm安装"></a>1. npm安装</h3><p>安装NodeJS, 下载地址:<code>http://nodejs.cn/download</code></p>
 <div class="hljs"><pre><code class="hljs bash"><span class="hljs-comment"># 查看版本</span>
 node -v
+
+npm view node versions
 <span class="hljs-comment"># 选择已经安装好的node版本:</span>
 n
 
 <span class="hljs-comment"># 选择安装指定版本的node:</span>
-sudo n 15</code></pre></div>
+sudo n 15
+
+<span class="hljs-comment"># 安装最新版本:</span>
+sudo n latest</code></pre></div>
+
+<p>清除node缓存:</p>
+<div class="hljs"><pre><code class="hljs bash">sudo npm cache clean -f</code></pre></div>
 
 <p>mac或linux系统升级命令:</p>
 <div class="hljs"><pre><code class="hljs bash">sudo npm install npm -g</code></pre></div>
@@ -996,6 +1004,30 @@ Vue.use(VueI18n)
       this.$i18n.locale &#x3D; lang
       this.langVisible &#x3D; false
     &#125;</code></pre></div>
+
+<h4 id="16-错误一"><a href="#16-错误一" class="headerlink" title="16.错误一"></a>16.错误一</h4><div class="hljs"><pre><code class="hljs bash">(base) zhuyangze@192 k-front % npm install
+npm WARN deprecated @types/browserslist@4.15.0: This is a stub types definition. browserslist provides its own <span class="hljs-built_in">type</span> definitions, so you <span class="hljs-keyword">do</span> not need this installed.
+npm WARN deprecated @types/webpack-dev-middleware@5.3.0: This is a stub types definition. webpack-dev-middleware provides its own <span class="hljs-built_in">type</span> definitions, so you <span class="hljs-keyword">do</span> not need this installed.
+npm WARN deprecated @npmcli/move-file@1.1.2: This functionality has been moved to @npmcli/fs
+npm WARN deprecated stable@0.1.8: Modern JS already guarantees Array<span class="hljs-comment">#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility</span>
+npm WARN deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve<span class="hljs-comment">#deprecated</span>
+npm WARN deprecated fsevents@1.2.13: fsevents 1 will <span class="hljs-built_in">break</span> on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+npm WARN deprecated chokidar@2.1.8: Chokidar 2 does not receive security updates since 2019. Upgrade to chokidar 3 with 15x fewer dependencies
+npm WARN deprecated querystring@0.2.0: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+npm WARN deprecated core-js@2.6.12: core-js@&lt;3.23.3 is no longer maintained and not recommended <span class="hljs-keyword">for</span> usage due to the number of issues. Because of the V8 engine whims, feature detection <span class="hljs-keyword">in</span> old core-js versions could cause a slowdown up to 100x even <span class="hljs-keyword">if</span> nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+npm ERR! code 1
+npm ERR! path /Users/zhuyangze/Documents/fork/nuxt/kaikeba/k-front/node_modules/deasync</code></pre></div>
+
+<p>解决策:</p>
+<p>在Mac 的app软件中, 安装xcode:</p>
+<div class="hljs"><pre><code class="hljs bash">sudo xcodebuild -license
+
+agree
+
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer</code></pre></div>
 
 
             </article>

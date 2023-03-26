@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    434 字
+                    4.8k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    4
+                    53
                      分钟
                   </span>
                 
@@ -191,18 +191,352 @@ C. 配置控制
 D. 配置标识
  
 解析: D
-D - 配置标识的工作包括: 识别需要受控的配置项、为每个配置项指定唯一性的标志号、
-    定义每个配置项的重要特征、确定配置项的所有者及其责任、确定配置项进入配置管理的时间和条件等.
 A - 配置状态报告 (Configuration Status Reporting):
     也称配置状态统计(Configuration Status Accounting), 
-    其任务是有效地记录和报告管理配置所需要的信息，目的是及时、准确地给出配置项的当前状況，
+    其任务是有效地记录和报告管理配置所需要的信息，目的是及时、准确地给出<span class="hljs-string">&quot;配置项的当前状況&quot;</span>，
     供相关人员了解，以加强配置管理工作.
 B - 配置审计(Configuration Audit): 也称配置审核或配置评价，
-    包括功能配置审计和物理配置审计，分别用以验证当前配置项的一致性和完整性.
-    配置审计的实施是为了确保项目配置管理的有效性，体现了配置管理的最根本要求--不允许出现任何混乱现象.
+    包括功能配置审计和物理配置审计，分别用以验证当前配置项的<span class="hljs-string">&quot;一致性&quot;</span>和<span class="hljs-string">&quot;完整性&quot;</span>.
+    配置审计的实施是为了确保项目配置管理的<span class="hljs-string">&quot;有效性&quot;</span>，体现了配置管理的最根本要求-不允许出现任何混乱现象.
 C - 配置控制:
-    即配置项和基线的变更控制，包括下述任务: 标识和记录变更申请, 分析和评价变更,
-    批准或否决申请, 实现、验证和发布已修改的配置项.</code></pre></div>
+    即配置项和基线的<span class="hljs-string">&quot;变更控制&quot;</span>，包括下述任务: 标识和记录变更申请, 分析和评价变更,
+    批准或否决申请, 实现、验证和发布已修改的配置项.
+D - 配置标识的工作包括: 识别需要受控的配置项、为每个配置项指定唯一性的标志号、
+    定义每个配置项的重要特征、确定配置项的所有者及其责任、确定配置项进入配置管理的时间和条件等.</code></pre></div>
+
+<h4 id="2-安全审计"><a href="#2-安全审计" class="headerlink" title="2.安全审计"></a>2.安全审计</h4><p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/001.png" srcset="/img/loading.gif" alt="001"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] () 的目标是防止内部机密或敏感信息非法泄露和单位资产的流失.
+A. 数字证书
+B. 安全审计
+C. 入侵监测
+D. 访问控制
+
+解析: B
+安全审计具体包括两方面内容:
+① 采用网络监控与入侵防范系统，识别网络各种违规操作与攻击行为，及时响应并阻断;
+② 对信息内容和业务流程进行审计，可以防止内部机密或敏感信息的<span class="hljs-string">&quot;非法泄露&quot;</span>和<span class="hljs-string">&quot;单位资产的流失&quot;</span>.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] () is preservation of confidentiality, integrity and availability of information, 
+<span class="hljs-keyword">in</span> addition , other properties such as authenticity , accountability , 
+non-repudiation and reliability can also be involved.
+A. Equipment security
+B. Network security
+C. Information security
+D. Content security
+
+解析: C
+() 是对信息的保密性、完整性和可用性的保护，此外，还可能涉及其他属性，如真实性、责任性、不可否认性和可靠性.
+A. 设备安全 
+B. 网络安全 
+C. 信息安全 
+D. 内容安全</code></pre></div>
+
+<h4 id="3-信息安全属性"><a href="#3-信息安全属性" class="headerlink" title="3.信息安全属性"></a>3.信息安全属性</h4><p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/002.png" srcset="/img/loading.gif" alt="002"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] 测试人员用工具获取系统的传输数据包，查看发送和接收方内容的一致性，验证数据的 ().
+A. 完整性
+B. 保密性
+C. 可控性
+D. 合法性
+
+解析: A
+完整性（Integrity）：信息是正确的、真实的、未被篡改的、完整无缺的属性.
+秘密性（Confidentiality）：信息不被未授权者知晓的属性.
+可用性（Availability）：信息可以随时正常使用的属性.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] The information security management system preserves the confidentiality, 
+integrity and availability of information by applying a ().
+A. technology management process
+B. resource management process
+C. quality management process
+D. risk management process
+
+解析: D
+信息安全管理系统通过应用 () 保护信息的机密性、完整性和可用性.
+A. 技术管理过程
+B. 资源管理进程
+C. 质量管理过程
+D. 风险管理程序</code></pre></div>
+
+<h4 id="4-安全保护等级"><a href="#4-安全保护等级" class="headerlink" title="4.安全保护等级"></a>4.安全保护等级</h4><p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/003.png" srcset="/img/loading.gif" alt="003"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] 《计算机信息系统安全保护等级划分准则》将计算机信息系统分为 5 个安全保护等级.
+其中 () 适用于中央级国家机关、广播电视部门、重要物资储备单位等部门.
+A. 系统审计保护级
+B. 安全标记保护级
+C. 结构化保护级
+D. 访问验证保护级
+
+解析: C
+结构化保护级系统具有相当的抗渗透能力，适用于<span class="hljs-string">&quot;中央级国家机关&quot;</span>、
+广播电视部门、重要物资储备单位、社会应急服务部门、尖端科技企业集团等部门.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] 《信息安全技术 信息系统安全等级保护定级指南》GB/T 22240-2008标准将信息系统的安全保护等级分为五级.
+<span class="hljs-string">&quot;信息系统受到破坏后，会对社会秩序和公共利益造成严重损害，或者对国家安全造成损害&quot;</span>是 () 的特征.
+ A：第二级
+ B：第三级
+ C：第四级
+ D：第五级
+ 
+解析: B
+信息系统的安全保护等级分为以下五级:
+第一级，信息系统受到破坏后，会对公民、法人和其他组织的合法权益造成损害，但不损害国家安全、社会秩序和公共利益.
+第二级，信息系统受到破坏后，会对公民、法人和其他组织的合法权益产生严重损害，或者对社会秩序和公共利益造成损害，但不损害国家安全.
+第三级，信息系统受到破坏后，会对社会秩序和公共利益造成严重损害，或者对<span class="hljs-string">&quot;国家安全造成损害&quot;</span>.
+第四级，信息系统受到破坏后，会对社会秩序和公共利益造成特别严重损害，或者对<span class="hljs-string">&quot;国家安全造成严重损害&quot;</span>.
+第五级，信息系统受到破坏后，会对国家安全造成<span class="hljs-string">&quot;特别严重损害&quot;</span>.</code></pre></div>
+
+<h4 id="5-测试类型"><a href="#5-测试类型" class="headerlink" title="5.测试类型"></a>5.测试类型</h4><p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/0004.png" srcset="/img/loading.gif" alt="0004"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] 用户在开发环境下进行的测试是（）。
+A. 配置项测试
+B. Alpha测试
+C. Beta测试
+D. 回归测试
+
+解析: B
+对于通用产品型的软件开发而言，
+Alpha测试是指由用户在<span class="hljs-string">&quot;开发环境&quot;</span>下进行测试，通过Alpha测试以后的产品通常称为Alpha版;
+Beta测试是指由用户在<span class="hljs-string">&quot;实际使用环境&quot;</span>下进行测试，通过Beta测试的产品通常称为Beta版.
+一般在通过Beta测试后，才能把产品发布或交付给用户.</code></pre></div>
+
+<h4 id="6-标准GB-T-16260-1-2006"><a href="#6-标准GB-T-16260-1-2006" class="headerlink" title="6.标准GB/T 16260.1-2006"></a>6.标准GB/T 16260.1-2006</h4><div class="hljs"><pre><code class="hljs bash">[单选] 依据标准GB/T 16260.1-2006《软件工程 产品质量 第1部分 质量模型》定义的外部和内部质量的质量模型，
+可将软件质量属性划分为 () 个特性.
+A. 三
+B. 四
+C. 五
+D. 六
+
+解析: D
+《软件工程 产品质量 第1部分 质量模型》GB／T 16260.1-2006根据外部和内部质量的质量模型定义，
+将软件质量属性划分为六个特性：
+功能性、可靠性、易用性、效率、维护性和可移植性.</code></pre></div>
+
+<h4 id="7-招投标"><a href="#7-招投标" class="headerlink" title="7.招投标"></a>7.招投标</h4><div class="hljs"><pre><code class="hljs bash">[单选] 关于招投标的描述，不正确的是: ().
+A. 招标人采用邀请招标方式的，应当向三个以上具备承担项目的能力、资信良好的特定法人或者其他组织发出投标邀请书
+B. 招标人对已发出的招标文件进行必要的澄清或者修改的，应当在招标文件要求提交投标文件截止时间至少十五日前，以书面形式通知所有招标文件收受人
+C. 投标人在招标文件要求提交投标文件的截止时间前，可以补充、修改或者撤回已提交的投标文件，并书面通知招标人
+D. 依法必须进行招标的项目，其评标委员会由招标人的代表和有关技术、经济等方面的专家组，
+   成员人数为五人以上单数，其中技术、经济等方面的专家不得少于成员总数的一半
+
+解析: D
+A - 招标人采用邀请招标方式的，应当向 <span class="hljs-string">&quot;三个&quot;</span> 以上具备承担项目的能力、资信良好的特定法人或者其他组织发出投标邀请书.
+B - 招标人对已发出的招标文件进行必要的澄清或者修改的，应当在招标文件要求提交投标文件截止时间至少 <span class="hljs-string">&quot;十五日&quot;</span> 前，
+    以<span class="hljs-string">&quot;书面形式&quot;</span>通知所有招标文件收受人.
+C - 投标人在招标文件要求提交投标文件的截止时间前，可以补充、修改或者撤回已提交的投标文件，并<span class="hljs-string">&quot;书面通知招标人&quot;</span>.
+D - 依法必须进行招标的项目，其评标委员会由招标人的代表和有关技术、经济等方面的专家组成，成员人数为 <span class="hljs-string">&quot;五人&quot;</span> 以上单数，
+    其中技术、经济等方面的专家不得少于成员总数的<span class="hljs-string">&quot;三分之二&quot;</span>.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] 软件质量模型描述了软件产品的质量特性和质量子特性.
+其中 () 包括适宜性、准确性、互用性、依从性和安全性等子特性。
+A. 功能性
+B. 可靠性
+C. 可用性
+D. 可维护性
+
+解析: A
+功能性包括适宜性、准确性、互用性、依从性和安全性等子特性.</code></pre></div>
+
+<h4 id="8-著作权法"><a href="#8-著作权法" class="headerlink" title="8.著作权法"></a>8.著作权法</h4><div class="hljs"><pre><code class="hljs bash">[单选] 根据著作权法和实施条例的规定，著作权人对作品享有的权利不包括 ().
+A. 发表权
+B. 署名权
+C. 继承权
+D. 修改权
+
+解析: C
+根据著作权法和实施条例的规定，著作权人对作品享有的权利包括<span class="hljs-string">&quot;发表权、署名权、修改权、保护作品完整权&quot;</span>等权利.</code></pre></div>
+
+<h4 id="9-战略管理"><a href="#9-战略管理" class="headerlink" title="9.战略管理"></a>9.战略管理</h4><div class="hljs"><pre><code class="hljs bash">[单选] 战略管理包含3个层次，() 不属于战略管理的层次.
+A. 目标层
+B. 规划层
+C. 方针层
+D. 行为层
+
+解析: B
+完整的战略管理包含如下3个层次:
+(1) 目标层
+(2) 方针层
+(3) 行为层</code></pre></div>
+
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/005.png" srcset="/img/loading.gif" alt="005"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] () 战略组织模式的特点是组织高层从如何动员全体成员都参与战略实施活动的角度来考虑战略的制定和执行.
+A. 变革型
+B. 合作型
+C. 文化型
+D. 增长型
+
+解析: C
+文化型战略组织模式的特点是组织高层是从如何动员全体成员都参与战略实施活动的角度来考虑战略的制定和执行.</code></pre></div>
+
+<h4 id="10-项目管理成熟度模型"><a href="#10-项目管理成熟度模型" class="headerlink" title="10.项目管理成熟度模型"></a>10.项目管理成熟度模型</h4><div class="hljs"><pre><code class="hljs bash">[单选] () 可用于评估组织内项目组合管理成熟度，用于识别组织目前的最佳实践、能力和结果.
+A. TQM
+B. EFQM
+C. OPM3
+D. PMBOK
+
+解析: C
+A - TQM: 全面质量管理;
+B - EFQM: 欧洲业务卓越模型;
+C - OPM3: 组织项目管理成熟度模型;
+D - PM-BOK: 项目管理知识体系;
+IPMA: 卓越项目管理模型.</code></pre></div>
+
+<h4 id="11-服务转换"><a href="#11-服务转换" class="headerlink" title="11.服务转换"></a>11.服务转换</h4><div class="hljs"><pre><code class="hljs bash">[单选] () provides guidance <span class="hljs-keyword">for</span> the development and improvement of capabilities 
+<span class="hljs-keyword">for</span> introducing new and changed service into supported environments.
+A. Service strategy
+B. Service transition
+C. Service design
+D. Service operation
+
+解析: B
+在受支持的环境中引入新的及已更改的服务时，服务转换可以为服务能力的开发及改进提供指导.</code></pre></div>
+
+<h4 id="12-系统分析阶段"><a href="#12-系统分析阶段" class="headerlink" title="12.系统分析阶段"></a>12.系统分析阶段</h4><div class="hljs"><pre><code class="hljs bash">[单选] 某快消品连锁企业委托科技公司A开发部署电子商务平台，
+A公司根据系统设计任务书所确定的范围，确定系统的基本目标和逻辑功能要求，
+提出新系统的逻辑模型，这属于信息系统生命周期中 () 阶段的工作.
+A. 系统规划
+B. 系统分析
+C. 系统设计
+D. 系统实施
+
+解析: B
+系统分析阶段又称为逻辑设计阶段.
+系统分析阶段的任务是根据系统设计任务书所确定的范围，对现行系统进行详细调查，
+描述现行系统的业务流程，指出现行系统的局限性和不足之处，
+确定新系统的基本目标和逻辑功能要求，即提出新系统的<span class="hljs-string">&quot;逻辑模型&quot;</span>.
+A - 系统规划(可行性分析与项目开发计划)
+B - 系统分析(需求分析)
+C - 系统设计(概要, 设计)
+D - 系统实施(编码, 测试)
+E - 运维</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] 软件工程需求分析阶段，使用实体联系图表示 ( ) 模型.
+A. 行为
+B. 数据
+C. 功能
+D. 状态
+
+解析: B
+使用结构化（SA）方法进行需求分析，其建立的模型的核心是<span class="hljs-string">&quot;数据字典&quot;</span>，
+围绕这个核心，有三个层次的模型，分别是数据模型、功能模型和行为模型（也称为状态模型）.
+在实际工作中，一般使用实体联系图(E-R图)表示<span class="hljs-string">&quot;数据模型&quot;</span>，
+用数据流图(DataFlow Diagram，DFD)表示<span class="hljs-string">&quot;功能模型&quot;</span>，
+用状态转换图（State Transform Diagram，STD）表示<span class="hljs-string">&quot;行为模型&quot;</span>.</code></pre></div>
+
+<h4 id="13-UML"><a href="#13-UML" class="headerlink" title="13.UML"></a>13.UML</h4><p>统一建模语言 (UML, Unified Modeling Language)是一个通用的<u><strong>可视化建模语言</strong></u>，不是可视化的程序设计语言 (不是编程语言).<br>UML支持大部分软件开发过程，但比较适用于迭代式开发过程.<br>UML的组成:</p>
+<ul>
+<li>﻿﻿事物 (Things)：最基本的构成元素（结构、行为、分组、注释）.</li>
+<li>关系 (Relationships) : 关系把事物紧密联系在一起（依赖、关联、泛化、实现等）.</li>
+<li>图 (Diagrams)事物和关系的可视化表示.</li>
+</ul>
+<div class="hljs"><pre><code class="hljs bash">[单选] 关于UML的描述，不正确的是: ().
+A. UML是一种可视化编程语言
+B. UML适用于各种软件开发方法
+C. UML用于对软件进行可视化描述
+D. UML适用于软件生命周期的各个阶段
+
+解析: A
+UML不是一种编程语言，而是建模语言.</code></pre></div>
+
+<h4 id="14-软件架构"><a href="#14-软件架构" class="headerlink" title="14.软件架构"></a>14.软件架构</h4><p>通用架构风格的分类: </p>
+<ol>
+<li>数据流风格：批处理序列；管道/过滤器.</li>
+<li>调用/返回风格：主程序/子程序；面向对象风格；层次结构.</li>
+<li>独立构件风格：进程通信；事件系统.</li>
+<li>虚拟机风格：解释器；基于规则的系统.</li>
+<li>仓库风格：数据库系统；超文本系统；黑板系统.</li>
+</ol>
+<div class="hljs"><pre><code class="hljs bash">[单选] 软件架构中，() 模式包括主程序/子程序、数据抽象和面向对象，以及层次结构.
+A. 数据流
+B. 调用/返回
+C. 虚拟机
+D. 独立构件
+
+解析: B
+通用软件架构风格分为数据流风格、调用／返回风格、独立构件风格、虚拟机风格和仓库风格.
+调用／返回风格包括主程序／子程序、数据抽象和面向对象以及层次结构.</code></pre></div>
+
+<p>15.网络模型与协议</p>
+<p>应用层协议 : 主要有FTP、TFTP、HTTP、SMTP、DHCP、<u><strong>Telnet</strong></u>、DNS和SNMP等.</p>
+<p>FTP(文件传输协议）: 指客户端向服务器传送文件的协议，例如通过命令字来告诉服务器相关的信息.<br>运行在TCP之上，即通过internet将文件从一台计算机传输到另一台计算机的一种途径.</p>
+<p>TFTP(简单文件传输协议）：是用来在客户机与服务器之间进行<u><strong>简单文件传输</strong></u>的协议，不复杂、开销不大的文件传输服务.<br>TFTP建立在UDP（用户数据报协议）之上，提供<u><strong>不可靠</strong></u>的数据流传输服务，不提供存取授权与认证机制，使用超时重传方式来保证数据的到达.</p>
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/006.png" srcset="/img/loading.gif" alt="006"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] TCP/IP是Internet的核心协议，应用程序通过用应用层协议利用网络完成数据交互的任务.
+其中，() 是用来在客户机与服务器之间进行简单文件的传输的协议，提供不复杂，开销不大的文件传输服务.
+A. FTP
+B. TFTP
+C. HTTP
+D. SMTP
+
+解析: B
+A - FTP是两台计算机传送文件的协议.
+B - TFTP是传输简单文件的协议.
+C - HTTP是超文本传输协议.
+D - SMTP是简单邮件传输协议.</code></pre></div>
+
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-topic-set-02/007.png" srcset="/img/loading.gif" alt="007"></p>
+<div class="hljs"><pre><code class="hljs bash">[单选] IEEE 802 规范定义了网卡如何访问传输介质，以及如何在传输介质上传输数据的方法. 
+其中，() 是重要的局域网协议.
+A. IEEE 802.1
+B. IEEE 802.3
+C. IEEE 802.6
+D. IEEE 802.11
+
+解析: B
+A - IEEE 802.1 是802协议概论.
+B - IEEE 802.3 是以太网的CSMA／CD载波监听多路访问／冲突检测协议.
+    以太网规范IEEE 802.3 是重要的<span class="hljs-string">&quot;局域网协议&quot;</span>.
+C - IEEE 802.6 城域网MAN协议.
+D - IEEE 802.11 无线局域网WLAN标准协议.</code></pre></div>
+
+<h4 id="15-商业智能"><a href="#15-商业智能" class="headerlink" title="15.商业智能"></a>15.商业智能</h4><div class="hljs"><pre><code class="hljs bash">[单选] 商业智能将企业中现有的数据转化为知识，帮助企业做出明智的业务经营决策，
+包括数据预处理、建立数据模型、数据分析及数据展现4个阶段: 其主要应用的3个关键技术是 ().
+A. 数据仓库/OLAP/数据挖掘
+B. ETL/OLAP/数据展现
+C. 数据仓库/OLTP/OLAP
+D. 数据集市/数据挖掘/数据质量标准
+
+解析: A
+从技术层面上讲，商业智能不是什么新技术，它只是<span class="hljs-string">&quot;数据仓库、OLAP和数据挖掘&quot;</span>等技术的综合应用.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] 智慧城市建设参考模型的 () 利用SOA（面向服务的体系架构）、云计算、大数据等技术，
+承载智慧应用层中的相关应用，提供应用所需的各种服务和共享资源.
+A. 通信网络层
+B. 计算与存储层
+C. 物联感知层
+D. 数据及服务支撑层
+
+解析: D
+智慧城市建设参考模型的 <span class="hljs-string">&quot;数据及服务支撑层&quot;</span> 利用 SOA (面向服务的体系架构) 、云计算、大数据等技术，
+承载智慧应用层中的相关应用，提供应用所需的各种服务和共享资源.</code></pre></div>
+
+<h4 id="16-物联网架构"><a href="#16-物联网架构" class="headerlink" title="16.物联网架构"></a>16.物联网架构</h4><div class="hljs"><pre><code class="hljs bash">[单选] RFID射频技术多应用于物联网的（ ）
+A. 网络层
+B. 感知层
+C. 应用层
+D. 传输层
+
+解析: B
+物联网架构可分为三层，分别是感知层、网络层和应用层.
+感知层由各种传感器构成，包括温湿度传感器、二维码标签、RFID标签和读写器、摄像头、GPS等感知终端.
+主要技术包括: 产品和传感器 (条码、RFID、传感器等)、自动化识别技术、
+无线传输技术 (WLAN、Bluetooth. ZigBee、UWB)、自组织组网技术、中间件技术.</code></pre></div>
+
+<h4 id="17-大数据"><a href="#17-大数据" class="headerlink" title="17.大数据"></a>17.大数据</h4><div class="hljs"><pre><code class="hljs bash">[单选] 关于大数据特点的描述，正确的是 ().
+①数据体量巨大
+②数据处理速度快
+③数据价值密度高
+④数据真实
+⑤结构化数据为主
+A. ①②③
+B. ②④⑤
+C. ①②④
+D. ①④⑤
+
+解析: C
+业界通常用5个V-Volume（大量）、Variety（多样）、Value（价值）、Velocity（高速）和Veracity（真实性）来概括大数据的特征.
+(1)Volume: 指的是数据体量巨大
+(2)Variety: 指的是数据类型繁多,相对于以往便于存储的以文本为主的结构化数据，<span class="hljs-string">&quot;非结构化数据&quot;</span>越来越多
+(3)Value: 指的是价值<span class="hljs-string">&quot;密度低&quot;</span>
+(4)Velocity: 指的是处理速度快
+(5)Veracity: 指的是数据来自于各种、各类信息系统网络以及网络终端的行为或痕迹</code></pre></div>
 
 
             </article>
@@ -237,6 +571,12 @@ C - 配置控制:
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2023/03/03/data-analysis-set-01/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据分析记录-01</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

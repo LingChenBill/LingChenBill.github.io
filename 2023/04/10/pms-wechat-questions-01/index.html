@@ -143,7 +143,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    2.1k 字
+                    3.8k 字
                   </span>
                 
 
@@ -153,7 +153,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    22
+                    40
                      分钟
                   </span>
                 
@@ -194,6 +194,22 @@ D: 动态性
 依附性: 信息的依附性可以从两个方面来理解，
 一方面，信息是客观世界的反映，任何信息必然由客观事物所产生，不存在无源的信息.
 另一方面，任何信息都要依附于一定的载体而存在，需要有物质的承担者，信息不能完全脱离物质而独立存在.</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs bash">[单选] 关于信息安全的描述，不正确的是: ().
+A: 磁盘阵列、数据备份和恢复以及异地容灾等为了防止数据泄露
+B: 数据安全的核心属性是机密性、完整性、可用性
+C: 数据安全本质上是一种静态安全，行为安全是一种动态安全
+D: 防火墙的安全策略由安全规则表示
+
+解析: A
+1. 独立磁盘冗余阵列RAID (redundant array of independent disks)是把相同的数据存储在多个硬盘的不同的地方的方法.
+通过把数据放在多个硬盘上，输入输出操作能以平衡的方式交叠，改良性能.
+因为多个硬盘增加了<span class="hljs-string">&quot;平均故障间隔时间&quot;</span> (MTBF)，
+储存冗余数据也增加了容错.
+2. 数据容灾是指建立一个异地的数据系统，为了保护数据安全和提高数据的持续可用性，
+企业要从RAID保护、冗余结构、数据备份、故障预警等多方面考虑，将数据库的必要文件复制到存储设备的过程，
+<span class="hljs-string">&quot;备份&quot;</span>是系统中需要考虑的最重要的事项,虽然他们在系统的整个规划.
+综合以上，磁盘阵列、数据备份和恢复以及异地容灾并不能防止数据泄密，而是保护数据的<span class="hljs-string">&quot;可用性&quot;</span>.</code></pre></div>
 
 <h4 id="2-面向对象"><a href="#2-面向对象" class="headerlink" title="2.面向对象"></a>2.面向对象</h4><div class="hljs"><pre><code class="hljs bash">[单选] 面向对象的方法构建在类和对象之上，通过建模技术将相关对象按照 () 进行分组，形成 ().
 A: 管理，接口
@@ -308,7 +324,75 @@ D: Spring cloud
 然后发布到任何流行的 Linux 或 Windows 操作系统的机器上，也可以实现虚拟化.
 容器是完全使用沙箱机制, 相互之间不会有任何接口.</code></pre></div>
 
+<h4 id="9-CMMI"><a href="#9-CMMI" class="headerlink" title="9.CMMI"></a>9.CMMI</h4><div class="hljs"><pre><code class="hljs bash">[单选] 企业能够将软件管理和工程两方面的过程文档化、标准化，并综合成该组织的标准软件过程.
+所有项目均使用经批准剪裁的标准软件过程来开发和维护软件，软件产品的生产在整个软件过程是可见的.
+由此判断，该企业已经达到了CMMI () 级.
+A: 2
+B: 3
+C: 4
+D: 5
 
+解析: B
+表:能力等级与成熟度级别的对比</code></pre></div>
+
+<p><img src="https://iplume-hexo.oss-cn-beijing.aliyuncs.com/pms-wechat-questions-01/001.png" srcset="/img/loading.gif" alt="001"></p>
+<div class="hljs"><pre><code class="hljs bash">能力等级3级: 已定义级.
+<span class="hljs-string">&quot;能力等级3级&quot;</span>的过程被描述为<span class="hljs-string">&quot;已定义&quot;</span>的过程.
+已定义的过程是一种已管理的过程，这种过程按照组织的裁剪指南，从组织的标准过程集中裁剪得到，
+它具有受维护的过程描述，并且将过程相关经验贡献给组织级过程资产.
+<span class="hljs-string">&quot;能力等级2级与3级&quot;</span>之间的关键区别在于标准、过程描述与规程的范围.
+另一关键区别在于能力等级3级的过程描述往往比能力等级2级更为严谨.</code></pre></div>
+
+<h4 id="10-网络安全法"><a href="#10-网络安全法" class="headerlink" title="10.网络安全法"></a>10.网络安全法</h4><div class="hljs"><pre><code class="hljs bash">[单选] 某公司法人王某花费3000余元从网上购买个人信息计3646条，并将购得的信息分发给员工用以推销业务.
+当地警方依据 () 规定，对王某予以罚款10万元.
+A: 著作权法
+B: 计算机软件保护条例
+C: 网络安全法
+D: 民法通则
+
+解析: C
+试题分析 &lt;&lt;中华人民共和国网络安全法&gt;&gt; 已由中华人民共和国第十二届全国人民代表大会常务委员会第二十四次会议于2016年11月7日通过，
+现予公布，自2017年6月1日起施行.
+第四十一条 网络运营者收集使用个人信息，应当遵循合法、正当、必要的原则，公开收集、使用规则, 
+明示收集、使用信息的目的、方式和范围，并经<span class="hljs-string">&quot;被收集者同意&quot;</span>. 
+网络运营者不得收集与其提供的服务无关的个人信息，不得违反法律、行政法规的规定和双方的约定收集、使用个人信息，
+并应当依照法律、行政法规的规定和与用户的约定，处理其保存的个人信息.
+
+第四十二条 网络运营者不得泄露、篡改、毁损其收售的个人信息; 未经被收集者同意, 不得向他人提供个人信息. 
+但是，经过处理无法识别特定个人且不能复原的除外.
+网络运营者应当采取技术措施和其他必要措施，确保其收集的个人信息安全，防止信息泄露、毁损、丢失.
+在发生或者可能发生个人信息泄露、毁损、丢失的情况时，应当立即采取补救措施，按照规定及时告知用户并向有关主管部门报告.
+
+第四十三条 个人发现网络运营者违反法律、行政法规的规定或者双方的约定收集、使用其个人信息的，有权要求网络运营者删除其个人信息;
+发现网络运营者收集、存储的其个人信息有错误的，有权要求网络运营者予以更正.
+网络运营者应当采取措施予以删除或者更正.
+
+第四十四条 任何个人和组织不得窃取或者以其他非法方式获取个人信息，不得非法出售或者非法向他人提供个人信息.</code></pre></div>
+
+<h4 id="11-公开密钥"><a href="#11-公开密钥" class="headerlink" title="11.公开密钥"></a>11.公开密钥</h4><div class="hljs"><pre><code class="hljs bash">[单选]  () 是利用公开密钥进行加密的技术。
+A: AES
+B: IDEA
+C: DES
+D: RSA
+
+解析: D
+1978年美国麻省理工学院的三名密码学者 R.L.Rivest, A.shamir 和 L.Adlelnan
+提出了一种基于大合数因子分解困难性的公开密钥密码，简称为<span class="hljs-string">&quot;RSA密码&quot;</span>.
+由于RSA密码，既可用于加密，又可用于数字签名，安全、易懂，因此<span class="hljs-string">&quot;RSA&quot;</span>密码已成为目前应用最广泛的公开密钥密码.</code></pre></div>
+
+<h4 id="12-系统规划"><a href="#12-系统规划" class="headerlink" title="12.系统规划"></a>12.系统规划</h4><div class="hljs"><pre><code class="hljs bash">[单选] 关于系统规划，不正确的是 ().
+A: 要从用户的现状出发
+B: 以技术的变革为导向
+C: 以用户的需求为基础
+D: 依据组织的战略目标进行
+
+解析: B
+企业或者组织在信息化的过程中，首先应结合<span class="hljs-string">&quot;组织的发展战略&quot;</span>和信息技术应用现状，进行信息化的项层设计，
+在此基础上有步骤、分阶段地组织实施信息系统项目建设，而信息系统项目建设的前提就是要进行信息系统规划.
+信息系统规划 (也称为信息系统战略规划) 是一个组织有关信息系统建设与应用的全局性谋划，主要包括战略目标、策略和部署等内容，
+它的地位可以从两个方面来考察:
+一是与企业战略规划的关系，
+二是与企业信息化规划的关系.</code></pre></div>
 
 
             </article>
@@ -343,6 +427,12 @@ D: Spring cloud
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/2023/04/16/pms-exam-question-04/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">pms-错题集-04</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

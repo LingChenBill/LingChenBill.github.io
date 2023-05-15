@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="LingChenBill">
+  <meta name="keywords" content="">
+  <title>pms-remember-01 - LingChen&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/dracula.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>LingChen's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              Home</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              Archives</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">
+              <i class="iconfont icon-category-fill"></i>
+              Categories</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              Tags</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/Hippopx-desk.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2023-05-11 16:41">
+                    May 11, 2023 pm
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    17
+                     分钟
+                  </span>
+                
+
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h4 id="1-范围确认与质量控制"><a href="#1-范围确认与质量控制" class="headerlink" title="1.范围确认与质量控制"></a>1.范围确认与质量控制</h4><p>范围确认和质量控制的不同之处:</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 检查内容
+		确认范围主要强调可交付成果获得客户或发起人的接受；
+		质量控制强调可交付成果的正确性，并符合为其制定的具体质量要求（质量标准）。
+(2) 检查的时间点
+		确认范围一般在阶段末尾进行，而质量控制未必在阶段末尾进行。
+		质量控制一般在确认范围前进行也可同时进行；
+(3) 执行人员
+		确认范围则是由外部干系人（客户或发起人）对项目可交付成果进行检查验收。
+		质量控制属内部检查，由执行组织的相应质量部门实施；
+(4) 详略程度
+		核实产品、确认范围和质量控制是递进的、越来越细的检查过程。</code></pre></div>
+
+<h4 id="2-项目变更"><a href="#2-项目变更" class="headerlink" title="2.项目变更"></a>2.项目变更</h4><p>项目变更的决策机构，并简述其成员和职责:</p>
+<div class="hljs"><pre><code class="hljs bash">项目变更的决策机构是CCB，<span class="hljs-string">&quot;项目控制委员会（CCB）或配置控制委员会（CCB）&quot;</span>，
+或相关职能的类似组织是项目的所有者权益代表，负责裁定接受哪些变更。
+CCB 由项目所涉及的多方人员共同组成，通常包括用户和实施方的决策人员。
+(1) 实施方的决策人员-项目经理
+    受业主委托对项目经营过程负责者，其正式权利由项目章程取得，而资源调度的权力通常由基准中明确。
+    基准中不包括的储备资源需经<span class="hljs-string">&quot;授权人批准&quot;</span>后方可使用。
+(2) 发起人
+		决定是否变更。</code></pre></div>
+
+<p>项目变更应开展哪些工作:</p>
+<div class="hljs"><pre><code class="hljs bash">1、提出与接受变更请求；
+2、对变更初审；
+3、变更方案论证；
+4、CCB审核；
+5、发出变更通知并组织实施；
+6、变更实施的监控；
+7、变更效果的评估；
+8、判断发生变更后的项目是否已纳入正常轨道。</code></pre></div>
+
+<h4 id="3-改进项目绩效措施"><a href="#3-改进项目绩效措施" class="headerlink" title="3.改进项目绩效措施"></a>3.改进项目绩效措施</h4><p>针对进度滞后：</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 赶工，投入更多的资源或增加工作时间，以缩短关键活动的工期。
+(2) 快速跟进，并行施工，以缩短关键路径的长度。
+(3) 使用高素质的资源或经验更丰富的人员。 
+(4) 减小活动范围或降低活动要求。 
+(5) 改进方法或技术， 以提高生产效率。 
+(6) 加强质量管理，及时发现问题，减少返工，从而缩短工期。</code></pre></div>
+
+<p>针对成本节约：</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 加强质量管理
+(2) 项目范围是否遗漏</code></pre></div>
+
+<h4 id="4-双密钥证书的生成过程"><a href="#4-双密钥证书的生成过程" class="headerlink" title="4.双密钥证书的生成过程"></a>4.双密钥证书的生成过程</h4><p>项目组使用的PKI技术采用双密钥、双证书机制，请简述双密钥证书的生成过程.</p>
+<div class="hljs"><pre><code class="hljs bash">PKI采用双证书体系，非对称算法支持<span class="hljs-string">&quot;RSA和ECC&quot;</span>算法，对称密码算法支持国家密码管理委员会指定的算法。
+其中双证书包括<span class="hljs-string">&quot;签名证书和加密证书&quot;</span>。
+一对密钥用于签名（签名密钥对）,一对密钥用于加密（加密密钥对）。
+加密密钥在密钥管理中心生成及备份，<span class="hljs-string">&quot;签名密钥由用户自行生成并保存&quot;</span>。
+双密钥证书的生成过程如下:
+(1) 用户使用客户端产生签名密钥对。
+(2) 用户的签名私钥保存在客户端。
+(3) 用户将签名密钥对的公钥传送给CA中心。
+(4) CA中心为用户的公钥签名，产生签名证书。
+(5) CA中心将签名证书传回客户端进行保存。
+(6) KMC(密钥管理中心)为用户生成加密密钥对。
+(7) 在KMC中备份加密密钥以备以后进行密钥恢复。
+(8) CA中心为加密密钥对生成加密证书。
+(9) CA中心将用户的加密私钥和加密证书打包成标准格式PKCS<span class="hljs-comment">#12。</span>
+(10) 将打包后的文件传回客户端。
+(11) 用户的客户端装入加密公钥证书和加密私钥。</code></pre></div>
+
+<h4 id="5-WBS"><a href="#5-WBS" class="headerlink" title="5.WBS"></a>5.WBS</h4><p>WBS 分解时，需要注意的事项:</p>
+<div class="hljs"><pre><code class="hljs bash">(1) WBS必须是面问可交付成果的。
+(2) WBS必须符合项目的范围。
+(3) WBS的底层应该支持计划和控制。
+(4) WBS中的元素必须有人负责，而且只由一个人负责，尽管实际上可能需要多个人参与。
+(5) WBS的指导，作为指导而不是原则，WBS应控制在4～6层。
+(6) WBS应包括项目管理工作。
+(7) WBS的编制需要所有（主要）项目干系人的参与，需要项目团队成员的参与。
+(8) WBS并非是一成不变的。</code></pre></div>
+
+<h4 id="6-项目范围说明书"><a href="#6-项目范围说明书" class="headerlink" title="6.项目范围说明书"></a>6.项目范围说明书</h4><p>请描述项目范围说明书的内容:</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 产品范围描述
+(2) 产品验收标准
+(3) 项目可交付成果
+(4) 项目的除外责任
+(5) 项目的制约因素
+(6) 项目的假设条件</code></pre></div>
+
+<p>项目范围是否完成要以<u><strong>范围基准</strong></u>来衡量，包括<u><strong>经过批准的项目范围说明书</strong></u>，<u><strong>WBS</strong></u>，<u><strong>WBS词典</strong></u>。</p>
+<h4 id="7-配置库变更控制流程"><a href="#7-配置库变更控制流程" class="headerlink" title="7.配置库变更控制流程"></a>7.配置库变更控制流程</h4><div class="hljs"><pre><code class="hljs bash">(1) 将要升级的基线从产品库取出，放入受控库；
+(2) 程序员将经修改的代码段从受控库检出，放入自己的开发库中进行修改；
+(3) 程序员将开发库中修改好的代码段检入受控库；
+(4) 软件产品的升级修改工作全部完成后将受控库中的新基线存入产品库。</code></pre></div>
+
+<h4 id="8-质量审计"><a href="#8-质量审计" class="headerlink" title="8.质量审计"></a>8.质量审计</h4><p>简述质量审计的目标:</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 识别全部正在实施的良好及最佳实践；
+(2) 识别全部违规做法、差距及不足；
+(3) 分享所在组织或行业中类似项目的良好实践；
+(4) 积极、主动地提供协助，以改进过程的执行，从而帮助团队提高生产效率；
+(5) 强调每次审计都应对组织经验教训的积累做出贡献。</code></pre></div>
+
+<h4 id="9-ISO9000"><a href="#9-ISO9000" class="headerlink" title="9.ISO9000"></a>9.ISO9000</h4><p>ISO9000质量管理八项原则：</p>
+<div class="hljs"><pre><code class="hljs bash">(1) 以顾客为中心、
+(2) 领导作用、
+(3) 全员参与、
+(4) 过程方法、
+(5) 管理的系统方法、
+(6) 持续改进、
+(7) 基于事实的决策方法、
+(8) 与供方互利的关系.</code></pre></div>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/pms/">pms</a>
+                    
+                      <a class="hover-with-bg" href="/categories/pms/remember/">remember</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pms/">pms</a>
+                    
+                      <a class="hover-with-bg" href="/tags/remember/">remember</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/14/pms-exam-questions-09/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">pms-错题集-09</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/08/pms-exam-questions-07/">
+                        <span class="hidden-mobile">pms-exam-questions-07</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "pms-remember-01&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

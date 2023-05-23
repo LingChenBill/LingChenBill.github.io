@@ -157,6 +157,47 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
+
+      <a href="/2020/09/29/k8s-job/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+7_应用编排与管理_Job和DaemonSet一、Job需求来源Job 背景问题首先我们来看一下 Job 的需求来源。我们知道 K8s 里面，最小的调度单元是 Pod，我们可以直接通过 Pod 来运行任务进程。这样做将会产生以下几种问题：
+
+我们如何保证 Pod 内进程正确的结束？
+如何保证进程运行失败后重试？
+如何管理多个任务，且任务之间有依赖关系？
+如何并行地运行任务，并管理任务的</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-09-29
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+              <a href="/tags/job/">job</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2020/09/28/6-k8s-deployment/">6_应用编排与管理:Deployment</a>
 
       <a href="/2020/09/28/6-k8s-deployment/" class="index-excerpt">
@@ -517,59 +558,6 @@ latest: Pulling from library/busybo</div>
               <a href="/tags/ssh/">ssh</a>
             
               <a href="/tags/os/">os</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/06/22/docker-dockfile-nginx/" target="_self">
-          <img src="/docker-dockfile-nginx/banner.png" srcset="/img/loading.gif" alt="Docker之Dockfile的nginx构建">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/06/22/docker-dockfile-nginx/">Docker之Dockfile的nginx构建</a>
-
-      <a href="/2020/06/22/docker-dockfile-nginx/" class="index-excerpt">
-        
-        
-          
-        
-        <div>Docker之Dockfile的nginx构建
-Dockerfile由一行行命令语句组成，并且支持以#开头的注释行。Dockerfile分为四个部分：
-
-基础镜像信息
-维护者信息
-镜像操作指令
-容器启动时执行指令
-
-指令指令的一般格式是INSTRUCTION arguments
-1、FROM
-格式为FROM &lt;image&gt;或 FROM &lt;image&gt;:&lt;tag&gt;</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-06-22
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker/">docker</a>
-            
-              <a href="/tags/dockerfile/">dockerfile</a>
-            
-              <a href="/tags/nginx/">nginx</a>
             
           </div>
         

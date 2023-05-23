@@ -156,6 +156,49 @@
   <div class="row mx-auto index-card">
     
     
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/12/21/graylog-install/">Graylog安装</a>
+
+      <a href="/2020/12/21/graylog-install/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Graylog安装1.使用Docker安装Graylog安装mongodb:
+% docker run --name mongo -d mongo:4.2
+安装elasticsearch:
+% docker run --name elasticsearch \
+    -e &quot;http.host=0.0.0.0&quot; \
+    -e &quot;discovery.t</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-12-21
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/graylog/">graylog</a>
+            
+              <a href="/tags/mongodb/">mongodb</a>
+            
+              <a href="/tags/es/">es</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2020/12/18/first-serverless-program/" target="_self">
           <img src="/first-serverless-program/banner.png" srcset="/img/loading.gif" alt="第一个serverless程序">
@@ -538,47 +581,6 @@ Dockerfile微服务1.微服务打包前提:电脑上要先安装docker和maven�
               <a href="/tags/k8s/">k8s</a>
             
               <a href="/tags/config/">config</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/09/29/k8s-job/">7_应用编排与管理_Job和DaemonSet</a>
-
-      <a href="/2020/09/29/k8s-job/" class="index-excerpt">
-        
-        
-          
-        
-        <div>[TOC]
-7_应用编排与管理_Job和DaemonSet一、Job需求来源Job 背景问题首先我们来看一下 Job 的需求来源。我们知道 K8s 里面，最小的调度单元是 Pod，我们可以直接通过 Pod 来运行任务进程。这样做将会产生以下几种问题：
-
-我们如何保证 Pod 内进程正确的结束？
-如何保证进程运行失败后重试？
-如何管理多个任务，且任务之间有依赖关系？
-如何并行地运行任务，并管理任务的</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-09-29
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">k8s</a>
-            
-              <a href="/tags/job/">job</a>
             
           </div>
         
